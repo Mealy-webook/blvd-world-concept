@@ -181,87 +181,38 @@ el.addEventListener("click", (e) => {
   if (zoneHits.length) openZone(zoneHits[0].object.userData.zone);
 });
 
-// ── zone drawer: opening one freezes the globe so it stays put ──
-const panel = document.getElementById("zone-panel");
-const zpEls = {
-  img: document.getElementById("zp-img"),
-  nA: document.getElementById("zp-n-a"),
-  nF: document.getElementById("zp-n-f"),
-  nR: document.getElementById("zp-n-r"),
-  name: document.getElementById("zp-name"),
-  blurb: document.getElementById("zp-blurb"),
-  attractions: document.getElementById("zp-attractions"),
-  food: document.getElementById("zp-food"),
-  rides: document.getElementById("zp-rides"),
-};
+// ── selecting a zone: the globe holds still and flies onto it ──
+// (the old right-hand drawer is gone; the park map's panel carries the
+// detail now, so a pick here is purely a camera move)
 let frozen = false;
+let held = -1;                   // which zone is currently held, or -1
 
-function fill(ul, items) {
-  ul.innerHTML = (items || []).map((t) => `<li>${t}</li>`).join("");
-}
-
-// hero image + thumbnail strip; clicking a thumb cross-fades the hero
-const thumbs = document.getElementById("zp-thumbs");
-function buildGallery(imgs) {
-  thumbs.innerHTML = "";
-  if (!imgs.length) { zpEls.img.removeAttribute("src"); return; }
-  zpEls.img.src = "img/zones/" + imgs[0];
-  imgs.forEach((file, i) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = i === 0 ? "on" : "";
-    b.innerHTML = `<img src="img/zones/${file}" alt="" loading="lazy">`;
-    b.addEventListener("click", () => {
-      [...thumbs.children].forEach((c) => c.classList.remove("on"));
-      b.classList.add("on");
-      zpEls.img.classList.add("swap");
-      setTimeout(() => {
-        zpEls.img.src = "img/zones/" + file;
-        zpEls.img.classList.remove("swap");
-      }, 180);
-    });
-    thumbs.appendChild(b);
-  });
-}
-
-// `ref` is an index into WBK.zones (the globe's pins) or a zone-shaped
-// object — the park map builds those for zones the globe doesn't carry.
+// `ref` is an index into WBK.zones or a zone-shaped object, so the park map
+// can drive the same camera move for zones the globe doesn't carry
 function openZone(ref) {
   const z = typeof ref === "number" ? WBK.zones[ref] : ref;
   if (!z) return;
-  frozen = true;                 // stop the idle spin while reading
+  frozen = true;                 // stop the idle spin while it is held
   vx = 0;
-  zpEls.name.textContent = z.name;
-  zpEls.blurb.textContent = z.blurb;
-  fill(zpEls.attractions, z.attractions);
-  fill(zpEls.food, z.food);
-  fill(zpEls.rides, z.rides);
-  zpEls.nA.textContent = (z.attractions || []).length;
-  zpEls.nF.textContent = (z.food || []).length;
-  zpEls.nR.textContent = (z.rides || []).length;
-  buildGallery(z.imgs || []);
-  focusZone(z);                  // fly the camera onto the zone
-  panel.classList.add("open");
-  panel.setAttribute("aria-hidden", "false");
+  held = typeof ref === "number" ? ref : -1;
+  focusZone(z);
+  heads.forEach((h, i) => h.scale.setScalar(i === held ? 1.6 : 1));
 }
 
 function closeZone() {
   frozen = false;                // hand the spin back
   vx = IDLE_SPIN;
+  held = -1;
   resetCamera();                 // and pull back out to the whole globe
-  panel.classList.remove("open");
-  panel.setAttribute("aria-hidden", "true");
+  heads.forEach((h) => h.scale.setScalar(1));
 }
-document.getElementById("zp-close").addEventListener("click", closeZone);
 addEventListener("keydown", (e) => { if (e.key === "Escape") closeZone(); });
 
-// clicking anywhere outside the drawer closes it (a click that lands on
-// another zone pin is handled by the globe's own handler first)
+// clicking anywhere but another pin lets the globe go
 addEventListener("pointerdown", (e) => {
-  if (!panel.classList.contains("open")) return;
-  if (panel.contains(e.target)) return;
-  if (e.target === el && ray && hitsZone(e)) return; // let pin-to-pin switching through
-  if (e.target.closest?.(".pm-pin")) return;         // ditto for the park map's pins
+  if (held === -1 && !frozen) return;
+  if (e.target === el && ray && hitsZone(e)) return; // pin-to-pin switching
+  if (e.target.closest?.(".pm-pin, .pp-row")) return; // the map drives it too
   closeZone();
 }, true);
 
@@ -275,7 +226,6 @@ function hitsZone(e) {
 // ── camera moves: selecting a zone flies in on it, closing pulls back ──
 let baseDist = 9;                  // the whole-globe framing, set by size()
 let distTarget = baseDist;         // where the camera is easing towards
-let shiftTarget = 0;               // slide left so the drawer doesn't cover it
 let aimX = null, aimY = null;      // rotation targets while a zone is held
 
 // the rotation that brings a lat/lon round to face the camera
@@ -293,18 +243,12 @@ function focusZone(z) {
   const src = typeof z.lat === "number" ? z : named;
   if (!src || typeof src.lat !== "number") return;   // map-only zone, no coords
   aimAt(src.lat, src.lon);
-  distTarget = baseDist * ZOOM;
-  // the drawer covers the right edge, so slide the globe out from under it by
-  // half of what it hides — measured, not guessed, so it holds on any width
-  const hidden = Math.min(430, innerWidth * 0.92) / Math.max(1, innerWidth);
-  const halfW = distTarget * Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.aspect;
-  shiftTarget = -halfW * hidden;
+  distTarget = baseDist * ZOOM;      // the zone lands mid-frame, nothing over it
 }
 
 function resetCamera() {
   aimX = aimY = null;
   distTarget = baseDist;
-  shiftTarget = 0;
 }
 
 function size() {
@@ -350,7 +294,6 @@ function tick() {
     rotX += (0 - rotX) * 0.06;                       // settle the tilt back
   }
   camera.position.z += (distTarget - camera.position.z) * 0.075;
-  root.position.x += (shiftTarget - root.position.x) * 0.075;
 
   globe.rotation.set(rotX, rotY, 0);
   zoneGroup.children.forEach((c) => {

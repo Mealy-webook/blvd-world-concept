@@ -2,7 +2,7 @@
 // Structure follows the Six Flags Qiddiya park-map page: the artwork is the
 // canvas, and a floating panel over it carries search, category chips and a
 // grouped list of everything in the park. Picking a row flies the map to the
-// matching pin; picking a pin opens the zone drawer the globe also uses.
+// matching pin; picking a pin points the panel back at that zone.
 (() => {
   const frame = document.getElementById("pm-frame");
   if (!frame || !window.WBK) return;
@@ -71,7 +71,6 @@
   }
 
   /* ── pins ───────────────────────────────────────────────────────── */
-  const byName = new Map((WBK.zones || []).map((zn, i) => [zn.name, i]));
   const expByZone = new Map((WBK.parkExperiences || []).map((p) => [p.zone, p.items]));
 
   // the label as printed on the map, in the casing the rest of the site uses
@@ -80,24 +79,6 @@
       : pin.label === "WARZONE" ? "Warzone"
         : pin.label === "PIER" ? "Pier"
           : pin.zone || pin.label.charAt(0) + pin.label.slice(1).toLowerCase();
-
-  // A pin without its own WBK.zones entry still gets a full drawer: the
-  // official per-zone experience list and this site's dining entries are
-  // stitched into a zone-shaped object.
-  function synth(pin) {
-    const label = pin.label.replace("KSA 1", "West Gate · KSA 1").replace("KSA 2", "North Gate · KSA 2");
-    const pretty = pin.gate ? label : pin.label.charAt(0) + pin.label.slice(1).toLowerCase();
-    const key = keyOf(pin);
-    const food = (WBK.restaurants || []).filter((r) => r.zone === key).map((r) => r.name);
-    return {
-      name: pin.gate ? pretty : key,
-      blurb: pin.extra?.blurb || "",
-      imgs: pin.extra?.imgs || [],
-      attractions: expByZone.get(key) || [],
-      food,
-      rides: [],
-    };
-  }
 
   const nodes = pins.map((pin, i) => {
     const b = document.createElement("button");
@@ -117,13 +98,23 @@
     return b;
   });
 
+  // picking a pin points the panel at that zone — search it, scroll to it —
+  // rather than opening a drawer over the map
   function select(i, zoom) {
     const pin = pins[i];
     nodes.forEach((n, k) => n.classList.toggle("on", k === i));
-    const ref = pin.zone && byName.has(pin.zone) ? byName.get(pin.zone) : synth(pin);
-    window.WBK_GLOBE?.openZone?.(ref);
     hint?.classList.add("gone");
     if (zoom) framePin(i, zoom);
+
+    const key = keyOf(pin);
+    const row = [...listEl.querySelectorAll(".pp-row")]
+      .find((r) => r.dataset.pin === String(i)) ||
+      [...listEl.querySelectorAll(".pp-row")].find((r) => r.textContent.includes(key));
+    if (row) {
+      listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
+      row.classList.add("on");
+      row.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
   }
 
   /* ── the panel's list: everything in the park, one row shape ────── */
