@@ -587,6 +587,22 @@ body.chrome-on
 .sc-logo { flex: none; display: block; }
 .sc-logo .brand-img.small { height: 72px; margin: -18px 0 -18px -6px; }
 .sc-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* section tabs with scroll-spy */
+.sc-tabs { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
+.sc-tabs a {
+  position: relative; font-family: var(--disp); font-size: 11px; letter-spacing: .14em;
+  color: var(--dim); padding: 8px 13px; border-radius: 999px; white-space: nowrap;
+  transition: color .2s, background .2s;
+}
+.sc-tabs a:hover { color: #eaf2ff; background: rgba(124, 196, 255, .1); }
+.sc-tabs a.on { color: #eaf2ff; }
+.sc-tabs a.on::after {
+  content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, #35e0ff, #4da6ff);
+  box-shadow: 0 0 10px rgba(53, 224, 255, .8);
+}
+@media (max-width: 1080px) { .sc-tabs { display: none; } }
 .sc-pill { font-size: 13px; padding: 12px 24px; }
 
 @media (max-width: 760px) {
@@ -792,12 +808,9 @@ body.route-experiences
    pinned hero, with a soft light spill at the seam */
 .globe-sec {
   position: relative; z-index: 9; height: 100vh; overflow: hidden;
-  /* feathered top edge — a long ramp from transparent so the section has no
-     visible leading line. The hero fades out underneath it as you scroll
-     (see scene.js), so nothing shows through to make a two-tone band. */
-  background: linear-gradient(180deg,
-    rgba(9, 12, 40, 0) 0%, rgba(9, 12, 40, .3) 12%, rgba(10, 13, 42, .72) 26%,
-    #0a0d2a 44%, #0a0e2a 70%, #0b1030 100%);
+  /* no background of its own: the hero folds away underneath (see scene.js),
+     leaving the page's own night sky behind the planet */
+  background: transparent;
 }
 .globe-sec::before {
   content: ''; position: absolute; top: -14vh; left: 0; right: 0;

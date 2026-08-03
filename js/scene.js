@@ -227,6 +227,17 @@
     const rail = document.querySelector("#scroll-rail i");
     const stickyBar = document.getElementById("sticky-cta");
     const bloom = document.getElementById("fold-bloom");
+    const tabs = [...document.querySelectorAll("#sc-tabs a")];
+
+    // tabs scroll the inner container (a plain anchor jump would not work,
+    // because the page scrolls inside #view-home rather than the window)
+    for (const t of tabs) {
+      t.addEventListener("click", (e) => {
+        e.preventDefault();
+        const sec = document.getElementById(t.dataset.sec);
+        if (sec) homeView.scrollTo({ top: sec.offsetTop, behavior: "smooth" });
+      });
+    }
     const globeHolder = document.getElementById("globe-holder");
     const cards = [...document.querySelectorAll(".zc-media img")];
     let ticking = false;
@@ -263,6 +274,23 @@
       }
       if (cue) cue.style.opacity = String(1 - Math.min(p * 3, 1));
 
+      // scroll-spy: highlight whichever section owns the upper third
+      if (tabs.length) {
+        const mark = y + vh * 0.34;
+        let current = -1;
+        tabs.forEach((t, i) => {
+          const sec = document.getElementById(t.dataset.sec);
+          if (sec && sec.offsetTop <= mark) current = i;
+        });
+        tabs.forEach((t, i) => t.classList.toggle("on", i === current));
+      }
+
+      // fail-open backstop: if the observer ever misses an element, scrolling
+      // past it still reveals it, so content is never stuck invisible
+      for (const el of document.querySelectorAll(".reveal:not(.in)")) {
+        if (el.getBoundingClientRect().top < vh * 0.92) el.classList.add("in");
+      }
+
       // booking bar arrives once the hero is mostly behind you
       if (stickyBar) stickyBar.classList.toggle("show", p > 0.72);
 
@@ -298,12 +326,27 @@
       host.addEventListener("pointerleave", () => { pill.style.transform = ""; });
     }
 
-    // reveal on enter
+    // reveal on enter. Sections injected later by app.js (restaurant cards,
+    // show rows, FAQ items) must be handed to the observer too, so scan() is
+    // exposed and a MutationObserver catches anything added after boot —
+    // otherwise those elements sit at opacity 0 forever.
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
       }
-    }, { root: homeView, threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    }, { root: homeView, threshold: 0.12, rootMargin: "0px 0px -5% 0px" });
+
+    const watched = new WeakSet();
+    function scanReveals() {
+      for (const el of document.querySelectorAll(".reveal:not(.in)")) {
+        if (watched.has(el)) continue;
+        watched.add(el);
+        io.observe(el);
+      }
+    }
+    scanReveals();
+    window.WBK_REVEAL = { scan: scanReveals };
+
+    new MutationObserver(scanReveals).observe(homeView, { childList: true, subtree: true });
   }
 })();

@@ -331,6 +331,7 @@
           <span class="eat-zone">${r.zone} zone</span>
         </div>
       </article>`).join("");
+    window.WBK_REVEAL && window.WBK_REVEAL.scan();
   }
 
   // ── daily shows: zone tabs + schedule rail ──────────────────
@@ -370,6 +371,7 @@
         </button>
         <div class="faq-a" id="faq-a-${i}"><div><p>${f.a}</p></div></div>
       </div>`).join("");
+    window.WBK_REVEAL && window.WBK_REVEAL.scan();
 
     // one open at a time
     $$(".faq-q", faqList).forEach((btn) => {
