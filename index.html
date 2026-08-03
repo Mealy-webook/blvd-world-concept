@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=91" />
+<link rel="stylesheet" href="css/main.css?v=96" />
 </head>
 <body class="typo-body">
 
@@ -177,9 +177,13 @@
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
           scattered across the zones.</p>
       </div>
-      <div class="rail-wrap">
+      <!-- the rides fan out as a deck: hover to part it, page to deal -->
+      <div class="fan-stage">
+        <div class="fan-deck" id="ride-fan"></div>
+      </div>
+      <div class="fan-nav">
         <button class="rail-btn prev" id="ride-prev" aria-label="Previous rides">‹</button>
-        <div class="rail ride-rail" id="ride-rail"></div>
+        <div class="fan-dots" id="ride-dots"></div>
         <button class="rail-btn next" id="ride-next" aria-label="More rides">›</button>
       </div>
 
@@ -411,12 +415,13 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=91"></script>
-  <script src="js/borders.js?v=91"></script>
-  <script src="js/scene.js?v=91"></script>
-  <script src="js/app.js?v=91"></script>
-  <script src="js/experiences.js?v=91"></script>
-  <script src="js/carousels.js?v=91"></script>
-  <script type="module" src="js/globe.js?v=91"></script>
+  <script src="js/data.js?v=96"></script>
+  <script src="js/borders.js?v=96"></script>
+  <script src="js/scene.js?v=96"></script>
+  <script src="js/app.js?v=96"></script>
+  <script src="js/experiences.js?v=96"></script>
+  <script src="js/carousels.js?v=96"></script>
+  <script src="js/fan.js?v=96"></script>
+  <script type="module" src="js/globe.js?v=96"></script>
 </body>
 </html>

@@ -73,7 +73,9 @@ body.route-home #scroll-rail { opacity: 1; }
 
 .stars { position: absolute; inset: 0; width: 100%; height: 100%; }
 /* the shared backdrop: stays put while the sections scroll over it */
-.page-sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* the id keeps this ahead of the later `.stars { position: absolute }` rule,
+   which would otherwise let the sky scroll away with the hero */
+#stars-page.page-sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
 /* ═══════════════ BRAND LOCKUP ═══════════════ */
 .brand-lockup { display: inline-flex; align-items: baseline; gap: .45em; user-select: none; }
@@ -395,7 +397,7 @@ body.chrome-on
 
 /* card shell shared by the photo rails */
 .rail { perspective: 1100px; }
-.ride-card, .eat-card {
+.eat-card {
   position: relative; width: clamp(230px, 27vw, 290px); border-radius: 18px; overflow: hidden;
   background: linear-gradient(165deg, rgba(20, 28, 72, .7), rgba(10, 14, 40, .9));
   border: 1px solid rgba(124, 196, 255, .16);
@@ -405,15 +407,15 @@ body.chrome-on
   transition: transform .34s cubic-bezier(.2,.8,.25,1), border-color .3s, box-shadow .3s;
 }
 /* entrance: cards deal themselves in, in sequence */
-.ride-card, .eat-card { opacity: 0; }
-.ride-card.pop, .eat-card.pop {
+.eat-card { opacity: 0; }
+.eat-card.pop {
   animation: cardDeal .62s cubic-bezier(.2,.9,.25,1) var(--pop-d, 0ms) both;
 }
 @keyframes cardDeal {
   from { opacity: 0; transform: perspective(900px) translateY(26px) rotateX(-9deg) scale(.965); }
   to   { opacity: 1; transform: perspective(900px) translateY(0) rotateX(0) scale(1); }
 }
-.ride-card:hover, .eat-card:hover {
+.eat-card:hover {
   --lift: -8px; border-color: rgba(255, 194, 77, .55); z-index: 2;
   box-shadow: 0 26px 54px rgba(2, 4, 14, .68), 0 0 34px rgba(255, 194, 77, .2);
 }
@@ -425,21 +427,20 @@ body.chrome-on
     radial-gradient(180px 180px at var(--mx, 50%) var(--my, 50%), rgba(160, 214, 255, .3), transparent 70%),
     linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, .12) 50%, transparent 58%);
 }
-.ride-card:hover .sheen, .eat-card:hover .sheen { opacity: 1; }
+.eat-card:hover .sheen { opacity: 1; }
 
-.ride-shot, .eat-shot { position: relative; aspect-ratio: 4/3; overflow: hidden; }
-.ride-shot img, .eat-shot img {
+.eat-shot { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+.eat-shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform .6s cubic-bezier(.2,.8,.25,1), filter .35s;
 }
-.ride-card:hover .ride-shot img,
 .eat-card:hover .eat-shot img { transform: scale(1.09) translateZ(0); filter: brightness(1.08) saturate(1.12); }
-.ride-shot::after, .eat-shot::after {
+.eat-shot::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(6,10,30,.05) 45%, rgba(8,12,34,.85) 100%);
 }
-.ride-text, .eat-text { position: relative; padding: 14px 16px 16px; display: grid; gap: 7px; }
-.ride-text h3, .eat-text h3 {
+.eat-text { position: relative; padding: 14px 16px 16px; display: grid; gap: 7px; }
+.eat-text h3 {
   font-family: var(--disp); font-weight: 400; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: .02em;
   background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
@@ -464,13 +465,57 @@ body.chrome-on
 .eat-price small { font-size: 8.5px; font-weight: 800; opacity: .72; letter-spacing: .1em; }
 .eat-card:hover .eat-price { transform: translateY(-3px) scale(1.04); }
 
-/* rides: a running number and how hard it hits */
-.ride-no {
-  position: absolute; z-index: 2; right: 10px; top: 8px;
-  font-family: var(--disp); font-size: 30px; line-height: 1; color: rgba(255, 255, 255, .17);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, .5); transition: color .3s, transform .3s;
+/* ═══════════════ RIDES: FANNED DECK ═══════════════ */
+/* the stage owns the height; every card is absolutely centred inside it and
+   moved only by the transform the fan writes (see js/fan.js) */
+.fan-stage {
+  position: relative; width: 100%; max-width: min(80rem, 100%);
+  height: min(36rem, 64vh); display: flex; align-items: center; justify-content: center;
 }
-.ride-card:hover .ride-no { color: rgba(255, 217, 138, .5); transform: scale(1.08); }
+.fan-deck { position: absolute; inset: 0; }
+.fan-card {
+  position: absolute; left: 50%; top: 50%;
+  /* sized from the stage so the deck always fits the space it is given */
+  height: 88%; width: auto; aspect-ratio: 4 / 7; border-radius: 20px; overflow: hidden;
+  transform-origin: 50% 50%; will-change: transform, opacity; cursor: pointer;
+  background: linear-gradient(165deg, rgba(20, 28, 72, .8), rgba(10, 14, 40, .95));
+  border: 1px solid rgba(124, 196, 255, .2);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .62), 0 0 0 1px rgba(255, 255, 255, .03) inset;
+}
+.fan-card img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  user-select: none; -webkit-user-drag: none;
+}
+.fan-card::after {          /* keeps the caption legible over any photo */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(6, 10, 30, 0) 38%, rgba(6, 9, 26, .9) 100%);
+}
+.fan-meta {
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
+  padding: 18px 18px 20px; display: grid; gap: 8px; justify-items: start; pointer-events: none;
+}
+.fan-meta h3 {
+  font-family: var(--disp); font-weight: 400; font-size: 22px; letter-spacing: .02em; line-height: 1.1;
+  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+/* arrows and dots below the deck */
+.fan-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.fan-dots { display: flex; align-items: center; gap: 7px; }
+.fan-dots button {
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(124, 196, 255, .22);
+  transition: background .3s, transform .3s, box-shadow .3s;
+}
+.fan-dots button:hover { background: rgba(124, 196, 255, .5); }
+.fan-dots button.on {
+  background: linear-gradient(160deg, #ffd98a, #ffc24d); transform: scale(1.45);
+  box-shadow: 0 0 12px rgba(255, 194, 77, .7);
+}
+@media (max-width: 1023px) { .fan-stage { height: min(32rem, 62vh); } .fan-card { border-radius: 18px; } .fan-meta h3 { font-size: 19px; } }
+@media (max-width: 767px)  { .fan-stage { height: min(28rem, 60vh); } .fan-meta { padding: 14px; } .fan-meta h3 { font-size: 17px; } }
+@media (max-width: 639px)  { .fan-stage { height: min(26rem, 58vh); } .fan-card { border-radius: 14px; } .fan-meta h3 { font-size: 15px; } .rh-label { display: none; } }
+@media (max-width: 479px)  { .fan-stage { height: min(22rem, 56vh); } .fan-meta h3 { font-size: 13.5px; } }
+
+/* how hard a ride hits, drawn as filled bars */
 .ride-heat { display: flex; align-items: center; gap: 8px; }
 .rh-bars { display: inline-flex; gap: 3px; align-items: flex-end; }
 .rh-bars i {
@@ -481,10 +526,10 @@ body.chrome-on
 .rh-bars i:nth-child(2) { height: 11px; }
 .rh-bars i:nth-child(3) { height: 15px; }
 .rh-bars i.on { background: linear-gradient(180deg, #ffd98a, #ffc24d); box-shadow: 0 0 9px rgba(255, 194, 77, .55); }
-.ride-card.h3:hover .rh-bars i.on { animation: heatPulse 1s ease-in-out infinite; }
+.fan-card.h3:hover .rh-bars i.on { animation: heatPulse 1s ease-in-out infinite; }
 @keyframes heatPulse { 50% { box-shadow: 0 0 16px rgba(255, 194, 77, .95); } }
 .rh-label { font-size: 9px; font-weight: 800; letter-spacing: .14em; color: #7f8db4; }
-.ride-card.h3 .rh-label { color: #ffc79a; }
+.fan-card.h3 .rh-label { color: #ffc79a; }
 
 /* ── rides bundles: just the way in, since there may be several ── */
 .ride-cta { display: grid; gap: 12px; justify-items: center; text-align: center; }

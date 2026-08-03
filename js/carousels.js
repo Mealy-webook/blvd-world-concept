@@ -112,38 +112,7 @@
     stagger(rail);
   })();
 
-  /* ── RIDES ── */
-  (function rides() {
-    const rail = $("#ride-rail");
-    if (!rail) return;
-    const data = (window.WBK && WBK.rides) || [];
-    // how hard the ride hits, drawn as filled bars
-    const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
-    const heat = (k) => HEAT[k] || 2;
-    rail.innerHTML = data.map((r, i) => {
-      const h = heat(r.kind);
-      const bars = [1, 2, 3].map((n) => `<i class="${n <= h ? "on" : ""}"></i>`).join("");
-      return `
-      <article class="ride-card h${h}">
-        <div class="ride-shot">
-          <img src="img/rides/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
-          <span class="ride-no">${String(i + 1).padStart(2, "0")}</span>
-        </div>
-        <div class="ride-text">
-          <span class="ride-kind">${r.kind}</span>
-          <h3>${r.name}</h3>
-          <div class="ride-heat" title="${["gentle", "lively", "full throttle"][h - 1]}">
-            <span class="rh-bars">${bars}</span>
-            <span class="rh-label">${["GENTLE", "LIVELY", "FULL THROTTLE"][h - 1]}</span>
-          </div>
-        </div>
-        <i class="sheen" aria-hidden="true"></i>
-      </article>`;
-    }).join("");
-    makeRail(rail, $("#ride-prev"), $("#ride-next"));
-    liven(rail, ".ride-card");
-    stagger(rail);
-  })();
+  /* ── RIDES live in js/fan.js as a fanned deck ── */
 
   /* ── SHOWS: zone chips + the night's schedule as a vertical list ── */
   (function shows() {
