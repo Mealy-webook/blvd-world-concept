@@ -318,43 +318,6 @@
   }
 
 
-  // ── rides: two marquee rows drifting in opposite directions ──
-  const rm = $("#ride-marquee");
-  if (rm) {
-    const rides = WBK.rides || [];
-    const half = Math.ceil(rides.length / 2);
-    const rows = [rides.slice(0, half), rides.slice(half)];
-    rm.innerHTML = rows.map((row, i) => {
-      // the list is duplicated so the -50% translate loops seamlessly
-      const chips = row.concat(row).map((r) => `<span class="rm-chip">${r}</span>`).join("");
-      return `<div class="rm-row ${i === 0 ? "a" : "b"}">${chips}</div>`;
-    }).join("");
-  }
-
-  // ── park experiences: one flip card per zone ──
-  const pex = $("#pex-grid");
-  if (pex) {
-    pex.innerHTML = (WBK.parkExperiences || []).map((z) => `
-      <button class="pex-card reveal" type="button" aria-label="${z.zone} experiences">
-        <div class="pex-inner">
-          <div class="pex-face pex-front">
-            <span class="pex-n">${String(z.items.length).padStart(2, "0")}</span>
-            <h3>${z.zone}</h3>
-            <span class="pex-hint">Tap to reveal</span>
-          </div>
-          <div class="pex-face pex-back">
-            <h4>${z.zone}</h4>
-            <ul>${z.items.map((i) => `<li>${i}</li>`).join("")}</ul>
-          </div>
-        </div>
-      </button>`).join("");
-    // tap toggles on touch, where there is no hover
-    $$(".pex-card", pex).forEach((c) =>
-      c.addEventListener("click", () => c.classList.toggle("flip"))
-    );
-    window.WBK_REVEAL && window.WBK_REVEAL.scan();
-  }
-
   const faqList = $("#faq-list");
   if (faqList) {
     faqList.innerHTML = (WBK.faqs || []).map((f, i) => `

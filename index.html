@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=82" />
+<link rel="stylesheet" href="css/main.css?v=86" />
 </head>
 <body class="typo-body">
 
@@ -128,7 +128,6 @@
 
     <!-- ── globe: letters from the world ── -->
     <section class="globe-sec" id="globe-sec">
-      <canvas id="stars-gallery" class="stars"></canvas>
       <div id="globe-holder"></div>
       <div class="gallery-head reveal">
         <p class="eyebrow"><span class="sec-num">01</span> DRAG TO EXPLORE</p>
@@ -167,162 +166,60 @@
       </aside>
     </section>
 
-    <!-- ── zones section (scroll reveal) ── -->
-    <section class="zones" id="zones">
-      <div class="zones-head reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> ONE PARK · MANY WORLDS</p>
-        <h2 class="sec-title">TRAVEL THE WORLD<br/>IN ONE NIGHT</h2>
-        <p class="sec-sub">Nine countries, one boulevard. Wander from Venetian canals to Tokyo arcades,
-          Mayan temples to Najdi heritage streets — every corner of BLVD World is somewhere else entirely.</p>
-      </div>
-
-      <div class="zone-grid">
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/turkey.jpg" alt="Turkey zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">TÜRKIYE</span>
-            <h3>UZUNGÖL NIGHTS</h3>
-            <p>Folk dancers, shisha lounges and lantern-lit terraces under the coaster lights.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/egypt.jpg" alt="Egypt zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">EGYPT</span>
-            <h3>PYRAMID PLAZA</h3>
-            <p>Golden temples, pharaonic façades and a night market that never sleeps.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/saudi.jpg" alt="Saudi zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">SAUDI ARABIA</span>
-            <h3>HERITAGE STREET</h3>
-            <p>Najdi mud-brick walls, local flavours and the sound of home.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/japan.jpg" alt="Japan zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">JAPAN</span>
-            <h3>TOKYO STREET</h3>
-            <p>Neon alleys, arcades and a five-storey robot standing guard.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/italy.jpg" alt="Italy zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">ITALY</span>
-            <h3>THE GRAND CANAL</h3>
-            <p>Gondolas, piazzas and a campanile mirrored in the water.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/france.jpg" alt="France zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">FRANCE</span>
-            <h3>PARIS BOULEVARD</h3>
-            <p>A golden-lit tower, café terraces and street musicians till late.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/mexico.jpg" alt="Mexico zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">MEXICO</span>
-            <h3>THE RED PYRAMID</h3>
-            <p>Climb a Mayan temple lit crimson above the lagoon.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/china.jpg" alt="China zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">CHINA</span>
-            <h3>CHINATOWN</h3>
-            <p>Red pagodas, lantern markets and a lion dance every evening.</p>
-          </div>
-        </article>
-        <article class="zone-card reveal">
-          <div class="zc-media"><img src="img/zones/usa.jpg" alt="USA zone at BLVD World" loading="lazy" /></div>
-          <div class="zc-body">
-            <span class="zc-flag">USA</span>
-            <h3>ROUTE 66</h3>
-            <p>Chrome diners, milkshakes and a jukebox that never stops.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
     <!-- ── rides ── -->
     <section class="rides" id="rides">
       <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> HOLD ON TIGHT</p>
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
           scattered across the zones.</p>
       </div>
-      <div class="ride-marquee" id="ride-marquee" aria-label="List of rides"></div>
-    </section>
-
-    <!-- ── park experiences ── -->
-    <section class="pex" id="pex">
-      <div class="pex-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> TWENTY-FIVE EXPERIENCES</p>
-        <h2 class="sec-title">STEP INSIDE<br/>SOMETHING ELSE</h2>
-        <p class="sec-sub">Ten zones, each with its own bookable experiences — tap a card to see what's inside.</p>
+      <div class="rail-wrap">
+        <button class="rail-btn prev" id="ride-prev" aria-label="Previous rides">‹</button>
+        <div class="rail ride-rail" id="ride-rail"></div>
+        <button class="rail-btn next" id="ride-next" aria-label="More rides">›</button>
       </div>
-      <div class="pex-grid" id="pex-grid"></div>
     </section>
 
     <!-- ── restaurants ── -->
     <section class="eats" id="eats">
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> EAT YOUR WAY AROUND</p>
+        <p class="eyebrow"><span class="sec-num">03</span> EAT YOUR WAY AROUND</p>
         <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
         <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
           tagines to tacos — all in one night, all on foot.</p>
       </div>
-      <div class="cf-wrap">
-        <div class="cf-stage" id="cf-stage">
-          <div class="cf-track" id="cf-track"></div>
-          <button class="car-btn cf-prev" id="cf-prev" aria-label="Previous restaurant">‹</button>
-          <button class="car-btn cf-next" id="cf-next" aria-label="Next restaurant">›</button>
-        </div>
-        <div class="cf-label" id="cf-label"></div>
+      <div class="rail-wrap">
+        <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">‹</button>
+        <div class="rail eat-rail" id="eat-rail"></div>
+        <button class="rail-btn next" id="eat-next" aria-label="More restaurants">›</button>
       </div>
     </section>
 
     <!-- ── daily shows ── -->
     <section class="shows" id="shows">
       <div class="shows-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> EVERY NIGHT, EVERY ZONE</p>
+        <p class="eyebrow"><span class="sec-num">04</span> EVERY NIGHT, EVERY ZONE</p>
         <h2 class="sec-title">DAILY SHOWS</h2>
         <p class="sec-sub">Parades, folkloric dance, storytellers and the Mesaharati — the park's zones
           come alive on a schedule from 8:30 PM until past 1 AM.</p>
       </div>
       <div class="show-tabs" id="show-tabs" role="tablist"></div>
-      <div class="wh-wrap">
-        <button class="car-btn wh-up" id="wh-up" aria-label="Earlier show">‹</button>
-        <div class="wh-stage" id="wh-stage">
-          <div class="wh-track" id="wh-track"></div>
-          <div class="wh-window" aria-hidden="true"></div>
-        </div>
-        <button class="car-btn wh-down" id="wh-down" aria-label="Later show">›</button>
-      </div>
-      <div class="wh-meta" id="wh-meta"></div>
+      <div class="show-rail" id="show-rail"></div>
       <div class="show-actions">
         <a class="pill solid" id="dl-schedule"
            href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
            target="_blank" rel="noopener" download>
           <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
         </a>
-        <p class="show-note">Ramadan schedule · drag the wheel · times may vary by night</p>
+        <p class="show-note">Ramadan schedule · times may vary by night</p>
       </div>
     </section>
 
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">05</span> BEFORE YOU GO</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -491,9 +388,7 @@
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
-      <a href="#zones" data-sec="zones">Zones</a>
       <a href="#rides" data-sec="rides">Rides</a>
-      <a href="#pex" data-sec="pex">Experiences</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
       <a href="#faqs" data-sec="faqs">FAQ</a>
@@ -507,12 +402,12 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=82"></script>
-  <script src="js/borders.js?v=82"></script>
-  <script src="js/scene.js?v=82"></script>
-  <script src="js/app.js?v=82"></script>
-  <script src="js/experiences.js?v=82"></script>
-  <script src="js/carousels.js?v=82"></script>
-  <script type="module" src="js/globe.js?v=82"></script>
+  <script src="js/data.js?v=86"></script>
+  <script src="js/borders.js?v=86"></script>
+  <script src="js/scene.js?v=86"></script>
+  <script src="js/app.js?v=86"></script>
+  <script src="js/experiences.js?v=86"></script>
+  <script src="js/carousels.js?v=86"></script>
+  <script type="module" src="js/globe.js?v=86"></script>
 </body>
 </html>

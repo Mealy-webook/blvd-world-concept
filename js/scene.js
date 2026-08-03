@@ -239,7 +239,6 @@
       });
     }
     const globeHolder = document.getElementById("globe-holder");
-    const cards = [...document.querySelectorAll(".zc-media img")];
     let ticking = false;
 
     function onScroll() {
@@ -300,12 +299,6 @@
         rail.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0).toFixed(2) + "%";
       }
 
-      // gentle parallax on each zone photo
-      for (const img of cards) {
-        const r = img.getBoundingClientRect();
-        const mid = (r.top + r.height / 2 - vh / 2) / vh; // -1 .. 1
-        img.style.setProperty("--py", (mid * -34).toFixed(1) + "px");
-      }
       ticking = false;
     }
 

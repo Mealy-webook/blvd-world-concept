@@ -12,26 +12,37 @@ window.WBK = {
   stickers: ["💜", "⭐", "🎟️", "🎆", "🌙", "🎶"],
 
   // rides, from the official park sheet
+  // rides, from the official park sheet. Photography is representative
+  // BLVD World imagery, not a shot of each individual ride.
   rides: [
-    "Wave Swinger", "Turbo 360", "Drop and Twist",
-    "Carousel", "Sky Loop", "Enjoy The Flight",
-    "Cable Cars", "Taxi Mania", "Convoy Figure 8",
-    "View Tower", "Super Fly", "Amazonia Awakens",
-    "Dragons Fury", "Air Max",
+    { name: "Wave Swinger",     kind: "FAMILY SWING", img: "swing.jpg" },
+    { name: "Turbo 360",        kind: "THRILL",       img: "coaster.jpg" },
+    { name: "Drop and Twist",   kind: "THRILL",       img: "towers.jpg" },
+    { name: "Carousel",         kind: "FAMILY",       img: "lanterns.jpg" },
+    { name: "Sky Loop",         kind: "THRILL",       img: "coaster.jpg" },
+    { name: "Enjoy The Flight", kind: "AERIAL",       img: "aerial.jpg" },
+    { name: "Cable Cars",       kind: "SCENIC",       img: "lagoon.jpg" },
+    { name: "Taxi Mania",       kind: "FAMILY",       img: "midway.jpg" },
+    { name: "Convoy Figure 8",  kind: "FAMILY",       img: "midway.jpg" },
+    { name: "View Tower",       kind: "SCENIC",       img: "tower.jpg" },
+    { name: "Super Fly",        kind: "THRILL",       img: "aerial.jpg" },
+    { name: "Amazonia Awakens", kind: "ADVENTURE",    img: "lanterns.jpg" },
+    { name: "Dragons Fury",     kind: "THRILL",       img: "coaster.jpg" },
+    { name: "Air Max",          kind: "THRILL",       img: "towers.jpg" },
   ],
 
   // park experiences grouped by zone, from the same sheet
   parkExperiences: [
-    { zone: "Africa",     items: ["Lion Exp", "Giraffe Exp", "Bird Nest Exp", "Lemur Catta Exp", "Forest Exp", "Tours Exp"] },
-    { zone: "Warzone",    items: ["Battle Dome", "Line of Fire", "Shotgun Range", "Topshot", "Battle Cart", "War Castle"] },
-    { zone: "The Planet", items: ["The Dome Cinema", "Meta World", "Dolphinarium", "Swimming with Dolphins"] },
-    { zone: "Egypt",      items: ["Escape Room: Secret of the Pharaoh", "The Lost Museum", "PUBG"] },
-    { zone: "Italy",      items: ["Midnight Manor"] },
-    { zone: "Mexico",     items: ["Doll Maker"] },
-    { zone: "Courchevel", items: ["Skiing School"] },
-    { zone: "Pier",       items: ["Coco Melon Exp"] },
-    { zone: "T\u00fcrkiye",  items: ["Oasis"] },
-    { zone: "Iran",       items: ["Pac-Man"] },
+    { zone: "Africa",     items: ["Lion Exp", "Giraffe Exp", "Bird Nest Exp", "Lemur Catta Exp", "Forest Exp", "Tours Exp"] , img: "park1.jpg" },
+    { zone: "Warzone",    items: ["Battle Dome", "Line of Fire", "Shotgun Range", "Topshot", "Battle Cart", "War Castle"] , img: "park4.jpg" },
+    { zone: "The Planet", items: ["The Dome Cinema", "Meta World", "Dolphinarium", "Swimming with Dolphins"] , img: "park3.jpg" },
+    { zone: "Egypt",      items: ["Escape Room: Secret of the Pharaoh", "The Lost Museum", "PUBG"] , img: "egypt.jpg" },
+    { zone: "Italy",      items: ["Midnight Manor"] , img: "italy.jpg" },
+    { zone: "Mexico",     items: ["Doll Maker"] , img: "mexico.jpg" },
+    { zone: "Courchevel", items: ["Skiing School"] , img: "park8.jpg" },
+    { zone: "Pier",       items: ["Coco Melon Exp"] , img: "park7.jpg" },
+    { zone: "T\u00fcrkiye",  items: ["Oasis"] , img: "turkey.jpg" },
+    { zone: "Iran",       items: ["Pac-Man"] , img: "park5.jpg" },
   ],
 
   // dining highlights, one per zone
