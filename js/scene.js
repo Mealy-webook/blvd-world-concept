@@ -224,8 +224,13 @@
       const p = Math.min(y / vh, 1); // 0 → 1 across the first viewport
       scrollP = p; // the parallax loop composes this into the hero transform
 
-      // the scene itself drifts slightly for depth
-      if (heroScene) heroScene.style.setProperty("--scenelift", `${-p * 40}px`);
+      // the scene drifts up and dissolves, so the next section can feather
+      // over it instead of arriving as a hard-edged panel
+      if (heroScene) {
+        heroScene.style.setProperty("--scenelift", `${-p * 40}px`);
+        const fade = Math.min(1, Math.max(0, (p - 0.18) / 0.62));
+        heroScene.style.opacity = String(1 - fade * fade); // ease-in, holds longer
+      }
       if (cue) cue.style.opacity = String(1 - Math.min(p * 3, 1));
 
       // booking bar arrives once the hero is mostly behind you
