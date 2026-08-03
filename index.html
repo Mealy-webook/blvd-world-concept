@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=97" />
+<link rel="stylesheet" href="css/main.css?v=104" />
 </head>
 <body class="typo-body">
 
@@ -135,44 +135,54 @@
       <div class="gallery-head reveal">
         <p class="eyebrow"><span class="sec-num">01</span> DRAG TO EXPLORE</p>
       </div>
-      <!-- zone detail drawer -->
-      <aside class="zone-panel" id="zone-panel" aria-hidden="true">
-        <button class="zp-close" id="zp-close" aria-label="Close zone">✕</button>
+    </section>
 
-        <div class="zp-hero">
-          <img id="zp-img" alt="" />
-          <div class="zp-shade"></div>
-          <div class="zp-title">
-            <span class="zp-flag">BLVD WORLD · ZONE</span>
-            <h3 id="zp-name"></h3>
-            <p class="zp-blurb" id="zp-blurb"></p>
+    <!-- ── park map: the official plan, pannable and clickable ── -->
+    <section class="parkmap" id="parkmap">
+      <div class="pm-head reveal">
+        <p class="eyebrow"><span class="sec-num">02</span> THE WHOLE PARK, ONE PLAN</p>
+        <h2 class="sec-title">THE PARK MAP</h2>
+        <p class="sec-sub">Twenty-six zones and gates ring a central lagoon. Zoom in, drag
+          around, and tap any pin to see what's waiting inside it.</p>
+      </div>
+
+      <div class="pm-wrap reveal">
+        <div class="pm-tools">
+          <div class="pm-chips" role="group" aria-label="Filter map pins">
+            <button class="pm-chip on" data-f="all" type="button">ALL PINS</button>
+            <button class="pm-chip" data-f="experiences" type="button">EXPERIENCES</button>
+            <button class="pm-chip" data-f="dining" type="button">DINING</button>
+            <button class="pm-chip" data-f="gates" type="button">GATES</button>
           </div>
         </div>
 
-        <div class="zp-thumbs" id="zp-thumbs"></div>
+        <div class="pm-frame" id="pm-frame">
+          <div class="pm-stage" id="pm-stage">
+            <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
+              alt="Official BLVD World park map" draggable="false" />
+            <div class="pm-pins" id="pm-pins"></div>
+          </div>
 
-        <div class="zp-stats">
-          <div class="zp-stat"><b id="zp-n-a">0</b><span>attractions</span></div>
-          <div class="zp-stat"><b id="zp-n-f">0</b><span>places to eat</span></div>
-          <div class="zp-stat"><b id="zp-n-r">0</b><span>rides</span></div>
+          <span class="pm-tick tl"></span><span class="pm-tick tr"></span>
+          <span class="pm-tick bl"></span><span class="pm-tick br"></span>
+
+          <p class="pm-hint" id="pm-hint">Tap a pin · drag to pan · ⌘/ctrl + scroll to zoom</p>
+
+          <div class="pm-zoom">
+            <button id="pm-in" type="button" aria-label="Zoom in">+</button>
+            <button id="pm-out" type="button" aria-label="Zoom out">−</button>
+            <button id="pm-reset" type="button" aria-label="Reset the map">⟲</button>
+          </div>
         </div>
 
-        <div class="zp-body">
-          <section class="zp-group g-a"><h4>ATTRACTIONS</h4><ul id="zp-attractions"></ul></section>
-          <section class="zp-group g-f"><h4>RESTAURANTS</h4><ul id="zp-food"></ul></section>
-          <section class="zp-group g-r"><h4>RIDES</h4><ul id="zp-rides"></ul></section>
-        </div>
-
-        <div class="zp-foot">
-          <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid zp-cta">BOOK THIS ZONE</a>
-        </div>
-      </aside>
+        <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
+      </div>
     </section>
 
     <!-- ── rides ── -->
     <section class="rides" id="rides">
       <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <p class="eyebrow"><span class="sec-num">03</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
           scattered across the zones.</p>
@@ -197,7 +207,7 @@
     <!-- ── restaurants ── -->
     <section class="eats" id="eats">
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> EAT YOUR WAY AROUND</p>
+        <p class="eyebrow"><span class="sec-num">04</span> EAT YOUR WAY AROUND</p>
         <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
         <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
           tagines to tacos — all in one night, all on foot.</p>
@@ -212,7 +222,7 @@
     <!-- ── daily shows ── -->
     <section class="shows" id="shows">
       <div class="shows-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> EVERY NIGHT, EVERY ZONE</p>
+        <p class="eyebrow"><span class="sec-num">05</span> EVERY NIGHT, EVERY ZONE</p>
         <h2 class="sec-title">DAILY SHOWS</h2>
         <p class="sec-sub">Parades, folkloric dance, storytellers and the Mesaharati — the park's zones
           come alive on a schedule from 8:30 PM until past 1 AM.</p>
@@ -232,7 +242,7 @@
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> THE PARK AFTER DARK</p>
+        <p class="eyebrow"><span class="sec-num">06</span> THE PARK AFTER DARK</p>
         <h2 class="sec-title">SEE IT FOR<br/>YOURSELF</h2>
         <p class="sec-sub">Fireworks over the lake, projections on the rock, cable cars over the
           Greek quarter — a night at BLVD World, as it looks.</p>
@@ -243,7 +253,7 @@
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -406,12 +416,46 @@
     <img class="arch-img" src="img/arch.png" alt="" />
   </div>
 
+  <!-- zone detail drawer: opened by both the globe pins and the park map -->
+      <aside class="zone-panel" id="zone-panel" aria-hidden="true">
+        <button class="zp-close" id="zp-close" aria-label="Close zone">✕</button>
+
+        <div class="zp-hero">
+          <img id="zp-img" alt="" />
+          <div class="zp-shade"></div>
+          <div class="zp-title">
+            <span class="zp-flag">BLVD WORLD · ZONE</span>
+            <h3 id="zp-name"></h3>
+            <p class="zp-blurb" id="zp-blurb"></p>
+          </div>
+        </div>
+
+        <div class="zp-thumbs" id="zp-thumbs"></div>
+
+        <div class="zp-stats">
+          <div class="zp-stat"><b id="zp-n-a">0</b><span>attractions</span></div>
+          <div class="zp-stat"><b id="zp-n-f">0</b><span>places to eat</span></div>
+          <div class="zp-stat"><b id="zp-n-r">0</b><span>rides</span></div>
+        </div>
+
+        <div class="zp-body">
+          <section class="zp-group g-a"><h4>ATTRACTIONS</h4><ul id="zp-attractions"></ul></section>
+          <section class="zp-group g-f"><h4>RESTAURANTS</h4><ul id="zp-food"></ul></section>
+          <section class="zp-group g-r"><h4>RIDES</h4><ul id="zp-rides"></ul></section>
+        </div>
+
+        <div class="zp-foot">
+          <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid zp-cta">BOOK THIS ZONE</a>
+        </div>
+      </aside>
+
   <!-- ══════════ CHROME (header etc.) ══════════ -->
   <!-- sticky booking bar: slides in once the hero is behind you -->
   <div id="sticky-cta" aria-hidden="true">
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
+      <a href="#parkmap" data-sec="parkmap">Map</a>
       <a href="#rides" data-sec="rides">Rides</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
@@ -427,14 +471,15 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=97"></script>
-  <script src="js/borders.js?v=97"></script>
-  <script src="js/scene.js?v=97"></script>
-  <script src="js/app.js?v=97"></script>
-  <script src="js/experiences.js?v=97"></script>
-  <script src="js/carousels.js?v=97"></script>
-  <script src="js/fan.js?v=97"></script>
-  <script src="js/gallery.js?v=97"></script>
-  <script type="module" src="js/globe.js?v=97"></script>
+  <script src="js/data.js?v=104"></script>
+  <script src="js/borders.js?v=104"></script>
+  <script src="js/scene.js?v=104"></script>
+  <script src="js/app.js?v=104"></script>
+  <script src="js/experiences.js?v=104"></script>
+  <script src="js/carousels.js?v=104"></script>
+  <script src="js/fan.js?v=104"></script>
+  <script src="js/gallery.js?v=104"></script>
+  <script src="js/parkmap.js?v=104"></script>
+  <script type="module" src="js/globe.js?v=104"></script>
 </body>
 </html>

@@ -126,6 +126,57 @@ window.WBK = {
     { name: "Africa",        lat: 0.0,   lon: 20.0,   blurb: "An immersive safari-scale Africa zone." , imgs: ["park8.jpg", "park6.jpg", "park1.jpg"], attractions: ["Immersive Safari Trail", "Savanna Drum Circle", "Tribal Art Market"], food: ["Safari Grill", "Baobab Juice Bar"], rides: ["Safari Jeep Adventure", "Jungle Rapids"] },
   ],
 
+  // ── park map pins ──────────────────────────────────────────────
+  // x / y are percentages of img/map/park-map.jpg, measured off the label
+  // pills on the official park map. `zone` links a pin to the matching
+  // WBK.zones entry so the map and the globe share one detail drawer;
+  // pins without one carry their own `extra` (the map has zones the globe
+  // doesn't, plus the two gates). `tone` mirrors the printed label colour.
+  mapPins: [
+    { label: "USA",          x: 14.3, y: 31.1, tone: "#f58220", zone: "United States" },
+    { label: "ASIA",         x: 25.0, y: 24.6, tone: "#e02b2b",
+      extra: { blurb: "A pan-Asian plaza wrapped around a sunken amphitheatre stage.",
+               imgs: ["park6.jpg", "japan.jpg", "china.jpg"] } },
+    { label: "JAPAN",        x: 29.2, y: 21.3, tone: "#f58220", zone: "Japan" },
+    { label: "MEXICO",       x: 33.7, y: 17.6, tone: "#ef5da8", zone: "Mexico" },
+    { label: "IRAN",         x: 40.5, y: 19.9, tone: "#8e1f1f", zone: "Iran" },
+    { label: "PIER",         x: 44.9, y: 16.4, tone: "#e5177c",
+      extra: { blurb: "The thrill waterfront — big rides lined up along the lagoon.",
+               imgs: ["park7.jpg", "park1.jpg", "park4.jpg"] } },
+    { label: "INDIA",        x: 55.1, y: 16.9, tone: "#c81e6e", zone: "India" },
+    { label: "KSA 2",        x: 60.2, y: 18.5, tone: "#5a6472", gate: true,
+      extra: { blurb: "North gate on Al Imam Saud Ibn Faysal Rd — ticketing, info desk and prayer rooms.",
+               imgs: ["park2.jpg"] } },
+    { label: "THE PLANET",   x: 70.5, y: 20.4, tone: "#f58220",
+      extra: { blurb: "A dome district: wraparound cinema, Meta World and the dolphinarium.",
+               imgs: ["park3.jpg", "park4.jpg", "park7.jpg"] } },
+    { label: "AFRICA",       x: 65.6, y: 29.0, tone: "#7d8a5a", zone: "Africa" },
+    { label: "EGYPT",        x: 79.4, y: 31.5, tone: "#f58220", zone: "Egypt" },
+    { label: "SPAIN",        x: 36.7, y: 30.7, tone: "#e02b2b", zone: "Spain" },
+    { label: "TURKEY",       x: 10.9, y: 40.4, tone: "#f58220", zone: "Türkiye" },
+    { label: "ITALY",        x: 55.6, y: 39.6, tone: "#c81e6e", zone: "Italy" },
+    { label: "FRANCE",       x: 33.7, y: 43.1, tone: "#8e4fd0", zone: "France" },
+    { label: "KUWAIT",       x: 85.4, y: 43.1, tone: "#7fa653", zone: "Kuwait" },
+    { label: "GREECE",       x: 75.7, y: 46.5, tone: "#e02b2b", zone: "Greece" },
+    { label: "INDONESIA",    x: 48.2, y: 46.0, tone: "#e02b2b", zone: "Indonesia" },
+    { label: "KOREA",        x: 39.4, y: 50.3, tone: "#1f3f7a", zone: "South Korea" },
+    { label: "AMAZONIA",     x: 32.4, y: 56.6, tone: "#2fa84f",
+      extra: { blurb: "The jungle mountain that carries the BLVD WORLD sign — home of Amazonia Awakens.",
+               imgs: ["park8.jpg", "park1.jpg", "park6.jpg"] } },
+    { label: "MOROCCO",      x: 60.5, y: 57.7, tone: "#e5177c", zone: "Morocco" },
+    { label: "WARZONE",      x: 84.0, y: 60.6, tone: "#e5177c",
+      extra: { blurb: "A fenced combat arena of bunkers, watchtowers and battle games.",
+               imgs: ["park2.jpg", "park4.jpg", "park5.jpg"] } },
+    { label: "SAUDI ARABIA", x: 20.5, y: 64.6, tone: "#2e8b46", zone: "Saudi Arabia" },
+    { label: "CHINA",        x: 37.9, y: 63.7, tone: "#f58220", zone: "China" },
+    { label: "KSA 1",        x: 10.6, y: 65.2, tone: "#5a6472", gate: true,
+      extra: { blurb: "West gate beside BLVD City — ticketing, ATMs and guest services.",
+               imgs: ["park2.jpg"] } },
+    { label: "LEVANT",       x: 57.1, y: 74.9, tone: "#8e4fd0",
+      extra: { blurb: "Old-city stone arches, courtyards and Levantine kitchens.",
+               imgs: ["park5.jpg", "park3.jpg", "park2.jpg"] } },
+  ],
+
   // premium experiences — every ticket includes park entry
   experiences: [
     { img: "exp/snow.jpg",      title: "Skiing School",     zone: "Courchevel", price: 260, blurb: "Real snow, real instructors — learn to ski inside the dome." },

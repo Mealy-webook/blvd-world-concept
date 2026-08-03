@@ -465,6 +465,121 @@ body.chrome-on
 .eat-price small { font-size: 8.5px; font-weight: 800; opacity: .72; letter-spacing: .1em; }
 .eat-card:hover .eat-price { transform: translateY(-3px) scale(1.04); }
 
+/* ═══════════════ PARK MAP ═══════════════ */
+.parkmap {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 11vh, 110px) 6vw clamp(60px, 11vh, 110px);
+  display: grid; gap: 40px; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.pm-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(760px, 100%); }
+.pm-wrap { width: 100%; max-width: min(1240px, 100%); display: grid; gap: 16px; justify-items: center; }
+
+/* filter chips */
+.pm-tools { display: flex; justify-content: center; width: 100%; }
+.pm-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.pm-chip {
+  font-family: var(--disp); font-size: 10.5px; letter-spacing: .16em; color: var(--dim);
+  padding: 8px 15px; border-radius: 999px;
+  background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .16);
+  transition: color .2s, background .2s, border-color .2s, transform .2s;
+}
+.pm-chip:hover { color: #eaf2ff; background: rgba(124, 196, 255, .12); transform: translateY(-1px); }
+.pm-chip.on {
+  color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  border-color: transparent; box-shadow: 0 0 20px rgba(255, 194, 77, .45);
+}
+
+/* the frame crops the artwork; the stage inside it is what pans and zooms */
+.pm-frame {
+  position: relative; width: 100%; aspect-ratio: 3855 / 2110; overflow: hidden;
+  border-radius: 20px; background: #0a1b3a;
+  border: 1px solid rgba(124, 196, 255, .18);
+  box-shadow: 0 30px 70px rgba(2, 4, 14, .55);
+  cursor: grab; touch-action: pan-y pinch-zoom;
+}
+.pm-frame.zoomed { cursor: grab; }
+.pm-frame.dragging { cursor: grabbing; }
+.pm-stage {
+  position: absolute; inset: 0; transform-origin: 50% 50%;
+  transition: transform .38s cubic-bezier(.2,.8,.25,1);
+}
+.pm-frame.dragging .pm-stage { transition: none; }
+.pm-img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; }
+.pm-pins { position: absolute; inset: 0; }
+
+/* pins sit in the transformed layer, so only their contents are counter-scaled */
+.pm-pin {
+  position: absolute; left: var(--x); top: var(--y); width: 0; height: 0;
+  z-index: 3; transition: opacity .3s;
+}
+.pm-pin > * { transform: scale(var(--inv, 1)); transform-origin: 50% 50%; }
+.pm-dot {
+  /* the artwork already prints the zone name here, so the dot sits just below
+     the label pill rather than on top of the word */
+  position: absolute; left: -7px; top: 11px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--tone, #ffc24d); border: 2px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .6), 0 0 0 0 color-mix(in srgb, var(--tone, #ffc24d) 60%, transparent);
+  animation: pmPulse 2.6s ease-out infinite;
+}
+@keyframes pmPulse {
+  0%   { box-shadow: 0 2px 10px rgba(0,0,0,.6), 0 0 0 0 rgba(255, 255, 255, .55); }
+  70%  { box-shadow: 0 2px 10px rgba(0,0,0,.6), 0 0 0 13px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 2px 10px rgba(0,0,0,.6), 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+.pm-pin.is-gate .pm-dot { border-radius: 4px; animation: none; }
+.pm-tag {
+  position: absolute; left: 0; top: 30px; transform: translateX(-50%) scale(var(--inv, 1));
+  font-family: var(--disp); font-size: 10px; letter-spacing: .14em; white-space: nowrap;
+  color: #eaf2ff; padding: 5px 10px; border-radius: 8px;
+  background: rgba(6, 10, 30, .88); border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .5);
+  opacity: 0; pointer-events: none; transition: opacity .25s, top .25s;
+}
+.pm-pin:hover .pm-tag, .pm-pin:focus-visible .pm-tag, .pm-pin.on .pm-tag { opacity: 1; top: 34px; }
+.pm-pin:hover .pm-dot { transform: scale(calc(var(--inv, 1) * 1.35)); }
+.pm-pin.on .pm-dot {
+  background: #fff; border-color: var(--tone, #ffc24d);
+  transform: scale(calc(var(--inv, 1) * 1.5)); animation: none;
+}
+.pm-pin.muted { opacity: .22; pointer-events: none; }
+
+/* frame furniture */
+.pm-tick { position: absolute; width: 18px; height: 18px; pointer-events: none; z-index: 4; opacity: .5; }
+.pm-tick::before, .pm-tick::after { content: ''; position: absolute; background: rgba(255, 217, 138, .8); }
+.pm-tick::before { width: 100%; height: 1.5px; }
+.pm-tick::after { width: 1.5px; height: 100%; }
+.pm-tick.tl { top: 12px; left: 12px; }
+.pm-tick.tr { top: 12px; right: 12px; }
+.pm-tick.tr::before, .pm-tick.br::before { right: 0; }
+.pm-tick.tr::after, .pm-tick.br::after { right: 0; }
+.pm-tick.bl { bottom: 12px; left: 12px; }
+.pm-tick.bl::before, .pm-tick.br::before { bottom: 0; }
+.pm-tick.bl::after, .pm-tick.br::after { bottom: 0; }
+.pm-tick.br { bottom: 12px; right: 12px; }
+.pm-hint {
+  position: absolute; z-index: 5; left: 50%; bottom: 14px; transform: translateX(-50%);
+  font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #cfe4ff;
+  padding: 7px 14px; border-radius: 999px; white-space: nowrap;
+  background: rgba(6, 10, 30, .74); border: 1px solid rgba(124, 196, 255, .28);
+  backdrop-filter: blur(6px); transition: opacity .4s, transform .4s;
+}
+.pm-hint.gone { opacity: 0; transform: translate(-50%, 8px); }
+.pm-zoom { position: absolute; z-index: 5; right: 14px; top: 14px; display: grid; gap: 8px; }
+.pm-zoom button {
+  width: 36px; height: 36px; border-radius: 10px; font-size: 17px; line-height: 1; color: #cfe4ff;
+  display: grid; place-items: center;
+  background: rgba(6, 10, 30, .78); border: 1px solid rgba(124, 196, 255, .3);
+  backdrop-filter: blur(6px); transition: background .2s, box-shadow .2s, transform .2s, opacity .2s;
+}
+.pm-zoom button:hover { background: rgba(6, 10, 30, .95); box-shadow: 0 0 16px rgba(77, 166, 255, .5); transform: scale(1.06); }
+.pm-zoom button:disabled { opacity: .3; pointer-events: none; }
+.pm-credit { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5b6a94; }
+@media (max-width: 700px) {
+  .pm-frame { border-radius: 14px; }
+  .pm-hint { font-size: 9px; letter-spacing: .06em; }
+  .pm-zoom button { width: 32px; height: 32px; }
+}
+
 /* ═══════════════ RIDES: FANNED DECK ═══════════════ */
 /* the stage owns the height; every card is absolutely centred inside it and
    moved only by the transform the fan writes (see js/fan.js) */
@@ -990,8 +1105,10 @@ body.route-experiences
 }
 /* ── zone detail drawer ── */
 .zone-panel {
-  /* above the sticky booking bar (120) so the drawer owns the right edge */
-  position: absolute; top: 0; right: 0; bottom: 0; z-index: 130;
+  /* above the sticky booking bar (120) so the drawer owns the right edge.
+     Fixed, not absolute: the globe pins and the park map's pins both open it,
+     and the map sits a section further down the page. */
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 130;
   width: min(430px, 92vw); display: flex; flex-direction: column;
   background:
     radial-gradient(120% 40% at 100% 0%, rgba(255, 194, 77, .1), transparent 60%),

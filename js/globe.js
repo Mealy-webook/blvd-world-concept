@@ -224,8 +224,10 @@ function buildGallery(imgs) {
   });
 }
 
-function openZone(i) {
-  const z = WBK.zones[i];
+// `ref` is an index into WBK.zones (the globe's pins) or a zone-shaped
+// object — the park map builds those for zones the globe doesn't carry.
+function openZone(ref) {
+  const z = typeof ref === "number" ? WBK.zones[ref] : ref;
   if (!z) return;
   frozen = true;                 // stop the idle spin while reading
   vx = 0;
@@ -238,6 +240,7 @@ function openZone(i) {
   zpEls.nF.textContent = (z.food || []).length;
   zpEls.nR.textContent = (z.rides || []).length;
   buildGallery(z.imgs || []);
+  focusZone(z);                  // fly the camera onto the zone
   panel.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
 }
@@ -245,6 +248,7 @@ function openZone(i) {
 function closeZone() {
   frozen = false;                // hand the spin back
   vx = IDLE_SPIN;
+  resetCamera();                 // and pull back out to the whole globe
   panel.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
 }
@@ -257,6 +261,7 @@ addEventListener("pointerdown", (e) => {
   if (!panel.classList.contains("open")) return;
   if (panel.contains(e.target)) return;
   if (e.target === el && ray && hitsZone(e)) return; // let pin-to-pin switching through
+  if (e.target.closest?.(".pm-pin")) return;         // ditto for the park map's pins
   closeZone();
 }, true);
 
@@ -265,6 +270,41 @@ function hitsZone(e) {
   mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(mouse, camera);
   return ray.intersectObjects(zoneGroup.children.filter((c) => c.geometry === zoneHeadGeo)).length > 0;
+}
+
+// ── camera moves: selecting a zone flies in on it, closing pulls back ──
+let baseDist = 9;                  // the whole-globe framing, set by size()
+let distTarget = baseDist;         // where the camera is easing towards
+let shiftTarget = 0;               // slide left so the drawer doesn't cover it
+let aimX = null, aimY = null;      // rotation targets while a zone is held
+
+// the rotation that brings a lat/lon round to face the camera
+function aimAt(lat, lon) {
+  const p = latLon(lat, lon, 2.6);
+  const flat = Math.hypot(p.x, p.z);
+  aimY = Math.atan2(-p.x, p.z);
+  aimX = Math.max(-1.1, Math.min(1.1, Math.atan2(p.y, flat)));
+}
+
+const ZOOM = 0.78;                 // close enough to read a region, horizon kept
+
+function focusZone(z) {
+  const named = (WBK.zones || []).find((n) => n.name === z.name);
+  const src = typeof z.lat === "number" ? z : named;
+  if (!src || typeof src.lat !== "number") return;   // map-only zone, no coords
+  aimAt(src.lat, src.lon);
+  distTarget = baseDist * ZOOM;
+  // the drawer covers the right edge, so slide the globe out from under it by
+  // half of what it hides — measured, not guessed, so it holds on any width
+  const hidden = Math.min(430, innerWidth * 0.92) / Math.max(1, innerWidth);
+  const halfW = distTarget * Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.aspect;
+  shiftTarget = -halfW * hidden;
+}
+
+function resetCamera() {
+  aimX = aimY = null;
+  distTarget = baseDist;
+  shiftTarget = 0;
 }
 
 function size() {
@@ -278,7 +318,10 @@ function size() {
   const halfFov = (camera.fov / 2) * (Math.PI / 180);
   const dV = FIT / Math.tan(halfFov);
   const z = Math.max(dV, dV / camera.aspect);
-  camera.position.set(0, 0, z);
+  const held = distTarget !== baseDist;              // keep a zoom through resize
+  baseDist = z;
+  distTarget = held ? baseDist * ZOOM : baseDist;
+  if (!held) camera.position.z = z;
   camera.lookAt(0, 0, 0);
   camera.updateProjectionMatrix();
 }
@@ -294,6 +337,21 @@ function tick() {
     rotY += vx; vx *= 0.985;
     if (Math.abs(vx) < IDLE_SPIN) vx = Math.sign(vx || 1) * IDLE_SPIN;
   }
+
+  // ease towards the held zone (or back to the resting view once released);
+  // dragging always wins, so a reader can pull the globe off its mark
+  if (aimY !== null && !dragging) {
+    let d = (aimY - rotY) % (Math.PI * 2);           // take the short way round
+    if (d > Math.PI) d -= Math.PI * 2;
+    if (d < -Math.PI) d += Math.PI * 2;
+    rotY += d * 0.085;
+    rotX += (aimX - rotX) * 0.085;
+  } else if (aimY === null && !dragging && Math.abs(rotX) > 0.001) {
+    rotX += (0 - rotX) * 0.06;                       // settle the tilt back
+  }
+  camera.position.z += (distTarget - camera.position.z) * 0.075;
+  root.position.x += (shiftTarget - root.position.x) * 0.075;
+
   globe.rotation.set(rotX, rotY, 0);
   zoneGroup.children.forEach((c) => {
     if (c.userData.pulse !== undefined) {
@@ -309,4 +367,6 @@ tick();
 window.WBK_GLOBE = {
   refresh: buildZones,
   wake: () => { size(); placeLabels(); },
+  openZone,
+  closeZone,
 };
