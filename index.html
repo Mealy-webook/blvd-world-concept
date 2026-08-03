@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=71" />
+<link rel="stylesheet" href="css/main.css?v=75" />
 </head>
 <body class="typo-body">
 
@@ -104,6 +104,7 @@
       </div>
 
       <div class="landmarks" id="landmarks"></div>
+      <div class="fold-bloom" id="fold-bloom" aria-hidden="true"></div>
       <div class="lm-scrim"></div>
       <div class="props" id="props"></div>
       <div class="hero-ui">
@@ -128,7 +129,7 @@
     <!-- ── globe: letters from the world ── -->
     <section class="globe-sec" id="globe-sec">
       <canvas id="stars-gallery" class="stars"></canvas>
-      <div id="globe-holder" class="reveal"></div>
+      <div id="globe-holder"></div>
       <div class="gallery-head reveal">
         <p class="eyebrow"><span class="sec-num">01</span> DRAG TO EXPLORE</p>
       </div>
@@ -248,6 +249,43 @@
             <p>Chrome diners, milkshakes and a jukebox that never stops.</p>
           </div>
         </article>
+      </div>
+    </section>
+
+    <!-- ── restaurants ── -->
+    <section class="eats" id="eats">
+      <div class="eats-head reveal">
+        <p class="eyebrow"><span class="sec-num">03</span> EAT YOUR WAY AROUND</p>
+        <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
+        <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
+          tagines to tacos — all in one night, all on foot.</p>
+      </div>
+      <div class="eat-grid" id="eat-grid"></div>
+    </section>
+
+    <!-- ── daily shows ── -->
+    <section class="shows" id="shows">
+      <div class="shows-head reveal">
+        <p class="eyebrow"><span class="sec-num">04</span> EVERY NIGHT, EVERY ZONE</p>
+        <h2 class="sec-title">DAILY SHOWS</h2>
+        <p class="sec-sub">Parades, folkloric dance, storytellers and the Mesaharati — the park's zones
+          come alive on a schedule from 8:30 PM until past 1 AM.</p>
+      </div>
+      <div class="show-tabs" id="show-tabs" role="tablist"></div>
+      <div class="show-rail" id="show-rail"></div>
+      <p class="show-note reveal">Ramadan schedule · times may vary by night</p>
+    </section>
+
+    <!-- ── FAQs ── -->
+    <section class="faqs" id="faqs">
+      <div class="faq-head reveal">
+        <p class="eyebrow"><span class="sec-num">05</span> BEFORE YOU GO</p>
+        <h2 class="sec-title">GOOD TO KNOW</h2>
+      </div>
+      <div class="faq-list" id="faq-list"></div>
+      <div class="faq-more reveal">
+        <p>Still have a question?</p>
+        <a href="https://webook.com" target="_blank" rel="noopener" class="pill ghost">VISIT THE HELP CENTRE</a>
       </div>
     </section>
 
@@ -417,11 +455,11 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=71"></script>
-  <script src="js/borders.js?v=71"></script>
-  <script src="js/scene.js?v=71"></script>
-  <script src="js/app.js?v=71"></script>
-  <script src="js/experiences.js?v=71"></script>
-  <script type="module" src="js/globe.js?v=71"></script>
+  <script src="js/data.js?v=75"></script>
+  <script src="js/borders.js?v=75"></script>
+  <script src="js/scene.js?v=75"></script>
+  <script src="js/app.js?v=75"></script>
+  <script src="js/experiences.js?v=75"></script>
+  <script type="module" src="js/globe.js?v=75"></script>
 </body>
 </html>

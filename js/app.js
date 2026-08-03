@@ -318,5 +318,75 @@
   }
 
 
+  // ── restaurants ─────────────────────────────────────────────
+  const eatGrid = $("#eat-grid");
+  if (eatGrid) {
+    eatGrid.innerHTML = (WBK.restaurants || []).map((r) => `
+      <article class="eat-card reveal">
+        <img src="img/zones/${r.img}" alt="${r.name}" loading="lazy">
+        <div class="eat-body">
+          <span class="eat-cuisine">${r.cuisine}</span>
+          <h3>${r.name}</h3>
+          <p>${r.desc}</p>
+          <span class="eat-zone">${r.zone} zone</span>
+        </div>
+      </article>`).join("");
+  }
+
+  // ── daily shows: zone tabs + schedule rail ──────────────────
+  const showRail = $("#show-rail");
+  const showTabs = $("#show-tabs");
+  if (showRail && showTabs) {
+    const ZONES = WBK.showsByZone || [];
+
+    function renderShows(idx) {
+      const z = ZONES[idx];
+      if (!z) return;
+      showRail.innerHTML = z.items.map((s) => `
+        <article class="show-row">
+          <p class="show-time">${s.t}<small>${s.ap}</small></p>
+          <div class="show-body"><h3>${s.n}</h3><p>${s.m} minutes</p></div>
+          <span class="show-where">${z.zone}</span>
+        </article>`).join("");
+      $$("button", showTabs).forEach((b, i) => {
+        b.classList.toggle("on", i === idx);
+        b.setAttribute("aria-selected", i === idx ? "true" : "false");
+      });
+    }
+
+    showTabs.innerHTML = ZONES.map((z, i) =>
+      `<button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? "on" : ""}">${z.zone}</button>`
+    ).join("");
+    $$("button", showTabs).forEach((b, i) => b.addEventListener("click", () => renderShows(i)));
+    renderShows(0);
+  }
+
+  const faqList = $("#faq-list");
+  if (faqList) {
+    faqList.innerHTML = (WBK.faqs || []).map((f, i) => `
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-${i}">
+          <span>${f.q}</span><i class="faq-ic" aria-hidden="true"></i>
+        </button>
+        <div class="faq-a" id="faq-a-${i}"><div><p>${f.a}</p></div></div>
+      </div>`).join("");
+
+    // one open at a time
+    $$(".faq-q", faqList).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".faq-item");
+        const wasOpen = item.classList.contains("open");
+        $$(".faq-item", faqList).forEach((it) => {
+          it.classList.remove("open");
+          $(".faq-q", it).setAttribute("aria-expanded", "false");
+        });
+        if (!wasOpen) {
+          item.classList.add("open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+
   function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 })();

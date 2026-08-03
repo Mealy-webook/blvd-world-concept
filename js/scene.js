@@ -129,7 +129,8 @@
       img.alt = "";
       el.appendChild(img);
       lmHolder.appendChild(el);
-      lmEls.push({ el, depth: l.depth });
+      // centre as a fraction of the viewport, used to aim the fold
+      lmEls.push({ el, depth: l.depth, cx: (l.left + l.w / 2) / 100 });
     });
   }
 
@@ -198,7 +199,17 @@
         p.el.style.transform = `translate3d(${cx * -10 * p.depth}px, ${cy * -7 * p.depth}px, 0)`;
       }
       for (const l of lmEls) {
-        l.el.style.transform = `translate3d(${cx * -12 * l.depth}px, ${cy * -6 * l.depth}px, 0) scale(1.04)`;
+        // mouse drift, plus the fold: each landmark is drawn down and inward
+        // toward the planet rising from below, nearer layers going first
+        const f = Math.min(1, Math.max(0, (scrollP - 0.06 * l.depth) / 0.7));
+        const e = f * f * (3 - 2 * f);                    // smoothstep
+        const px = cx * -12 * l.depth + (0.5 - l.cx) * innerWidth * e * 0.72;
+        const py = cy * -6 * l.depth + innerHeight * e * 0.42;
+        const sc = 1.04 - e * 0.78;
+        const rot = (0.5 - l.cx) * -26 * e;
+        l.el.style.transform =
+          `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+        l.el.style.opacity = (1 - Math.pow(e, 1.7)).toFixed(3);
       }
       requestAnimationFrame(par);
     })();
@@ -215,6 +226,8 @@
     const cue = document.querySelector(".scroll-cue");
     const rail = document.querySelector("#scroll-rail i");
     const stickyBar = document.getElementById("sticky-cta");
+    const bloom = document.getElementById("fold-bloom");
+    const globeHolder = document.getElementById("globe-holder");
     const cards = [...document.querySelectorAll(".zc-media img")];
     let ticking = false;
 
@@ -224,12 +237,29 @@
       const p = Math.min(y / vh, 1); // 0 → 1 across the first viewport
       scrollP = p; // the parallax loop composes this into the hero transform
 
-      // the scene drifts up and dissolves, so the next section can feather
-      // over it instead of arriving as a hard-edged panel
+      // the hero holds its ground while the landmarks fold away, then clears
       if (heroScene) {
         heroScene.style.setProperty("--scenelift", `${-p * 40}px`);
-        const fade = Math.min(1, Math.max(0, (p - 0.18) / 0.62));
-        heroScene.style.opacity = String(1 - fade * fade); // ease-in, holds longer
+        const fade = Math.min(1, Math.max(0, (p - 0.62) / 0.38));
+        heroScene.style.opacity = String(1 - fade * fade);
+      }
+
+      // light swells from below as the world is drawn in, peaking just before
+      // the planet takes over, then falling away
+      if (bloom) {
+        const b = Math.min(1, Math.max(0, (p - 0.1) / 0.62));
+        const peak = Math.sin(b * Math.PI);              // 0 → 1 → 0
+        bloom.style.setProperty("--bloom-o", (peak * 0.85).toFixed(3));
+        bloom.style.setProperty("--bloom-s", (0.55 + b * 0.85).toFixed(3));
+      }
+
+      // the planet swells up into frame as the fold completes
+      if (globeHolder) {
+        const g = Math.min(1, Math.max(0, (p - 0.24) / 0.76));
+        const ge = g * g * (3 - 2 * g);
+        globeHolder.style.setProperty("--globe-y", `${((1 - ge) * 26).toFixed(1)}vh`);
+        globeHolder.style.setProperty("--globe-s", (0.62 + ge * 0.38).toFixed(3));
+        globeHolder.style.setProperty("--globe-o", ge.toFixed(3));
       }
       if (cue) cue.style.opacity = String(1 - Math.min(p * 3, 1));
 
