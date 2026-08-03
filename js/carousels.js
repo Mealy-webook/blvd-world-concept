@@ -100,7 +100,6 @@
           <span class="eat-price">from <b>SAR ${r.from}</b><small>per person</small></span>
         </div>
         <div class="eat-text">
-          <span class="eat-cuisine">${r.cuisine}</span>
           <h3>${r.name}</h3>
           <p>${r.desc}</p>
           <span class="eat-zone">${r.zone} zone</span>
