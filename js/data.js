@@ -11,6 +11,29 @@ window.WBK = {
 
   stickers: ["💜", "⭐", "🎟️", "🎆", "🌙", "🎶"],
 
+  // rides, from the official park sheet
+  rides: [
+    "Wave Swinger", "Turbo 360", "Drop and Twist",
+    "Carousel", "Sky Loop", "Enjoy The Flight",
+    "Cable Cars", "Taxi Mania", "Convoy Figure 8",
+    "View Tower", "Super Fly", "Amazonia Awakens",
+    "Dragons Fury", "Air Max",
+  ],
+
+  // park experiences grouped by zone, from the same sheet
+  parkExperiences: [
+    { zone: "Africa",     items: ["Lion Exp", "Giraffe Exp", "Bird Nest Exp", "Lemur Catta Exp", "Forest Exp", "Tours Exp"] },
+    { zone: "Warzone",    items: ["Battle Dome", "Line of Fire", "Shotgun Range", "Topshot", "Battle Cart", "War Castle"] },
+    { zone: "The Planet", items: ["The Dome Cinema", "Meta World", "Dolphinarium", "Swimming with Dolphins"] },
+    { zone: "Egypt",      items: ["Escape Room: Secret of the Pharaoh", "The Lost Museum", "PUBG"] },
+    { zone: "Italy",      items: ["Midnight Manor"] },
+    { zone: "Mexico",     items: ["Doll Maker"] },
+    { zone: "Courchevel", items: ["Skiing School"] },
+    { zone: "Pier",       items: ["Coco Melon Exp"] },
+    { zone: "T\u00fcrkiye",  items: ["Oasis"] },
+    { zone: "Iran",       items: ["Pac-Man"] },
+  ],
+
   // dining highlights, one per zone
   restaurants: [
     { name: "Najd Grill House",      zone: "Saudi Arabia", cuisine: "SAUDI",     img: "saudi.jpg",  desc: "Kabsa, mandi and mixed grills in a Najdi mud-brick courtyard." },
@@ -94,13 +117,16 @@ window.WBK = {
 
   // premium experiences — every ticket includes park entry
   experiences: [
-    { img: "skyflyer.jpg",  title: "Sky Flyer",          tag: "THRILL RIDE",  price: 150, rating: 4.8, blurb: "Swing forty metres above the boulevard." },
-    { img: "snow.jpg",      title: "Snow World",         tag: "ARCTIC DOME",  price: 220, rating: 4.9, blurb: "A sub-zero village of ice and igloos." },
-    { img: "gondola.jpg",   title: "Grand Canal Ride",   tag: "VENICE",       price: 180, rating: 4.7, blurb: "A gondola glide through lantern-lit canals." },
-    { img: "chinatown.jpg", title: "Chinatown Feast",    tag: "DINING",       price: 260, rating: 4.6, blurb: "Seven courses beneath the red pagoda." },
-    { img: "diner.jpg",     title: "Route 66 Diner",     tag: "AMERICANA",    price: 130, rating: 4.5, blurb: "Milkshakes, chrome booths, endless jukebox." },
-    { img: "japan.jpg",     title: "Tokyo Arcade",       tag: "JAPAN STREET", price: 190, rating: 4.8, blurb: "Retro arcades and a five-storey robot." },
-    { img: "pyramid.jpg",   title: "Pyramid Light Show", tag: "EGYPT",        price: 210, rating: 4.9, blurb: "A light spectacle across the great pyramid." },
+    { img: "exp/snow.jpg",      title: "Skiing School",     zone: "Courchevel", price: 260, blurb: "Real snow, real instructors — learn to ski inside the dome." },
+    { img: "exp/pyramid.jpg",   title: "Escape Room",        zone: "Egypt",      price: 180, blurb: "Secret of the Pharaoh: sixty minutes to break out of the tomb." },
+    { img: "zones/park4.jpg",     title: "Dolphinarium",       zone: "The Planet", price: 220, blurb: "A full dolphin show under the dome, twice nightly." },
+    { img: "zones/park7.jpg",     title: "Swimming with Dolphins", zone: "The Planet", price: 480, blurb: "Get in the water and meet them up close." },
+    { img: "zones/park2.jpg",     title: "Battle Dome",        zone: "Warzone",    price: 150, blurb: "Team laser combat in a floodlit arena." },
+    { img: "exp/gondola.jpg",   title: "Midnight Manor",     zone: "Italy",      price: 140, blurb: "A haunted walk-through where the house pushes back." },
+    { img: "zones/park3.jpg",     title: "The Dome Cinema",    zone: "The Planet", price: 120, blurb: "Films projected across a full wraparound dome." },
+    { img: "zones/park1.jpg",     title: "Lion Experience",    zone: "Africa",     price: 200, blurb: "Come face to face with the pride on the safari trail." },
+    { img: "zones/park5.jpg",     title: "Pac-Man",            zone: "Iran",       price: 110, blurb: "Step inside the maze — you are the yellow one." },
+    { img: "zones/egypt.jpg",     title: "PUBG",               zone: "Egypt",      price: 160, blurb: "The battle royale, staged for real among the ruins." },
   ],
 
   letters: [

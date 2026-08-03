@@ -21,7 +21,7 @@
     const el = document.createElement("article");
     el.className = "xp-card";
     el.innerHTML =
-      `<img src="img/exp/${x.img}" alt="${x.title}" draggable="false" loading="lazy">` +
+      `<img src="img/${x.img}" alt="${x.title}" draggable="false" loading="lazy">` +
       `<div class="xp-cap"><b>${x.title}</b><span>SAR ${x.price}</span></div>`;
     el.addEventListener("click", () => { if (!moved) goTo(i); });
     track.appendChild(el);

@@ -356,6 +356,91 @@ body.chrome-on
 }
 @keyframes cueDrop { 0%, 100% { transform: translateY(-5px); opacity: .4; } 50% { transform: translateY(5px); opacity: 1; } }
 
+/* ═══════════════ RIDES — kinetic marquee ═══════════════ */
+.rides {
+  position: relative; z-index: 11; overflow: hidden;
+  padding: clamp(60px, 12vh, 120px) 0 clamp(60px, 12vh, 120px);
+  display: grid; gap: 40px; justify-items: center;
+  background: linear-gradient(180deg, #140a26 0%, #180d2e 50%, #140a26 100%);
+}
+.rides-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); padding: 0 6vw; }
+.ride-marquee { width: 100%; display: grid; gap: 14px; }
+.rm-row { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.rm-row.a { animation: rmLeft 32s linear infinite; }
+.rm-row.b { animation: rmRight 38s linear infinite; }
+.rides:hover .rm-row { animation-play-state: paused; }
+@keyframes rmLeft  { to { transform: translateX(-50%); } }
+@keyframes rmRight { from { transform: translateX(-50%); } }
+.rm-chip {
+  flex: none; display: flex; align-items: center; gap: 12px;
+  font-family: var(--disp); font-weight: 400; font-size: clamp(20px, 2.6vw, 34px);
+  letter-spacing: .02em; padding: 14px 26px; border-radius: 999px; white-space: nowrap;
+  color: #cfe4ff; background: rgba(124, 196, 255, .06);
+  border: 1px solid rgba(124, 196, 255, .18);
+  transition: color .25s, background .25s, border-color .25s, transform .25s, box-shadow .25s;
+}
+.rm-chip::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--cyan); box-shadow: 0 0 10px var(--cyan); opacity: .7;
+}
+.rm-chip:hover {
+  color: #fff; background: rgba(255, 194, 77, .1); border-color: rgba(255, 194, 77, .6);
+  transform: translateY(-3px) scale(1.03); box-shadow: 0 0 26px rgba(255, 194, 77, .28);
+}
+.rm-chip:hover::before { background: var(--gold); box-shadow: 0 0 12px var(--gold); opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .rm-row { animation: none !important; } }
+
+/* ═══════════════ EXPERIENCES — flip cards ═══════════════ */
+.pex {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 12vh, 120px) 6vw clamp(60px, 12vh, 120px);
+  display: grid; gap: 44px; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  background: linear-gradient(180deg, #140a26 0%, #110a25 50%, #140a26 100%);
+}
+.pex-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
+.pex-grid {
+  width: 100%; max-width: min(1180px, 100%);
+  display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+}
+.pex-card {
+  position: relative; min-height: 210px; perspective: 1000px; cursor: pointer;
+  background: none; border: 0; padding: 0; text-align: left; font-family: inherit;
+}
+.pex-inner {
+  position: relative; width: 100%; height: 100%; min-height: inherit;
+  transform-style: preserve-3d; transition: transform .7s cubic-bezier(.2,.8,.25,1);
+}
+.pex-card.flip .pex-inner, .pex-card:hover .pex-inner { transform: rotateY(180deg); }
+.pex-face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px;
+  padding: 20px; display: grid; align-content: space-between;
+  border: 1px solid rgba(124, 196, 255, .18);
+  background: linear-gradient(160deg, rgba(20, 28, 72, .8), rgba(10, 14, 40, .92));
+}
+.pex-front .pex-n {
+  font-family: var(--disp); font-weight: 400; font-size: 34px; line-height: 1; color: var(--cyan);
+  text-shadow: 0 0 18px rgba(53, 224, 255, .5);
+}
+.pex-front h3 {
+  font-family: var(--disp); font-weight: 400; font-size: clamp(19px, 2vw, 25px); letter-spacing: .02em;
+  background: linear-gradient(180deg, #fff, #bfe0ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pex-hint { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #5b6a94; }
+.pex-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, rgba(26, 20, 60, .95), rgba(10, 8, 28, .96));
+  border-color: rgba(255, 194, 77, .35); align-content: start; gap: 10px;
+}
+.pex-back h4 {
+  font-family: var(--disp); font-weight: 400; font-size: 11px; letter-spacing: .2em; color: var(--gold);
+  padding-bottom: 8px; border-bottom: 1px solid rgba(255, 194, 77, .22);
+}
+.pex-back ul { list-style: none; display: grid; gap: 5px; }
+.pex-back li {
+  display: flex; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 600; color: #dfe9ff; line-height: 1.35;
+}
+.pex-back li::before { content: '◆'; color: rgba(255, 194, 77, .8); font-size: 7px; flex: none; }
+
 /* ═══════════════ RESTAURANTS ═══════════════ */
 .eats {
   position: relative; z-index: 11;
