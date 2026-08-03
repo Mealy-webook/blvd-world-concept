@@ -53,6 +53,16 @@ body.route-home #scroll-rail { opacity: 1; }
   margin-right: .7em; opacity: .85;
 }
 
+/* one heading voice for every section: display face, sky-to-blue wash */
+.sec-title {
+  font-family: var(--disp); font-weight: 400;
+  font-size: clamp(34px, 5.4vw, 76px); line-height: .98; letter-spacing: .01em;
+  background: linear-gradient(180deg, #f2faff 0%, #bfe0ff 40%, #55a0f8 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 22px rgba(77, 166, 255, .35));
+}
+.sec-sub { font-size: clamp(15px, 1.4vw, 18px); font-weight: 600; color: var(--dim); line-height: 1.55; }
+
 /* ═══════════════ VIEWS ═══════════════ */
 .view {
   position: fixed; inset: 0; opacity: 0; pointer-events: none;
