@@ -392,29 +392,51 @@ body.chrome-on
 @media (max-width: 700px) { .rail-btn { display: none; } }
 
 /* card shell shared by the photo rails */
+.rail { perspective: 1100px; }
 .ride-card, .eat-card {
-  position: relative; width: clamp(220px, 26vw, 280px); border-radius: 16px; overflow: hidden;
+  position: relative; width: clamp(230px, 27vw, 290px); border-radius: 18px; overflow: hidden;
   background: linear-gradient(165deg, rgba(20, 28, 72, .7), rgba(10, 14, 40, .9));
   border: 1px solid rgba(124, 196, 255, .16);
-  transition: transform .3s cubic-bezier(.2,.8,.25,1), border-color .3s, box-shadow .3s;
+  transform-style: preserve-3d;
+  /* the tilt props are written by the pointer, so only the ease lives here */
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform .34s cubic-bezier(.2,.8,.25,1), border-color .3s, box-shadow .3s;
+}
+/* entrance: cards deal themselves in, in sequence */
+.ride-card, .eat-card { opacity: 0; }
+.ride-card.pop, .eat-card.pop {
+  animation: cardDeal .62s cubic-bezier(.2,.9,.25,1) var(--pop-d, 0ms) both;
+}
+@keyframes cardDeal {
+  from { opacity: 0; transform: perspective(900px) translateY(26px) rotateX(-9deg) scale(.965); }
+  to   { opacity: 1; transform: perspective(900px) translateY(0) rotateX(0) scale(1); }
 }
 .ride-card:hover, .eat-card:hover {
-  transform: translateY(-6px); border-color: rgba(255, 194, 77, .5);
-  box-shadow: 0 20px 44px rgba(2, 4, 14, .6), 0 0 26px rgba(255, 194, 77, .14);
+  --lift: -8px; border-color: rgba(255, 194, 77, .55); z-index: 2;
+  box-shadow: 0 26px 54px rgba(2, 4, 14, .68), 0 0 34px rgba(255, 194, 77, .2);
 }
+/* a specular highlight that follows the cursor across the card */
+.sheen {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  border-radius: inherit; transition: opacity .3s; mix-blend-mode: screen;
+  background:
+    radial-gradient(180px 180px at var(--mx, 50%) var(--my, 50%), rgba(160, 214, 255, .3), transparent 70%),
+    linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, .12) 50%, transparent 58%);
+}
+.ride-card:hover .sheen, .eat-card:hover .sheen { opacity: 1; }
+
 .ride-shot, .eat-shot { position: relative; aspect-ratio: 4/3; overflow: hidden; }
-.eat-shot { aspect-ratio: 4/3; }
 .ride-shot img, .eat-shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform .5s cubic-bezier(.2,.8,.25,1), filter .3s;
+  transition: transform .6s cubic-bezier(.2,.8,.25,1), filter .35s;
 }
 .ride-card:hover .ride-shot img,
-.eat-card:hover .eat-shot img { transform: scale(1.07); filter: brightness(1.06) saturate(1.08); }
+.eat-card:hover .eat-shot img { transform: scale(1.09) translateZ(0); filter: brightness(1.08) saturate(1.12); }
 .ride-shot::after, .eat-shot::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(6,10,30,.05) 45%, rgba(8,12,34,.85) 100%);
 }
-.ride-text, .eat-text { padding: 14px 16px 16px; display: grid; gap: 6px; }
+.ride-text, .eat-text { position: relative; padding: 14px 16px 16px; display: grid; gap: 7px; }
 .ride-text h3, .eat-text h3 {
   font-family: var(--disp); font-weight: 400; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: .02em;
   background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -427,6 +449,89 @@ body.chrome-on
 .eat-cuisine { color: #ffe6b0; background: rgba(8, 12, 34, .7); border: 1px solid rgba(255, 194, 77, .42); }
 .eat-text p { font-size: 12.5px; font-weight: 600; color: #b9c8e8; line-height: 1.4; }
 .eat-zone { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: #8ff3ff; text-transform: uppercase; }
+
+/* dining: the from-price rides on the photo */
+.eat-price {
+  position: absolute; z-index: 2; left: 12px; bottom: 12px;
+  display: grid; gap: 1px; padding: 7px 12px; border-radius: 12px;
+  background: linear-gradient(160deg, rgba(255, 217, 138, .95), rgba(255, 194, 77, .92));
+  color: #1a1000; font-size: 9.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45); transition: transform .3s;
+}
+.eat-price b { font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; line-height: 1; }
+.eat-price small { font-size: 8.5px; font-weight: 800; opacity: .72; letter-spacing: .1em; }
+.eat-card:hover .eat-price { transform: translateY(-3px) scale(1.04); }
+
+/* rides: a running number and how hard it hits */
+.ride-no {
+  position: absolute; z-index: 2; right: 10px; top: 8px;
+  font-family: var(--disp); font-size: 30px; line-height: 1; color: rgba(255, 255, 255, .17);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .5); transition: color .3s, transform .3s;
+}
+.ride-card:hover .ride-no { color: rgba(255, 217, 138, .5); transform: scale(1.08); }
+.ride-heat { display: flex; align-items: center; gap: 8px; }
+.rh-bars { display: inline-flex; gap: 3px; align-items: flex-end; }
+.rh-bars i {
+  width: 5px; border-radius: 2px; background: rgba(124, 196, 255, .22);
+  transition: background .3s, box-shadow .3s;
+}
+.rh-bars i:nth-child(1) { height: 7px; }
+.rh-bars i:nth-child(2) { height: 11px; }
+.rh-bars i:nth-child(3) { height: 15px; }
+.rh-bars i.on { background: linear-gradient(180deg, #ffd98a, #ffc24d); box-shadow: 0 0 9px rgba(255, 194, 77, .55); }
+.ride-card.h3:hover .rh-bars i.on { animation: heatPulse 1s ease-in-out infinite; }
+@keyframes heatPulse { 50% { box-shadow: 0 0 16px rgba(255, 194, 77, .95); } }
+.rh-label { font-size: 9px; font-weight: 800; letter-spacing: .14em; color: #7f8db4; }
+.ride-card.h3 .rh-label { color: #ffc79a; }
+
+/* ── rides bundle: one pass, entry included ── */
+.ride-bundle {
+  position: relative; overflow: hidden; width: 100%; max-width: min(1000px, 100%);
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: clamp(20px, 4vw, 56px);
+  padding: clamp(22px, 3vw, 34px) clamp(22px, 3.4vw, 40px); border-radius: 22px;
+  background: linear-gradient(120deg, rgba(28, 18, 66, .92), rgba(12, 16, 46, .94));
+  border: 1px solid rgba(255, 194, 77, .3);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .5);
+}
+.rb-glow {
+  position: absolute; inset: -40% -10% auto; height: 180%; pointer-events: none;
+  background: radial-gradient(45% 50% at 22% 40%, rgba(255, 194, 77, .18), transparent 70%),
+              radial-gradient(40% 45% at 82% 60%, rgba(77, 166, 255, .16), transparent 72%);
+  animation: rbDrift 9s ease-in-out infinite alternate;
+}
+@keyframes rbDrift { to { transform: translateX(5%) scale(1.06); } }
+.rb-copy { position: relative; display: grid; gap: 9px; justify-items: start; }
+.rb-kicker { font-family: var(--disp); font-size: 11px; letter-spacing: .24em; color: var(--gold); }
+.rb-copy h3 {
+  font-family: var(--disp); font-weight: 400; font-size: clamp(23px, 3vw, 36px); letter-spacing: .01em; line-height: 1.05;
+  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.rb-sub { font-size: 14px; font-weight: 600; color: #b9c8e8; line-height: 1.5; max-width: 46ch; }
+.rb-inc {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 2px;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8ff3ff;
+  padding: 6px 12px 6px 8px; border-radius: 999px;
+  background: rgba(8, 22, 48, .6); border: 1px solid rgba(53, 224, 255, .35);
+}
+.rb-inc i {
+  display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%;
+  background: linear-gradient(160deg, #35e0ff, #4da6ff); color: #04122b; font-size: 10px; font-weight: 900;
+}
+.rb-buy { position: relative; display: grid; gap: 12px; justify-items: center; }
+.rb-price {
+  display: grid; justify-items: center; gap: 1px;
+  font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--dim);
+}
+.rb-price b {
+  font-family: var(--disp); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); letter-spacing: .01em;
+  color: #fff; line-height: 1; text-shadow: 0 0 22px rgba(255, 194, 77, .45);
+}
+.rb-price small { font-size: 9.5px; letter-spacing: .12em; color: #7f8db4; }
+@media (max-width: 780px) {
+  .ride-bundle { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  .rb-copy { justify-items: center; }
+  .rb-sub { max-width: none; }
+}
 
 /* the rides section keeps its own backdrop */
 .rides {

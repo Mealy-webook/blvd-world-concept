@@ -53,6 +53,41 @@
     return { edges };
   }
 
+  // ── delight: cards lean towards the cursor and catch the light ──
+  // one listener per rail, not per card, and everything the browser animates
+  // is a custom property the compositor can cheaply resolve
+  function liven(rail, sel) {
+    rail.addEventListener("pointermove", (e) => {
+      const card = e.target.closest(sel);
+      if (!card) return;
+      const b = card.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width;      // 0 → 1 across the card
+      const y = (e.clientY - b.top) / b.height;
+      card.style.setProperty("--rx", ((0.5 - y) * 7).toFixed(2) + "deg");
+      card.style.setProperty("--ry", ((x - 0.5) * 9).toFixed(2) + "deg");
+      card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+      card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+    });
+    rail.addEventListener("pointerout", (e) => {
+      const card = e.target.closest(sel);
+      if (card) card.style.cssText = "";             // settle back to flat
+    });
+  }
+
+  // cards flip up in sequence the first time their rail comes into view
+  function stagger(rail) {
+    const cards = [...rail.children];
+    cards.forEach((c, i) => c.style.setProperty("--pop-d", (i % 6) * 70 + "ms"));
+    const pop = () => cards.forEach((c) => c.classList.add("pop"));
+    const io = new IntersectionObserver((es) => {
+      for (const en of es) if (en.isIntersecting) { pop(); io.disconnect(); }
+    }, { threshold: 0.12 });
+    io.observe(rail);
+    // the cards start invisible, so never let a missed observer hide them:
+    // after a few seconds they show themselves regardless
+    setTimeout(() => { pop(); io.disconnect(); }, 4000);
+  }
+
   /* ── DINING ── */
   (function dining() {
     const rail = $("#eat-rail");
@@ -60,15 +95,21 @@
     const data = (window.WBK && WBK.restaurants) || [];
     rail.innerHTML = data.map((r) => `
       <article class="eat-card">
-        <div class="eat-shot"><img src="img/zones/${r.img}" alt="${r.name}" draggable="false" loading="lazy"></div>
+        <div class="eat-shot">
+          <img src="img/zones/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
+          <span class="eat-price">from <b>SAR ${r.from}</b><small>per person</small></span>
+        </div>
         <div class="eat-text">
           <span class="eat-cuisine">${r.cuisine}</span>
           <h3>${r.name}</h3>
           <p>${r.desc}</p>
           <span class="eat-zone">${r.zone} zone</span>
         </div>
+        <i class="sheen" aria-hidden="true"></i>
       </article>`).join("");
     makeRail(rail, $("#eat-prev"), $("#eat-next"));
+    liven(rail, ".eat-card");
+    stagger(rail);
   })();
 
   /* ── RIDES ── */
@@ -76,15 +117,32 @@
     const rail = $("#ride-rail");
     if (!rail) return;
     const data = (window.WBK && WBK.rides) || [];
-    rail.innerHTML = data.map((r) => `
-      <article class="ride-card">
-        <div class="ride-shot"><img src="img/rides/${r.img}" alt="${r.name}" draggable="false" loading="lazy"></div>
+    // how hard the ride hits, drawn as filled bars
+    const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
+    const heat = (k) => HEAT[k] || 2;
+    rail.innerHTML = data.map((r, i) => {
+      const h = heat(r.kind);
+      const bars = [1, 2, 3].map((n) => `<i class="${n <= h ? "on" : ""}"></i>`).join("");
+      return `
+      <article class="ride-card h${h}">
+        <div class="ride-shot">
+          <img src="img/rides/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
+          <span class="ride-no">${String(i + 1).padStart(2, "0")}</span>
+        </div>
         <div class="ride-text">
           <span class="ride-kind">${r.kind}</span>
           <h3>${r.name}</h3>
+          <div class="ride-heat" title="${["gentle", "lively", "full throttle"][h - 1]}">
+            <span class="rh-bars">${bars}</span>
+            <span class="rh-label">${["GENTLE", "LIVELY", "FULL THROTTLE"][h - 1]}</span>
+          </div>
         </div>
-      </article>`).join("");
+        <i class="sheen" aria-hidden="true"></i>
+      </article>`;
+    }).join("");
     makeRail(rail, $("#ride-prev"), $("#ride-next"));
+    liven(rail, ".ride-card");
+    stagger(rail);
   })();
 
   /* ── SHOWS: zone chips + the night's schedule as a vertical list ── */
