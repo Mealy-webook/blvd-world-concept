@@ -72,6 +72,8 @@ body.route-home #scroll-rail { opacity: 1; }
 .view.active { opacity: 1; pointer-events: auto; filter: blur(0); }
 
 .stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* the shared backdrop: stays put while the sections scroll over it */
+.page-sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
 /* ═══════════════ BRAND LOCKUP ═══════════════ */
 .brand-lockup { display: inline-flex; align-items: baseline; gap: .45em; user-select: none; }
@@ -484,53 +486,22 @@ body.chrome-on
 .rh-label { font-size: 9px; font-weight: 800; letter-spacing: .14em; color: #7f8db4; }
 .ride-card.h3 .rh-label { color: #ffc79a; }
 
-/* ── rides bundle: one pass, entry included ── */
-.ride-bundle {
-  position: relative; overflow: hidden; width: 100%; max-width: min(1000px, 100%);
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: clamp(20px, 4vw, 56px);
-  padding: clamp(22px, 3vw, 34px) clamp(22px, 3.4vw, 40px); border-radius: 22px;
-  background: linear-gradient(120deg, rgba(28, 18, 66, .92), rgba(12, 16, 46, .94));
-  border: 1px solid rgba(255, 194, 77, .3);
-  box-shadow: 0 26px 60px rgba(2, 4, 14, .5);
+/* ── rides bundles: just the way in, since there may be several ── */
+.ride-cta { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.rc-note {
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 10px; justify-content: center;
+  font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--dim);
 }
-.rb-glow {
-  position: absolute; inset: -40% -10% auto; height: 180%; pointer-events: none;
-  background: radial-gradient(45% 50% at 22% 40%, rgba(255, 194, 77, .18), transparent 70%),
-              radial-gradient(40% 45% at 82% 60%, rgba(77, 166, 255, .16), transparent 72%);
-  animation: rbDrift 9s ease-in-out infinite alternate;
-}
-@keyframes rbDrift { to { transform: translateX(5%) scale(1.06); } }
-.rb-copy { position: relative; display: grid; gap: 9px; justify-items: start; }
-.rb-kicker { font-family: var(--disp); font-size: 11px; letter-spacing: .24em; color: var(--gold); }
-.rb-copy h3 {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(23px, 3vw, 36px); letter-spacing: .01em; line-height: 1.05;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.rb-sub { font-size: 14px; font-weight: 600; color: #b9c8e8; line-height: 1.5; max-width: 46ch; }
-.rb-inc {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 2px;
-  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8ff3ff;
-  padding: 6px 12px 6px 8px; border-radius: 999px;
+.rc-note b { font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; color: #fff; }
+.rc-inc {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8ff3ff;
+  padding: 5px 11px 5px 7px; border-radius: 999px;
   background: rgba(8, 22, 48, .6); border: 1px solid rgba(53, 224, 255, .35);
 }
-.rb-inc i {
-  display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%;
-  background: linear-gradient(160deg, #35e0ff, #4da6ff); color: #04122b; font-size: 10px; font-weight: 900;
-}
-.rb-buy { position: relative; display: grid; gap: 12px; justify-items: center; }
-.rb-price {
-  display: grid; justify-items: center; gap: 1px;
-  font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--dim);
-}
-.rb-price b {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); letter-spacing: .01em;
-  color: #fff; line-height: 1; text-shadow: 0 0 22px rgba(255, 194, 77, .45);
-}
-.rb-price small { font-size: 9.5px; letter-spacing: .12em; color: #7f8db4; }
-@media (max-width: 780px) {
-  .ride-bundle { grid-template-columns: minmax(0, 1fr); text-align: center; }
-  .rb-copy { justify-items: center; }
-  .rb-sub { max-width: none; }
+.rc-inc i {
+  display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%;
+  background: linear-gradient(160deg, #35e0ff, #4da6ff); color: #04122b; font-size: 9px; font-weight: 900;
 }
 
 /* the rides section keeps its own backdrop */
@@ -539,7 +510,6 @@ body.chrome-on
   padding: clamp(60px, 11vh, 110px) 6vw clamp(60px, 11vh, 110px);
   display: grid; gap: 40px; justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
-.rides { background: linear-gradient(180deg, #140a26 0%, #180d2e 50%, #140a26 100%); }
 .rides-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 
 /* ═══════════════ RESTAURANTS ═══════════════ */
@@ -547,7 +517,6 @@ body.chrome-on
   position: relative; z-index: 11;
   padding: clamp(60px, 12vh, 120px) 6vw clamp(60px, 12vh, 120px);
   display: grid; gap: 44px; justify-items: center; grid-template-columns: minmax(0, 1fr);
-  background: linear-gradient(180deg, #140a26 0%, #120b28 50%, #140a26 100%);
 }
 .eats-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 .eat-cuisine {
@@ -567,7 +536,6 @@ body.chrome-on
   position: relative; z-index: 11;
   padding: clamp(60px, 12vh, 120px) 6vw clamp(60px, 12vh, 120px);
   display: grid; gap: 40px; justify-items: center; grid-template-columns: minmax(0, 1fr);
-  background: linear-gradient(180deg, #140a26 0%, #17102f 45%, #140a26 100%);
 }
 .shows-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 /* zone chips, each flying its country's flag */
@@ -641,7 +609,6 @@ body.chrome-on
   position: relative; z-index: 11;
   padding: clamp(60px, 12vh, 130px) 6vw clamp(70px, 14vh, 150px);
   display: grid; gap: 40px; justify-items: center; grid-template-columns: minmax(0, 1fr);
-  background: linear-gradient(180deg, #140a26 0%, #100a24 40%, #0a0716 100%);
 }
 .faq-head { text-align: center; display: grid; gap: 14px; justify-items: center; }
 .faq-list { width: 100%; max-width: min(860px, 100%); display: grid; gap: 10px; }

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=89" />
+<link rel="stylesheet" href="css/main.css?v=90" />
 </head>
 <body class="typo-body">
 
@@ -73,6 +73,9 @@
 
   <!-- ══════════ HOME / HERO ══════════ -->
   <section id="view-home" class="view">
+    <!-- the hero's night sky, held behind every section below it -->
+    <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
+
     <div id="street" class="street plain">
       <canvas id="stars-home" class="stars"></canvas>
       <div class="scene" id="scene">
@@ -180,19 +183,11 @@
         <button class="rail-btn next" id="ride-next" aria-label="More rides">›</button>
       </div>
 
-      <!-- one pass for every ride, entry included -->
-      <div class="ride-bundle reveal">
-        <div class="rb-glow" aria-hidden="true"></div>
-        <div class="rb-copy">
-          <p class="rb-kicker">RIDES BUNDLE</p>
-          <h3>Ride everything, all night</h3>
-          <p class="rb-sub">One pass covers all fourteen rides across every zone — no queuing at each gate.</p>
-          <span class="rb-inc"><i aria-hidden="true">✓</i> Park entry ticket included</span>
-        </div>
-        <div class="rb-buy">
-          <span class="rb-price">from <b>SAR 190</b><small>per person</small></span>
-          <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">BOOK RIDES BUNDLE</a>
-        </div>
+      <!-- entry point into the ride bundles, however many there are -->
+      <div class="ride-cta reveal">
+        <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">BOOK A RIDES BUNDLE</a>
+        <p class="rc-note">Bundles from <b>SAR 190</b> per person
+          <span class="rc-inc"><i aria-hidden="true">✓</i> park entry included</span></p>
       </div>
     </section>
 
@@ -417,12 +412,12 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=89"></script>
-  <script src="js/borders.js?v=89"></script>
-  <script src="js/scene.js?v=89"></script>
-  <script src="js/app.js?v=89"></script>
-  <script src="js/experiences.js?v=89"></script>
-  <script src="js/carousels.js?v=89"></script>
-  <script type="module" src="js/globe.js?v=89"></script>
+  <script src="js/data.js?v=90"></script>
+  <script src="js/borders.js?v=90"></script>
+  <script src="js/scene.js?v=90"></script>
+  <script src="js/app.js?v=90"></script>
+  <script src="js/experiences.js?v=90"></script>
+  <script src="js/carousels.js?v=90"></script>
+  <script type="module" src="js/globe.js?v=90"></script>
 </body>
 </html>
