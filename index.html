@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLVD World — The Biggest Fan Letter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/main.css?v=70" />
+</head>
+<body class="typo-body">
+
+  <div id="scroll-rail" aria-hidden="true"><i></i></div>
+
+  <!-- SVG filter defs (replicated from the reference site's title effects) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="title-fx" x="-20%" y="-20%" width="140%" height="140%">
+        <feOffset in="SourceAlpha" dx="3" dy="3" result="sh2-o"/>
+        <feFlood flood-color="#009FEF" result="sh2-c"/>
+        <feComposite in="sh2-c" in2="sh2-o" operator="in" result="sh2"/>
+        <feOffset in="SourceAlpha" dx="1.5" dy="1.5" result="sh1-o"/>
+        <feFlood flood-color="#002d86" result="sh1-c"/>
+        <feComposite in="sh1-c" in2="sh1-o" operator="in" result="sh1"/>
+        <feMorphology in="SourceAlpha" operator="dilate" radius="0.75" result="ol-s"/>
+        <feFlood flood-color="#89ECFF" result="ol-c"/>
+        <feComposite in="ol-c" in2="ol-s" operator="in" result="ol"/>
+        <feOffset in="SourceGraphic" dx="0" dy="1.2" result="dk-o"/>
+        <feGaussianBlur in="dk-o" stdDeviation="0.7" result="dk-b"/>
+        <feComposite in="SourceGraphic" in2="dk-b" operator="out" result="dk-i"/>
+        <feFlood flood-color="#000000" flood-opacity="0.3" result="dk-c"/>
+        <feComposite in="dk-c" in2="dk-i" operator="in" result="dk"/>
+        <feOffset in="SourceGraphic" dx="-0.6" dy="-1.2" result="lt-o"/>
+        <feGaussianBlur in="lt-o" stdDeviation="0.7" result="lt-b"/>
+        <feComposite in="SourceGraphic" in2="lt-b" operator="out" result="lt-i"/>
+        <feFlood flood-color="#8AECFF" flood-opacity="0.45" result="lt-c"/>
+        <feComposite in="lt-c" in2="lt-i" operator="in" result="lt"/>
+        <feMerge>
+          <feMergeNode in="sh2"/><feMergeNode in="sh1"/><feMergeNode in="ol"/>
+          <feMergeNode in="SourceGraphic"/><feMergeNode in="dk"/><feMergeNode in="lt"/>
+        </feMerge>
+      </filter>
+      <filter id="text-inset" x="-50%" y="-50%" width="200%" height="200%">
+        <feOffset dx="0" dy="0.5"/>
+        <feGaussianBlur stdDeviation="0.5" result="ob"/>
+        <feComposite operator="out" in="SourceGraphic" in2="ob" result="inv"/>
+        <feFlood flood-color="#00C3FF" flood-opacity="1" result="c"/>
+        <feComposite operator="in" in="c" in2="inv" result="sh"/>
+        <feComposite operator="over" in="sh" in2="SourceGraphic"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ══════════ LOADER ══════════ -->
+  <section id="view-loader" class="view active">
+    <div class="loader-inner">
+      <img class="brand-img big" src="img/blvd-world-logo.svg" alt="BLVD World" />
+      <div class="loader-bar"><i></i></div>
+    </div>
+  </section>
+
+  <!-- ══════════ INTRO ══════════ -->
+  <section id="view-intro" class="view">
+    <canvas id="stars-intro" class="stars"></canvas>
+    <div class="intro-copy">
+      <p class="type-line" data-line="BLVD WORLD THIS SEASON TAKES YOU ON A MAGICAL EXPERIENCE"></p>
+      <p class="type-line" data-line="FROM THE HEART OF RIYADH."></p>
+      <img class="brand-img med intro-logo hidden-soft" src="img/blvd-world-logo.svg" alt="BLVD World" />
+    </div>
+    <button id="skip-intro" class="skip-btn">SKIP INTRO</button>
+  </section>
+
+  <!-- ══════════ HOME / HERO ══════════ -->
+  <section id="view-home" class="view">
+    <div id="street" class="street plain">
+      <canvas id="stars-home" class="stars"></canvas>
+      <div class="scene" id="scene">
+        <!-- ferris wheel at vanishing point -->
+        <div class="wheel-wrap layer" data-depth="0.35">
+          <svg class="wheel" viewBox="0 0 200 200">
+            <g class="wheel-spin">
+              <circle cx="100" cy="100" r="78" class="rim"/>
+              <circle cx="100" cy="100" r="56" class="rim thin"/>
+              <g class="spokes"></g>
+              <g class="pods"></g>
+            </g>
+            <path d="M100 100 L62 196 M100 100 L138 196" class="legs"/>
+          </svg>
+          <div class="wheel-glow"></div>
+        </div>
+        <!-- street walls -->
+        <div class="wall left" id="wall-left"></div>
+        <div class="wall right" id="wall-right"></div>
+        <!-- overhead string lights -->
+        <div class="strings layer" data-depth="0.5">
+          <div class="string s1"></div>
+          <div class="string s2"></div>
+        </div>
+        <!-- ground reflections -->
+        <div class="ground">
+          <div class="refl r1"></div><div class="refl r2"></div><div class="refl r3"></div><div class="refl r4"></div>
+        </div>
+      </div>
+
+      <div class="landmarks" id="landmarks"></div>
+      <div class="lm-scrim"></div>
+      <div class="props" id="props"></div>
+      <div class="hero-ui">
+        <h1 class="hero-title fx" id="hero-title">
+          <span class="line"><span class="t-glow">EXPLORE</span><span class="t-main">EXPLORE</span></span>
+          <span class="line"><span class="t-glow">NEW WORLDS.</span><span class="t-main">NEW WORLDS.</span></span>
+        </h1>
+        <div class="book-ctas">
+          <a href="https://webook.com" target="_blank" rel="noopener" class="book-cta feature">
+            <span class="pill solid big-pill">BOOK ENTRY TICKET</span>
+            <span class="from">from <b>SAR 50</b></span>
+          </a>
+          <a href="#/experiences" class="book-cta">
+            <span class="pill ghost big-pill">BOOK ENTRY + EXPERIENCE</span>
+            <span class="from">from <b>SAR 150</b></span>
+          </a>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
+    </div>
+
+    <!-- ── globe: letters from the world ── -->
+    <section class="globe-sec" id="globe-sec">
+      <canvas id="stars-gallery" class="stars"></canvas>
+      <div id="globe-holder" class="reveal"></div>
+      <div class="gallery-head reveal">
+        <p class="eyebrow"><span class="sec-num">01</span> DRAG TO EXPLORE</p>
+      </div>
+      <!-- zone detail drawer -->
+      <aside class="zone-panel" id="zone-panel" aria-hidden="true">
+        <button class="zp-close" id="zp-close" aria-label="Close zone">✕</button>
+
+        <div class="zp-hero">
+          <img id="zp-img" alt="" />
+          <div class="zp-shade"></div>
+          <div class="zp-title">
+            <span class="zp-flag">BLVD WORLD · ZONE</span>
+            <h3 id="zp-name"></h3>
+            <p class="zp-blurb" id="zp-blurb"></p>
+          </div>
+        </div>
+
+        <div class="zp-thumbs" id="zp-thumbs"></div>
+
+        <div class="zp-stats">
+          <div class="zp-stat"><b id="zp-n-a">0</b><span>attractions</span></div>
+          <div class="zp-stat"><b id="zp-n-f">0</b><span>places to eat</span></div>
+          <div class="zp-stat"><b id="zp-n-r">0</b><span>rides</span></div>
+        </div>
+
+        <div class="zp-body">
+          <section class="zp-group g-a"><h4>ATTRACTIONS</h4><ul id="zp-attractions"></ul></section>
+          <section class="zp-group g-f"><h4>RESTAURANTS</h4><ul id="zp-food"></ul></section>
+          <section class="zp-group g-r"><h4>RIDES</h4><ul id="zp-rides"></ul></section>
+        </div>
+
+        <div class="zp-foot">
+          <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid zp-cta">BOOK THIS ZONE</a>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ── zones section (scroll reveal) ── -->
+    <section class="zones" id="zones">
+      <div class="zones-head reveal">
+        <p class="eyebrow"><span class="sec-num">02</span> ONE PARK · MANY WORLDS</p>
+        <h2 class="sec-title">TRAVEL THE WORLD<br/>IN ONE NIGHT</h2>
+        <p class="sec-sub">Nine countries, one boulevard. Wander from Venetian canals to Tokyo arcades,
+          Mayan temples to Najdi heritage streets — every corner of BLVD World is somewhere else entirely.</p>
+      </div>
+
+      <div class="zone-grid">
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/turkey.jpg" alt="Turkey zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">TÜRKIYE</span>
+            <h3>UZUNGÖL NIGHTS</h3>
+            <p>Folk dancers, shisha lounges and lantern-lit terraces under the coaster lights.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/egypt.jpg" alt="Egypt zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">EGYPT</span>
+            <h3>PYRAMID PLAZA</h3>
+            <p>Golden temples, pharaonic façades and a night market that never sleeps.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/saudi.jpg" alt="Saudi zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">SAUDI ARABIA</span>
+            <h3>HERITAGE STREET</h3>
+            <p>Najdi mud-brick walls, local flavours and the sound of home.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/japan.jpg" alt="Japan zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">JAPAN</span>
+            <h3>TOKYO STREET</h3>
+            <p>Neon alleys, arcades and a five-storey robot standing guard.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/italy.jpg" alt="Italy zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">ITALY</span>
+            <h3>THE GRAND CANAL</h3>
+            <p>Gondolas, piazzas and a campanile mirrored in the water.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/france.jpg" alt="France zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">FRANCE</span>
+            <h3>PARIS BOULEVARD</h3>
+            <p>A golden-lit tower, café terraces and street musicians till late.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/mexico.jpg" alt="Mexico zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">MEXICO</span>
+            <h3>THE RED PYRAMID</h3>
+            <p>Climb a Mayan temple lit crimson above the lagoon.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/china.jpg" alt="China zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">CHINA</span>
+            <h3>CHINATOWN</h3>
+            <p>Red pagodas, lantern markets and a lion dance every evening.</p>
+          </div>
+        </article>
+        <article class="zone-card reveal">
+          <div class="zc-media"><img src="img/zones/usa.jpg" alt="USA zone at BLVD World" loading="lazy" /></div>
+          <div class="zc-body">
+            <span class="zc-flag">USA</span>
+            <h3>ROUTE 66</h3>
+            <p>Chrome diners, milkshakes and a jukebox that never stops.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ══════════ EXPERIENCES ══════════ -->
+  <section id="view-experiences" class="view">
+    <canvas id="stars-xp" class="stars"></canvas>
+    <div class="xp-stage">
+      <div class="xp-arc" id="xp-arc">
+        <div class="xp-track" id="xp-track"></div>
+        <button class="xp-nav prev" id="xp-prev" aria-label="Previous experience">‹</button>
+        <button class="xp-nav next" id="xp-next" aria-label="Next experience">›</button>
+      </div>
+
+      <div class="xp-dots" id="xp-dots"></div>
+
+      <footer class="xp-foot">
+        <header class="xp-head">
+          <h2 class="xp-title" id="xp-title">Sky Flyer</h2>
+        </header>
+        <p class="xp-blurb" id="xp-blurb"></p>
+        <div class="xp-buy">
+          <div class="xp-price">
+            <b id="xp-price">SAR 150</b>
+            <span class="xp-per">per person · entry included</span>
+          </div>
+          <a href="https://webook.com" target="_blank" rel="noopener" class="xp-cta">BOOK</a>
+        </div>
+      </footer>
+
+      <a href="#/" class="xp-back">← BACK</a>
+    </div>
+  </section>
+
+  <!-- ══════════ LETTER FLOW ══════════ -->
+  <section id="view-letter" class="view">
+    <canvas id="stars-letter" class="stars"></canvas>
+    <div class="letter-stage glowfloor"></div>
+
+    <!-- step 1 : pick message -->
+    <div class="letter-step" id="step-pick">
+      <p class="eyebrow">HOW TO ENTER</p>
+      <h2 class="step-title">SELECT A MESSAGE AND CUSTOMIZE<br/>YOUR LETTER</h2>
+      <div class="card-carousel">
+        <button class="car-nav prev" id="card-prev">‹</button>
+        <div class="postcard-track" id="postcard-track"></div>
+        <button class="car-nav next" id="card-next">›</button>
+      </div>
+      <div class="step-actions">
+        <button class="pill solid" id="pick-continue">CUSTOMIZE THIS LETTER</button>
+      </div>
+    </div>
+
+    <!-- step 2 : customize -->
+    <div class="letter-step hidden" id="step-custom">
+      <p class="eyebrow">STEP 2</p>
+      <h2 class="step-title">ADD YOUR STICKERS</h2>
+      <div class="custom-wrap">
+        <div class="postcard big" id="custom-card">
+          <div class="pc-stamp">📮</div>
+          <div class="pc-logo"><span class="wb">BLVD</span><span class="rs">W</span></div>
+          <p class="pc-msg" id="custom-msg"></p>
+          <div class="pc-stickers" id="sticker-layer"></div>
+        </div>
+        <div class="sticker-tray">
+          <p>TAP TO ADD</p>
+          <div class="tray-row" id="tray"></div>
+          <button class="linkish small" id="clear-stickers">clear stickers</button>
+        </div>
+      </div>
+      <div class="step-actions">
+        <button class="pill ghost" id="back-pick">BACK</button>
+        <button class="pill solid" id="custom-continue">SIGN &amp; SEND</button>
+      </div>
+    </div>
+
+    <!-- step 3 : sign -->
+    <div class="letter-step hidden" id="step-sign">
+      <p class="eyebrow">LAST STEP</p>
+      <h2 class="step-title">SIGN YOUR LETTER</h2>
+      <form class="sign-form" id="sign-form">
+        <label>YOUR NAME<input type="text" id="f-name" maxlength="30" placeholder="ARMY of one" required /></label>
+        <label>COUNTRY
+          <select id="f-country">
+            <option>Saudi Arabia</option><option>UAE</option><option>Kuwait</option><option>Bahrain</option>
+            <option>Qatar</option><option>Egypt</option><option>South Korea</option><option>USA</option>
+            <option>UK</option><option>Japan</option><option>Brazil</option><option>India</option>
+          </select>
+        </label>
+        <div class="step-actions">
+          <button type="button" class="pill ghost" id="back-custom">BACK</button>
+          <button type="submit" class="pill solid">SEND MY LETTER ✦</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- step 4 : done -->
+    <div class="letter-step hidden" id="step-done">
+      <canvas id="confetti"></canvas>
+      <h2 class="step-title xl">YOUR LETTER IS ON ITS WAY! 💜</h2>
+      <p class="hero-sub">It just joined the world's largest fan letter to BLVD World.<br/>
+        You're officially entered for today's exclusive prizes.</p>
+      <div class="step-actions">
+        <a href="#/" class="pill ghost js-to-globe">SEE IT IN THE GALLERY</a>
+        <a href="#/prizes" class="pill solid">SEE THE PRIZES</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ GALLERY ══════════ -->
+
+  <!-- ══════════ PRIZES ══════════ -->
+  <section id="view-prizes" class="view">
+    <canvas id="stars-prizes" class="stars"></canvas>
+    <div class="prizes-wrap">
+      <p class="eyebrow">JOIN THE BLVD WORLD GIVEAWAY TO</p>
+      <h2 class="hero-title small"><span class="line">WIN EXCLUSIVE</span><span class="line">BLVD WORLD PRIZES</span></h2>
+      <p class="hero-sub">From once-in-a-lifetime experiences to fan-first exclusives, these are prizes worth
+        writing for. Send your fan letters for a chance to win a piece of BLVD World history.</p>
+      <div class="prize-cards">
+        <article class="prize-card">
+          <div class="prize-art grand">🎡</div>
+          <p class="prize-rank">GRAND PRIZE</p>
+          <h3>BLVD WORLD VIP<br/>TRAVEL EXPERIENCE</h3>
+          <p class="prize-desc">Flights, hotel &amp; VIP access to the biggest night at BLVD World.</p>
+        </article>
+        <article class="prize-card">
+          <div class="prize-art first">🪩</div>
+          <p class="prize-rank">1ST PRIZE</p>
+          <h3>BLVD WORLD<br/>NEON SIGN</h3>
+          <p class="prize-desc">A collector's neon sign — light up your room like Boulevard at night.</p>
+        </article>
+        <article class="prize-card">
+          <div class="prize-art second">🎁</div>
+          <p class="prize-rank">2ND PRIZE</p>
+          <h3>LIMITED EDITION<br/>BLVD MERCH BOX</h3>
+          <p class="prize-desc">Hoodie, lightstick, sticker pack &amp; more — only 100 boxes exist.</p>
+        </article>
+      </div>
+    </div>
+    <div class="prize-marquee">
+      <div class="pm-track">
+        <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
+        <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
+      </div>
+      <a href="#/letter" class="pill solid big-pill floaty">SEND LETTER FOR A CHANCE TO WIN</a>
+    </div>
+  </section>
+
+  <!-- ══════════ ARCH GATE (post-intro fly-through) ══════════ -->
+  <div id="arch-stage" aria-hidden="true">
+    <div class="arch-bg"></div>
+    <img class="arch-img" src="img/arch.png" alt="" />
+  </div>
+
+  <!-- ══════════ CHROME (header etc.) ══════════ -->
+  <!-- sticky booking bar: slides in once the hero is behind you -->
+  <div id="sticky-cta" aria-hidden="true">
+    <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
+    <div class="sc-actions">
+      <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid sc-pill">BOOK ENTRY TICKET</a>
+      <a href="#/experiences" class="pill ghost sc-pill">BOOK ENTRY + EXPERIENCE</a>
+    </div>
+  </div>
+
+  <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
+
+  <!-- menu overlay -->
+  <script src="js/data.js?v=70"></script>
+  <script src="js/borders.js?v=70"></script>
+  <script src="js/scene.js?v=70"></script>
+  <script src="js/app.js?v=70"></script>
+  <script src="js/experiences.js?v=70"></script>
+  <script type="module" src="js/globe.js?v=70"></script>
+</body>
+</html>
