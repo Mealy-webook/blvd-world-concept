@@ -466,59 +466,43 @@ body.chrome-on
 .eat-card:hover .eat-price { transform: translateY(-3px) scale(1.04); }
 
 /* ═══════════════ PARK MAP ═══════════════ */
-.parkmap {
+/* the artwork is the canvas; the discovery panel floats over it */
+.pmap {
   position: relative; z-index: 11;
-  padding: clamp(60px, 11vh, 110px) 6vw clamp(60px, 11vh, 110px);
-  display: grid; gap: 40px; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  padding: clamp(60px, 11vh, 110px) clamp(16px, 4vw, 48px) clamp(60px, 11vh, 110px);
+  display: grid; gap: 28px; justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
 .pm-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(760px, 100%); }
-.pm-wrap { width: 100%; max-width: min(1240px, 100%); display: grid; gap: 16px; justify-items: center; }
-
-/* filter chips */
-.pm-tools { display: flex; justify-content: center; width: 100%; }
-.pm-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.pm-chip {
-  font-family: var(--disp); font-size: 10.5px; letter-spacing: .16em; color: var(--dim);
-  padding: 8px 15px; border-radius: 999px;
-  background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .16);
-  transition: color .2s, background .2s, border-color .2s, transform .2s;
-}
-.pm-chip:hover { color: #eaf2ff; background: rgba(124, 196, 255, .12); transform: translateY(-1px); }
-.pm-chip.on {
-  color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d);
-  border-color: transparent; box-shadow: 0 0 20px rgba(255, 194, 77, .45);
+.pm-shell {
+  position: relative; width: 100%; max-width: min(1320px, 100%);
+  border-radius: 24px; overflow: hidden;
+  border: 1px solid rgba(124, 196, 255, .18);
+  box-shadow: 0 34px 80px rgba(2, 4, 14, .6);
+  background: #0a1b3a;
 }
 
-/* the frame crops the artwork; the stage inside it is what pans and zooms */
 .pm-frame {
   position: relative; width: 100%; aspect-ratio: 3855 / 2110; overflow: hidden;
-  border-radius: 20px; background: #0a1b3a;
-  border: 1px solid rgba(124, 196, 255, .18);
-  box-shadow: 0 30px 70px rgba(2, 4, 14, .55);
   cursor: grab; touch-action: pan-y pinch-zoom;
 }
-.pm-frame.zoomed { cursor: grab; }
 .pm-frame.dragging { cursor: grabbing; }
 .pm-stage {
   position: absolute; inset: 0; transform-origin: 50% 50%;
-  transition: transform .38s cubic-bezier(.2,.8,.25,1);
+  transition: transform .5s cubic-bezier(.2,.8,.25,1);
 }
 .pm-frame.dragging .pm-stage { transition: none; }
 .pm-img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; }
 .pm-pins { position: absolute; inset: 0; }
 
-/* pins sit in the transformed layer, so only their contents are counter-scaled */
-.pm-pin {
-  position: absolute; left: var(--x); top: var(--y); width: 0; height: 0;
-  z-index: 3; transition: opacity .3s;
-}
+/* pins ride inside the transformed layer; only their contents are counter-scaled */
+.pm-pin { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; z-index: 3; transition: opacity .3s; }
 .pm-pin > * { transform: scale(var(--inv, 1)); transform-origin: 50% 50%; }
 .pm-dot {
-  /* the artwork already prints the zone name here, so the dot sits just below
-     the label pill rather than on top of the word */
+  /* the artwork already prints the zone name here, so the dot sits below the
+     label pill rather than on top of the word */
   position: absolute; left: -7px; top: 11px; width: 14px; height: 14px; border-radius: 50%;
   background: var(--tone, #ffc24d); border: 2px solid rgba(255, 255, 255, .9);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, .6), 0 0 0 0 color-mix(in srgb, var(--tone, #ffc24d) 60%, transparent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .6);
   animation: pmPulse 2.6s ease-out infinite;
 }
 @keyframes pmPulse {
@@ -531,7 +515,7 @@ body.chrome-on
   position: absolute; left: 0; top: 30px; transform: translateX(-50%) scale(var(--inv, 1));
   font-family: var(--disp); font-size: 10px; letter-spacing: .14em; white-space: nowrap;
   color: #eaf2ff; padding: 5px 10px; border-radius: 8px;
-  background: rgba(6, 10, 30, .88); border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(6, 10, 30, .9); border: 1px solid rgba(255, 255, 255, .18);
   box-shadow: 0 6px 18px rgba(0, 0, 0, .5);
   opacity: 0; pointer-events: none; transition: opacity .25s, top .25s;
 }
@@ -541,43 +525,178 @@ body.chrome-on
   background: #fff; border-color: var(--tone, #ffc24d);
   transform: scale(calc(var(--inv, 1) * 1.5)); animation: none;
 }
-.pm-pin.muted { opacity: .22; pointer-events: none; }
+.pm-pin.muted { opacity: .2; pointer-events: none; }
 
-/* frame furniture */
-.pm-tick { position: absolute; width: 18px; height: 18px; pointer-events: none; z-index: 4; opacity: .5; }
-.pm-tick::before, .pm-tick::after { content: ''; position: absolute; background: rgba(255, 217, 138, .8); }
-.pm-tick::before { width: 100%; height: 1.5px; }
-.pm-tick::after { width: 1.5px; height: 100%; }
-.pm-tick.tl { top: 12px; left: 12px; }
-.pm-tick.tr { top: 12px; right: 12px; }
-.pm-tick.tr::before, .pm-tick.br::before { right: 0; }
-.pm-tick.tr::after, .pm-tick.br::after { right: 0; }
-.pm-tick.bl { bottom: 12px; left: 12px; }
-.pm-tick.bl::before, .pm-tick.br::before { bottom: 0; }
-.pm-tick.bl::after, .pm-tick.br::after { bottom: 0; }
-.pm-tick.br { bottom: 12px; right: 12px; }
+/* status strip, top-right of the canvas */
+.pm-status {
+  position: absolute; z-index: 6; top: 14px; right: 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+  max-width: calc(100% - 28px);
+}
+.ps-item, .pm-status .ps-open {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  padding: 7px 12px; border-radius: 999px; white-space: nowrap;
+  background: rgba(6, 10, 30, .8); border: 1px solid rgba(124, 196, 255, .26);
+  color: #dceaff; backdrop-filter: blur(8px);
+}
+.ps-open { color: #0b1030; background: linear-gradient(100deg, #8ff3ff, #35e0ff); border-color: transparent; }
+.ps-ic { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.ps-ic.loc { background: #ff3ec8; box-shadow: 0 0 8px rgba(255, 62, 200, .8); }
+.ps-ic.sun { background: #ffc24d; box-shadow: 0 0 8px rgba(255, 194, 77, .8); }
+
+/* zoom cluster, bottom-right, mirroring the reference */
+.pm-zoom { position: absolute; z-index: 6; right: 14px; bottom: 14px; display: grid; gap: 8px; }
+.pm-zoom button {
+  width: 38px; height: 38px; border-radius: 12px; font-size: 18px; line-height: 1; color: #eaf2ff;
+  display: grid; place-items: center;
+  background: rgba(6, 10, 30, .82); border: 1px solid rgba(124, 196, 255, .3);
+  backdrop-filter: blur(8px); transition: background .2s, box-shadow .2s, transform .2s, opacity .2s;
+}
+.pm-zoom button:hover { background: rgba(6, 10, 30, .98); box-shadow: 0 0 16px rgba(77, 166, 255, .5); transform: scale(1.06); }
+.pm-zoom button:disabled { opacity: .3; pointer-events: none; }
 .pm-hint {
-  position: absolute; z-index: 5; left: 50%; bottom: 14px; transform: translateX(-50%);
-  font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #cfe4ff;
+  position: absolute; z-index: 6; left: 50%; bottom: 14px; transform: translateX(-50%);
+  font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: #cfe4ff;
   padding: 7px 14px; border-radius: 999px; white-space: nowrap;
-  background: rgba(6, 10, 30, .74); border: 1px solid rgba(124, 196, 255, .28);
+  background: rgba(6, 10, 30, .78); border: 1px solid rgba(124, 196, 255, .28);
   backdrop-filter: blur(6px); transition: opacity .4s, transform .4s;
 }
 .pm-hint.gone { opacity: 0; transform: translate(-50%, 8px); }
-.pm-zoom { position: absolute; z-index: 5; right: 14px; top: 14px; display: grid; gap: 8px; }
-.pm-zoom button {
-  width: 36px; height: 36px; border-radius: 10px; font-size: 17px; line-height: 1; color: #cfe4ff;
-  display: grid; place-items: center;
-  background: rgba(6, 10, 30, .78); border: 1px solid rgba(124, 196, 255, .3);
-  backdrop-filter: blur(6px); transition: background .2s, box-shadow .2s, transform .2s, opacity .2s;
-}
-.pm-zoom button:hover { background: rgba(6, 10, 30, .95); box-shadow: 0 0 16px rgba(77, 166, 255, .5); transform: scale(1.06); }
-.pm-zoom button:disabled { opacity: .3; pointer-events: none; }
 .pm-credit { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5b6a94; }
-@media (max-width: 700px) {
-  .pm-frame { border-radius: 14px; }
-  .pm-hint { font-size: 9px; letter-spacing: .06em; }
-  .pm-zoom button { width: 32px; height: 32px; }
+
+/* ── the floating discovery panel ── */
+.pm-panel {
+  position: absolute; z-index: 8; left: 18px; top: 18px; bottom: 18px;
+  width: min(370px, calc(100% - 36px));
+  display: flex; flex-direction: column; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(9, 14, 38, .95), rgba(6, 10, 28, .97));
+  border: 1px solid rgba(124, 196, 255, .2);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .6);
+  backdrop-filter: blur(16px);
+  transition: width .45s cubic-bezier(.2,.8,.25,1);
+}
+.pm-panel.as-list { width: calc(100% - 36px); }
+.pp-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 16px 12px; flex: none;
+}
+.pp-head h3 {
+  font-family: var(--disp); font-weight: 400; font-size: 20px; letter-spacing: .02em;
+  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pp-modes { display: flex; gap: 6px; flex: none; }
+.pp-mode {
+  width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+  background: rgba(124, 196, 255, .06); border: 1px solid rgba(124, 196, 255, .18);
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.pp-mode:hover { background: rgba(124, 196, 255, .16); transform: translateY(-1px); }
+.pp-mode.on { background: linear-gradient(160deg, #ffd98a, #ffc24d); border-color: transparent; }
+/* the three mode glyphs, drawn in CSS so there are no icon fonts to load */
+.ppi-map, .ppi-list, .ppi-search { display: block; width: 15px; height: 15px; position: relative; }
+.ppi-map { border: 1.6px solid #cfe4ff; border-radius: 3px; }
+.ppi-map::after { content: ''; position: absolute; inset: 3px 3px auto 3px; height: 1.6px; background: #cfe4ff; box-shadow: 0 4px 0 #cfe4ff; }
+.ppi-list::before, .ppi-list::after, .ppi-list span { content: ''; position: absolute; left: 0; right: 0; height: 1.8px; background: #cfe4ff; }
+.ppi-list::before { top: 2px; }
+.ppi-list::after { top: 11px; }
+.ppi-list { background:
+  linear-gradient(#cfe4ff, #cfe4ff) 0 2px / 100% 1.8px no-repeat,
+  linear-gradient(#cfe4ff, #cfe4ff) 0 6.6px / 100% 1.8px no-repeat,
+  linear-gradient(#cfe4ff, #cfe4ff) 0 11.2px / 100% 1.8px no-repeat; }
+.ppi-list::before, .ppi-list::after { content: none; }
+.ppi-search { border: 1.7px solid #cfe4ff; border-radius: 50%; width: 11px; height: 11px; margin: 1px 0 0 1px; }
+.ppi-search::after {
+  content: ''; position: absolute; right: -5px; bottom: -4px; width: 6px; height: 1.7px;
+  background: #cfe4ff; transform: rotate(45deg);
+}
+.pp-mode.on .ppi-map, .pp-mode.on .ppi-search { border-color: #0b1030; }
+.pp-mode.on .ppi-map::after, .pp-mode.on .ppi-search::after { background: #0b1030; box-shadow: 0 4px 0 #0b1030; }
+.pp-mode.on .ppi-list { filter: brightness(0) saturate(0); }
+
+/* search: hidden until asked for, like the reference's magnifier */
+.pp-search { flex: none; max-height: 0; overflow: hidden; padding: 0 16px; transition: max-height .35s, padding .35s; }
+.pm-panel.searching .pp-search { max-height: 64px; padding: 0 16px 12px; }
+.pp-search input {
+  width: 100%; padding: 10px 14px; border-radius: 12px;
+  font-family: var(--body); font-size: 13.5px; font-weight: 600; color: #eaf2ff;
+  background: rgba(124, 196, 255, .07); border: 1px solid rgba(124, 196, 255, .24);
+}
+.pp-search input::placeholder { color: #7f8db4; }
+.pp-search input:focus { outline: none; border-color: rgba(255, 194, 77, .6); background: rgba(124, 196, 255, .12); }
+
+.pp-chips { flex: none; display: flex; flex-wrap: wrap; gap: 7px; padding: 0 16px 12px; }
+.pp-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 800; letter-spacing: .04em; color: #b9c8e8;
+  padding: 7px 12px; border-radius: 999px;
+  background: rgba(124, 196, 255, .06); border: 1px solid rgba(124, 196, 255, .18);
+  transition: color .2s, background .2s, border-color .2s, transform .2s;
+}
+.pp-chip:hover { color: #fff; background: rgba(124, 196, 255, .16); transform: translateY(-1px); }
+.pp-chip.on { color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d); border-color: transparent; }
+/* scoped names: a bare `.rides`/`.shows` here would hit the section rules */
+.cc { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.cc-all { background: #8ff3ff; } .cc-rides { background: #ffc24d; }
+.cc-dining { background: #ff9fdf; } .cc-shows { background: #c4a8ff; } .cc-zones { background: #7fe0a8; }
+.pp-chip.on .cc { background: rgba(11, 16, 48, .55); }
+
+/* the list */
+.pp-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 10px 14px; scrollbar-width: thin; }
+.pp-list::-webkit-scrollbar { width: 8px; }
+.pp-list::-webkit-scrollbar-thumb { background: rgba(124, 196, 255, .22); border-radius: 99px; }
+.pp-group {
+  position: sticky; top: 0; z-index: 2; margin: 6px 0 8px;
+  font-family: var(--disp); font-size: 10.5px; letter-spacing: .18em; color: var(--gold);
+  padding: 8px 6px; background: linear-gradient(180deg, rgba(6, 10, 28, .98), rgba(6, 10, 28, .82));
+}
+.pp-row {
+  width: 100%; display: grid; grid-template-columns: 62px 1fr; gap: 12px; align-items: center;
+  padding: 8px; border-radius: 14px; text-align: left;
+  border: 1px solid transparent; transition: background .2s, border-color .2s, transform .2s;
+}
+.pp-row:hover { background: rgba(124, 196, 255, .08); border-color: rgba(124, 196, 255, .2); transform: translateX(2px); }
+.pp-row.on { background: rgba(255, 194, 77, .12); border-color: rgba(255, 194, 77, .45); }
+.rm-shot {
+  width: 62px; height: 52px; border-radius: 10px; overflow: hidden; flex: none;
+  background: rgba(124, 196, 255, .08); display: block;
+}
+.rm-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rm-text { display: grid; gap: 4px; min-width: 0; }
+.rm-text b {
+  font-family: var(--body); font-weight: 800; font-size: 14px; color: #eaf2ff;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rm-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.rm-meta span {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700; color: #8f9dc4; letter-spacing: .02em;
+}
+.rm-ic { width: 11px; height: 11px; fill: #6b7aa6; flex: none; }
+.pp-row:hover .rm-ic, .pp-row.on .rm-ic { fill: var(--gold); }
+.pp-empty { padding: 24px 10px; font-size: 13px; font-weight: 600; color: #7f8db4; }
+/* in list mode the rows sit in columns, since the panel has the width for it */
+.pm-panel.as-list .pp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4px 14px; align-content: start; }
+.pm-panel.as-list .pp-group { grid-column: 1 / -1; }
+
+@media (max-width: 900px) {
+  .pm-shell { aspect-ratio: auto; }
+  .pm-frame { border-radius: 0; }
+  .pm-panel {
+    position: relative; inset: auto; width: 100%; max-height: 60vh;
+    border-radius: 0; border-width: 1px 0 0; backdrop-filter: none;
+  }
+  .pm-panel.as-list { width: 100%; }
+  .pm-status { top: 10px; right: 10px; }
+  .ps-item { font-size: 9px; letter-spacing: .06em; padding: 6px 9px; }
+  .pm-hint { display: none; }
+}
+/* on a phone the map is short, so the two pill clusters would collide:
+   keep only the opening hours, over on the left */
+@media (max-width: 600px) {
+  .pm-status { left: 10px; right: auto; justify-content: flex-start; }
+  .ps-item { display: none; }
+  .ps-open { font-size: 9px; letter-spacing: .06em; padding: 6px 10px; }
 }
 
 /* ═══════════════ RIDES: FANNED DECK ═══════════════ */

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=104" />
+<link rel="stylesheet" href="css/main.css?v=109" />
 </head>
 <body class="typo-body">
 
@@ -137,25 +137,15 @@
       </div>
     </section>
 
-    <!-- ── park map: the official plan, pannable and clickable ── -->
-    <section class="parkmap" id="parkmap">
+    <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
+    <section class="pmap" id="parkmap">
       <div class="pm-head reveal">
         <p class="eyebrow"><span class="sec-num">02</span> THE WHOLE PARK, ONE PLAN</p>
-        <h2 class="sec-title">THE PARK MAP</h2>
-        <p class="sec-sub">Twenty-six zones and gates ring a central lagoon. Zoom in, drag
-          around, and tap any pin to see what's waiting inside it.</p>
+        <h2 class="sec-title">EXPLORE THE MAP</h2>
       </div>
 
-      <div class="pm-wrap reveal">
-        <div class="pm-tools">
-          <div class="pm-chips" role="group" aria-label="Filter map pins">
-            <button class="pm-chip on" data-f="all" type="button">ALL PINS</button>
-            <button class="pm-chip" data-f="experiences" type="button">EXPERIENCES</button>
-            <button class="pm-chip" data-f="dining" type="button">DINING</button>
-            <button class="pm-chip" data-f="gates" type="button">GATES</button>
-          </div>
-        </div>
-
+      <div class="pm-shell reveal">
+        <!-- the map itself: the canvas everything else floats over -->
         <div class="pm-frame" id="pm-frame">
           <div class="pm-stage" id="pm-stage">
             <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
@@ -163,20 +153,53 @@
             <div class="pm-pins" id="pm-pins"></div>
           </div>
 
-          <span class="pm-tick tl"></span><span class="pm-tick tr"></span>
-          <span class="pm-tick bl"></span><span class="pm-tick br"></span>
-
-          <p class="pm-hint" id="pm-hint">Tap a pin · drag to pan · ⌘/ctrl + scroll to zoom</p>
+          <div class="pm-status">
+            <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
+            <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
+            <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
+          </div>
 
           <div class="pm-zoom">
             <button id="pm-in" type="button" aria-label="Zoom in">+</button>
-            <button id="pm-out" type="button" aria-label="Zoom out">−</button>
-            <button id="pm-reset" type="button" aria-label="Reset the map">⟲</button>
+            <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
+            <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
           </div>
+
+          <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
         </div>
 
-        <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
+        <!-- floating panel: search, categories, and everything in the park -->
+        <aside class="pm-panel" id="pm-panel">
+          <header class="pp-head">
+            <h3>Discover the park</h3>
+            <div class="pp-modes">
+              <button class="pp-mode on" id="pp-map" type="button" aria-label="Map view"
+                aria-pressed="true"><span class="ppi-map"></span></button>
+              <button class="pp-mode" id="pp-listview" type="button" aria-label="List view"
+                aria-pressed="false"><span class="ppi-list"></span></button>
+              <button class="pp-mode" id="pp-searchbtn" type="button" aria-label="Search"
+                aria-pressed="false"><span class="ppi-search"></span></button>
+            </div>
+          </header>
+
+          <div class="pp-search" id="pp-search">
+            <input id="pp-q" type="search" placeholder="Search rides, dining, zones&#8230;"
+              autocomplete="off" aria-label="Search the park" />
+          </div>
+
+          <div class="pp-chips" id="pp-chips" role="group" aria-label="Categories">
+            <button class="pp-chip on" data-cat="all" type="button"><i class="cc cc-all"></i>All</button>
+            <button class="pp-chip" data-cat="rides" type="button"><i class="cc cc-rides"></i>Rides &amp; Attractions</button>
+            <button class="pp-chip" data-cat="dining" type="button"><i class="cc cc-dining"></i>Dining</button>
+            <button class="pp-chip" data-cat="shows" type="button"><i class="cc cc-shows"></i>Shows</button>
+            <button class="pp-chip" data-cat="zones" type="button"><i class="cc cc-zones"></i>Zones</button>
+          </div>
+
+          <div class="pp-list" id="pp-list"></div>
+        </aside>
       </div>
+
+      <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
     </section>
 
     <!-- ── rides ── -->
@@ -471,15 +494,15 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=104"></script>
-  <script src="js/borders.js?v=104"></script>
-  <script src="js/scene.js?v=104"></script>
-  <script src="js/app.js?v=104"></script>
-  <script src="js/experiences.js?v=104"></script>
-  <script src="js/carousels.js?v=104"></script>
-  <script src="js/fan.js?v=104"></script>
-  <script src="js/gallery.js?v=104"></script>
-  <script src="js/parkmap.js?v=104"></script>
-  <script type="module" src="js/globe.js?v=104"></script>
+  <script src="js/data.js?v=109"></script>
+  <script src="js/borders.js?v=109"></script>
+  <script src="js/scene.js?v=109"></script>
+  <script src="js/app.js?v=109"></script>
+  <script src="js/experiences.js?v=109"></script>
+  <script src="js/carousels.js?v=109"></script>
+  <script src="js/fan.js?v=109"></script>
+  <script src="js/gallery.js?v=109"></script>
+  <script src="js/parkmap.js?v=109"></script>
+  <script type="module" src="js/globe.js?v=109"></script>
 </body>
 </html>

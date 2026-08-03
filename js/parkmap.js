@@ -1,7 +1,8 @@
 // ── the park map: the official plan, made pannable and clickable ──────
-// Pins are positioned in percentages of the artwork and live inside the same
-// transformed layer as the image, so they stay glued to their zone at any
-// zoom. Only their inner content is counter-scaled, keeping tags legible.
+// Structure follows the Six Flags Qiddiya park-map page: the artwork is the
+// canvas, and a floating panel over it carries search, category chips and a
+// grouped list of everything in the park. Picking a row flies the map to the
+// matching pin; picking a pin opens the zone drawer the globe also uses.
 (() => {
   const frame = document.getElementById("pm-frame");
   if (!frame || !window.WBK) return;
@@ -9,12 +10,14 @@
   const stage = document.getElementById("pm-stage");
   const pinLayer = document.getElementById("pm-pins");
   const hint = document.getElementById("pm-hint");
+  const panel = document.getElementById("pm-panel");
+  const listEl = document.getElementById("pp-list");
   const pins = WBK.mapPins || [];
 
   const MIN = 1, MAX = 4.6;
   let z = 1, tx = 0, ty = 0;          // scale + translate, in frame pixels
 
-  // ── view transform ────────────────────────────────────────────────
+  /* ── view transform ─────────────────────────────────────────────── */
   // At z = 1 the artwork exactly fills the frame, so panning is clamped to
   // the slack the zoom creates — the map can never drift off its own frame.
   function clamp() {
@@ -52,9 +55,31 @@
     zoomAt(nz, r.width / 2, r.height / 2);
   };
 
-  // ── pins ──────────────────────────────────────────────────────────
+  // bring a pin into the part of the frame the panel isn't covering
+  function framePin(i, nz) {
+    const pin = pins[i];
+    if (!pin) return;
+    const r = frame.getBoundingClientRect();
+    const hidden = panel && getComputedStyle(panel).position === "absolute"
+      ? panel.getBoundingClientRect().width : 0;
+    z = Math.max(nz || 2.4, MIN);
+    // where the pin should land: middle of the strip to the right of the panel
+    const aimX = hidden + (r.width - hidden) / 2;
+    tx = aimX - r.width / 2 - (pin.x / 100 - 0.5) * r.width * z;
+    ty = -(pin.y / 100 - 0.5) * r.height * z;
+    apply();
+  }
+
+  /* ── pins ───────────────────────────────────────────────────────── */
   const byName = new Map((WBK.zones || []).map((zn, i) => [zn.name, i]));
   const expByZone = new Map((WBK.parkExperiences || []).map((p) => [p.zone, p.items]));
+
+  // the label as printed on the map, in the casing the rest of the site uses
+  const keyOf = (pin) =>
+    pin.label === "THE PLANET" ? "The Planet"
+      : pin.label === "WARZONE" ? "Warzone"
+        : pin.label === "PIER" ? "Pier"
+          : pin.zone || pin.label.charAt(0) + pin.label.slice(1).toLowerCase();
 
   // A pin without its own WBK.zones entry still gets a full drawer: the
   // official per-zone experience list and this site's dining entries are
@@ -62,9 +87,7 @@
   function synth(pin) {
     const label = pin.label.replace("KSA 1", "West Gate · KSA 1").replace("KSA 2", "North Gate · KSA 2");
     const pretty = pin.gate ? label : pin.label.charAt(0) + pin.label.slice(1).toLowerCase();
-    const key = pin.label === "THE PLANET" ? "The Planet"
-      : pin.label === "WARZONE" ? "Warzone"
-      : pin.label === "PIER" ? "Pier" : pretty;
+    const key = keyOf(pin);
     const food = (WBK.restaurants || []).filter((r) => r.zone === key).map((r) => r.name);
     return {
       name: pin.gate ? pretty : key,
@@ -94,38 +117,161 @@
     return b;
   });
 
-  function select(i) {
+  function select(i, zoom) {
     const pin = pins[i];
     nodes.forEach((n, k) => n.classList.toggle("on", k === i));
     const ref = pin.zone && byName.has(pin.zone) ? byName.get(pin.zone) : synth(pin);
     window.WBK_GLOBE?.openZone?.(ref);
     hint?.classList.add("gone");
+    if (zoom) framePin(i, zoom);
   }
 
-  // ── filters: dim what you're not looking for ──────────────────────
-  const FILTERS = {
-    all: () => true,
-    experiences: (p) => {
-      const key = p.label === "THE PLANET" ? "The Planet" : p.label === "WARZONE" ? "Warzone"
-        : p.label === "PIER" ? "Pier" : p.label.charAt(0) + p.label.slice(1).toLowerCase();
-      return expByZone.has(key) || expByZone.has(p.zone || "");
-    },
-    dining: (p) => (WBK.restaurants || []).some((r) => r.zone === (p.zone || "")),
-    gates: (p) => !!p.gate,
-  };
-  frame.parentElement.querySelectorAll(".pm-chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      frame.parentElement.querySelectorAll(".pm-chip").forEach((c) => c.classList.remove("on"));
-      chip.classList.add("on");
-      const test = FILTERS[chip.dataset.f] || FILTERS.all;
-      nodes.forEach((n, i) => n.classList.toggle("muted", !test(pins[i])));
+  /* ── the panel's list: everything in the park, one row shape ────── */
+  // a zone-name → photo lookup, so every row can carry a thumbnail
+  const zoneImg = new Map();
+  for (const p of WBK.parkExperiences || []) if (p.img) zoneImg.set(p.zone, "img/zones/" + p.img);
+  for (const r of WBK.restaurants || []) if (!zoneImg.has(r.zone)) zoneImg.set(r.zone, "img/zones/" + r.img);
+  for (const pin of pins) {
+    const k = keyOf(pin);
+    if (!zoneImg.has(k) && pin.extra?.imgs?.length) zoneImg.set(k, "img/zones/" + pin.extra.imgs[0]);
+  }
+  const pinOf = new Map(pins.map((p, i) => [keyOf(p), i]));
+
+  const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
+
+  const items = [];
+  (WBK.rides || []).forEach((r) => items.push({
+    cat: "rides", group: "RECORD-BREAKING RIDES", name: r.name,
+    img: "img/rides/" + r.img, kind: r.kind,
+    meta: [["bolt", r.kind], ["heat", ["Gentle", "Lively", "Full throttle"][(HEAT[r.kind] || 2) - 1]]],
+  }));
+  (WBK.parkExperiences || []).forEach((p) => p.items.forEach((n) => items.push({
+    cat: "rides", group: "EXPERIENCES BY ZONE", name: n, zone: p.zone,
+    img: zoneImg.get(p.zone), meta: [["pin", p.zone]],
+  })));
+  (WBK.restaurants || []).forEach((r) => items.push({
+    cat: "dining", group: "PLACES TO EAT", name: r.name, zone: r.zone,
+    img: "img/zones/" + r.img,
+    meta: [["pin", r.zone], ["price", "from SAR " + r.from]],
+  }));
+  (WBK.showsByZone || []).forEach((s) => s.items.forEach((it) => items.push({
+    cat: "shows", group: "TONIGHT'S SHOWS", name: it.n, zone: s.zone,
+    img: zoneImg.get(s.zone),
+    meta: [["pin", s.zone], ["time", `${it.t} ${it.ap}`], ["bolt", it.ty]],
+  })));
+  pins.forEach((p, i) => {
+    const key = keyOf(p);
+    const nExp = (expByZone.get(key) || []).length;
+    const nEat = (WBK.restaurants || []).filter((r) => r.zone === key).length;
+    items.push({
+      cat: "zones", group: p.gate ? "GATES" : "ZONES", name: p.gate ? p.label : key,
+      zone: key, img: zoneImg.get(key), pin: i,
+      meta: [["pin", p.gate ? "Entrance" : `${nExp} experiences · ${nEat} to eat`]],
     });
   });
 
-  // ── pan: pointer drag, only meaningful once zoomed ─────────────────
+  // the pins interleave gates among zones, so settle the groups into a fixed
+  // order — otherwise a heading repeats every time the list crosses back
+  const GROUPS = ["RECORD-BREAKING RIDES", "EXPERIENCES BY ZONE", "PLACES TO EAT",
+                  "TONIGHT'S SHOWS", "ZONES", "GATES"];
+  items.sort((a, b) => GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+
+  const ICON = {
+    pin: "M8 1.6a4.2 4.2 0 0 0-4.2 4.2c0 3 4.2 8.6 4.2 8.6s4.2-5.6 4.2-8.6A4.2 4.2 0 0 0 8 1.6zm0 5.9a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6z",
+    bolt: "M9.2 1 3.4 9h3.3l-.9 6 5.8-8.4H8.3z",
+    time: "M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4zm.7 7.1H5.9V7.2h1.6V4h1.2z",
+    price: "M8 1.4 9.9 6h4.7l-3.8 2.9 1.4 4.7L8 10.8l-4.2 2.8 1.4-4.7L1.4 6h4.7z",
+    heat: "M8 1.2s3.6 3.1 3.6 6.6a3.6 3.6 0 1 1-7.2 0C4.4 4.3 8 1.2 8 1.2z",
+  };
+  const svg = (k) => `<svg class="rm-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="${ICON[k] || ICON.pin}"/></svg>`;
+
+  function render() {
+    const cat = document.querySelector(".pp-chip.on")?.dataset.cat || "all";
+    const q = (document.getElementById("pp-q")?.value || "").trim().toLowerCase();
+    const hits = items.filter((it) =>
+      (cat === "all" || it.cat === cat) &&
+      (!q || it.name.toLowerCase().includes(q) || (it.zone || "").toLowerCase().includes(q)));
+
+    if (!hits.length) {
+      listEl.innerHTML = `<p class="pp-empty">Nothing matches “${q}”.</p>`;
+      return;
+    }
+
+    let html = "", group = null, n = 0;
+    for (const it of hits) {
+      if (it.group !== group) {
+        group = it.group;
+        html += `<h4 class="pp-group">${group}</h4>`;
+      }
+      const pi = it.pin !== undefined ? it.pin : (it.zone !== undefined ? pinOf.get(it.zone) : undefined);
+      html += `
+        <button class="pp-row" type="button" data-pin="${pi === undefined ? "" : pi}" data-n="${n++}">
+          <span class="rm-shot">${it.img ? `<img src="${it.img}" alt="" loading="lazy">` : ""}</span>
+          <span class="rm-text">
+            <b>${it.name}</b>
+            <span class="rm-meta">${it.meta.map(([k, v]) => `<span>${svg(k)}${v}</span>`).join("")}</span>
+          </span>
+        </button>`;
+    }
+    listEl.innerHTML = html;
+
+    listEl.querySelectorAll(".pp-row").forEach((row) => {
+      row.addEventListener("click", () => {
+        listEl.querySelectorAll(".pp-row").forEach((r) => r.classList.remove("on"));
+        row.classList.add("on");
+        const pi = row.dataset.pin;
+        if (pi !== "") select(Number(pi), 2.4);      // fly the map to its zone
+      });
+    });
+  }
+
+  /* ── panel controls ─────────────────────────────────────────────── */
+  document.querySelectorAll(".pp-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".pp-chip").forEach((c) => c.classList.remove("on"));
+      chip.classList.add("on");
+      render();
+      listEl.scrollTop = 0;
+      // dim the pins that have nothing in the chosen category
+      const cat = chip.dataset.cat;
+      nodes.forEach((nd, i) => {
+        const key = keyOf(pins[i]);
+        const keep = cat === "all" || cat === "zones"
+          || (cat === "dining" && (WBK.restaurants || []).some((r) => r.zone === key))
+          || (cat === "rides" && (expByZone.get(key) || []).length)
+          || (cat === "shows" && (WBK.showsByZone || []).some((s) => s.zone === key));
+        nd.classList.toggle("muted", !keep);
+      });
+    });
+  });
+
+  const q = document.getElementById("pp-q");
+  q?.addEventListener("input", () => { render(); listEl.scrollTop = 0; });
+
+  const mapBtn = document.getElementById("pp-map");
+  const listBtn = document.getElementById("pp-listview");
+  const searchBtn = document.getElementById("pp-searchbtn");
+  function mode(m) {
+    panel.classList.toggle("as-list", m === "list");
+    mapBtn?.setAttribute("aria-pressed", String(m === "map"));
+    listBtn?.setAttribute("aria-pressed", String(m === "list"));
+    mapBtn?.classList.toggle("on", m === "map");
+    listBtn?.classList.toggle("on", m === "list");
+  }
+  mapBtn?.addEventListener("click", () => mode("map"));
+  listBtn?.addEventListener("click", () => mode("list"));
+  searchBtn?.addEventListener("click", () => {
+    panel.classList.toggle("searching");
+    searchBtn.classList.toggle("on", panel.classList.contains("searching"));
+    searchBtn.setAttribute("aria-pressed", String(panel.classList.contains("searching")));
+    if (panel.classList.contains("searching")) q?.focus();
+    else if (q) { q.value = ""; render(); }
+  });
+
+  /* ── pan: pointer drag, only meaningful once zoomed ─────────────── */
   let drag = null;
   frame.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".pm-pin, .pm-zoom, .pm-legend")) return;
+    if (e.target.closest(".pm-pin, .pm-zoom, .pm-status")) return;
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx, ty, moved: 0 };
     frame.setPointerCapture(e.pointerId);
     frame.classList.add("dragging");
@@ -168,8 +314,10 @@
   document.getElementById("pm-reset")?.addEventListener("click", () => {
     z = 1; tx = ty = 0; apply();
     nodes.forEach((n) => n.classList.remove("on"));
+    listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
   });
 
   addEventListener("resize", apply);
+  render();
   apply();
 })();
