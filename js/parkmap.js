@@ -2,7 +2,7 @@
 // Structure follows the Six Flags Qiddiya park-map page: the artwork is the
 // canvas, and a floating panel over it carries search, category chips and a
 // grouped list of everything in the park. Picking a row flies the map to the
-// matching pin; picking a pin points the panel back at that zone.
+// matching pin; picking a pin does the same move from the other direction.
 (() => {
   const frame = document.getElementById("pm-frame");
   if (!frame || !window.WBK) return;
@@ -60,8 +60,13 @@
     const pin = pins[i];
     if (!pin) return;
     const r = frame.getBoundingClientRect();
-    const hidden = panel && getComputedStyle(panel).position === "absolute"
-      ? panel.getBoundingClientRect().width : 0;
+    // how much of the map the panel actually covers — nothing when they sit
+    // side by side, the lot in list mode
+    let hidden = 0;
+    if (panel) {
+      const p = panel.getBoundingClientRect();
+      hidden = Math.max(0, Math.min(p.right, r.right) - Math.max(p.left, r.left));
+    }
     z = Math.max(nz || 2.4, MIN);
     // where the pin should land: middle of the strip to the right of the panel
     const aimX = hidden + (r.width - hidden) / 2;
@@ -92,14 +97,14 @@
     b.innerHTML = `<i class="pm-dot"></i><span class="pm-tag">${pin.label}</span>`;
     b.addEventListener("click", (e) => {
       e.stopPropagation();
-      select(i);
+      select(i, 2.4);        // same move as picking the row in the panel
     });
     pinLayer.appendChild(b);
     return b;
   });
 
-  // picking a pin points the panel at that zone — search it, scroll to it —
-  // rather than opening a drawer over the map
+  // one interaction, whichever side it starts from: the pin lights up, the map
+  // flies onto it, and the panel scrolls its row into view and highlights it
   function select(i, zoom) {
     const pin = pins[i];
     nodes.forEach((n, k) => n.classList.toggle("on", k === i));
@@ -113,7 +118,13 @@
     if (row) {
       listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
       row.classList.add("on");
-      row.scrollIntoView({ block: "center", behavior: "smooth" });
+      // scroll the list itself, never scrollIntoView: that walks every
+      // scrollable ancestor and would drag the page off the map
+      const delta = row.getBoundingClientRect().top - listEl.getBoundingClientRect().top;
+      listEl.scrollTo({
+        top: Math.max(0, listEl.scrollTop + delta - (listEl.clientHeight - row.offsetHeight) / 2),
+        behavior: "smooth",
+      });
     }
   }
 
@@ -154,10 +165,18 @@
     const key = keyOf(p);
     const nExp = (expByZone.get(key) || []).length;
     const nEat = (WBK.restaurants || []).filter((r) => r.zone === key).length;
+    const nShow = (WBK.showsByZone || []).filter((s) => s.zone === key)
+      .reduce((n, s) => n + s.items.length, 0);
+    // only count what the zone actually has — the official sheet lists
+    // experiences for ten zones, so zeros everywhere else would read as broken
+    const bits = [];
+    if (nExp) bits.push(`${nExp} experience${nExp > 1 ? "s" : ""}`);
+    if (nEat) bits.push(`${nEat} to eat`);
+    if (nShow) bits.push(`${nShow} show${nShow > 1 ? "s" : ""}`);
     items.push({
       cat: "zones", group: p.gate ? "GATES" : "ZONES", name: p.gate ? p.label : key,
       zone: key, img: zoneImg.get(key), pin: i,
-      meta: [["pin", p.gate ? "Entrance" : `${nExp} experiences · ${nEat} to eat`]],
+      meta: [["pin", p.gate ? "Park entrance" : bits.join(" · ") || "Walk-through zone"]],
     });
   });
 

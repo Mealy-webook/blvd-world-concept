@@ -227,7 +227,7 @@
     const rail = document.querySelector("#scroll-rail i");
     const stickyBar = document.getElementById("sticky-cta");
     const bloom = document.getElementById("fold-bloom");
-    const tabs = [...document.querySelectorAll("#sc-tabs a")];
+    const tabs = [...document.querySelectorAll("#sticky-cta [data-sec]")];
 
     // tabs scroll the inner container (a plain anchor jump would not work,
     // because the page scrolls inside #view-home rather than the window)

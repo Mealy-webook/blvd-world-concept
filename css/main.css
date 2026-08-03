@@ -469,20 +469,27 @@ body.chrome-on
 /* the artwork is the canvas; the discovery panel floats over it */
 .pmap {
   position: relative; z-index: 11;
-  padding: clamp(60px, 11vh, 110px) clamp(16px, 4vw, 48px) clamp(60px, 11vh, 110px);
+  /* full-bleed sides: the map runs edge to edge */
+  padding: clamp(60px, 11vh, 110px) 0 clamp(60px, 11vh, 110px);
   display: grid; gap: 28px; justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
-.pm-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(760px, 100%); }
+.pm-head { text-align: center; display: grid; gap: 14px; justify-items: center; padding: 0 6vw; max-width: min(760px, 100%); }
 .pm-shell {
-  position: relative; width: 100%; max-width: min(1320px, 100%);
-  border-radius: 24px; overflow: hidden;
-  border: 1px solid rgba(124, 196, 255, .18);
+  /* two columns: the panel owns the left, the map the right. Nothing overlaps,
+     so the whole plan is visible at rest. */
+  position: relative; width: 100%;
+  /* a fixed first track reserves the panel's space; the panel itself is taken
+     out of flow so its 200-odd rows can't stretch the row height */
+  display: grid; grid-template-columns: 380px minmax(0, 1fr);
+  border-radius: 0; overflow: hidden;
+  border: 1px solid rgba(124, 196, 255, .18); border-inline: 0;
   box-shadow: 0 34px 80px rgba(2, 4, 14, .6);
-  background: #0a1b3a;
+  background: linear-gradient(180deg, rgba(9, 14, 38, .96), rgba(6, 10, 28, .98));
 }
 
 .pm-frame {
-  position: relative; width: 100%; aspect-ratio: 3855 / 2110; overflow: hidden;
+  grid-column: 2; position: relative; width: 100%; min-width: 0;
+  aspect-ratio: 3855 / 2110; overflow: hidden;
   cursor: grab; touch-action: pan-y pinch-zoom;
 }
 .pm-frame.dragging { cursor: grabbing; }
@@ -563,20 +570,32 @@ body.chrome-on
   backdrop-filter: blur(6px); transition: opacity .4s, transform .4s;
 }
 .pm-hint.gone { opacity: 0; transform: translate(-50%, 8px); }
+/* the map shortcut in the booking bar, alongside the CTAs */
+.sc-icon {
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+  background: rgba(124, 196, 255, .08); border: 1px solid rgba(124, 196, 255, .26);
+  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+.sc-icon:hover { background: rgba(124, 196, 255, .2); transform: translateY(-1px); box-shadow: 0 0 16px rgba(77, 166, 255, .4); }
+.sc-icon.on { background: linear-gradient(160deg, #ffd98a, #ffc24d); border-color: transparent; }
+.sc-icon .ppi-map { width: 17px; height: 17px; }
+.sc-icon.on .ppi-map { border-color: #0b1030; }
+.sc-icon.on .ppi-map::after { background: #0b1030; box-shadow: 0 4px 0 #0b1030; }
+
 .pm-credit { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5b6a94; }
 
 /* ── the floating discovery panel ── */
 .pm-panel {
-  position: absolute; z-index: 8; left: 18px; top: 18px; bottom: 18px;
-  width: min(370px, calc(100% - 36px));
-  display: flex; flex-direction: column; border-radius: 18px; overflow: hidden;
-  background: linear-gradient(180deg, rgba(9, 14, 38, .95), rgba(6, 10, 28, .97));
-  border: 1px solid rgba(124, 196, 255, .2);
-  box-shadow: 0 26px 60px rgba(2, 4, 14, .6);
-  backdrop-filter: blur(16px);
-  transition: width .45s cubic-bezier(.2,.8,.25,1);
+  position: absolute; z-index: 8; left: 0; top: 0; bottom: 0; width: 380px;
+  display: flex; flex-direction: column; overflow: hidden;
+  background: linear-gradient(180deg, rgba(9, 14, 38, .96), rgba(6, 10, 28, .98));
+  border-right: 1px solid rgba(124, 196, 255, .16);
 }
-.pm-panel.as-list { width: calc(100% - 36px); }
+/* list mode: the panel takes the whole shell, since the rows want the width */
+.pm-panel.as-list {
+  position: absolute; inset: 0; width: auto; z-index: 9;   /* width: auto, or the 380px track wins */
+  border-right: 0; backdrop-filter: blur(10px);
+}
 .pp-head {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 16px 16px 12px; flex: none;
@@ -680,13 +699,14 @@ body.chrome-on
 .pm-panel.as-list .pp-group { grid-column: 1 / -1; }
 
 @media (max-width: 900px) {
-  .pm-shell { aspect-ratio: auto; }
-  .pm-frame { border-radius: 0; }
+  /* one column: map on top, panel below it */
+  .pm-shell { grid-template-columns: minmax(0, 1fr); }
   .pm-panel {
-    position: relative; inset: auto; width: 100%; max-height: 60vh;
-    border-radius: 0; border-width: 1px 0 0; backdrop-filter: none;
+    position: relative; inset: auto; width: 100%; grid-row: 2; max-height: 60vh;
+    border-right: 0; border-top: 1px solid rgba(124, 196, 255, .16);
   }
-  .pm-panel.as-list { width: 100%; }
+  .pm-panel.as-list { position: relative; inset: auto; backdrop-filter: none; }
+  .pm-frame { grid-column: 1; grid-row: 1; }
   .pm-status { top: 10px; right: 10px; }
   .ps-item { font-size: 9px; letter-spacing: .06em; padding: 6px 9px; }
   .pm-hint { display: none; }

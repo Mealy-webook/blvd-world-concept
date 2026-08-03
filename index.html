@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=112" />
+<link rel="stylesheet" href="css/main.css?v=122" />
 </head>
 <body class="typo-body">
 
@@ -145,30 +145,7 @@
       </div>
 
       <div class="pm-shell reveal">
-        <!-- the map itself: the canvas everything else floats over -->
-        <div class="pm-frame" id="pm-frame">
-          <div class="pm-stage" id="pm-stage">
-            <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
-              alt="Official BLVD World park map" draggable="false" />
-            <div class="pm-pins" id="pm-pins"></div>
-          </div>
-
-          <div class="pm-status">
-            <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
-            <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
-            <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
-          </div>
-
-          <div class="pm-zoom">
-            <button id="pm-in" type="button" aria-label="Zoom in">+</button>
-            <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
-            <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
-          </div>
-
-          <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
-        </div>
-
-        <!-- floating panel: search, categories, and everything in the park -->
+        <!-- the discovery panel: its own column, so the map is never behind it -->
         <aside class="pm-panel" id="pm-panel">
           <header class="pp-head">
             <h3>Discover the park</h3>
@@ -197,6 +174,30 @@
 
           <div class="pp-list" id="pp-list"></div>
         </aside>
+
+        <!-- the map: fills its own column, whole plan visible -->
+        <div class="pm-frame" id="pm-frame">
+          <div class="pm-stage" id="pm-stage">
+            <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
+              alt="Official BLVD World park map" draggable="false" />
+            <div class="pm-pins" id="pm-pins"></div>
+          </div>
+
+          <div class="pm-status">
+            <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
+            <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
+            <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
+          </div>
+
+          <div class="pm-zoom">
+            <button id="pm-in" type="button" aria-label="Zoom in">+</button>
+            <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
+            <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
+          </div>
+
+          <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
+        </div>
+
       </div>
 
       <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
@@ -453,6 +454,8 @@
       <a href="#faqs" data-sec="faqs">FAQ</a>
     </nav>
     <div class="sc-actions">
+      <a href="#parkmap" data-sec="parkmap" class="sc-icon" aria-label="Open the park map"
+         title="Park map"><span class="ppi-map"></span></a>
       <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid sc-pill">BOOK ENTRY TICKET</a>
       <a href="#/experiences" class="pill ghost sc-pill">BOOK ENTRY + EXPERIENCE</a>
     </div>
@@ -461,15 +464,15 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=112"></script>
-  <script src="js/borders.js?v=112"></script>
-  <script src="js/scene.js?v=112"></script>
-  <script src="js/app.js?v=112"></script>
-  <script src="js/experiences.js?v=112"></script>
-  <script src="js/carousels.js?v=112"></script>
-  <script src="js/fan.js?v=112"></script>
-  <script src="js/gallery.js?v=112"></script>
-  <script src="js/parkmap.js?v=112"></script>
-  <script type="module" src="js/globe.js?v=112"></script>
+  <script src="js/data.js?v=122"></script>
+  <script src="js/borders.js?v=122"></script>
+  <script src="js/scene.js?v=122"></script>
+  <script src="js/app.js?v=122"></script>
+  <script src="js/experiences.js?v=122"></script>
+  <script src="js/carousels.js?v=122"></script>
+  <script src="js/fan.js?v=122"></script>
+  <script src="js/gallery.js?v=122"></script>
+  <script src="js/parkmap.js?v=122"></script>
+  <script type="module" src="js/globe.js?v=122"></script>
 </body>
 </html>
