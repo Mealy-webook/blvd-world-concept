@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=78" />
+<link rel="stylesheet" href="css/main.css?v=80" />
 </head>
 <body class="typo-body">
 
@@ -260,7 +260,14 @@
         <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
           tagines to tacos — all in one night, all on foot.</p>
       </div>
-      <div class="eat-grid" id="eat-grid"></div>
+      <div class="cf-wrap">
+        <div class="cf-stage" id="cf-stage">
+          <div class="cf-track" id="cf-track"></div>
+          <button class="car-btn cf-prev" id="cf-prev" aria-label="Previous restaurant">‹</button>
+          <button class="car-btn cf-next" id="cf-next" aria-label="Next restaurant">›</button>
+        </div>
+        <div class="cf-label" id="cf-label"></div>
+      </div>
     </section>
 
     <!-- ── daily shows ── -->
@@ -272,8 +279,23 @@
           come alive on a schedule from 8:30 PM until past 1 AM.</p>
       </div>
       <div class="show-tabs" id="show-tabs" role="tablist"></div>
-      <div class="show-rail" id="show-rail"></div>
-      <p class="show-note reveal">Ramadan schedule · times may vary by night</p>
+      <div class="wh-wrap">
+        <button class="car-btn wh-up" id="wh-up" aria-label="Earlier show">‹</button>
+        <div class="wh-stage" id="wh-stage">
+          <div class="wh-track" id="wh-track"></div>
+          <div class="wh-window" aria-hidden="true"></div>
+        </div>
+        <button class="car-btn wh-down" id="wh-down" aria-label="Later show">›</button>
+      </div>
+      <div class="wh-meta" id="wh-meta"></div>
+      <div class="show-actions">
+        <a class="pill solid" id="dl-schedule"
+           href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
+           target="_blank" rel="noopener" download>
+          <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
+        </a>
+        <p class="show-note">Ramadan schedule · drag the wheel · times may vary by night</p>
+      </div>
     </section>
 
     <!-- ── FAQs ── -->
@@ -462,11 +484,12 @@
   <button id="snd-btn" class="snd" aria-label="Toggle music"><span class="snd-ic">♪</span><i class="snd-off-line"></i></button>
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=78"></script>
-  <script src="js/borders.js?v=78"></script>
-  <script src="js/scene.js?v=78"></script>
-  <script src="js/app.js?v=78"></script>
-  <script src="js/experiences.js?v=78"></script>
-  <script type="module" src="js/globe.js?v=78"></script>
+  <script src="js/data.js?v=80"></script>
+  <script src="js/borders.js?v=80"></script>
+  <script src="js/scene.js?v=80"></script>
+  <script src="js/app.js?v=80"></script>
+  <script src="js/experiences.js?v=80"></script>
+  <script src="js/carousels.js?v=80"></script>
+  <script type="module" src="js/globe.js?v=80"></script>
 </body>
 </html>
