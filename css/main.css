@@ -656,7 +656,7 @@ body.chrome-on
 .pp-chip.on { color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d); border-color: transparent; }
 /* scoped names: a bare `.rides`/`.shows` here would hit the section rules */
 .cc { width: 9px; height: 9px; border-radius: 2px; flex: none; }
-.cc-all { background: #8ff3ff; } .cc-rides { background: #ffc24d; }
+.cc-rides { background: #ffc24d; }
 .cc-dining { background: #ff9fdf; } .cc-shows { background: #c4a8ff; } .cc-zones { background: #7fe0a8; }
 .pp-chip.on .cc { background: rgba(11, 16, 48, .55); }
 
@@ -1019,21 +1019,6 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 }
 
 /* ═══════════════ SOUND TOGGLE ═══════════════ */
-.snd {
-  position: fixed; left: 24px; bottom: 24px; z-index: 60;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(8, 12, 36, .72); border: 1.5px solid rgba(124, 196, 255, .45);
-  backdrop-filter: blur(10px); box-shadow: 0 0 22px rgba(20, 40, 120, .5);
-  display: grid; place-items: center; font-size: 20px; color: #cfe4ff;
-  opacity: 0; pointer-events: none; transition: opacity .6s, box-shadow .3s, border-color .3s;
-}
-body.chrome-on .snd { opacity: 1; pointer-events: auto; }
-.snd:hover { box-shadow: 0 0 30px rgba(77, 166, 255, .6); }
-.snd.playing { border-color: rgba(53, 224, 255, .9); box-shadow: 0 0 26px rgba(53, 224, 255, .55); color: #8ff3ff; }
-.snd.playing .snd-ic { animation: sndBob 1.2s ease-in-out infinite; }
-@keyframes sndBob { 50% { transform: translateY(-3px) rotate(-8deg); } }
-.snd-off-line { position: absolute; width: 30px; height: 2.5px; border-radius: 2px; background: #ff5f8f; transform: rotate(-45deg); box-shadow: 0 0 8px rgba(255, 95, 143, .8); transition: opacity .25s; }
-.snd.playing .snd-off-line { opacity: 0; }
 
 
 /* ═══════════════ EXPERIENCES (light editorial stage) ═══════════════ */
@@ -1145,10 +1130,6 @@ body.route-experiences
   .xp-nav { display: none; }
   .xp-stage::after { bottom: 25%; }
   /* keep the music toggle clear of the price block */
-  body.route-experiences .snd {
-    top: clamp(16px, 3vh, 34px); bottom: auto; left: auto; right: 4vw;
-    width: 44px; height: 44px; font-size: 17px;
-  }
 }
 
 /* ═══════════════ LETTER FLOW ═══════════════ */

@@ -133,11 +133,21 @@
   const zoneImg = new Map();
   for (const p of WBK.parkExperiences || []) if (p.img) zoneImg.set(p.zone, "img/zones/" + p.img);
   for (const r of WBK.restaurants || []) if (!zoneImg.has(r.zone)) zoneImg.set(r.zone, "img/zones/" + r.img);
+  // the globe's zone gallery is the last fallback, so zones that appear in
+  // neither the experience sheet nor the dining list still get a thumbnail
+  for (const zn of WBK.zones || []) if (!zoneImg.has(zn.name) && zn.imgs?.length) zoneImg.set(zn.name, "img/zones/" + zn.imgs[0]);
   for (const pin of pins) {
     const k = keyOf(pin);
     if (!zoneImg.has(k) && pin.extra?.imgs?.length) zoneImg.set(k, "img/zones/" + pin.extra.imgs[0]);
   }
   const pinOf = new Map(pins.map((p, i) => [keyOf(p), i]));
+
+  // the shows sheet names two zones its own way; alias them so those rows
+  // still get a thumbnail and still fly the map to the right pin
+  for (const [alias, canon] of [["Korea", "South Korea"], ["USA", "United States"]]) {
+    if (!zoneImg.has(alias) && zoneImg.has(canon)) zoneImg.set(alias, zoneImg.get(canon));
+    if (!pinOf.has(alias) && pinOf.has(canon)) pinOf.set(alias, pinOf.get(canon));
+  }
 
   const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
 
@@ -196,10 +206,10 @@
   const svg = (k) => `<svg class="rm-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="${ICON[k] || ICON.pin}"/></svg>`;
 
   function render() {
-    const cat = document.querySelector(".pp-chip.on")?.dataset.cat || "all";
+    const cat = document.querySelector(".pp-chip.on")?.dataset.cat || "rides";
     const q = (document.getElementById("pp-q")?.value || "").trim().toLowerCase();
     const hits = items.filter((it) =>
-      (cat === "all" || it.cat === cat) &&
+      it.cat === cat &&
       (!q || it.name.toLowerCase().includes(q) || (it.zone || "").toLowerCase().includes(q)));
 
     if (!hits.length) {
@@ -246,7 +256,7 @@
       const cat = chip.dataset.cat;
       nodes.forEach((nd, i) => {
         const key = keyOf(pins[i]);
-        const keep = cat === "all" || cat === "zones"
+        const keep = cat === "zones"
           || (cat === "dining" && (WBK.restaurants || []).some((r) => r.zone === key))
           || (cat === "rides" && (expByZone.get(key) || []).length)
           || (cat === "shows" && (WBK.showsByZone || []).some((s) => s.zone === key));
