@@ -1440,14 +1440,19 @@ body.route-experiences
   transform: translateY(-4px); background: #fff;
   box-shadow: 0 18px 40px rgba(2, 4, 14, .5), 0 0 24px rgba(255, 194, 77, .18);
 }
-.sp-plate img { display: block; height: 52px; width: auto; }
-.sp-tier:first-child .sp-plate img { height: 62px; }   /* premium reads largest */
+.sp-plate img {
+  display: block; height: 52px; width: auto;
+  /* wide bilingual lockups would otherwise hog the row — contain keeps them
+     from distorting once the cap kicks in */
+  max-width: 168px; object-fit: contain;
+}
+.sp-tier:first-child .sp-plate img { height: 60px; max-width: 186px; }   /* premium reads largest */
 /* the two single-logo tiers share a row */
 .sp-pair { display: flex; flex-wrap: wrap; gap: clamp(30px, 7vw, 90px); justify-content: center; }
 .sp-pair .sp-tier { width: auto; }
 @media (max-width: 700px) {
   .sp-plate { padding: 13px 16px; border-radius: 13px; }
-  .sp-plate img, .sp-tier:first-child .sp-plate img { height: 40px; }
+  .sp-plate img, .sp-tier:first-child .sp-plate img { height: 40px; max-width: 128px; }
   .sp-label { font-size: 11px; letter-spacing: .16em; }
 }
 

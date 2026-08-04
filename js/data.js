@@ -84,12 +84,15 @@ window.WBK = {
   ],
 
   // ── partners, as printed on the official park map ──
+  // Five logos are official SVGs from Wikimedia Commons; the rest stay as
+  // crops from the map PDF, because no SVG could be confirmed as the same
+  // mark and substituting a near-miss would be worse than a soft raster.
   // the red premium mark could not be read at the PDF's resolution — its name
   // is left blank until someone confirms it
   partners: [
     { tier: "OFFICIAL PREMIUM PARTNERS", logos: [
-      { name: "SNB",                  img: "SNB.png" },
-      { name: "stc",                  img: "stc.png" },
+      { name: "SNB",                  img: "SNB.svg" },
+      { name: "stc",                  img: "stc.svg" },
       { name: "Dr Sulaiman Al Habib", img: "Dr-Sulaiman-Al-Habib.png" },
       { name: "",                     img: "Bupa.png" },
       { name: "aramco",               img: "aramco.png" },
@@ -97,14 +100,14 @@ window.WBK = {
     { tier: "OFFICIAL STRATEGIC PARTNERS", logos: [
       { name: "MUC \u00b7 Mayyar United", img: "MUC-Mayyar-United.png" },
       { name: "AROYA Cruises",            img: "AROYA-Cruises.png" },
-      { name: "Sadia",                    img: "Sadia.png" },
+      { name: "Sadia",                    img: "Sadia.svg" },
       { name: "SHG",                      img: "SHG.png" },
     ] },
     { tier: "OFFICIAL MAIN PARTNERS", logos: [
       { name: "Checkapp",  img: "Checkapp.png" },
-      { name: "Dunkin'",   img: "Dunkin.png" },
+      { name: "Dunkin'",   img: "Dunkin.svg" },
       { name: "shawarmer", img: "shawarmer.png" },
-      { name: "Coca-Cola", img: "Coca-Cola.png" },
+      { name: "Coca-Cola", img: "Coca-Cola.svg" },
       { name: "Saudia",    img: "Saudia.png" },
     ] },
     { tier: "OFFICIAL CO SPONSOR", logos: [
