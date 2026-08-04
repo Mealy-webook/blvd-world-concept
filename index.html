@@ -181,10 +181,22 @@
             <p class="bc-num">5312 &nbsp;7788 &nbsp;0142 &nbsp;2026</p>
             <div class="bc-foot">
               <span class="bc-name">GAME &amp; RIDE CARD</span>
-              <span class="bc-bal">SAR <b>250</b></span>
+              <span class="bc-bal">SAR <b id="bc-amount">250</b></span>
             </div>
+            <i class="bc-glare" aria-hidden="true"></i>
           </div>
           <div class="card-glow" aria-hidden="true"></div>
+
+          <!-- top-up demo: the amounts drive the balance on the card -->
+          <div class="topup" id="topup">
+            <span class="tu-label">TOP UP</span>
+            <div class="tu-chips">
+              <button class="tu-chip" type="button" data-add="50">+50</button>
+              <button class="tu-chip" type="button" data-add="100">+100</button>
+              <button class="tu-chip" type="button" data-add="250">+250</button>
+            </div>
+            <span class="tu-tap" id="tu-tap">TAP TO PLAY</span>
+          </div>
         </div>
 
         <div class="cash-copy">
@@ -539,18 +551,18 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=144"></script>
-  <script src="js/borders.js?v=144"></script>
-  <script src="js/scene.js?v=144"></script>
-  <script src="js/app.js?v=144"></script>
-  <script src="js/experiences.js?v=144"></script>
-  <script src="js/carousels.js?v=144"></script>
-  <script src="js/fan.js?v=144"></script>
-  <script src="js/gallery.js?v=144"></script>
-  <script src="js/parkmap.js?v=144"></script>
-  <script src="js/sponsors.js?v=144"></script>
-  <script src="js/cashless.js?v=144"></script>
+  <script src="js/data.js?v=146"></script>
+  <script src="js/borders.js?v=146"></script>
+  <script src="js/scene.js?v=146"></script>
+  <script src="js/app.js?v=146"></script>
+  <script src="js/experiences.js?v=146"></script>
+  <script src="js/carousels.js?v=146"></script>
+  <script src="js/fan.js?v=146"></script>
+  <script src="js/gallery.js?v=146"></script>
+  <script src="js/parkmap.js?v=146"></script>
+  <script src="js/sponsors.js?v=146"></script>
+  <script src="js/cashless.js?v=146"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=144"></script> -->
+  <script type="module" src="js/globe.js?v=146"></script> -->
 </body>
 </html>

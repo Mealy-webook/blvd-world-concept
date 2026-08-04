@@ -84,17 +84,18 @@ window.WBK = {
   ],
 
   // ── partners, as printed on the official park map ──
-  // Five logos are official SVGs from Wikimedia Commons; the rest stay as
-  // crops from the map PDF, because no SVG could be confirmed as the same
-  // mark and substituting a near-miss would be worse than a soft raster.
+  // Seven logos are official SVGs (Wikimedia Commons, hmg.com, shawarmer.com);
+  // the rest stay as crops from the map PDF, because no SVG could be confirmed
+  // as the same mark and a near-miss would be worse than a soft raster.
+  // The red mark printed beside Dr Sulaiman Al Habib is part of that lockup —
+  // an earlier crop had split it out as a separate partner by mistake.
   // the red premium mark could not be read at the PDF's resolution — its name
   // is left blank until someone confirms it
   partners: [
     { tier: "OFFICIAL PREMIUM PARTNERS", logos: [
       { name: "SNB",                  img: "SNB.svg" },
       { name: "stc",                  img: "stc.svg" },
-      { name: "Dr Sulaiman Al Habib", img: "Dr-Sulaiman-Al-Habib.png" },
-      { name: "",                     img: "Bupa.png" },
+      { name: "Dr Sulaiman Al Habib", img: "Dr-Sulaiman-Al-Habib.svg" },
       { name: "aramco",               img: "aramco.png" },
     ] },
     { tier: "OFFICIAL STRATEGIC PARTNERS", logos: [
@@ -106,7 +107,7 @@ window.WBK = {
     { tier: "OFFICIAL MAIN PARTNERS", logos: [
       { name: "Checkapp",  img: "Checkapp.png" },
       { name: "Dunkin'",   img: "Dunkin.svg" },
-      { name: "shawarmer", img: "shawarmer.png" },
+      { name: "shawarmer", img: "shawarmer.svg" },
       { name: "Coca-Cola", img: "Coca-Cola.svg" },
       { name: "Saudia",    img: "Saudia.png" },
     ] },

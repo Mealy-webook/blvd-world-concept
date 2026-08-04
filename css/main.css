@@ -907,6 +907,48 @@ body.chrome-on
   background: radial-gradient(50% 50% at 50% 50%, rgba(139, 92, 246, .45), rgba(255, 62, 200, .16) 52%, transparent 74%);
 }
 
+/* a hard specular streak that sweeps as the card turns */
+.bc-glare {
+  position: absolute; inset: -2px; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 34%, rgba(255, 255, 255, .38) 46%, rgba(255, 255, 255, .06) 52%, transparent 62%);
+  transform: translateX(var(--glare, -30%));
+  transition: transform .12s linear, opacity .3s;
+  opacity: .75;
+}
+/* ── top-up strip: the card's balance responds to it ── */
+.topup {
+  position: relative; z-index: 3; margin-top: clamp(14px, 2.4vw, 26px);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+}
+.tu-label { font-family: var(--disp); font-size: 10px; letter-spacing: .2em; color: var(--gold); }
+.tu-chips { display: flex; gap: 8px; }
+.tu-chip {
+  font-family: var(--disp); font-size: 13px; letter-spacing: .06em; color: #eaf2ff;
+  padding: 9px 16px; border-radius: 999px;
+  background: rgba(124, 196, 255, .07); border: 1px solid rgba(124, 196, 255, .26);
+  transition: background .2s, border-color .2s, transform .15s, color .2s;
+}
+.tu-chip:hover { background: rgba(255, 194, 77, .18); border-color: rgba(255, 194, 77, .6); color: #fff; transform: translateY(-2px); }
+.tu-chip:active { transform: translateY(0) scale(.96); }
+.tu-tap {
+  font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: #5b6a94; transition: color .25s, opacity .25s;
+}
+.tu-tap.on { color: #8ff3ff; }
+/* the balance flashes as it counts up */
+.bc-bal b { transition: color .25s, text-shadow .25s; }
+.bc-bal b.bump { color: #8ff3ff; text-shadow: 0 0 18px rgba(53, 224, 255, .85); }
+/* a ring pulses out of the chip when the card is tapped */
+.blvd-card.tapped .bc-chip::after {
+  content: ''; position: absolute; inset: -6px; border-radius: 10px;
+  border: 2px solid rgba(53, 224, 255, .9);
+  animation: tapRing .7s cubic-bezier(.2,.8,.25,1) forwards;
+}
+@keyframes tapRing {
+  from { transform: scale(1); opacity: .9; }
+  to   { transform: scale(2.1); opacity: 0; }
+}
 /* ── the copy column ── */
 .cash-copy { display: grid; gap: 30px; }
 .cash-head { display: grid; gap: 14px; }
