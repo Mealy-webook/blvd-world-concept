@@ -95,6 +95,8 @@
              zIndex: 10 - Math.abs(slot - center) };
   }
 
+  const STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   /* ── the deck ── */
   function makeFan({ deckId, prevId, nextId, dotsId, items, card }) {
     const deck = document.getElementById(deckId);
@@ -189,7 +191,10 @@
           const c = slotConfig(slotCount, slot);
           const target = { x: c.x * mult, y: c.y * hM, rot: c.rot, scale: c.scale, opacity: 1, zIndex: c.zIndex };
 
-          if (first) {
+          if (first && STILL) {
+            set(el, target);                       // place it, don't perform it
+            settle();
+          } else if (first) {
             // the deck deals itself out from a single stack below
             set(el, { x: 0, y: 12 * hM, rot: 0, scale: 0.5, opacity: 0, zIndex: c.zIndex });
             to(el, target, { duration: 1.2, ease: EASE_ENTER, delay: 0.2 + slot * 0.06, onDone: settle });
