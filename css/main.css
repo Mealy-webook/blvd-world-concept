@@ -1612,18 +1612,16 @@ body.route-experiences
 }
 .sp-logos { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: center; }
 .sp-plate {
-  display: grid; place-items: center; padding: 17px 22px; border-radius: 16px;
-  background: rgba(255, 255, 255, .94);
-  border: 1px solid rgba(124, 196, 255, .14);
-  box-shadow: 0 10px 26px rgba(2, 4, 14, .35);
-  transition: transform .3s cubic-bezier(.2,.8,.25,1), box-shadow .3s, background .3s;
+  display: grid; place-items: center; padding: 14px 20px;
+  transition: transform .5s var(--ease), opacity .35s var(--ease);
 }
-.sp-plate:hover {
-  transform: translateY(-4px); background: #fff;
-  box-shadow: 0 18px 40px rgba(2, 4, 14, .5), 0 0 24px rgba(255, 194, 77, .18);
-}
+.sp-plate:hover { transform: translateY(-3px); }
+.sp-plate:hover img { opacity: 1; }
 .sp-plate img {
   display: block; height: 52px; width: auto;
+  /* one white family: the SVGs are colour, the crops are already white ink */
+  filter: brightness(0) invert(1);
+  opacity: .68; transition: opacity .35s var(--ease);
   /* wide bilingual lockups would otherwise hog the row — contain keeps them
      from distorting once the cap kicks in */
   max-width: 168px; object-fit: contain;
