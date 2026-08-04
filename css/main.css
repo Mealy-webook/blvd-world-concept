@@ -793,6 +793,18 @@ body.chrome-on
 @media (max-width: 639px)  { .fan-stage { height: min(26rem, 58vh); } .fan-card { border-radius: 14px; } .fan-meta h3 { font-size: 15px; } .rh-label { display: none; } }
 @media (max-width: 479px)  { .fan-stage { height: min(22rem, 56vh); } .fan-meta h3 { font-size: 13.5px; } }
 
+/* ── the experiences deck reuses the fan, with a price line ── */
+.pex { background: none; }
+.ride-kind.zone { color: #c4a8ff; background: rgba(24, 12, 48, .6); border-color: rgba(139, 92, 246, .5); }
+.fan-price { display: grid; gap: 1px; }
+.fan-price b {
+  font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; color: #fff;
+  text-shadow: 0 0 16px rgba(255, 194, 77, .4);
+}
+.fan-price span { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8f9dc4; }
+.fan-card.is-exp { border-color: rgba(139, 92, 246, .3); }
+.fan-card.is-exp:hover { border-color: rgba(196, 168, 255, .7); }
+
 /* how hard a ride hits, drawn as filled bars */
 .ride-heat { display: flex; align-items: center; gap: 8px; }
 .rh-bars { display: inline-flex; gap: 3px; align-items: flex-end; }

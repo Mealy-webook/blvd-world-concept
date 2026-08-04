@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=98" />
+<link rel="stylesheet" href="css/main.css?v=150" />
 </head>
 <body class="typo-body">
 
@@ -165,6 +165,30 @@
       </div>
     </section>
 
+    <!-- ── experiences: the same fanned deck, its own content ── -->
+    <section class="rides pex" id="pex">
+      <div class="rides-head reveal">
+        <p class="eyebrow"><span class="sec-num">02</span> STEP INSIDE SOMETHING ELSE</p>
+        <h2 class="sec-title">TEN EXPERIENCES</h2>
+        <p class="sec-sub">Ski a real snow dome, break out of a pharaoh's tomb, meet the dolphins —
+          every experience ticket includes park entry.</p>
+      </div>
+
+      <div class="fan-stage">
+        <div class="fan-deck" id="pex-fan"></div>
+      </div>
+      <div class="fan-nav">
+        <button class="rail-btn prev" id="pex-prev" aria-label="Previous experiences">&#8249;</button>
+        <div class="fan-dots" id="pex-dots"></div>
+        <button class="rail-btn next" id="pex-next" aria-label="More experiences">&#8250;</button>
+      </div>
+
+      <div class="ride-cta reveal">
+        <p class="rc-note">Experiences from <b>SAR 150</b> per person</p>
+        <a href="#/experiences" class="pill solid big-pill">BOOK ENTRY + EXPERIENCE</a>
+      </div>
+    </section>
+
     <!-- ── cashless: the BLVD card, in 3D ── -->
     <section class="cashless" id="cashless">
       <div class="cash-grid">
@@ -201,7 +225,7 @@
 
         <div class="cash-copy">
           <div class="cash-head reveal">
-            <p class="eyebrow"><span class="sec-num">02</span> ONE CARD, ALL NIGHT</p>
+            <p class="eyebrow"><span class="sec-num">03</span> ONE CARD, ALL NIGHT</p>
             <h2 class="sec-title">GO CASHLESS</h2>
             <p class="sec-sub">Every Boulevard World ticket comes with a BLVD card. Top it up in the
               webook app and tap it to play — rides, arcades and skill games, no queuing at a till.</p>
@@ -242,7 +266,7 @@
     <!-- ── restaurants ── -->
     <section class="eats" id="eats">
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> EAT YOUR WAY AROUND</p>
+        <p class="eyebrow"><span class="sec-num">04</span> EAT YOUR WAY AROUND</p>
         <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
         <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
           tagines to tacos — all in one night, all on foot.</p>
@@ -257,7 +281,7 @@
     <!-- ── daily shows ── -->
     <section class="shows" id="shows">
       <div class="shows-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> EVERY NIGHT, EVERY ZONE</p>
+        <p class="eyebrow"><span class="sec-num">05</span> EVERY NIGHT, EVERY ZONE</p>
         <h2 class="sec-title">DAILY SHOWS</h2>
         <p class="sec-sub">Parades, folkloric dance, storytellers and the Mesaharati — the park's zones
           come alive on a schedule from 8:30 PM until past 1 AM.</p>
@@ -277,7 +301,7 @@
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> THE PARK AFTER DARK</p>
+        <p class="eyebrow"><span class="sec-num">06</span> THE PARK AFTER DARK</p>
         <h2 class="sec-title">SEE IT FOR<br/>YOURSELF</h2>
         <p class="sec-sub">Fireworks over the lake, projections on the rock, cable cars over the
           Greek quarter — a night at BLVD World, as it looks.</p>
@@ -288,7 +312,7 @@
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -301,7 +325,7 @@
     <!-- ── sponsors: the partner tiers from the official map ── -->
     <section class="sponsors" id="sponsors">
       <div class="sp-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> THEY MAKE THE SEASON</p>
+        <p class="eyebrow"><span class="sec-num">08</span> THEY MAKE THE SEASON</p>
         <h2 class="sec-title">OUR PARTNERS</h2>
         <p class="sec-sub">The brands behind Boulevard World this Riyadh Season.</p>
       </div>
@@ -535,6 +559,7 @@
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
       <a href="#rides" data-sec="rides">Rides</a>
+      <a href="#pex" data-sec="pex">Experiences</a>
       <a href="#cashless" data-sec="cashless">Card</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
@@ -551,18 +576,18 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=146"></script>
-  <script src="js/borders.js?v=146"></script>
-  <script src="js/scene.js?v=146"></script>
-  <script src="js/app.js?v=146"></script>
-  <script src="js/experiences.js?v=146"></script>
-  <script src="js/carousels.js?v=146"></script>
-  <script src="js/fan.js?v=146"></script>
-  <script src="js/gallery.js?v=146"></script>
-  <script src="js/parkmap.js?v=146"></script>
-  <script src="js/sponsors.js?v=146"></script>
-  <script src="js/cashless.js?v=146"></script>
+  <script src="js/data.js?v=150"></script>
+  <script src="js/borders.js?v=150"></script>
+  <script src="js/scene.js?v=150"></script>
+  <script src="js/app.js?v=150"></script>
+  <script src="js/experiences.js?v=150"></script>
+  <script src="js/carousels.js?v=150"></script>
+  <script src="js/fan.js?v=150"></script>
+  <script src="js/gallery.js?v=150"></script>
+  <script src="js/parkmap.js?v=150"></script>
+  <script src="js/sponsors.js?v=150"></script>
+  <script src="js/cashless.js?v=150"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=146"></script> -->
+  <script type="module" src="js/globe.js?v=150"></script> -->
 </body>
 </html>
