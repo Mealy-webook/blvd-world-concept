@@ -157,19 +157,60 @@
       return pool[Math.floor(i / 2) % pool.length];
     }
 
+
+    // showtimes are 12-hour with no meridiem crossing marked, so read them as
+    // minutes from 8 PM: anything before 8 belongs to the small hours
+    function toMinutes(t, ap) {
+      const [h, m] = t.split(":").map(Number);
+      let hh = h % 12;
+      if (ap === "PM") hh += 12;
+      if (hh < 20) hh += 24;                 // 12:10 AM and later run past midnight
+      return hh * 60 + m;
+    }
+    function gapText(a, b) {
+      const d = toMinutes(b.t, b.ap) - toMinutes(a.t, a.ap);
+      if (d <= 0) return "moments";
+      if (d < 60) return d + " min";
+      const h = Math.floor(d / 60), r = d % 60;
+      return r ? `${h}h ${r}m` : `${h}h`;
+    }
+
     function paint(zi) {
       const z = zones[zi];
       if (!z) return;
-      rail.innerHTML = z.items.map((s, i) => `
-        <article class="show-row">
-          <span class="show-shot">
-            <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
-            <i class="show-dur">${s.m}'</i>
-          </span>
-          <p class="show-time">${s.t}<small>${s.ap}</small></p>
-          <div class="show-body"><h3>${s.n}</h3><p>${s.m} minutes</p></div>
-          <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
-        </article>`).join("");
+      // the night as a timeline: time on the outside, a node on the spine,
+      // the show itself on the card side
+      rail.innerHTML = z.items.map((s, i) => {
+        const prev = i ? z.items[i - 1] : null;
+        return `
+        <article class="tl-item${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 6) * 60}ms">
+          <p class="tl-time">${s.t}<small>${s.ap}</small></p>
+          <span class="tl-node" aria-hidden="true"><i></i></span>
+          <div class="tl-card">
+            <span class="show-shot">
+              <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
+              <i class="show-dur">${s.m}'</i>
+            </span>
+            <div class="show-body">
+              <h3>${s.n}</h3>
+              <p>${s.m} minutes${prev ? ` &#183; ${gapText(prev, s)} after the last` : " &#183; opens the night"}</p>
+            </div>
+            <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
+          </div>
+        </article>`;
+      }).join("");
+      // reveal the stops in sequence as the timeline arrives
+      const items = $$(".tl-item", rail);
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        items.forEach((it) => it.classList.add("in"));
+      } else {
+        const io = new IntersectionObserver((es) => {
+          for (const en of es) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+        }, { threshold: 0.2 });
+        items.forEach((it) => io.observe(it));
+        setTimeout(() => items.forEach((it) => it.classList.add("in")), 3500);
+      }
+
       $$("button", tabs).forEach((b, i) => {
         b.classList.toggle("on", i === zi);
         b.setAttribute("aria-selected", i === zi ? "true" : "false");

@@ -1272,28 +1272,63 @@ body.chrome-on
 }
 
 /* the night's schedule, one row per showtime */
-.show-rail { width: 100%; max-width: min(1000px, 100%); display: grid; gap: 10px; }
-.show-note { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: #8a99c6; }
-.show-row {
-  display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: clamp(12px, 1.8vw, 24px);
-  padding: 12px clamp(14px, 1.8vw, 20px); border-radius: 16px;
+.show-rail {
+  position: relative; width: 100%; max-width: min(1000px, 100%);
+  display: grid; gap: 6px;
+}
+/* the spine: one line down the night, fading in and out at the ends */
+.show-rail::before {
+  content: ''; position: absolute; top: 8px; bottom: 8px; left: 95px; width: 2px;
+  background: linear-gradient(180deg,
+    transparent, rgba(255, 194, 77, .5) 8%, rgba(255, 194, 77, .5) 92%, transparent);
+}
+.show-note { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: #8a99c6; }
+
+/* one stop on the timeline */
+.tl-item {
+  display: grid; grid-template-columns: 80px 32px minmax(0, 1fr); align-items: center;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.tl-item.in { opacity: 1; transform: none; }
+.tl-time {
+  font-family: var(--disp); font-weight: 400; font-size: clamp(20px, 2.1vw, 27px);
+  color: var(--gold); letter-spacing: .01em; line-height: 1; white-space: nowrap; text-align: right;
+  text-shadow: 0 0 18px rgba(255, 194, 77, .35);
+}
+.tl-time small {
+  display: block; font-family: var(--ui); font-size: 9.5px; font-weight: 600;
+  letter-spacing: .16em; color: #8a99c6; margin-top: 4px; text-shadow: none;
+}
+/* the node that sits on the spine */
+.tl-node { position: relative; display: grid; place-items: center; height: 100%; }
+.tl-node i {
+  position: relative; z-index: 2; width: 11px; height: 11px; border-radius: 50%;
+  background: #0b1030; border: 2px solid rgba(255, 194, 77, .85);
+  transition: background .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.tl-item.is-first .tl-node i {
+  background: linear-gradient(160deg, #ffd98a, #ffc24d);
+  box-shadow: 0 0 0 5px rgba(255, 194, 77, .16);
+}
+.tl-item:hover .tl-node i {
+  background: linear-gradient(160deg, #ffd98a, #ffc24d);
+  transform: scale(1.25); box-shadow: 0 0 18px rgba(255, 194, 77, .6);
+}
+/* the show itself */
+.tl-card {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: clamp(12px, 1.8vw, 22px);
+  padding: 11px clamp(14px, 1.8vw, 18px); border-radius: 16px;
   background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .13);
-  transition: background .25s, border-color .25s, transform .25s;
+  transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
 }
-.show-row:hover { background: rgba(124, 196, 255, .1); border-color: rgba(255, 194, 77, .4); transform: translateX(4px); }
-.show-time {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(19px, 2.1vw, 26px);
-  color: var(--gold); letter-spacing: .02em; line-height: 1; white-space: nowrap;
-  text-shadow: 0 0 16px rgba(255, 194, 77, .4);
+.tl-item:hover .tl-card {
+  background: rgba(124, 196, 255, .1); border-color: rgba(255, 194, 77, .4);
+  transform: translateX(5px);
 }
-.show-time small { display: block; font-family: var(--body); font-size: 10px; font-weight: 700;
-  letter-spacing: .16em; color: var(--dim); margin-top: 5px; text-shadow: none; }
-.show-body { display: grid; gap: 4px; min-width: 0; }
-.show-body h3 {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(17px, 1.9vw, 23px); letter-spacing: .02em;
-  background: linear-gradient(180deg, #fff, #bfe0ff); -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.show-body p { font-size: 13.5px; font-weight: 600; color: var(--dim); line-height: 1.45; }
+
 /* thumbnail per show: the zone's own photograph, with its running time */
 .show-shot {
   position: relative; display: block; width: 104px; height: 70px; flex: none;
@@ -1306,7 +1341,7 @@ body.chrome-on
   filter: saturate(.95) brightness(.86);
   transition: transform .6s var(--ease), filter .4s var(--ease);
 }
-.show-row:hover .show-shot img { transform: scale(1.07); filter: saturate(1.05) brightness(1); }
+.tl-item:hover .show-shot img { transform: scale(1.07); filter: saturate(1.05) brightness(1); }
 .show-shot::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(180deg, rgba(6, 10, 30, 0) 45%, rgba(6, 9, 26, .8) 100%);
@@ -1317,10 +1352,11 @@ body.chrome-on
   font-style: normal; color: #eaf2ff;
 }
 @media (max-width: 700px) {
-  .show-row { grid-template-columns: auto 1fr; row-gap: 10px; }
-  .show-shot { width: 74px; height: 52px; }
-  .show-row .show-body { grid-column: 2; }
-  .show-type { grid-column: 2; justify-self: start; }
+  .show-rail::before { left: 57px; }
+  .tl-item { grid-template-columns: 48px 20px minmax(0, 1fr); }
+  .tl-card { grid-template-columns: auto minmax(0, 1fr); row-gap: 8px; }
+  .show-shot { width: 68px; height: 48px; }
+  .tl-card .show-type { grid-column: 2; justify-self: start; }
 }
 
 /* show type: roaming wanders the streets, stage is a fixed performance */
