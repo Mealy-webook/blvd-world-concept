@@ -699,8 +699,14 @@ body.chrome-on
 .pm-panel.as-list .pp-group { grid-column: 1 / -1; }
 
 @media (max-width: 900px) {
+  #view-map .map-back { left: 14px; top: 14px; }
   /* one column: map on top, panel below it */
   .pm-shell { grid-template-columns: minmax(0, 1fr); }
+  /* the map route splits the viewport: art on top, list filling the rest */
+  #view-map .pm-shell { grid-template-rows: 46vh minmax(0, 1fr); }
+  #view-map .pm-frame { height: 100%; }
+  #view-map .pm-panel { max-height: none; height: 100%; }
+  #view-map .pm-credit { display: none; }        /* too tight to be worth it */
   .pm-panel {
     position: relative; inset: auto; width: 100%; grid-row: 2; max-height: 60vh;
     border-right: 0; border-top: 1px solid rgba(124, 196, 255, .16);
@@ -714,7 +720,7 @@ body.chrome-on
 /* on a phone the map is short, so the two pill clusters would collide:
    keep only the opening hours, over on the left */
 @media (max-width: 600px) {
-  .pm-status { left: 10px; right: auto; justify-content: flex-start; }
+  .pm-status { left: auto; right: 10px; justify-content: flex-end; }
   .ps-item { display: none; }
   .ps-open { font-size: 9px; letter-spacing: .06em; padding: 6px 10px; }
 }
@@ -1347,13 +1353,25 @@ body.route-experiences
 /* ── zone detail drawer ── */
 /* ═══════════════ PARK MAP AS ITS OWN ROUTE (#/map) ═══════════════ */
 #view-map {
-  display: block; overflow-y: auto; overflow-x: hidden;
+  display: block; overflow: hidden;            /* the map owns the whole viewport */
   background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
 }
-#view-map .pmap { padding-top: clamp(48px, 8vh, 90px); }
+#view-map .pmap { padding: 0; gap: 0; height: 100%; }
+#view-map .pm-shell { height: 100%; max-width: none; border: 0; border-radius: 0; box-shadow: none; }
+/* the frame no longer keeps the artwork's ratio — the stage does, sized by
+   js/parkmap.js to cover the frame, so the pins stay glued to the art */
+#view-map .pm-frame { aspect-ratio: auto; height: 100%; border-radius: 0; }
+#view-map .pm-stage { inset: auto; }
+/* attribution sits over the art, bottom left, out of the layout */
+#view-map .pm-credit {
+  position: absolute; z-index: 6; left: 16px; bottom: 16px; margin: 0;
+  font-size: 9.5px; letter-spacing: .12em; color: rgba(207, 228, 255, .5);
+  text-shadow: 0 1px 6px rgba(2, 4, 14, .9);
+}
 /* the booking bar is hidden off the home route, so the way back is here */
 .map-back {
-  position: fixed; z-index: 40; left: clamp(16px, 3vw, 34px); top: clamp(16px, 3vh, 30px);
+  /* clear of the panel column, over the map's top-left corner */
+  position: fixed; z-index: 40; left: 398px; top: 16px;
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--disp); font-size: 13px; letter-spacing: .14em; color: #cfe4ff;
   padding: 10px 18px; border-radius: 999px;

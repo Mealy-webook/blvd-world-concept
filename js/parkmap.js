@@ -15,15 +15,31 @@
   const pins = WBK.mapPins || [];
 
   const MIN = 1, MAX = 4.6;
+  const ART = 3855 / 2110;            // the map artwork's aspect ratio
   let z = 1, tx = 0, ty = 0;          // scale + translate, in frame pixels
+  let baseW = 0, baseH = 0;           // the stage's untransformed size
+
+  // Cover the frame at the artwork's ratio and centre it. Pins are positioned
+  // in percentages of the stage, so keeping the stage the same shape as the
+  // art is what keeps every pin over its zone.
+  function sizeStage() {
+    const r = frame.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    baseW = r.width; baseH = r.width / ART;
+    if (baseH < r.height) { baseH = r.height; baseW = r.height * ART; }
+    stage.style.width = baseW + "px";
+    stage.style.height = baseH + "px";
+    stage.style.left = (r.width - baseW) / 2 + "px";
+    stage.style.top = (r.height - baseH) / 2 + "px";
+  }
 
   /* ── view transform ─────────────────────────────────────────────── */
   // At z = 1 the artwork exactly fills the frame, so panning is clamped to
   // the slack the zoom creates — the map can never drift off its own frame.
   function clamp() {
     const r = frame.getBoundingClientRect();
-    const slackX = (r.width * z - r.width) / 2;
-    const slackY = (r.height * z - r.height) / 2;
+    const slackX = Math.max(0, (baseW * z - r.width) / 2);
+    const slackY = Math.max(0, (baseH * z - r.height) / 2);
     tx = Math.max(-slackX, Math.min(slackX, tx));
     ty = Math.max(-slackY, Math.min(slackY, ty));
   }
@@ -70,8 +86,8 @@
     z = Math.max(nz || 2.4, MIN);
     // where the pin should land: middle of the strip to the right of the panel
     const aimX = hidden + (r.width - hidden) / 2;
-    tx = aimX - r.width / 2 - (pin.x / 100 - 0.5) * r.width * z;
-    ty = -(pin.y / 100 - 0.5) * r.height * z;
+    tx = aimX - r.width / 2 - (pin.x / 100 - 0.5) * baseW * z;
+    ty = -(pin.y / 100 - 0.5) * baseH * z;
     apply();
   }
 
@@ -337,7 +353,10 @@
     listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
   });
 
-  addEventListener("resize", apply);
+  addEventListener("resize", () => { sizeStage(); apply(); });
+  // the view starts hidden, so re-measure once it has real dimensions
+  if (window.ResizeObserver) new ResizeObserver(() => { sizeStage(); apply(); }).observe(frame);
   render();
+  sizeStage();
   apply();
 })();
