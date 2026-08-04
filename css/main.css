@@ -1228,6 +1228,27 @@ body.route-experiences
   pointer-events: none; display: grid; gap: 12px; justify-items: center; padding: 0 6vw;
 }
 /* ── zone detail drawer ── */
+/* ═══════════════ PARK MAP AS ITS OWN ROUTE (#/map) ═══════════════ */
+#view-map {
+  display: block; overflow-y: auto; overflow-x: hidden;
+  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+}
+#view-map .pmap { padding-top: clamp(48px, 8vh, 90px); }
+/* the booking bar is hidden off the home route, so the way back is here */
+.map-back {
+  position: fixed; z-index: 40; left: clamp(16px, 3vw, 34px); top: clamp(16px, 3vh, 30px);
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--disp); font-size: 13px; letter-spacing: .14em; color: #cfe4ff;
+  padding: 10px 18px; border-radius: 999px;
+  background: rgba(6, 10, 30, .8); border: 1px solid rgba(124, 196, 255, .3);
+  backdrop-filter: blur(8px);
+  transition: color .2s, background .2s, border-color .2s, transform .2s;
+}
+.map-back:hover {
+  color: #fff; background: rgba(6, 10, 30, .96);
+  border-color: rgba(255, 194, 77, .6); transform: translateX(-2px);
+}
+
 /* ═══════════════ SPONSORS ═══════════════ */
 .sponsors {
   position: relative; z-index: 11;

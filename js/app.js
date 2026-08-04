@@ -8,6 +8,7 @@
     letter: $("#view-letter"),
     prizes: $("#view-prizes"),
     experiences: $("#view-experiences"),
+    map: $("#view-map"),
   };
 
   let booted = false;

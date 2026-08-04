@@ -138,74 +138,11 @@
     </section>
 
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
-    <section class="pmap" id="parkmap">
-      <div class="pm-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> THE WHOLE PARK, ONE PLAN</p>
-        <h2 class="sec-title">EXPLORE THE MAP</h2>
-      </div>
-
-      <div class="pm-shell reveal">
-        <!-- the discovery panel: its own column, so the map is never behind it -->
-        <aside class="pm-panel" id="pm-panel">
-          <header class="pp-head">
-            <h3>Discover the park</h3>
-            <div class="pp-modes">
-              <button class="pp-mode on" id="pp-map" type="button" aria-label="Map view"
-                aria-pressed="true"><span class="ppi-map"></span></button>
-              <button class="pp-mode" id="pp-listview" type="button" aria-label="List view"
-                aria-pressed="false"><span class="ppi-list"></span></button>
-              <button class="pp-mode" id="pp-searchbtn" type="button" aria-label="Search"
-                aria-pressed="false"><span class="ppi-search"></span></button>
-            </div>
-          </header>
-
-          <div class="pp-search" id="pp-search">
-            <input id="pp-q" type="search" placeholder="Search rides, dining, zones&#8230;"
-              autocomplete="off" aria-label="Search the park" />
-          </div>
-
-          <div class="pp-chips" id="pp-chips" role="group" aria-label="Categories">
-            <button class="pp-chip on" data-cat="rides" type="button"><i class="cc cc-rides"></i>Rides &amp; Attractions</button>
-            <button class="pp-chip" data-cat="dining" type="button"><i class="cc cc-dining"></i>Dining</button>
-            <button class="pp-chip" data-cat="shows" type="button"><i class="cc cc-shows"></i>Shows</button>
-            <button class="pp-chip" data-cat="zones" type="button"><i class="cc cc-zones"></i>Zones</button>
-          </div>
-
-          <div class="pp-list" id="pp-list"></div>
-        </aside>
-
-        <!-- the map: fills its own column, whole plan visible -->
-        <div class="pm-frame" id="pm-frame">
-          <div class="pm-stage" id="pm-stage">
-            <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
-              alt="Official BLVD World park map" draggable="false" />
-            <div class="pm-pins" id="pm-pins"></div>
-          </div>
-
-          <div class="pm-status">
-            <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
-            <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
-            <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
-          </div>
-
-          <div class="pm-zoom">
-            <button id="pm-in" type="button" aria-label="Zoom in">+</button>
-            <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
-            <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
-          </div>
-
-          <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
-        </div>
-
-      </div>
-
-      <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
-    </section>
 
     <!-- ── rides ── -->
     <section class="rides" id="rides">
       <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <p class="eyebrow"><span class="sec-num">01</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
           scattered across the zones.</p>
@@ -230,7 +167,7 @@
     <!-- ── restaurants ── -->
     <section class="eats" id="eats">
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> EAT YOUR WAY AROUND</p>
+        <p class="eyebrow"><span class="sec-num">02</span> EAT YOUR WAY AROUND</p>
         <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
         <p class="sec-sub">Every zone cooks its own country. Wander from Najdi grills to ramen counters,
           tagines to tacos — all in one night, all on foot.</p>
@@ -245,7 +182,7 @@
     <!-- ── daily shows ── -->
     <section class="shows" id="shows">
       <div class="shows-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> EVERY NIGHT, EVERY ZONE</p>
+        <p class="eyebrow"><span class="sec-num">03</span> EVERY NIGHT, EVERY ZONE</p>
         <h2 class="sec-title">DAILY SHOWS</h2>
         <p class="sec-sub">Parades, folkloric dance, storytellers and the Mesaharati — the park's zones
           come alive on a schedule from 8:30 PM until past 1 AM.</p>
@@ -265,7 +202,7 @@
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> THE PARK AFTER DARK</p>
+        <p class="eyebrow"><span class="sec-num">04</span> THE PARK AFTER DARK</p>
         <h2 class="sec-title">SEE IT FOR<br/>YOURSELF</h2>
         <p class="sec-sub">Fireworks over the lake, projections on the rock, cable cars over the
           Greek quarter — a night at BLVD World, as it looks.</p>
@@ -276,7 +213,7 @@
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">05</span> BEFORE YOU GO</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -289,13 +226,82 @@
     <!-- ── sponsors: the partner tiers from the official map ── -->
     <section class="sponsors" id="sponsors">
       <div class="sp-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> THEY MAKE THE SEASON</p>
+        <p class="eyebrow"><span class="sec-num">06</span> THEY MAKE THE SEASON</p>
         <h2 class="sec-title">OUR PARTNERS</h2>
         <p class="sec-sub">The brands behind Boulevard World this Riyadh Season.</p>
       </div>
       <div class="sp-tiers" id="sp-tiers"></div>
     </section>
 
+  </section>
+
+
+  <!-- ══════════ PARK MAP (own route: #/map) ══════════ -->
+  <section id="view-map" class="view">
+      <section class="pmap" id="parkmap">
+        <div class="pm-head reveal">
+          <p class="eyebrow">THE WHOLE PARK, ONE PLAN</p>
+          <h2 class="sec-title">EXPLORE THE MAP</h2>
+        </div>
+
+        <div class="pm-shell reveal">
+          <!-- the discovery panel: its own column, so the map is never behind it -->
+          <aside class="pm-panel" id="pm-panel">
+            <header class="pp-head">
+              <h3>Discover the park</h3>
+              <div class="pp-modes">
+                <button class="pp-mode on" id="pp-map" type="button" aria-label="Map view"
+                  aria-pressed="true"><span class="ppi-map"></span></button>
+                <button class="pp-mode" id="pp-listview" type="button" aria-label="List view"
+                  aria-pressed="false"><span class="ppi-list"></span></button>
+                <button class="pp-mode" id="pp-searchbtn" type="button" aria-label="Search"
+                  aria-pressed="false"><span class="ppi-search"></span></button>
+              </div>
+            </header>
+
+            <div class="pp-search" id="pp-search">
+              <input id="pp-q" type="search" placeholder="Search rides, dining, zones&#8230;"
+                autocomplete="off" aria-label="Search the park" />
+            </div>
+
+            <div class="pp-chips" id="pp-chips" role="group" aria-label="Categories">
+              <button class="pp-chip on" data-cat="rides" type="button"><i class="cc cc-rides"></i>Rides &amp; Attractions</button>
+              <button class="pp-chip" data-cat="dining" type="button"><i class="cc cc-dining"></i>Dining</button>
+              <button class="pp-chip" data-cat="shows" type="button"><i class="cc cc-shows"></i>Shows</button>
+              <button class="pp-chip" data-cat="zones" type="button"><i class="cc cc-zones"></i>Zones</button>
+            </div>
+
+            <div class="pp-list" id="pp-list"></div>
+          </aside>
+
+          <!-- the map: fills its own column, whole plan visible -->
+          <div class="pm-frame" id="pm-frame">
+            <div class="pm-stage" id="pm-stage">
+              <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
+                alt="Official BLVD World park map" draggable="false" />
+              <div class="pm-pins" id="pm-pins"></div>
+            </div>
+
+            <div class="pm-status">
+              <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
+              <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
+              <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
+            </div>
+
+            <div class="pm-zoom">
+              <button id="pm-in" type="button" aria-label="Zoom in">+</button>
+              <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
+              <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
+            </div>
+
+            <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
+          </div>
+
+        </div>
+
+        <p class="pm-credit">Official park map — Boulevard World, Riyadh Season</p>
+      </section>
+    <a href="#/" class="map-back">&#8592; BACK</a>
   </section>
 
   <!-- ══════════ EXPERIENCES ══════════ -->
@@ -455,7 +461,6 @@
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
-      <a href="#parkmap" data-sec="parkmap">Map</a>
       <a href="#rides" data-sec="rides">Rides</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
@@ -464,8 +469,7 @@
       <a href="#sponsors" data-sec="sponsors">Partners</a>
     </nav>
     <div class="sc-actions">
-      <a href="#parkmap" data-sec="parkmap" class="sc-icon" aria-label="Open the park map"
-         title="Park map"><span class="ppi-map"></span></a>
+      <a href="#/map" class="sc-icon" aria-label="Open the park map" title="Park map"><span class="ppi-map"></span></a>
       <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid sc-pill">BOOK ENTRY TICKET</a>
       <a href="#/experiences" class="pill ghost sc-pill">BOOK ENTRY + EXPERIENCE</a>
     </div>
@@ -473,17 +477,17 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=127"></script>
-  <script src="js/borders.js?v=127"></script>
-  <script src="js/scene.js?v=127"></script>
-  <script src="js/app.js?v=127"></script>
-  <script src="js/experiences.js?v=127"></script>
-  <script src="js/carousels.js?v=127"></script>
-  <script src="js/fan.js?v=127"></script>
-  <script src="js/gallery.js?v=127"></script>
-  <script src="js/parkmap.js?v=127"></script>
-  <script src="js/sponsors.js?v=127"></script>
+  <script src="js/data.js?v=129"></script>
+  <script src="js/borders.js?v=129"></script>
+  <script src="js/scene.js?v=129"></script>
+  <script src="js/app.js?v=129"></script>
+  <script src="js/experiences.js?v=129"></script>
+  <script src="js/carousels.js?v=129"></script>
+  <script src="js/fan.js?v=129"></script>
+  <script src="js/gallery.js?v=129"></script>
+  <script src="js/parkmap.js?v=129"></script>
+  <script src="js/sponsors.js?v=129"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=127"></script> -->
+  <script type="module" src="js/globe.js?v=129"></script> -->
 </body>
 </html>
