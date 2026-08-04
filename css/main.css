@@ -699,7 +699,6 @@ body.chrome-on
 .pm-panel.as-list .pp-group { grid-column: 1 / -1; }
 
 @media (max-width: 900px) {
-  #view-map .map-back { left: 14px; top: 14px; }
   /* one column: map on top, panel below it */
   .pm-shell { grid-template-columns: minmax(0, 1fr); }
   /* the map route splits the viewport: art on top, list filling the rest */
@@ -1368,21 +1367,29 @@ body.route-experiences
   font-size: 9.5px; letter-spacing: .12em; color: rgba(207, 228, 255, .5);
   text-shadow: 0 1px 6px rgba(2, 4, 14, .9);
 }
-/* the booking bar is hidden off the home route, so the way back is here */
+/* back to the landing page, sitting beside the panel title */
 .map-back {
-  /* clear of the panel column, over the map's top-left corner */
-  position: fixed; z-index: 40; left: 398px; top: 16px;
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--disp); font-size: 13px; letter-spacing: .14em; color: #cfe4ff;
-  padding: 10px 18px; border-radius: 999px;
-  background: rgba(6, 10, 30, .8); border: 1px solid rgba(124, 196, 255, .3);
-  backdrop-filter: blur(8px);
-  transition: color .2s, background .2s, border-color .2s, transform .2s;
+  flex: none; width: 32px; height: 32px; border-radius: 10px;
+  display: grid; place-items: center;
+  background: rgba(124, 196, 255, .06); border: 1px solid rgba(124, 196, 255, .18);
+  transition: background .2s, border-color .2s, transform .2s;
 }
 .map-back:hover {
-  color: #fff; background: rgba(6, 10, 30, .96);
-  border-color: rgba(255, 194, 77, .6); transform: translateX(-2px);
+  background: rgba(255, 194, 77, .16); border-color: rgba(255, 194, 77, .55);
+  transform: translateX(-2px);
 }
+.mb-arrow {
+  position: relative; width: 14px; height: 1.8px; border-radius: 2px;
+  background: #cfe4ff; transition: background .2s;
+}
+.mb-arrow::before, .mb-arrow::after {
+  content: ''; position: absolute; left: 0; width: 7px; height: 1.8px;
+  border-radius: 2px; background: inherit;
+}
+.mb-arrow::before { top: -2.5px; transform: rotate(-45deg); transform-origin: left center; }
+.mb-arrow::after  { top:  2.5px; transform: rotate(45deg);  transform-origin: left center; }
+.map-back:hover .mb-arrow { background: #ffd98a; }
+
 
 /* ═══════════════ SPONSORS ═══════════════ */
 .sponsors {
