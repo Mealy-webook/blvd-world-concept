@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=150" />
+<link rel="stylesheet" href="css/main.css?v=151" />
 </head>
 <body class="typo-body">
 
@@ -121,6 +121,10 @@
             <span class="pill solid big-pill">BOOK ENTRY TICKET</span>
             <span class="from">from <b>SAR 50</b></span>
           </a>
+          <a href="#bundles" class="book-cta js-to-bundles">
+            <span class="pill ghost big-pill">BOOK BUNDLES</span>
+            <span class="from">from <b>SAR 190</b></span>
+          </a>
           <a href="#/experiences" class="book-cta">
             <span class="pill ghost big-pill">BOOK ENTRY + EXPERIENCE</span>
             <span class="from">from <b>SAR 150</b></span>
@@ -140,10 +144,22 @@
 
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
 
+    <!-- ── bundles: three tickets, one decision ── -->
+    <section class="bundles" id="bundles">
+      <div class="bd-head reveal">
+        <p class="eyebrow"><span class="sec-num">01</span> PICK YOUR NIGHT</p>
+        <h2 class="sec-title">THREE WAYS IN</h2>
+        <p class="sec-sub">Entry on its own, every ride included, or the lot with a premium
+          experience — each one comes with a BLVD card you can top up in the app.</p>
+      </div>
+      <div class="bd-grid" id="bd-grid"></div>
+      <p class="bd-note reveal">All prices per person &#183; children under 3 enter free</p>
+    </section>
+
     <!-- ── rides ── -->
     <section class="rides" id="rides">
       <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> HOLD ON TIGHT</p>
+        <p class="eyebrow">HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
           scattered across the zones.</p>
@@ -558,7 +574,7 @@
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
-      <a href="#rides" data-sec="rides">Rides</a>
+      <a href="#bundles" data-sec="bundles">Bundles</a>
       <a href="#pex" data-sec="pex">Experiences</a>
       <a href="#cashless" data-sec="cashless">Card</a>
       <a href="#eats" data-sec="eats">Dining</a>
@@ -576,18 +592,19 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=150"></script>
-  <script src="js/borders.js?v=150"></script>
-  <script src="js/scene.js?v=150"></script>
-  <script src="js/app.js?v=150"></script>
-  <script src="js/experiences.js?v=150"></script>
-  <script src="js/carousels.js?v=150"></script>
-  <script src="js/fan.js?v=150"></script>
-  <script src="js/gallery.js?v=150"></script>
-  <script src="js/parkmap.js?v=150"></script>
-  <script src="js/sponsors.js?v=150"></script>
-  <script src="js/cashless.js?v=150"></script>
+  <script src="js/data.js?v=151"></script>
+  <script src="js/borders.js?v=151"></script>
+  <script src="js/scene.js?v=151"></script>
+  <script src="js/app.js?v=151"></script>
+  <script src="js/experiences.js?v=151"></script>
+  <script src="js/carousels.js?v=151"></script>
+  <script src="js/fan.js?v=151"></script>
+  <script src="js/gallery.js?v=151"></script>
+  <script src="js/parkmap.js?v=151"></script>
+  <script src="js/sponsors.js?v=151"></script>
+  <script src="js/cashless.js?v=151"></script>
+  <script src="js/bundles.js?v=151"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=150"></script> -->
+  <script type="module" src="js/globe.js?v=151"></script> -->
 </body>
 </html>

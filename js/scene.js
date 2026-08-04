@@ -228,6 +228,13 @@
     const stickyBar = document.getElementById("sticky-cta");
     const bloom = document.getElementById("fold-bloom");
     const tabs = [...document.querySelectorAll("#sticky-cta [data-sec]")];
+    // the hero's bundles CTA scrolls the same way the tabs do
+    const heroJump = document.querySelector(".js-to-bundles");
+    if (heroJump) heroJump.addEventListener("click", (e) => {
+      e.preventDefault();
+      const sec = document.getElementById("bundles");
+      if (sec) homeView.scrollTo({ top: sec.offsetTop, behavior: "smooth" });
+    });
 
     // tabs scroll the inner container (a plain anchor jump would not work,
     // because the page scrolls inside #view-home rather than the window)

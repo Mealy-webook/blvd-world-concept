@@ -83,6 +83,54 @@ window.WBK = {
     { zone: "Africa", items: [{ n: "Roaming Africans", t: "8:30", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "8:50", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "9:10", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "10:00", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "10:20", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "10:50", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "11:35", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "12:00", ap: "AM", m: 15, ty: "ROAMING" }, { n: "Roaming Show", t: "12:25", ap: "AM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "12:45", ap: "AM", m: 15, ty: "ROAMING" }] },
   ],
 
+  // ── bookable bundles ──────────────────────────────────────────
+  // Prices are placeholders pending the real rate card.
+  bundles: [
+    {
+      name: "ENTRY",
+      tag: "THE BASICS",
+      price: 50,
+      blurb: "The whole boulevard on foot.",
+      includes: [
+        "All 26 zones and both gates",
+        "Every nightly show and parade",
+        "Walk-through attractions",
+        "BLVD card, ready to top up",
+      ],
+      cta: "BOOK ENTRY",
+      href: "https://webook.com",
+    },
+    {
+      name: "RIDES BUNDLE",
+      tag: "MOST BOOKED",
+      price: 190,
+      blurb: "Ride everything, all night.",
+      featured: true,
+      includes: [
+        "Park entry included",
+        "All 14 rides, unlimited",
+        "Skip the till at every gate",
+        "SAR 50 of card credit",
+      ],
+      cta: "BOOK RIDES BUNDLE",
+      href: "https://webook.com",
+    },
+    {
+      name: "ULTIMATE",
+      tag: "THE LOT",
+      price: 320,
+      blurb: "Rides, shows and one premium experience.",
+      includes: [
+        "Everything in the rides bundle",
+        "One premium experience of your choice",
+        "Priority entry at the gate",
+        "SAR 100 of card credit",
+      ],
+      cta: "BOOK ULTIMATE",
+      href: "https://webook.com",
+    },
+  ],
+
   // ── partners, as printed on the official park map ──
   // Seven logos are official SVGs (Wikimedia Commons, hmg.com, shawarmer.com);
   // the rest stay as crops from the map PDF, because no SVG could be confirmed
