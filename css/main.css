@@ -801,6 +801,123 @@ body.chrome-on
 }
 .rides-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 
+/* ═══════════════ CASHLESS — THE BLVD CARD ═══════════════ */
+.cashless {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 11vh, 110px) 6vw clamp(60px, 11vh, 110px);
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.cash-grid {
+  width: 100%; max-width: min(1180px, 100%);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 76px); align-items: center;
+}
+
+/* ── the card ── */
+.card-stage {
+  position: relative; perspective: 1100px; display: grid; place-items: center;
+  padding: clamp(20px, 4vw, 50px) 0;
+}
+.blvd-card {
+  position: relative; width: min(430px, 100%); aspect-ratio: 1.585 / 1;  /* ID-1, as a real card */
+  border-radius: 22px; padding: 26px 28px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transform-style: preserve-3d;
+  /* the pointer writes --rx/--ry; the idle float runs until it does */
+  transform: rotateX(var(--rx, 8deg)) rotateY(var(--ry, -14deg));
+  animation: cardFloat 7s ease-in-out infinite;
+  background:
+    radial-gradient(120% 90% at 12% 8%, rgba(255, 255, 255, .18), transparent 46%),
+    linear-gradient(122deg, #1b1044 0%, #2a1257 34%, #3b1052 58%, #12163f 100%);
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow:
+    0 42px 80px rgba(2, 4, 14, .7),
+    0 0 0 1px rgba(255, 255, 255, .06) inset,
+    0 1px 0 rgba(255, 255, 255, .28) inset;
+}
+.card-stage:hover .blvd-card { animation-play-state: paused; }
+@keyframes cardFloat {
+  0%, 100% { transform: rotateX(8deg) rotateY(-14deg) translateY(0); }
+  50%      { transform: rotateX(5deg) rotateY(-9deg)  translateY(-14px); }
+}
+/* holographic foil, and a sheen that tracks the pointer */
+.bc-foil {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .5;
+  background: conic-gradient(from 210deg at 70% 30%,
+    rgba(53, 224, 255, .34), rgba(255, 62, 200, .30), rgba(255, 194, 77, .26),
+    rgba(139, 92, 246, .34), rgba(53, 224, 255, .34));
+}
+.bc-sheen {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(220px 220px at var(--mx, 30%) var(--my, 20%), rgba(255, 255, 255, .30), transparent 68%);
+  transition: opacity .3s; opacity: .9;
+}
+.bc-top { position: relative; display: flex; align-items: flex-start; justify-content: space-between; transform: translateZ(26px); }
+.bc-logo { height: 42px; width: auto; filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, .5)); }
+.bc-tap {
+  font-family: var(--disp); font-size: 8.5px; letter-spacing: .2em; color: #0b1030;
+  padding: 5px 9px; border-radius: 999px; white-space: nowrap;
+  background: linear-gradient(100deg, #8ff3ff, #35e0ff);
+}
+.bc-chip {
+  position: relative; width: 46px; height: 34px; border-radius: 7px; transform: translateZ(20px);
+  display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 6px;
+  background: linear-gradient(150deg, #ffe6ad, #d99a24 60%, #ffd98a);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .45);
+}
+.bc-chip i { display: block; height: 2px; border-radius: 2px; background: rgba(90, 55, 0, .45); }
+.bc-chip i:nth-child(2) { width: 70%; }
+.bc-num {
+  position: relative; transform: translateZ(18px);
+  font-family: var(--disp); font-size: clamp(15px, 1.6vw, 19px); letter-spacing: .12em;
+  color: #eaf2ff; text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+}
+.bc-foot { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; transform: translateZ(22px); }
+.bc-name { font-family: var(--disp); font-size: 10px; letter-spacing: .2em; color: rgba(234, 242, 255, .72); }
+.bc-bal { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; color: rgba(234, 242, 255, .72); text-align: right; }
+.bc-bal b { display: block; font-family: var(--disp); font-weight: 400; font-size: 24px; letter-spacing: .02em; color: #fff; }
+/* the pool of light the card floats over */
+.card-glow {
+  position: absolute; left: 50%; bottom: clamp(6px, 2vw, 26px); transform: translateX(-50%);
+  width: 78%; height: 60px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(139, 92, 246, .45), rgba(255, 62, 200, .16) 52%, transparent 74%);
+}
+
+/* ── the copy column ── */
+.cash-copy { display: grid; gap: 30px; }
+.cash-head { display: grid; gap: 14px; }
+.cash-head .sec-title { font-size: clamp(38px, 5vw, 68px); }
+.cash-head .sec-sub { max-width: 46ch; }
+.cash-steps { display: grid; gap: 16px; counter-reset: step; }
+.cash-steps li {
+  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;
+  padding: 16px 18px; border-radius: 14px;
+  background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .13);
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.cash-steps li:hover { background: rgba(124, 196, 255, .1); border-color: rgba(255, 194, 77, .4); transform: translateX(4px); }
+.cs-num {
+  font-family: var(--disp); font-size: 15px; letter-spacing: .04em; color: var(--gold);
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255, 194, 77, .1); border: 1px solid rgba(255, 194, 77, .4);
+}
+.cash-steps h3 {
+  font-family: var(--disp); font-weight: 400; font-size: 19px; letter-spacing: .02em; margin-bottom: 3px;
+  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cash-steps p { font-size: 13.5px; font-weight: 600; color: #b9c8e8; line-height: 1.5; }
+.cash-cta { display: grid; gap: 12px; justify-items: start; }
+.cash-note { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #5b6a94; }
+
+@media (max-width: 900px) {
+  .cash-grid { grid-template-columns: minmax(0, 1fr); }
+  .card-stage { order: -1; }
+  .cash-cta { justify-items: center; }
+  .cash-head { text-align: center; justify-items: center; }
+  .cash-head .sec-sub { max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
+
 /* ═══════════════ RESTAURANTS ═══════════════ */
 .eats {
   position: relative; z-index: 11;
