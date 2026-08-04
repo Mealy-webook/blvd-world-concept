@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=151" />
+<link rel="stylesheet" href="css/main.css?v=152" />
 </head>
 <body class="typo-body">
 
@@ -144,10 +144,34 @@
 
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
 
+    <!-- ── experiences: the same fanned deck, its own content ── -->
+    <section class="rides pex" id="pex">
+      <div class="rides-head reveal">
+        <p class="eyebrow"><span class="sec-num">01</span> STEP INSIDE SOMETHING ELSE</p>
+        <h2 class="sec-title">TEN EXPERIENCES</h2>
+        <p class="sec-sub">Ski a real snow dome, break out of a pharaoh's tomb, meet the dolphins —
+          every experience ticket includes park entry.</p>
+      </div>
+
+      <div class="fan-stage">
+        <div class="fan-deck" id="pex-fan"></div>
+      </div>
+      <div class="fan-nav">
+        <button class="rail-btn prev" id="pex-prev" aria-label="Previous experiences">&#8249;</button>
+        <div class="fan-dots" id="pex-dots"></div>
+        <button class="rail-btn next" id="pex-next" aria-label="More experiences">&#8250;</button>
+      </div>
+
+      <div class="ride-cta reveal">
+        <p class="rc-note">Experiences from <b>SAR 150</b> per person</p>
+        <a href="#/experiences" class="pill solid big-pill">BOOK ENTRY + EXPERIENCE</a>
+      </div>
+    </section>
+
     <!-- ── bundles: three tickets, one decision ── -->
     <section class="bundles" id="bundles">
       <div class="bd-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> PICK YOUR NIGHT</p>
+        <p class="eyebrow"><span class="sec-num">02</span> PICK YOUR NIGHT</p>
         <h2 class="sec-title">THREE WAYS IN</h2>
         <p class="sec-sub">Entry on its own, every ride included, or the lot with a premium
           experience — each one comes with a BLVD card you can top up in the app.</p>
@@ -181,29 +205,6 @@
       </div>
     </section>
 
-    <!-- ── experiences: the same fanned deck, its own content ── -->
-    <section class="rides pex" id="pex">
-      <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> STEP INSIDE SOMETHING ELSE</p>
-        <h2 class="sec-title">TEN EXPERIENCES</h2>
-        <p class="sec-sub">Ski a real snow dome, break out of a pharaoh's tomb, meet the dolphins —
-          every experience ticket includes park entry.</p>
-      </div>
-
-      <div class="fan-stage">
-        <div class="fan-deck" id="pex-fan"></div>
-      </div>
-      <div class="fan-nav">
-        <button class="rail-btn prev" id="pex-prev" aria-label="Previous experiences">&#8249;</button>
-        <div class="fan-dots" id="pex-dots"></div>
-        <button class="rail-btn next" id="pex-next" aria-label="More experiences">&#8250;</button>
-      </div>
-
-      <div class="ride-cta reveal">
-        <p class="rc-note">Experiences from <b>SAR 150</b> per person</p>
-        <a href="#/experiences" class="pill solid big-pill">BOOK ENTRY + EXPERIENCE</a>
-      </div>
-    </section>
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
     <section class="cashless" id="cashless">
@@ -574,8 +575,8 @@
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
-      <a href="#bundles" data-sec="bundles">Bundles</a>
       <a href="#pex" data-sec="pex">Experiences</a>
+      <a href="#bundles" data-sec="bundles">Bundles</a>
       <a href="#cashless" data-sec="cashless">Card</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
@@ -592,19 +593,19 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=151"></script>
-  <script src="js/borders.js?v=151"></script>
-  <script src="js/scene.js?v=151"></script>
-  <script src="js/app.js?v=151"></script>
-  <script src="js/experiences.js?v=151"></script>
-  <script src="js/carousels.js?v=151"></script>
-  <script src="js/fan.js?v=151"></script>
-  <script src="js/gallery.js?v=151"></script>
-  <script src="js/parkmap.js?v=151"></script>
-  <script src="js/sponsors.js?v=151"></script>
-  <script src="js/cashless.js?v=151"></script>
-  <script src="js/bundles.js?v=151"></script>
+  <script src="js/data.js?v=152"></script>
+  <script src="js/borders.js?v=152"></script>
+  <script src="js/scene.js?v=152"></script>
+  <script src="js/app.js?v=152"></script>
+  <script src="js/experiences.js?v=152"></script>
+  <script src="js/carousels.js?v=152"></script>
+  <script src="js/fan.js?v=152"></script>
+  <script src="js/gallery.js?v=152"></script>
+  <script src="js/parkmap.js?v=152"></script>
+  <script src="js/sponsors.js?v=152"></script>
+  <script src="js/cashless.js?v=152"></script>
+  <script src="js/bundles.js?v=152"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=151"></script> -->
+  <script type="module" src="js/globe.js?v=152"></script> -->
 </body>
 </html>
