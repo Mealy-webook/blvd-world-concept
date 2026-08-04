@@ -350,3 +350,35 @@
     new MutationObserver(scanReveals).observe(homeView, { childList: true, subtree: true });
   }
 })();
+
+// ── hero video: only run it while the home route is on screen ──────────
+(function heroVideo() {
+  const vid = document.getElementById("hero-video");
+  if (!vid) return;
+
+  // motion-sensitive visitors get the first frame, held still
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    vid.autoplay = false;
+    vid.removeAttribute("autoplay");
+    vid.pause();
+    return;
+  }
+
+  const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
+
+  // autoplay can be refused until the first gesture; retry on one
+  play();
+  ["pointerdown", "keydown"].forEach((ev) =>
+    window.addEventListener(ev, play, { once: true }));
+
+  // don't decode frames for a hero nobody is looking at
+  const home = document.getElementById("view-home");
+  if (home) {
+    new MutationObserver(() => {
+      home.classList.contains("active") ? play() : vid.pause();
+    }).observe(home, { attributes: true, attributeFilter: ["class"] });
+  }
+  document.addEventListener("visibilitychange", () => {
+    document.hidden ? vid.pause() : (home && home.classList.contains("active") && play());
+  });
+})();
