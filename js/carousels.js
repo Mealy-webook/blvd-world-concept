@@ -132,11 +132,40 @@
     };
     const flag = (z) => FLAGS[z] || "🌍";
 
+
+    // Every show gets a thumbnail. The zone's own photograph leads; where a
+    // zone runs several shows we rotate through park imagery that suits the
+    // kind of show, so a schedule of nine doesn't repeat one picture nine times.
+    const ZONE_SHOT = {
+      "Saudi Arabia": "zones/saudi.jpg", Egypt: "zones/egypt.jpg", "Türkiye": "zones/turkey.jpg",
+      France: "zones/france.jpg", Italy: "zones/italy.jpg", Spain: "zones/park5.jpg",
+      Greece: "zones/park7.jpg", Morocco: "zones/park5.jpg", Levant: "zones/park3.jpg",
+      India: "zones/park6.jpg", China: "zones/china.jpg", Japan: "zones/japan.jpg",
+      Korea: "zones/park6.jpg", Indonesia: "zones/park8.jpg", Asia: "zones/park2.jpg",
+      USA: "zones/usa.jpg", Mexico: "zones/mexico.jpg", Iran: "zones/park4.jpg",
+      Africa: "zones/park1.jpg",
+    };
+    const BY_KIND = {
+      STAGE:   ["gallery/fireworks.jpg", "gallery/rock-mapping.jpg", "zones/park4.jpg"],
+      DANCE:   ["gallery/rock-mapping.jpg", "zones/park2.jpg", "gallery/fireworks.jpg"],
+      ROAMING: ["gallery/night-aerial.jpg", "zones/park3.jpg", "gallery/greek-zone.jpg"],
+    };
+    function showShot(zone, kind, i) {
+      const zoneShot = ZONE_SHOT[zone] || "zones/park1.jpg";
+      if (i % 2 === 0) return zoneShot;                       // the zone leads
+      const pool = BY_KIND[kind.split(" ")[0]] || BY_KIND.ROAMING;
+      return pool[Math.floor(i / 2) % pool.length];
+    }
+
     function paint(zi) {
       const z = zones[zi];
       if (!z) return;
-      rail.innerHTML = z.items.map((s) => `
+      rail.innerHTML = z.items.map((s, i) => `
         <article class="show-row">
+          <span class="show-shot">
+            <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
+            <i class="show-dur">${s.m}'</i>
+          </span>
           <p class="show-time">${s.t}<small>${s.ap}</small></p>
           <div class="show-body"><h3>${s.n}</h3><p>${s.m} minutes</p></div>
           <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>

@@ -965,6 +965,104 @@ body.chrome-on
   .bd-card.is-featured { order: -1; }
 }
 
+/* ═══════════════ RIDES — POSTER BOARD ═══════════════ */
+.rideboard {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 11vh, 110px) 6vw clamp(60px, 11vh, 110px);
+  display: grid; gap: 36px; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.rb-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(760px, 100%); }
+
+/* intensity filters */
+.rb-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.rb-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ui); font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: #b9c8e8;
+  padding: 9px 15px; border-radius: 999px;
+  background: rgba(124, 196, 255, .06); border: 1px solid rgba(124, 196, 255, .18);
+  transition: color .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
+}
+.rb-chip b { font-weight: 600; font-size: 10px; opacity: .6; }
+.rb-chip:hover { color: #fff; background: rgba(124, 196, 255, .14); transform: translateY(-1px); }
+.rb-chip.on {
+  color: #0b1030; border-color: transparent;
+  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+}
+.rb-chip.on b { opacity: .55; }
+
+/* the board itself */
+.rb-grid {
+  width: 100%; max-width: min(1240px, 100%);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 168px; gap: 14px;
+}
+.rb-tile {
+  position: relative; overflow: hidden; border-radius: 18px; cursor: pointer;
+  grid-row: span 1;
+  background: rgba(124, 196, 255, .05);
+  border: 1px solid rgba(124, 196, 255, .14);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(18px);
+  opacity: 0;
+  transition: transform .7s var(--ease), opacity .7s var(--ease),
+              border-color .4s var(--ease), box-shadow .4s var(--ease), filter .4s var(--ease);
+}
+.rb-tile.in { opacity: 1; transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(0); transition-delay: var(--d, 0ms); }
+.rb-tile.is-tall { grid-row: span 2; }
+.rb-tile:hover {
+  border-color: rgba(255, 194, 77, .55);
+  box-shadow: 0 26px 54px rgba(2, 4, 14, .6), 0 0 30px rgba(255, 194, 77, .14);
+  z-index: 2;
+}
+.rb-tile.muted { opacity: .18; filter: saturate(.2); pointer-events: none; }
+.rb-tile img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform .8s var(--ease), filter .5s var(--ease);
+  filter: saturate(.92) brightness(.82);
+}
+.rb-tile:hover img { transform: scale(1.06); filter: saturate(1.08) brightness(1); }
+.rb-tile::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(6, 10, 30, .1) 38%, rgba(6, 9, 26, .92) 100%);
+}
+.rb-sheen {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  transition: opacity .4s var(--ease);
+  background: radial-gradient(180px 180px at var(--mx, 50%) var(--my, 50%), rgba(180, 220, 255, .22), transparent 70%);
+}
+.rb-tile:hover .rb-sheen { opacity: 1; }
+.rb-no {
+  position: absolute; z-index: 2; right: 12px; top: 9px;
+  font-family: var(--disp); font-size: 26px; line-height: 1; color: rgba(255, 255, 255, .2);
+  transition: color .4s var(--ease);
+}
+.rb-tile:hover .rb-no { color: rgba(255, 217, 138, .55); }
+.rb-meta { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 14px 15px; display: grid; gap: 7px; justify-items: start; }
+.rb-kind {
+  font-family: var(--ui); font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: #8ff3ff; padding: 3px 8px; border-radius: 999px;
+  background: rgba(8, 22, 48, .6); border: 1px solid rgba(53, 224, 255, .3);
+}
+.rb-meta h3 {
+  font-family: var(--disp); font-weight: 400; font-size: 21px; letter-spacing: .01em; line-height: 1.08;
+  color: #fff;
+}
+.rb-heat { display: inline-flex; align-items: flex-end; gap: 3px; }
+.rb-heat i { width: 4px; border-radius: 2px; background: rgba(207, 228, 255, .25); }
+.rb-heat i:nth-child(1) { height: 6px; } .rb-heat i:nth-child(2) { height: 9px; } .rb-heat i:nth-child(3) { height: 12px; }
+.rb-heat.b1 i:nth-child(1),
+.rb-heat.b2 i:nth-child(1), .rb-heat.b2 i:nth-child(2),
+.rb-heat.b3 i { background: linear-gradient(180deg, #ffd98a, #ffc24d); }
+.rb-heat em {
+  margin-left: 6px; font-style: normal; font-family: var(--ui);
+  font-size: 9.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #a9b6d8;
+}
+.rb-heat.b3 em { color: #ffc79a; }
+
+@media (max-width: 1100px) { .rb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 780px)  { .rb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 148px; } }
+@media (max-width: 420px)  { .rb-grid { grid-template-columns: minmax(0, 1fr); } .rb-tile.is-tall { grid-row: span 1; } }
+
 /* ═══════════════ CASHLESS — THE BLVD CARD ═══════════════ */
 .cashless {
   position: relative; z-index: 11;
@@ -1177,8 +1275,8 @@ body.chrome-on
 .show-rail { width: 100%; max-width: min(1000px, 100%); display: grid; gap: 10px; }
 .show-note { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: #8a99c6; }
 .show-row {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: clamp(14px, 2.4vw, 30px);
-  padding: 16px clamp(16px, 2vw, 24px); border-radius: 14px;
+  display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: clamp(12px, 1.8vw, 24px);
+  padding: 12px clamp(14px, 1.8vw, 20px); border-radius: 16px;
   background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .13);
   transition: background .25s, border-color .25s, transform .25s;
 }
@@ -1196,6 +1294,35 @@ body.chrome-on
   background: linear-gradient(180deg, #fff, #bfe0ff); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .show-body p { font-size: 13.5px; font-weight: 600; color: var(--dim); line-height: 1.45; }
+/* thumbnail per show: the zone's own photograph, with its running time */
+.show-shot {
+  position: relative; display: block; width: 104px; height: 70px; flex: none;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(124, 196, 255, .16);
+  background: rgba(124, 196, 255, .06);
+}
+.show-shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.95) brightness(.86);
+  transition: transform .6s var(--ease), filter .4s var(--ease);
+}
+.show-row:hover .show-shot img { transform: scale(1.07); filter: saturate(1.05) brightness(1); }
+.show-shot::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(6, 10, 30, 0) 45%, rgba(6, 9, 26, .8) 100%);
+}
+.show-dur {
+  position: absolute; z-index: 2; right: 6px; bottom: 5px;
+  font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .06em;
+  font-style: normal; color: #eaf2ff;
+}
+@media (max-width: 700px) {
+  .show-row { grid-template-columns: auto 1fr; row-gap: 10px; }
+  .show-shot { width: 74px; height: 52px; }
+  .show-row .show-body { grid-column: 2; }
+  .show-type { grid-column: 2; justify-self: start; }
+}
+
 /* show type: roaming wanders the streets, stage is a fixed performance */
 .show-type {
   display: inline-flex; align-items: center; align-self: start;
