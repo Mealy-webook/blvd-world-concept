@@ -1272,37 +1272,48 @@ body.chrome-on
 }
 
 /* the night's schedule, one row per showtime */
-.show-rail {
-  position: relative; width: 100%; max-width: min(1000px, 100%);
-  display: grid; gap: 6px;
+/* ── the night, running left to right ── */
+.tl-wrap {
+  position: relative; width: 100%; max-width: min(1240px, 100%);
+  display: flex; align-items: center; gap: 8px;
 }
-/* the spine: one line down the night, fading in and out at the ends */
+.show-rail {
+  position: relative; flex: 1; min-width: 0;
+  display: flex; align-items: stretch; gap: 0;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x proximity; scroll-behavior: smooth;
+  padding: 4px 2px 10px; scrollbar-width: none; cursor: grab;
+}
+.show-rail::-webkit-scrollbar { display: none; }
+.show-rail.grabbing { cursor: grabbing; scroll-behavior: auto; }
+/* the spine runs the length of the night, behind the nodes */
 .show-rail::before {
-  content: ''; position: absolute; top: 8px; bottom: 8px; left: 95px; width: 2px;
-  background: linear-gradient(180deg,
-    transparent, rgba(255, 194, 77, .5) 8%, rgba(255, 194, 77, .5) 92%, transparent);
+  content: ''; position: absolute; left: 0; right: 0; top: 62px; height: 2px;
+  background: linear-gradient(90deg,
+    transparent, rgba(255, 194, 77, .5) 4%, rgba(255, 194, 77, .5) 96%, transparent);
 }
 .show-note { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: #8a99c6; }
 
-/* one stop on the timeline */
+/* one stop: time above, node on the spine, card below */
 .tl-item {
-  display: grid; grid-template-columns: 80px 32px minmax(0, 1fr); align-items: center;
+  position: relative; flex: 0 0 auto; width: clamp(210px, 22vw, 250px);
+  display: grid; grid-template-rows: 44px 18px minmax(0, 1fr); justify-items: center;
+  scroll-snap-align: center; padding: 0 9px;
   opacity: 0; transform: translateY(14px);
   transition: opacity .7s var(--ease), transform .7s var(--ease);
   transition-delay: var(--d, 0ms);
 }
 .tl-item.in { opacity: 1; transform: none; }
 .tl-time {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(20px, 2.1vw, 27px);
-  color: var(--gold); letter-spacing: .01em; line-height: 1; white-space: nowrap; text-align: right;
+  font-family: var(--disp); font-weight: 400; font-size: clamp(21px, 2.1vw, 27px);
+  color: var(--gold); letter-spacing: .01em; line-height: 1; text-align: center; white-space: nowrap;
   text-shadow: 0 0 18px rgba(255, 194, 77, .35);
 }
 .tl-time small {
-  display: block; font-family: var(--ui); font-size: 9.5px; font-weight: 600;
-  letter-spacing: .16em; color: #8a99c6; margin-top: 4px; text-shadow: none;
+  display: inline-block; margin-left: 4px; font-family: var(--ui); font-size: 9.5px;
+  font-weight: 600; letter-spacing: .14em; color: #8a99c6; text-shadow: none;
 }
-/* the node that sits on the spine */
-.tl-node { position: relative; display: grid; place-items: center; height: 100%; }
+.tl-node { position: relative; display: grid; place-items: center; width: 100%; }
 .tl-node i {
   position: relative; z-index: 2; width: 11px; height: 11px; border-radius: 50%;
   background: #0b1030; border: 2px solid rgba(255, 194, 77, .85);
@@ -1316,22 +1327,25 @@ body.chrome-on
   background: linear-gradient(160deg, #ffd98a, #ffc24d);
   transform: scale(1.25); box-shadow: 0 0 18px rgba(255, 194, 77, .6);
 }
-/* the show itself */
+/* the card hangs off the spine */
 .tl-card {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
-  gap: clamp(12px, 1.8vw, 22px);
-  padding: 11px clamp(14px, 1.8vw, 18px); border-radius: 16px;
+  width: 100%; margin-top: 10px;
+  display: grid; gap: 10px; justify-items: start; align-content: start;
+  padding: 12px; border-radius: 16px;
   background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .13);
   transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
 }
 .tl-item:hover .tl-card {
   background: rgba(124, 196, 255, .1); border-color: rgba(255, 194, 77, .4);
-  transform: translateX(5px);
+  transform: translateY(-5px);
 }
+.tl-card .show-body { display: grid; gap: 3px; }
+.tl-card .show-body h3 { font-size: clamp(16px, 1.5vw, 19px); line-height: 1.14; }
+.tl-card .show-body p { font-size: 12px; }
 
 /* thumbnail per show: the zone's own photograph, with its running time */
 .show-shot {
-  position: relative; display: block; width: 104px; height: 70px; flex: none;
+  position: relative; display: block; width: 100%; height: 108px; flex: none;
   border-radius: 12px; overflow: hidden;
   border: 1px solid rgba(124, 196, 255, .16);
   background: rgba(124, 196, 255, .06);
@@ -1352,11 +1366,9 @@ body.chrome-on
   font-style: normal; color: #eaf2ff;
 }
 @media (max-width: 700px) {
-  .show-rail::before { left: 57px; }
-  .tl-item { grid-template-columns: 48px 20px minmax(0, 1fr); }
-  .tl-card { grid-template-columns: auto minmax(0, 1fr); row-gap: 8px; }
-  .show-shot { width: 68px; height: 48px; }
-  .tl-card .show-type { grid-column: 2; justify-self: start; }
+  .tl-item { width: clamp(190px, 62vw, 230px); }
+  .show-shot { height: 92px; }
+  .rail-btn { display: none; }        /* swipe instead */
 }
 
 /* show type: roaming wanders the streets, stage is a fixed performance */

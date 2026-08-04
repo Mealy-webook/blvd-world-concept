@@ -199,6 +199,9 @@
           </div>
         </article>`;
       }).join("");
+      rail.scrollLeft = 0;                  // a new zone starts at dusk again
+      ctl && ctl.edges();
+
       // reveal the stops in sequence as the timeline arrives
       const items = $$(".tl-item", rail);
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -222,6 +225,7 @@
         <span class="tab-flag" aria-hidden="true">${flag(z.zone)}</span>${z.zone}
       </button>`).join("");
     $$("button", tabs).forEach((b, i) => b.addEventListener("click", () => paint(i)));
+    const ctl = makeRail(rail, $("#show-prev"), $("#show-next"));
     paint(0);
   })();
 })();
