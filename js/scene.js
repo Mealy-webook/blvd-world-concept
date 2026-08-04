@@ -351,10 +351,9 @@
   }
 })();
 
-// ── hero video: plays once, then holds its last frames ─────────────────
-// The take eases into stillness over its final couple of seconds and stops on
-// the closing frame, where a slow CSS drift keeps a whisper of motion. It does
-// not loop — the hero settles instead of restarting.
+// ── hero video: a seamless loop ─────────────────────────────────────────
+// The take is cut to loop, so it just runs. All this does is make sure it
+// isn't decoding frames behind the intro or in a hidden tab.
 (function heroVideo() {
   const vid = document.getElementById("hero-video");
   if (!vid) return;
@@ -363,41 +362,26 @@
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     vid.autoplay = false;
     vid.removeAttribute("autoplay");
+    vid.loop = false;
     vid.pause();
     return;
   }
 
-  const EASE_TAIL = 2.4;          // seconds over which the take slows down
-  let finished = false, started = false;
+  let started = false;
 
   const play = () => {
-    if (finished) return;         // never restart once it has settled
     const p = vid.play();
     if (p && p.catch) p.catch(() => {});
   };
 
-  // The loader and intro run for a few seconds before the hero is on screen —
-  // starting at load would burn part of a one-shot take behind them, or finish
-  // it entirely if someone lingers. So the take begins from the top the first
-  // time the hero is actually shown.
+  // The loader and intro run before the hero is on screen; start the loop from
+  // the top the first time the hero is actually shown, then let it run.
   const begin = () => {
-    if (started || finished) { play(); return; }
+    if (started) { play(); return; }
     started = true;
     try { vid.currentTime = 0; } catch (e) { /* not seekable yet */ }
     play();
   };
-
-  // ease the last stretch down to a crawl so it arrives at stillness
-  vid.addEventListener("timeupdate", () => {
-    if (finished || !vid.duration) return;
-    const left = vid.duration - vid.currentTime;
-    vid.playbackRate = left > EASE_TAIL ? 1 : Math.max(0.22, left / EASE_TAIL);
-  });
-
-  vid.addEventListener("ended", () => {
-    finished = true;
-    vid.classList.add("held");    // hand over to the slow drift
-  });
 
   vid.pause();                    // wait for the hero, don't run behind the intro
   ["pointerdown", "keydown"].forEach((ev) =>

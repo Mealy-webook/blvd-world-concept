@@ -178,25 +178,29 @@
     function paint(zi) {
       const z = zones[zi];
       if (!z) return;
-      // the night as a timeline: time on the outside, a node on the spine,
-      // the show itself on the card side
+      // the night as a ribbon: stops alternate above and below the spine, the
+      // time reads on the empty side, and the wait between acts is printed on
+      // the spine itself rather than repeated inside every card
       rail.innerHTML = z.items.map((s, i) => {
         const prev = i ? z.items[i - 1] : null;
         return `
-        <article class="tl-item${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 6) * 60}ms">
-          <p class="tl-time">${s.t}<small>${s.ap}</small></p>
-          <span class="tl-node" aria-hidden="true"><i></i></span>
+        <article class="tl-item is-${i % 2 ? "down" : "up"}${i === 0 ? " is-first" : ""}"
+                 style="--d:${Math.min(i, 6) * 60}ms">
+          ${prev ? `<span class="tl-gap">${gapText(prev, s)}</span>` : ""}
           <div class="tl-card">
             <span class="show-shot">
               <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
+              <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
               <i class="show-dur">${s.m}'</i>
             </span>
             <div class="show-body">
-              <h3>${s.n}</h3>
-              <p>${s.m} minutes${prev ? ` &#183; ${gapText(prev, s)} after the last` : " &#183; opens the night"}</p>
+              <h3 title="${s.n}">${s.n}</h3>
+              <p>${s.m} minutes${prev ? "" : " &#183; opens the night"}</p>
             </div>
-            <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
           </div>
+          <span class="tl-stem" aria-hidden="true"></span>
+          <span class="tl-node" aria-hidden="true"><i></i></span>
+          <p class="tl-time">${s.t}<small>${s.ap}</small></p>
         </article>`;
       }).join("");
       rail.scrollLeft = 0;                  // a new zone starts at dusk again

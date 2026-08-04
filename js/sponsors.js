@@ -1,11 +1,16 @@
 // ── sponsors: the partner tiers, rendered from the official map's panel ──
-// Logos are cropped from the printed panel, so they arrive on white — each one
-// sits on its own light plate to stay legible against the night sky.
+// Every mark is white ink on transparency, laid straight onto the night sky.
 (function () {
   const host = document.getElementById("sp-tiers");
   if (!host) return;
   const tiers = (window.WBK && WBK.partners) || [];
   if (!tiers.length) return;
+
+  // Several marks were re-cut in place after a first pass left them as solid
+  // blocks, so a browser holding the old file by the same name would still show
+  // the block. The stamp forces those requests past the cache; bump it whenever
+  // a logo file is replaced.
+  const CUT = "3";
 
   // the last two tiers are single-logo, and sit side by side as printed
   const singles = tiers.filter((t) => t.logos.length === 1);
@@ -13,7 +18,7 @@
 
   const plate = (l) => `
     <div class="sp-plate"${l.name ? "" : ' title="Partner — name to confirm"'}>
-      <img src="img/partners/${l.img}" alt="${l.name || "Partner logo"}" loading="lazy" draggable="false">
+      <img src="img/partners/${l.img}?c=${CUT}" alt="${l.name || "Partner logo"}" loading="lazy" draggable="false">
     </div>`;
 
   const tierBlock = (t, cls) => `

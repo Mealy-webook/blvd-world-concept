@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=166" />
+<link rel="stylesheet" href="css/main.css?v=174" />
 </head>
 <body class="typo-body">
 
@@ -77,8 +77,8 @@
     <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
 
     <div id="street" class="street plain">
-      <video class="hero-video" id="hero-video" src="video/hero.mp4"
-             autoplay muted playsinline preload="auto" aria-hidden="true"></video>
+      <video class="hero-video" id="hero-video" src="video/hero-loop.mp4"
+             autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
       <div class="hero-veil" aria-hidden="true"></div>
       <canvas id="stars-home" class="stars"></canvas>
       <div class="scene" id="scene">
@@ -125,8 +125,8 @@
             <span class="from">from <b>SAR 50</b></span>
           </a>
           <a href="#bundles" class="book-cta js-to-bundles">
-            <span class="pill ghost big-pill">BOOK BUNDLES</span>
-            <span class="from">from <b>SAR 190</b></span>
+            <span class="pill ghost big-pill">BOOK A RIDE PACKAGE</span>
+            <span class="from">from <b>SAR 89</b></span>
           </a>
           <a href="#/experiences" class="book-cta">
             <span class="pill ghost big-pill">BOOK ENTRY + EXPERIENCE</span>
@@ -171,33 +171,51 @@
       </div>
     </section>
 
-    <!-- ── bundles: three tickets, one decision ── -->
+    <!-- ── ride packages: two tiers, five ways to ride ── -->
     <section class="bundles" id="bundles">
       <div class="bd-head reveal">
         <p class="eyebrow"><span class="sec-num">02</span> PICK YOUR NIGHT</p>
-        <h2 class="sec-title">THREE WAYS IN</h2>
-        <p class="sec-sub">Entry on its own, every ride included, or the lot with a premium
-          experience — each one comes with a BLVD card you can top up in the app.</p>
+        <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
+        <p class="sec-sub">Buy your rides by the handful and spend them how you like, or go
+          unlimited on a bracelet and ride until the park closes.</p>
       </div>
       <div class="bd-grid" id="bd-grid"></div>
-      <p class="bd-note reveal">All prices per person &#183; children under 3 enter free</p>
+      <p class="bd-note reveal">All prices per person &#183; every package expires at the end of the day</p>
     </section>
 
-    <!-- ── rides: a full poster grid, one tile per ride ── -->
-    <section class="rideboard" id="rides2">
-      <div class="rb-head reveal">
+    <!-- ── rides: an index you run down, with your pick held on the stage ── -->
+    <section class="ridex" id="rides2">
+      <div class="rx-head reveal">
         <p class="eyebrow"><span class="sec-num">03</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
-        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every ride runs all night, and
-          they're all included in the rides bundle.</p>
+        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all night.
+          Run down the list; whatever you land on stands up beside it.</p>
       </div>
 
-      <div class="rb-filters" id="rb-filters" role="group" aria-label="Filter rides by intensity"></div>
-      <div class="rb-grid" id="rb-grid"></div>
+      <div class="rx-split reveal">
+        <!-- the stage: the ride under the cursor, held large -->
+        <div class="rx-stage" aria-hidden="true">
+          <div class="rx-frame">
+            <div class="rx-plates" id="rx-plates"></div>
+            <div class="rx-veil"></div>
+            <p class="rx-count"><b id="rx-cap-no">01</b><i>/</i>14</p>
+            <div class="rx-caption">
+              <p class="rx-cap-kind" id="rx-cap-kind"></p>
+              <h3 class="rx-cap-name" id="rx-cap-name"></h3>
+              <p class="rx-cap-heat" id="rx-cap-heat"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rx-side">
+          <div class="rx-filters" id="rx-filters" role="group" aria-label="Filter rides by intensity"></div>
+          <ul class="rx-index" id="rx-index"></ul>
+        </div>
+      </div>
 
       <div class="ride-cta reveal">
-        <p class="rc-note">All fourteen included from <b>SAR 190</b> per person</p>
-        <a href="#bundles" class="pill solid big-pill js-to-bundles2">SEE THE RIDES BUNDLE</a>
+        <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
+        <a href="#bundles" class="pill solid big-pill js-to-bundles2">SEE THE RIDE PACKAGES</a>
       </div>
     </section>
 
@@ -274,7 +292,7 @@
               <span class="cs-num">01</span>
               <div>
                 <h3>Book any ticket</h3>
-                <p>Entry, entry + experience or a rides bundle — the card is yours at the gate.</p>
+                <p>Entry, entry + experience or a ride package — the card is yours at the gate.</p>
               </div>
             </li>
             <li>
@@ -601,7 +619,7 @@
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
       <a href="#pex" data-sec="pex">Experiences</a>
-      <a href="#bundles" data-sec="bundles">Bundles</a>
+      <a href="#bundles" data-sec="bundles">Packages</a>
       <a href="#rides2" data-sec="rides2">Rides</a>
       <a href="#cashless" data-sec="cashless">Card</a>
       <a href="#eats" data-sec="eats">Dining</a>
@@ -619,20 +637,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=166"></script>
-  <script src="js/borders.js?v=166"></script>
-  <script src="js/scene.js?v=166"></script>
-  <script src="js/app.js?v=166"></script>
-  <script src="js/experiences.js?v=166"></script>
-  <script src="js/carousels.js?v=166"></script>
-  <script src="js/fan.js?v=166"></script>
-  <script src="js/gallery.js?v=166"></script>
-  <script src="js/parkmap.js?v=166"></script>
-  <script src="js/sponsors.js?v=166"></script>
-  <script src="js/cashless.js?v=166"></script>
-  <script src="js/bundles.js?v=166"></script>
-  <script src="js/rideboard.js?v=166"></script>
+  <script src="js/data.js?v=174"></script>
+  <script src="js/borders.js?v=174"></script>
+  <script src="js/scene.js?v=174"></script>
+  <script src="js/app.js?v=174"></script>
+  <script src="js/experiences.js?v=174"></script>
+  <script src="js/carousels.js?v=174"></script>
+  <script src="js/fan.js?v=174"></script>
+  <script src="js/gallery.js?v=174"></script>
+  <script src="js/parkmap.js?v=174"></script>
+  <script src="js/sponsors.js?v=174"></script>
+  <script src="js/cashless.js?v=174"></script>
+  <script src="js/bundles.js?v=174"></script>
+  <script src="js/ridex.js?v=174"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=166"></script> -->
+  <script type="module" src="js/globe.js?v=174"></script> -->
 </body>
 </html>
