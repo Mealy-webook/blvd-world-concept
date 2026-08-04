@@ -351,7 +351,10 @@
   }
 })();
 
-// ── hero video: only run it while the home route is on screen ──────────
+// ── hero video: plays once, then holds its last frames ─────────────────
+// The take eases into stillness over its final couple of seconds and stops on
+// the closing frame, where a slow CSS drift keeps a whisper of motion. It does
+// not loop — the hero settles instead of restarting.
 (function heroVideo() {
   const vid = document.getElementById("hero-video");
   if (!vid) return;
@@ -364,21 +367,50 @@
     return;
   }
 
-  const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
+  const EASE_TAIL = 2.4;          // seconds over which the take slows down
+  let finished = false, started = false;
 
-  // autoplay can be refused until the first gesture; retry on one
-  play();
+  const play = () => {
+    if (finished) return;         // never restart once it has settled
+    const p = vid.play();
+    if (p && p.catch) p.catch(() => {});
+  };
+
+  // The loader and intro run for a few seconds before the hero is on screen —
+  // starting at load would burn part of a one-shot take behind them, or finish
+  // it entirely if someone lingers. So the take begins from the top the first
+  // time the hero is actually shown.
+  const begin = () => {
+    if (started || finished) { play(); return; }
+    started = true;
+    try { vid.currentTime = 0; } catch (e) { /* not seekable yet */ }
+    play();
+  };
+
+  // ease the last stretch down to a crawl so it arrives at stillness
+  vid.addEventListener("timeupdate", () => {
+    if (finished || !vid.duration) return;
+    const left = vid.duration - vid.currentTime;
+    vid.playbackRate = left > EASE_TAIL ? 1 : Math.max(0.22, left / EASE_TAIL);
+  });
+
+  vid.addEventListener("ended", () => {
+    finished = true;
+    vid.classList.add("held");    // hand over to the slow drift
+  });
+
+  vid.pause();                    // wait for the hero, don't run behind the intro
   ["pointerdown", "keydown"].forEach((ev) =>
-    window.addEventListener(ev, play, { once: true }));
+    window.addEventListener(ev, () => started && play(), { once: true }));
 
   // don't decode frames for a hero nobody is looking at
   const home = document.getElementById("view-home");
   if (home) {
-    new MutationObserver(() => {
-      home.classList.contains("active") ? play() : vid.pause();
-    }).observe(home, { attributes: true, attributeFilter: ["class"] });
+    const sync = () => (home.classList.contains("active") ? begin() : vid.pause());
+    new MutationObserver(sync).observe(home, { attributes: true, attributeFilter: ["class"] });
+    sync();                       // in case the hero is already up
   }
   document.addEventListener("visibilitychange", () => {
-    document.hidden ? vid.pause() : (home && home.classList.contains("active") && play());
+    document.hidden ? vid.pause() : (home && home.classList.contains("active") && begin());
   });
 })();
