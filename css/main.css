@@ -997,6 +997,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 /* section tabs with scroll-spy */
 .sc-tabs { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
+#sc-tabs a[data-sec="globe-sec"] { display: none; }   /* its section is hidden */
 .sc-tabs a {
   position: relative; font-family: var(--disp); font-size: 11px; letter-spacing: .14em;
   color: var(--dim); padding: 8px 13px; border-radius: 999px; white-space: nowrap;
@@ -1195,6 +1196,9 @@ body.route-experiences
 /* same curtain arrival as the zones section: a gradient that rises over the
    pinned hero, with a soft light spill at the seam */
 .globe-sec {
+  /* hidden for now — delete this one line (and un-comment the globe.js script
+     tag in index.html) to bring the planet back */
+  display: none;
   position: relative; z-index: 9; height: 100vh; overflow: hidden;
   /* no background of its own: the hero folds away underneath (see scene.js),
      leaving the page's own night sky behind the planet */
@@ -1224,6 +1228,47 @@ body.route-experiences
   pointer-events: none; display: grid; gap: 12px; justify-items: center; padding: 0 6vw;
 }
 /* ── zone detail drawer ── */
+/* ═══════════════ SPONSORS ═══════════════ */
+.sponsors {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 11vh, 110px) 6vw clamp(70px, 13vh, 130px);
+  display: grid; gap: 46px; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.sp-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
+.sp-tiers { width: 100%; max-width: min(1100px, 100%); display: grid; gap: 44px; justify-items: center; }
+.sp-tier { display: grid; gap: 22px; justify-items: center; width: 100%; }
+.sp-label {
+  position: relative; padding-bottom: 12px;
+  font-family: var(--disp); font-size: 12px; letter-spacing: .2em; color: var(--gold); text-align: center;
+}
+.sp-label::after {          /* the hairline rule under each tier, as printed */
+  content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 194, 77, .8), transparent);
+}
+.sp-logos { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: center; }
+.sp-plate {
+  display: grid; place-items: center; padding: 17px 22px; border-radius: 16px;
+  background: rgba(255, 255, 255, .94);
+  border: 1px solid rgba(124, 196, 255, .14);
+  box-shadow: 0 10px 26px rgba(2, 4, 14, .35);
+  transition: transform .3s cubic-bezier(.2,.8,.25,1), box-shadow .3s, background .3s;
+}
+.sp-plate:hover {
+  transform: translateY(-4px); background: #fff;
+  box-shadow: 0 18px 40px rgba(2, 4, 14, .5), 0 0 24px rgba(255, 194, 77, .18);
+}
+.sp-plate img { display: block; height: 52px; width: auto; }
+.sp-tier:first-child .sp-plate img { height: 62px; }   /* premium reads largest */
+/* the two single-logo tiers share a row */
+.sp-pair { display: flex; flex-wrap: wrap; gap: clamp(30px, 7vw, 90px); justify-content: center; }
+.sp-pair .sp-tier { width: auto; }
+@media (max-width: 700px) {
+  .sp-plate { padding: 13px 16px; border-radius: 13px; }
+  .sp-plate img, .sp-tier:first-child .sp-plate img { height: 40px; }
+  .sp-label { font-size: 11px; letter-spacing: .16em; }
+}
+
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 760px) {
     .hero-title .line { font-size: clamp(38px, 11vw, 64px); }

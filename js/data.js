@@ -83,6 +83,38 @@ window.WBK = {
     { zone: "Africa", items: [{ n: "Roaming Africans", t: "8:30", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "8:50", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "9:10", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "10:00", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "10:20", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "10:50", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans", t: "11:35", ap: "PM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "12:00", ap: "AM", m: 15, ty: "ROAMING" }, { n: "Roaming Show", t: "12:25", ap: "AM", m: 15, ty: "ROAMING" }, { n: "Roaming Africans/ Drums", t: "12:45", ap: "AM", m: 15, ty: "ROAMING" }] },
   ],
 
+  // ── partners, as printed on the official park map ──
+  // the red premium mark could not be read at the PDF's resolution — its name
+  // is left blank until someone confirms it
+  partners: [
+    { tier: "OFFICIAL PREMIUM PARTNERS", logos: [
+      { name: "SNB",                  img: "SNB.png" },
+      { name: "stc",                  img: "stc.png" },
+      { name: "Dr Sulaiman Al Habib", img: "Dr-Sulaiman-Al-Habib.png" },
+      { name: "",                     img: "Bupa.png" },
+      { name: "aramco",               img: "aramco.png" },
+    ] },
+    { tier: "OFFICIAL STRATEGIC PARTNERS", logos: [
+      { name: "MUC \u00b7 Mayyar United", img: "MUC-Mayyar-United.png" },
+      { name: "AROYA Cruises",            img: "AROYA-Cruises.png" },
+      { name: "Sadia",                    img: "Sadia.png" },
+      { name: "SHG",                      img: "SHG.png" },
+    ] },
+    { tier: "OFFICIAL MAIN PARTNERS", logos: [
+      { name: "Checkapp",  img: "Checkapp.png" },
+      { name: "Dunkin'",   img: "Dunkin.png" },
+      { name: "shawarmer", img: "shawarmer.png" },
+      { name: "Coca-Cola", img: "Coca-Cola.png" },
+      { name: "Saudia",    img: "Saudia.png" },
+    ] },
+    { tier: "OFFICIAL CO SPONSOR", logos: [
+      { name: "Domino's", img: "Dominos.png" },
+    ] },
+    { tier: "COMMERCIAL PARTNER", logos: [
+      { name: "PRIME", img: "PRIME.png" },
+    ] },
+  ],
+
   faqs: [
     { q: "Where is BLVD World?",
       a: "BLVD World sits in Riyadh's Boulevard City district, part of Riyadh Season. Parking and ride-hailing drop-offs are signposted from the main gates." },
