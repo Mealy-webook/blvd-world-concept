@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=187" />
+<link rel="stylesheet" href="css/main.css?v=192" />
 </head>
 <body class="typo-body">
 
@@ -358,79 +358,105 @@
 
   <!-- ══════════ PARK MAP (own route: #/map) ══════════ -->
   <section id="view-map" class="view">
-      <section class="pmap" id="parkmap">
-
-        <div class="pm-shell reveal">
-          <!-- the discovery panel: its own column, so the map is never behind it -->
-          <aside class="pm-panel" id="pm-panel">
-            <header class="pp-head">
-              <a href="#/" class="map-back" aria-label="Back to the landing page" title="Back">
-                <span class="mb-arrow" aria-hidden="true"></span>
-              </a>
-              <h3>Discover the park</h3>
-              <div class="pp-modes">
-                <button class="pp-mode on" id="pp-map" type="button" aria-label="Map view"
-                  aria-pressed="true"><span class="ppi-map"></span></button>
-                <button class="pp-mode" id="pp-listview" type="button" aria-label="List view"
-                  aria-pressed="false"><span class="ppi-list"></span></button>
-                <button class="pp-mode" id="pp-searchbtn" type="button" aria-label="Search"
-                  aria-pressed="false"><span class="ppi-search"></span></button>
-              </div>
-            </header>
-
-            <div class="pp-search" id="pp-search">
-              <input id="pp-q" type="search" placeholder="Search rides, dining, zones&#8230;"
-                autocomplete="off" aria-label="Search the park" />
-            </div>
-
-            <div class="pp-chips" id="pp-chips" role="group" aria-label="Categories">
-              <button class="pp-chip on" data-cat="rides" type="button"><i class="cc cc-rides"></i>Rides &amp; Attractions</button>
-              <button class="pp-chip" data-cat="dining" type="button"><i class="cc cc-dining"></i>Dining</button>
-              <button class="pp-chip" data-cat="shows" type="button"><i class="cc cc-shows"></i>Shows</button>
-              <button class="pp-chip" data-cat="zones" type="button"><i class="cc cc-zones"></i>Zones</button>
-            </div>
-
-            <!-- shown once a zone is picked on the map: what the list is
-                 narrowed to, and the way back to the whole park -->
-            <div class="pp-zone" id="pp-zone" hidden aria-live="polite">
-              <span class="pz-dot" aria-hidden="true"></span>
-              <span class="pz-text">
-                <b class="pz-name"></b>
-                <small class="pz-count"></small>
-              </span>
-              <button class="pz-clear" type="button">All of the park</button>
-            </div>
-
-            <div class="pp-list" id="pp-list"></div>
-          </aside>
-
-          <!-- the map: fills its own column, whole plan visible -->
-          <div class="pm-frame" id="pm-frame">
-            <div class="pm-stage" id="pm-stage">
-              <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
-                alt="Official BLVD World park map" draggable="false" />
-              <div class="pm-pins" id="pm-pins"></div>
-            </div>
-
-            <div class="pm-status">
-              <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
-              <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
-              <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
-            </div>
-
-            <div class="pm-zoom">
-              <button id="pm-in" type="button" aria-label="Zoom in">+</button>
-              <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
-              <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
-            </div>
-
-            <p class="pm-hint" id="pm-hint">Tap a pin &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
-          <p class="pm-credit">Official park map &#183; Boulevard World, Riyadh Season</p>
-          </div>
-
+    <section class="pmap" id="parkmap">
+      <!-- the artwork is the page; every control floats over it -->
+      <div class="pm-frame" id="pm-frame">
+        <div class="pm-stage" id="pm-stage">
+          <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
+            alt="Official BLVD World park map" draggable="false" />
+          <div class="pm-pins" id="pm-pins"></div>
         </div>
 
-      </section>
+        <!-- where you are, what it's doing, when it opens -->
+        <div class="pm-status">
+          <span class="ps-item"><i class="ps-ic loc" aria-hidden="true"></i>BLVD WORLD, RIYADH</span>
+          <span class="ps-item"><i class="ps-ic sun" aria-hidden="true"></i>26&#176;C</span>
+          <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
+        </div>
+
+        <!-- the floating control bar: title or result count, view switch, filters -->
+        <header class="pm-bar" id="pm-bar">
+          <div class="pb-top">
+            <a href="#/" class="map-back" aria-label="Back to the landing page" title="Back">
+              <span class="mb-arrow" aria-hidden="true"></span>
+            </a>
+            <h1 class="pb-title" id="pb-title">Discover the park</h1>
+            <p class="pb-count" id="pb-count" hidden aria-live="polite"><b>0</b> <span>results</span></p>
+            <div class="pb-views">
+              <div class="pv-seg" role="group" aria-label="View">
+                <button class="pv on" id="pp-map" type="button" aria-label="Map view" aria-pressed="true">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.4 2.6 2.5 4.3v13l4.9-1.7 5.2 1.8 4.9-1.7v-13l-4.9 1.7zm0 1.7 5.2 1.8v11.2L7.4 15.5z"/></svg>
+                </button>
+                <button class="pv" id="pp-listview" type="button" aria-label="List view" aria-pressed="false">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h2v2H3zm4 0h10v2H7zM3 9h2v2H3zm4 0h10v2H7zm-4 4h2v2H3zm4 0h10v2H7z"/></svg>
+                </button>
+              </div>
+              <button class="pv-search" id="pp-searchbtn" type="button" aria-label="Search the park" aria-pressed="false">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.9 11.4a5 5 0 1 0-1.5 1.5l3.6 3.6 1.5-1.5zM8.5 12a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="pb-search" id="pp-search">
+            <input id="pp-q" type="search" placeholder="Search rides, dining, shows&#8230;"
+              autocomplete="off" aria-label="Search the park" />
+          </div>
+
+          <!-- categories. Once one is chosen it stands alone with a clear button,
+               and the sort control appears beside it. -->
+          <div class="pb-chips" id="pp-chips" role="group" aria-label="Categories">
+            <button class="pp-chip" data-cat="rides" type="button">
+              <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2s3.6 3.1 3.6 6.6a3.6 3.6 0 1 1-7.2 0C4.4 4.3 8 1.2 8 1.2z"/></svg>
+              <span>Rides &amp; Attractions</span>
+              <i class="ch-x" aria-hidden="true"></i>
+            </button>
+            <button class="pp-chip" data-cat="dining" type="button">
+              <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5v5a2 2 0 0 0 1.3 1.9V14.5h1.4V8.4A2 2 0 0 0 8 6.5v-5H6.7v4H6v-4H4.7v4H4zm7 0c-1 0-1.8 1.3-1.8 3 0 1.3.5 2.4 1.2 2.8v7.2h1.4V7.3c.7-.4 1.2-1.5 1.2-2.8 0-1.7-.8-3-1.8-3z"/></svg>
+              <span>Dining</span>
+              <i class="ch-x" aria-hidden="true"></i>
+            </button>
+            <button class="pp-chip" data-cat="shows" type="button">
+              <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4zm.7 7.1H5.9V7.2h1.6V4h1.2z"/></svg>
+              <span>Shows</span>
+              <i class="ch-x" aria-hidden="true"></i>
+            </button>
+            <button class="pp-chip" data-cat="zones" type="button">
+              <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6a4.2 4.2 0 0 0-4.2 4.2c0 3 4.2 8.6 4.2 8.6s4.2-5.6 4.2-8.6A4.2 4.2 0 0 0 8 1.6zm0 5.9a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6z"/></svg>
+              <span>Zones</span>
+              <i class="ch-x" aria-hidden="true"></i>
+            </button>
+            <button class="pp-sort" id="pp-sort" type="button" hidden>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2.5 2.4 5.6h1.9v7.9h1.4V5.6h1.9zm6 11-2.6-3.1h1.9V2.5h1.4v7.9h1.9z"/></svg>
+              <span id="pp-sort-label">Sort &#183; A–Z</span>
+            </button>
+          </div>
+
+          <!-- set once a zone badge is picked: what the list is narrowed to -->
+          <div class="pp-zone" id="pp-zone" hidden aria-live="polite">
+            <span class="pz-dot" aria-hidden="true"></span>
+            <span class="pz-text">
+              <b class="pz-name"></b>
+              <small class="pz-count"></small>
+            </span>
+            <button class="pz-clear" type="button">All of the park</button>
+          </div>
+        </header>
+
+        <!-- list view: the results fill the frame over the artwork -->
+        <div class="pm-sheet" id="pm-sheet">
+          <div class="pp-list" id="pp-list"></div>
+        </div>
+
+        <div class="pm-zoom">
+          <button id="pm-in" type="button" aria-label="Zoom in">+</button>
+          <button id="pm-out" type="button" aria-label="Zoom out">&#8722;</button>
+          <button id="pm-reset" type="button" aria-label="Reset the map">&#10227;</button>
+        </div>
+
+        <p class="pm-hint" id="pm-hint">Tap a zone &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
+        <p class="pm-credit">Official park map &#183; Boulevard World, Riyadh Season</p>
+      </div>
+    </section>
   </section>
 
   <!-- ══════════ EXPERIENCES ══════════ -->
@@ -609,20 +635,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=187"></script>
-  <script src="js/borders.js?v=187"></script>
-  <script src="js/scene.js?v=187"></script>
-  <script src="js/app.js?v=187"></script>
-  <script src="js/experiences.js?v=187"></script>
-  <script src="js/carousels.js?v=187"></script>
-  <script src="js/fan.js?v=187"></script>
-  <script src="js/gallery.js?v=187"></script>
-  <script src="js/parkmap.js?v=187"></script>
-  <script src="js/sponsors.js?v=187"></script>
-  <script src="js/cashless.js?v=187"></script>
-  <script src="js/bundles.js?v=187"></script>
-  <script src="js/ridex.js?v=187"></script>
+  <script src="js/data.js?v=192"></script>
+  <script src="js/borders.js?v=192"></script>
+  <script src="js/scene.js?v=192"></script>
+  <script src="js/app.js?v=192"></script>
+  <script src="js/experiences.js?v=192"></script>
+  <script src="js/carousels.js?v=192"></script>
+  <script src="js/fan.js?v=192"></script>
+  <script src="js/gallery.js?v=192"></script>
+  <script src="js/parkmap.js?v=192"></script>
+  <script src="js/sponsors.js?v=192"></script>
+  <script src="js/cashless.js?v=192"></script>
+  <script src="js/bundles.js?v=192"></script>
+  <script src="js/ridex.js?v=192"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=187"></script> -->
+  <script type="module" src="js/globe.js?v=192"></script> -->
 </body>
 </html>
