@@ -1192,38 +1192,146 @@ body.chrome-on
 }
 .rides-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 
-/* ═══════════════ THIS SEASON'S ZONES ═══════════════ */
-/* the same fanned deck as the experiences, with its own card face */
-.rail-btn[hidden] { display: none; }
-.zonefan .fan-card.is-zone { border-color: color-mix(in srgb, var(--tone) 45%, transparent); }
-.fan-card.is-zone .fan-meta { gap: 8px; }
-.fan-card.is-zone .ride-kind.zone {
-  color: #0b1030; background: var(--tone); border-color: transparent;
+/* ═══════════════ ZONES — THE COVERFLOW ═══════════════ */
+.zonesec {
+  position: relative; z-index: 11;
+  padding: clamp(60px, 11vh, 110px) 0 clamp(60px, 11vh, 110px);
+  display: grid; gap: clamp(18px, 3vh, 34px); justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
-.zf-blurb { font-size: 12.5px; font-weight: 400; color: #c3d2ee; line-height: 1.45; }
-.zf-bits { display: flex; flex-wrap: wrap; gap: 5px 6px; }
-.zf-bits i {
-  font-style: normal; font-family: var(--ui); font-size: 9px; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase; color: #cfe4ff;
-  padding: 3px 7px; border-radius: 999px;
-  background: rgba(124, 196, 255, .1); border: 1px solid rgba(124, 196, 255, .2);
+.zs-head { text-align: center; display: grid; gap: 14px; justify-items: center; padding: 0 6vw; max-width: min(760px, 100%); }
+.zone-flow { width: 100%; }
+
+/* ── the carousel shell ── */
+.cf { width: 100%; }
+.cf-rel { position: relative; }
+.cf-frame {
+  /* the vertical padding keeps the card shadows clear of the overflow clip */
+  padding: clamp(26px, 4vh, 48px) 0; overflow: hidden; outline: none; cursor: grab;
+  touch-action: pan-y;                 /* horizontal drag is ours, the page keeps vertical */
 }
-/* only the fronted card offers its link, so a card off to the side can be
-   clicked forward without navigating */
-.zf-open {
-  justify-self: start; margin-top: 2px;
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .14em;
+.cf-frame.grabbing { cursor: grabbing; }
+.cf-frame:focus-visible { outline: 2px solid var(--gold); outline-offset: -6px; border-radius: 18px; }
+.cf-track {
+  position: relative; height: var(--cf-card); user-select: none;
+  transform-style: preserve-3d;
+}
+.cf-card {
+  position: absolute; left: 50%; top: 0; width: var(--cf-card); aspect-ratio: 1;
+  border-radius: 22px; overflow: hidden; will-change: transform;
+  background: rgba(124, 196, 255, .06);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .6);
+  cursor: pointer;
+}
+
+/* ── a zone's card ── */
+.zc { position: absolute; inset: 0; display: block; }
+.zc img {
+  width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
+  filter: saturate(.95) brightness(.82);
+  transition: filter .6s var(--ease);
+}
+.cf-card.is-centre .zc img { filter: saturate(1.04) brightness(1); }
+.zc-veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent 48%, rgba(5, 8, 24, .88) 100%);
+}
+.zc-name {
+  position: absolute; left: 16px; right: 16px; bottom: 14px;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(16px, 1.7vw, 21px);
+  letter-spacing: -.01em; color: #fff; line-height: 1.1;
+}
+/* the ring's centre gets a hairline in the zone's own colour */
+.cf-card.is-centre { box-shadow: 0 30px 70px rgba(2, 4, 14, .68); }
+.cf-card.is-centre .zc::after {
+  content: ''; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+  border: 2px solid var(--tone);
+}
+.zc-new {
+  position: absolute; z-index: 2; left: 14px; top: 14px;
+  font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: #0b1030;
+  padding: 5px 11px; border-radius: 999px;
+  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+}
+
+/* ── arrows ── */
+.cf-nav {
+  position: absolute; z-index: 200; top: 50%; transform: translateY(-50%);
+  display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%;
+  font-size: 20px; line-height: 1; color: #eaf2ff;
+  background: rgba(6, 10, 30, .78); border: 1px solid rgba(124, 196, 255, .26);
+  backdrop-filter: blur(6px);
+  transition: background .25s var(--ease), border-color .25s var(--ease), transform .3s var(--ease);
+}
+.cf-nav.prev { left: clamp(8px, 3vw, 40px); }
+.cf-nav.next { right: clamp(8px, 3vw, 40px); }
+.cf-nav:hover { background: rgba(6, 10, 30, .95); border-color: rgba(199, 226, 255, .6); }
+.cf-nav.prev:hover { transform: translateY(-50%) translateX(-2px); }
+.cf-nav.next:hover { transform: translateY(-50%) translateX(2px); }
+
+/* ── the caption under the ring ── */
+.cf-caption {
+  display: grid; justify-items: center; gap: 6px; text-align: center;
+  padding: 0 6vw; max-width: min(520px, 100%); margin-inline: auto;
+  animation: cfCap .35s var(--ease) both;
+}
+@keyframes cfCap { from { opacity: 0; transform: translateY(6px); } }
+.cf-tag {
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .2em;
   text-transform: uppercase; color: var(--gold);
-  opacity: 0; pointer-events: none; transition: opacity .35s var(--ease), gap .35s var(--ease);
 }
-.zf-open::after {
+.cf-title {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(24px, 2.6vw, 34px);
+  letter-spacing: -.02em; color: #fff; line-height: 1.05;
+}
+.cf-sub { font-size: 13.5px; font-weight: 400; color: var(--dim); line-height: 1.5; max-width: 42ch; }
+.cf-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; margin-top: 6px; }
+.cf-meta > div {
+  display: inline-flex; align-items: baseline; gap: 7px;
+  padding: 5px 11px; border-radius: 999px;
+  background: rgba(124, 196, 255, .09); border: 1px solid rgba(124, 196, 255, .2);
+}
+.cf-meta dt {
+  font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #9fb0d8;
+}
+.cf-meta dd {
+  font-family: var(--disp); font-weight: 700; font-size: 14px; color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.cf-go {
+  margin-top: 8px; display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gold);
+  transition: gap .3s var(--ease);
+}
+.cf-go::after {
   content: ''; width: 6px; height: 6px;
-  border-right: 1.6px solid currentColor; border-top: 1.6px solid currentColor;
+  border-right: 1.7px solid currentColor; border-top: 1.7px solid currentColor;
   transform: rotate(45deg);
 }
-.fan-card.is-zone.is-front .zf-open { opacity: 1; pointer-events: auto; }
-.fan-card.is-zone.is-front .zf-open:hover { gap: 12px; }
+.cf-go:hover { gap: 14px; }
+
+/* ── dots ── */
+.cf-dots { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 7px; max-width: min(520px, 90%); }
+.cf-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #cfe4ff; opacity: .28;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.cf-dot:hover { opacity: .6; }
+.cf-dot.on { opacity: 1; transform: scale(1.35); background: var(--gold); }
+
+@media (max-width: 700px) {
+  .cf-nav { width: 36px; height: 36px; font-size: 17px; }
+  .cf-caption { gap: 5px; }
+  .cf-go { margin-top: 4px; }
+  /* the dots need their own air here, or they sit on the caption's link */
+  .cf-dots { margin-top: 6px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cf-caption { animation: none; }
+  .zc img, .cf-nav, .cf-dot, .cf-go { transition: none; }
+}
 
 /* ═══════════════ BUNDLES ═══════════════ */
 /* the fanned-deck markup only serves the experiences now; the rides have their

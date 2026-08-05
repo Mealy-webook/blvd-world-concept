@@ -12,7 +12,7 @@
      for the handwritten letter -->
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=284" />
+<link rel="stylesheet" href="css/main.css?v=294" />
 </head>
 <body class="typo-body">
 
@@ -133,22 +133,16 @@
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
 
     <!-- ── this season's new zones: the same fanned deck the experiences used ── -->
-    <section class="rides pex zonefan" id="pex">
-      <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> NEW FOR THIS SEASON</p>
-        <h2 class="sec-title">FIVE NEW ZONES</h2>
-        <p class="sec-sub">Each one builds its own streets, kitchens and stages. Deal through the
-          five that are new this season, then open any of them on the map.</p>
+    <!-- ── every zone in the park, on the coverflow ── -->
+    <section class="zonesec" id="pex">
+      <div class="zs-head reveal">
+        <p class="eyebrow"><span class="sec-num">01</span> TWENTY COUNTRIES, ONE BOULEVARD</p>
+        <h2 class="sec-title">EVERY ZONE</h2>
+        <p class="sec-sub">Each one builds its own streets, kitchens and stages. Drag through the
+          ring — five are new this season — then open any of them on the map.</p>
       </div>
 
-      <div class="fan-stage">
-        <div class="fan-deck" id="zone-fan"></div>
-      </div>
-      <div class="fan-nav">
-        <button class="rail-btn prev" id="zone-prev" aria-label="Previous zone">&#8249;</button>
-        <div class="fan-dots" id="zone-dots"></div>
-        <button class="rail-btn next" id="zone-next" aria-label="Next zone">&#8250;</button>
-      </div>
+      <div class="zone-flow" id="zone-flow"></div>
 
       <div class="ride-cta reveal">
         <p class="rc-note">Every zone is included with park entry &#183; from <b>SAR 50</b></p>
@@ -691,22 +685,22 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=284"></script>
-  <script src="js/borders.js?v=284"></script>
-  <script src="js/scene.js?v=284"></script>
-  <script src="js/app.js?v=284"></script>
-  <script src="js/experiences.js?v=284"></script>
-  <script src="js/carousels.js?v=284"></script>
-  <script src="js/fan.js?v=284"></script>
-  <script src="js/zones.js?v=284"></script>
-  <script src="js/gallery.js?v=284"></script>
-  <script src="js/parkmap.js?v=284"></script>
-  <script src="js/sponsors.js?v=284"></script>
-  <script src="js/cashless.js?v=284"></script>
-  <script src="js/headings.js?v=284"></script>
-  <script src="js/bundles.js?v=284"></script>
-  <script src="js/ridex.js?v=284"></script>
+  <script src="js/data.js?v=294"></script>
+  <script src="js/borders.js?v=294"></script>
+  <script src="js/scene.js?v=294"></script>
+  <script src="js/app.js?v=294"></script>
+  <script src="js/experiences.js?v=294"></script>
+  <script src="js/carousels.js?v=294"></script>
+  <script src="js/coverflow.js?v=294"></script>
+  <script src="js/zones.js?v=294"></script>
+  <script src="js/gallery.js?v=294"></script>
+  <script src="js/parkmap.js?v=294"></script>
+  <script src="js/sponsors.js?v=294"></script>
+  <script src="js/cashless.js?v=294"></script>
+  <script src="js/headings.js?v=294"></script>
+  <script src="js/bundles.js?v=294"></script>
+  <script src="js/ridex.js?v=294"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=284"></script> -->
+  <script type="module" src="js/globe.js?v=294"></script> -->
 </body>
 </html>
