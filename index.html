@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=192" />
+<link rel="stylesheet" href="css/main.css?v=199" />
 </head>
 <body class="typo-body">
 
@@ -374,9 +374,10 @@
           <span class="ps-open">OPEN &#183; 4 PM — 2 AM</span>
         </div>
 
-        <!-- the floating control bar: title or result count, view switch, filters -->
-        <header class="pm-bar" id="pm-bar">
-          <div class="pb-top">
+        <!-- the floating discovery card: it sits over the artwork on the left,
+             456px wide over the map and twice that in list view -->
+        <aside class="pm-panel" id="pm-panel">
+          <header class="pp-head">
             <a href="#/" class="map-back" aria-label="Back to the landing page" title="Back">
               <span class="mb-arrow" aria-hidden="true"></span>
             </a>
@@ -395,7 +396,7 @@
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.9 11.4a5 5 0 1 0-1.5 1.5l3.6 3.6 1.5-1.5zM8.5 12a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
               </button>
             </div>
-          </div>
+          </header>
 
           <div class="pb-search" id="pp-search">
             <input id="pp-q" type="search" placeholder="Search rides, dining, shows&#8230;"
@@ -440,12 +441,9 @@
             </span>
             <button class="pz-clear" type="button">All of the park</button>
           </div>
-        </header>
 
-        <!-- list view: the results fill the frame over the artwork -->
-        <div class="pm-sheet" id="pm-sheet">
           <div class="pp-list" id="pp-list"></div>
-        </div>
+        </aside>
 
         <div class="pm-zoom">
           <button id="pm-in" type="button" aria-label="Zoom in">+</button>
@@ -635,20 +633,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=192"></script>
-  <script src="js/borders.js?v=192"></script>
-  <script src="js/scene.js?v=192"></script>
-  <script src="js/app.js?v=192"></script>
-  <script src="js/experiences.js?v=192"></script>
-  <script src="js/carousels.js?v=192"></script>
-  <script src="js/fan.js?v=192"></script>
-  <script src="js/gallery.js?v=192"></script>
-  <script src="js/parkmap.js?v=192"></script>
-  <script src="js/sponsors.js?v=192"></script>
-  <script src="js/cashless.js?v=192"></script>
-  <script src="js/bundles.js?v=192"></script>
-  <script src="js/ridex.js?v=192"></script>
+  <script src="js/data.js?v=199"></script>
+  <script src="js/borders.js?v=199"></script>
+  <script src="js/scene.js?v=199"></script>
+  <script src="js/app.js?v=199"></script>
+  <script src="js/experiences.js?v=199"></script>
+  <script src="js/carousels.js?v=199"></script>
+  <script src="js/fan.js?v=199"></script>
+  <script src="js/gallery.js?v=199"></script>
+  <script src="js/parkmap.js?v=199"></script>
+  <script src="js/sponsors.js?v=199"></script>
+  <script src="js/cashless.js?v=199"></script>
+  <script src="js/bundles.js?v=199"></script>
+  <script src="js/ridex.js?v=199"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=192"></script> -->
+  <script type="module" src="js/globe.js?v=199"></script> -->
 </body>
 </html>

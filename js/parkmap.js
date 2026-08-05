@@ -10,8 +10,7 @@
   const stage = document.getElementById("pm-stage");
   const pinLayer = document.getElementById("pm-pins");
   const hint = document.getElementById("pm-hint");
-  const bar = document.getElementById("pm-bar");
-  const sheet = document.getElementById("pm-sheet");
+  const panel = document.getElementById("pm-panel");
   const listEl = document.getElementById("pp-list");
   const titleEl = document.getElementById("pb-title");
   const countEl = document.getElementById("pb-count");
@@ -82,19 +81,24 @@
     zoomAt(nz, r.width / 2, r.height / 2);
   };
 
-  // bring a zone into the middle of whatever the bar isn't covering
+  // bring a zone into the middle of the strip the card isn't covering
   function frameZone(i, nz) {
     const pin = pins[i];
     if (!pin) return;
     const r = frame.getBoundingClientRect();
     z = Math.max(nz || 2.4, MIN);
-    tx = -(pin.x / 100 - 0.5) * baseW * z;
-    ty = -(pin.y / 100 - 0.5) * baseH * z;
-    // the bar floats over the top-left, so bias the zone down and right of it
-    if (bar && innerWidth > 860) {
-      const b = bar.getBoundingClientRect();
-      tx -= Math.min(b.width * 0.42, r.width * 0.18);
+    // aim for the middle of whatever strip the card leaves visible — beside it
+    // on a wide screen, above it once it becomes a bottom sheet
+    let hiddenX = 0, hiddenY = 0;
+    if (panel) {
+      const p = panel.getBoundingClientRect();
+      if (innerWidth > 900) hiddenX = Math.max(0, Math.min(p.right, r.right) - Math.max(p.left, r.left));
+      else hiddenY = Math.max(0, Math.min(p.bottom, r.bottom) - Math.max(p.top, r.top));
     }
+    const aimX = hiddenX + (r.width - hiddenX) / 2;
+    const aimY = (r.height - hiddenY) / 2;
+    tx = aimX - r.width / 2 - (pin.x / 100 - 0.5) * baseW * z;
+    ty = aimY - r.height / 2 - (pin.y / 100 - 0.5) * baseH * z;
     apply();
   }
 
@@ -141,7 +145,7 @@
   })));
   (WBK.restaurants || []).forEach((r) => items.push({
     cat: "dining", group: "PLACES TO EAT", name: r.name, zone: r.zone,
-    img: "img/zones/" + r.img,
+    img: "img/zones/" + r.img, desc: r.desc,
     meta: [["pin", r.zone], ["price", "from SAR " + r.from]],
   }));
   (WBK.showsByZone || []).forEach((s) => s.items.forEach((it) => items.push({
@@ -161,7 +165,7 @@
     if (nShow) bits.push(`${nShow} show${nShow > 1 ? "s" : ""}`);
     items.push({
       cat: "zones", group: p.gate ? "GATES" : "ZONES", name: p.gate ? p.label : key,
-      zone: key, img: zoneImg.get(key), pin: i,
+      zone: key, img: zoneImg.get(key), pin: i, desc: p.extra?.blurb,
       meta: [["pin", p.gate ? "Park entrance" : bits.join(" · ") || "Walk-through zone"]],
     });
   });
@@ -259,7 +263,7 @@
       countEl.querySelector("span").textContent = list.length === 1 ? "result" : "results";
     }
     if (sortBtn) sortBtn.hidden = !filtered;
-    bar?.classList.toggle("has-cat", !!cat);
+    panel?.classList.toggle("has-cat", !!cat);
 
     if (zoneBar) {
       zoneBar.hidden = !zone;
@@ -293,8 +297,9 @@
             <b>${it.name}</b>
             <span class="rm-meta">${it.meta.map(([k, v], n) =>
               `<span${n === 0 && tone ? ` style="--tone:${tone}"` : ""}>${svg(k)}${v}</span>`).join("")}</span>
+            ${it.desc ? `<span class="rm-desc">${it.desc}</span>` : ""}
+            ${pi === undefined ? "" : `<span class="rm-more">Show on the map</span>`}
           </span>
-          <i class="rm-go" aria-hidden="true"></i>
         </button>`;
     }
     listEl.innerHTML = html;
@@ -377,8 +382,8 @@
 
   const searchBtn = document.getElementById("pp-searchbtn");
   searchBtn?.addEventListener("click", () => {
-    const on = !bar.classList.contains("searching");
-    bar.classList.toggle("searching", on);
+    const on = !panel.classList.contains("searching");
+    panel.classList.toggle("searching", on);
     searchBtn.classList.toggle("on", on);
     searchBtn.setAttribute("aria-pressed", String(on));
     if (on) q?.focus();
@@ -388,7 +393,7 @@
   /* ── pan: pointer drag, only meaningful once zoomed ─────────────── */
   let drag = null;
   frame.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".pm-badge, .pm-zoom, .pm-status, .pm-bar, .pm-sheet")) return;
+    if (e.target.closest(".pm-badge, .pm-zoom, .pm-status, .pm-panel")) return;
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx, ty, moved: 0 };
     frame.setPointerCapture(e.pointerId);
     frame.classList.add("dragging");
@@ -410,7 +415,7 @@
 
   // double-click / double-tap toggles a close look at that spot
   frame.addEventListener("dblclick", (e) => {
-    if (e.target.closest(".pm-badge, .pm-bar, .pm-sheet")) return;
+    if (e.target.closest(".pm-badge, .pm-panel")) return;
     const r = frame.getBoundingClientRect();
     if (z > 1.4) { z = 1; tx = ty = 0; apply(); }
     else zoomAt(2.6, e.clientX - r.left, e.clientY - r.top);
@@ -437,15 +442,7 @@
     listEl.scrollTop = 0;
   });
 
-  // the list has to clear the floating bar, and the bar's height changes with
-  // the search field, the zone strip and how the chips wrap
-  function measureBar() {
-    if (bar) frame.style.setProperty("--barh", Math.round(bar.getBoundingClientRect().height) + "px");
-  }
-  if (window.ResizeObserver && bar) new ResizeObserver(measureBar).observe(bar);
-  measureBar();
-
-  addEventListener("resize", () => { sizeStage(); apply(); measureBar(); });
+  addEventListener("resize", () => { sizeStage(); apply(); });
   // the view starts hidden, so re-measure once it has real dimensions
   if (window.ResizeObserver) new ResizeObserver(() => { sizeStage(); apply(); }).observe(frame);
   paintBadges();
