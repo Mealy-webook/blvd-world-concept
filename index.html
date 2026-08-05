@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=216" />
+<link rel="stylesheet" href="css/main.css?v=226" />
 </head>
 <body class="typo-body">
 
@@ -85,7 +85,7 @@
             <span class="pill solid big-pill">BOOK ENTRY TICKET</span>
             <span class="from">from <b>SAR 50</b></span>
           </a>
-          <a href="#bundles" class="book-cta js-to-bundles">
+          <a href="#/packages" class="book-cta">
             <span class="pill ghost big-pill">BOOK A RIDE PACKAGE</span>
             <span class="from">from <b>SAR 89</b></span>
           </a>
@@ -132,79 +132,47 @@
       </div>
     </section>
 
-    <!-- ── ride packages: two tiers, five ways to ride ── -->
-    <section class="bundles" id="bundles">
-      <div class="bd-head reveal">
+    <!-- ── packages: the way through to their own page ── -->
+    <section class="pkcall" id="bundles">
+      <div class="pk-head reveal">
         <p class="eyebrow"><span class="sec-num">02</span> PICK YOUR NIGHT</p>
         <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
         <p class="sec-sub">Buy your rides by the handful and spend them how you like, or go
           unlimited on a bracelet and ride until the park closes.</p>
       </div>
-      <div class="bd-grid" id="bd-grid"></div>
-      <p class="bd-note reveal">All prices per person &#183; every package expires at the end of the day</p>
+
+      <!-- the five prices, as a row of stubs you can read at a glance -->
+      <div class="pk-row reveal" id="pk-row"></div>
+
+      <div class="pk-go reveal">
+        <a class="pill solid big-pill" href="#/packages">
+          SEE ALL FIVE PACKAGES
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
+        <p class="rc-note">All prices per person &#183; every package expires at the end of the day</p>
+      </div>
     </section>
 
-    <!-- ── rides: an index you run down, with your pick held on the stage ── -->
-    <section class="ridex" id="rides2">
-      <div class="rx-head reveal">
+    <!-- ── rides: the way through to their own page ── -->
+    <section class="ridecall" id="rides2">
+      <div class="rc-head reveal">
         <p class="eyebrow"><span class="sec-num">03</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
-        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all night.
-          Run down the list; whatever you land on stands up beside it.</p>
+        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all
+          night. Open the full index to see what each one does to you.</p>
       </div>
 
-      <div class="rx-split reveal">
-        <!-- the stage: the ride under the cursor, held large -->
-        <div class="rx-stage" aria-hidden="true">
-          <div class="rx-frame">
-            <div class="rx-plates" id="rx-plates"></div>
-            <div class="rx-veil"></div>
-            <p class="rx-count"><b id="rx-cap-no">01</b><i>/</i>14</p>
-            <div class="rx-caption">
-              <p class="rx-cap-kind" id="rx-cap-kind"></p>
-              <h3 class="rx-cap-name" id="rx-cap-name"></h3>
-              <p class="rx-cap-heat" id="rx-cap-heat"></p>
-            </div>
-          </div>
-        </div>
+      <!-- a look at what is through the door, built from the ride photos -->
+      <div class="rc-strip reveal" id="rc-strip" aria-hidden="true"></div>
 
-        <div class="rx-side">
-          <div class="rx-filters" id="rx-filters" role="group" aria-label="Filter rides by intensity"></div>
-          <ul class="rx-index" id="rx-index"></ul>
-        </div>
-      </div>
-
-      <div class="ride-cta reveal">
-        <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
-        <a href="#bundles" class="pill solid big-pill js-to-bundles2">SEE THE RIDE PACKAGES</a>
+      <div class="rc-go reveal">
+        <a class="pill solid big-pill" href="#/rides">
+          SEE ALL FOURTEEN RIDES
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
+        <p class="rc-note">Included in every ride package &#183; from <b>SAR 89</b></p>
       </div>
     </section>
-
-    <!-- ── rides ── -->
-    <section class="rides" id="rides">
-      <div class="rides-head reveal">
-        <p class="eyebrow">HOLD ON TIGHT</p>
-        <h2 class="sec-title">FOURTEEN RIDES</h2>
-        <p class="sec-sub">From the Wave Swinger to Dragons Fury — the park's rides run all night,
-          scattered across the zones.</p>
-      </div>
-      <!-- the rides fan out as a deck: hover to part it, page to deal -->
-      <div class="fan-stage">
-        <div class="fan-deck" id="ride-fan"></div>
-      </div>
-      <div class="fan-nav">
-        <button class="rail-btn prev" id="ride-prev" aria-label="Previous rides">‹</button>
-        <div class="fan-dots" id="ride-dots"></div>
-        <button class="rail-btn next" id="ride-next" aria-label="More rides">›</button>
-      </div>
-
-      <!-- entry point into the ride bundles, however many there are -->
-      <div class="ride-cta reveal">
-        <p class="rc-note">Bundles from <b>SAR 190</b> per person</p>
-        <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">BOOK A RIDES BUNDLE</a>
-      </div>
-    </section>
-
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
     <section class="cashless" id="cashless">
@@ -453,6 +421,65 @@
     </section>
   </section>
 
+  <!-- ══════════ RIDES (own page) ══════════ -->
+  <section id="view-rides" class="view">
+    <section class="ridex" id="ridespage">
+      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
+      <div class="rx-head reveal">
+        <p class="eyebrow">HOLD ON TIGHT</p>
+        <h2 class="sec-title">FOURTEEN RIDES</h2>
+        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all night.
+          Run down the list; whatever you land on stands up beside it.</p>
+      </div>
+
+      <div class="rx-split reveal">
+        <!-- the stage: the ride under the cursor, held large -->
+        <div class="rx-stage" aria-hidden="true">
+          <div class="rx-frame">
+            <div class="rx-plates" id="rx-plates"></div>
+            <div class="rx-veil"></div>
+            <p class="rx-count"><b id="rx-cap-no">01</b><i>/</i>14</p>
+            <div class="rx-caption">
+              <p class="rx-cap-kind" id="rx-cap-kind"></p>
+              <h3 class="rx-cap-name" id="rx-cap-name"></h3>
+              <p class="rx-cap-heat" id="rx-cap-heat"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rx-side">
+          <div class="rx-filters" id="rx-filters" role="group" aria-label="Filter rides by intensity"></div>
+          <ul class="rx-index" id="rx-index"></ul>
+        </div>
+      </div>
+
+      <div class="ride-cta reveal">
+        <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
+        <a href="#/packages" class="pill solid big-pill">SEE THE RIDE PACKAGES</a>
+      </div>
+    </section>
+  </section>
+
+  <!-- ══════════ RIDE PACKAGES (own page) ══════════ -->
+  <section id="view-packages" class="view">
+    <section class="bundles" id="packagespage">
+      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
+      <div class="bd-head reveal">
+        <p class="eyebrow">PICK YOUR NIGHT</p>
+        <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
+        <p class="sec-sub">Buy your rides by the handful and spend them how you like, or go
+          unlimited on a bracelet and ride until the park closes.</p>
+      </div>
+      <div class="bd-grid" id="bd-grid"></div>
+      <p class="bd-note reveal">All prices per person &#183; every package expires at the end of the day</p>
+    </section>
+  </section>
+
+
   <!-- ══════════ EXPERIENCES ══════════ -->
   <section id="view-experiences" class="view">
     <canvas id="stars-xp" class="stars"></canvas>
@@ -611,8 +638,8 @@
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
       <a href="#globe-sec" data-sec="globe-sec">Explore</a>
       <a href="#pex" data-sec="pex">Experiences</a>
-      <a href="#bundles" data-sec="bundles">Packages</a>
-      <a href="#rides2" data-sec="rides2">Rides</a>
+      <a href="#/packages">Packages</a>
+      <a href="#/rides">Rides</a>
       <a href="#cashless" data-sec="cashless">Card</a>
       <a href="#eats" data-sec="eats">Dining</a>
       <a href="#shows" data-sec="shows">Shows</a>
@@ -629,20 +656,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=216"></script>
-  <script src="js/borders.js?v=216"></script>
-  <script src="js/scene.js?v=216"></script>
-  <script src="js/app.js?v=216"></script>
-  <script src="js/experiences.js?v=216"></script>
-  <script src="js/carousels.js?v=216"></script>
-  <script src="js/fan.js?v=216"></script>
-  <script src="js/gallery.js?v=216"></script>
-  <script src="js/parkmap.js?v=216"></script>
-  <script src="js/sponsors.js?v=216"></script>
-  <script src="js/cashless.js?v=216"></script>
-  <script src="js/bundles.js?v=216"></script>
-  <script src="js/ridex.js?v=216"></script>
+  <script src="js/data.js?v=226"></script>
+  <script src="js/borders.js?v=226"></script>
+  <script src="js/scene.js?v=226"></script>
+  <script src="js/app.js?v=226"></script>
+  <script src="js/experiences.js?v=226"></script>
+  <script src="js/carousels.js?v=226"></script>
+  <script src="js/fan.js?v=226"></script>
+  <script src="js/gallery.js?v=226"></script>
+  <script src="js/parkmap.js?v=226"></script>
+  <script src="js/sponsors.js?v=226"></script>
+  <script src="js/cashless.js?v=226"></script>
+  <script src="js/bundles.js?v=226"></script>
+  <script src="js/ridex.js?v=226"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=216"></script> -->
+  <script type="module" src="js/globe.js?v=226"></script> -->
 </body>
 </html>

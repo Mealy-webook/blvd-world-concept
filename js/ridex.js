@@ -94,9 +94,7 @@
     if (!row) return;
     const i = +row.dataset.i;
     if (i !== active) { select(i); return; }
-    const home = document.getElementById("view-home");
-    const sec = document.getElementById("bundles");
-    if (home && sec) home.scrollTo({ top: sec.offsetTop, behavior: still ? "auto" : "smooth" });
+    location.hash = "#/packages";     // a second tap goes to what includes it
   });
 
   /* ── filters: the list shortens rather than dimming ── */
@@ -140,12 +138,18 @@
   // a window widened past the breakpoint brings the stage back empty
   addEventListener("resize", () => load(active));
 
-  // the CTA jumps to the packages, same as the hero's
-  const jump = document.querySelector(".js-to-bundles2");
-  const home = document.getElementById("view-home");
-  if (jump && home) jump.addEventListener("click", (e) => {
-    e.preventDefault();
-    const sec = document.getElementById("bundles");
-    if (sec) home.scrollTo({ top: sec.offsetTop, behavior: "smooth" });
-  });
+  // the page's CTA is a plain link to #/packages — no handler needed
+})();
+
+// ── the home page's way in: a strip of the ride photographs ─────────────
+(function ridesCall() {
+  const strip = document.getElementById("rc-strip");
+  if (!strip) return;
+  const rides = (window.WBK && WBK.rides) || [];
+  if (!rides.length) return;
+  // a gentle up-and-down across the row, so the strip reads as a hand of cards
+  strip.innerHTML = rides.map((r, i) => `
+    <span class="rc-cell" style="--lift:${(i % 2 ? 10 : -10)}px">
+      <img src="img/rides/${r.img}" alt="" loading="lazy" draggable="false">
+    </span>`).join("");
 })();

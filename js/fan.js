@@ -303,31 +303,9 @@
     return { cycle, goTo };
   }
 
-  /* ── deck 1: the rides ── */
-  const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
-  const LABEL = ["GENTLE", "LIVELY", "FULL THROTTLE"];
-  makeFan({
-    deckId: "ride-fan", prevId: "ride-prev", nextId: "ride-next", dotsId: "ride-dots",
-    items: (window.WBK && WBK.rides) || [],
-    card: (r) => {
-      const h = HEAT[r.kind] || 2;
-      const bars = [1, 2, 3].map((n) => `<i class="${n <= h ? "on" : ""}"></i>`).join("");
-      return `
-      <article class="fan-card h${h}">
-        <img src="img/rides/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
-        <div class="fan-meta">
-          <span class="ride-kind">${r.kind}</span>
-          <h3>${r.name}</h3>
-          <div class="ride-heat">
-            <span class="rh-bars">${bars}</span>
-            <span class="rh-label">${LABEL[h - 1]}</span>
-          </div>
-        </div>
-      </article>`;
-    },
-  });
-
-  /* ── deck 2: the premium experiences, same deck, its own content ── */
+  /* ── the deck now serves the experiences only: the rides moved to their own
+     page (#/rides), where they read as an index rather than a fanned deck ── */
+  /* ── the premium experiences ── */
   makeFan({
     deckId: "pex-fan", prevId: "pex-prev", nextId: "pex-next", dotsId: "pex-dots",
     items: (window.WBK && WBK.experiences) || [],

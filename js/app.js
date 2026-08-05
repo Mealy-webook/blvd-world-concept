@@ -9,6 +9,8 @@
     prizes: $("#view-prizes"),
     experiences: $("#view-experiences"),
     map: $("#view-map"),
+    rides: $("#view-rides"),
+    packages: $("#view-packages"),
   };
 
   let booted = false;

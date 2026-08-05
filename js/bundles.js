@@ -62,3 +62,19 @@
   // the reveal system only watches what existed at boot
   window.WBK_REVEAL && WBK_REVEAL.scan && WBK_REVEAL.scan();
 })();
+
+// ── the home page's way in: the five prices as a row of stubs ───────────
+(function packagesCall() {
+  const row = document.getElementById("pk-row");
+  if (!row) return;
+  const list = (window.WBK && WBK.bundles) || [];
+  if (!list.length) return;
+  row.innerHTML = list.map((b) => `
+    <a class="pk-stub${b.featured ? " is-featured" : ""}" href="#/packages">
+      <b class="pk-count">${b.count}</b>
+      <span class="pk-unit">${parseInt(b.count, 10) ? "rides" : "all night"}</span>
+      <span class="pk-rule" aria-hidden="true"></span>
+      <span class="pk-name">${b.name}</span>
+      <span class="pk-price">SAR ${b.price}</span>
+    </a>`).join("");
+})();
