@@ -190,13 +190,15 @@
           <div class="tl-card">
             <span class="show-shot">
               <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
-              <span class="show-type t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
-              <i class="show-dur">${s.m}'</i>
             </span>
             <div class="show-body">
               <h3 title="${s.n}">${s.n}</h3>
-              <p>${s.m} minutes${prev ? "" : " &#183; opens the night"}</p>
+              <p class="show-meta">
+                <span class="sm-kind t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
+                <span class="sm-dur">${s.m} min</span>
+              </p>
             </div>
+            ${prev ? "" : '<span class="tl-first">Opens the night</span>'}
           </div>
           <span class="tl-stem" aria-hidden="true"></span>
           <span class="tl-node" aria-hidden="true"><i></i></span>

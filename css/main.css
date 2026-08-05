@@ -2283,66 +2283,73 @@ body.chrome-on
 .tl-item.is-up   .tl-stem { grid-row: 2; background: linear-gradient(0deg, rgba(255, 194, 77, .45), rgba(255, 194, 77, .12)); }
 .tl-item.is-down .tl-stem { grid-row: 4; }
 
-/* the card, in its own tray */
+/* ── the card: photograph on top, name and two facts under it ── */
 .tl-card {
-  position: relative; z-index: 1; width: 100%;
-  display: grid; gap: 9px; justify-items: start; align-content: start;
-  padding: 10px; border-radius: 18px;
-  background: rgba(124, 196, 255, .05); border: 1px solid rgba(124, 196, 255, .13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
-  transition: background .4s var(--ease), border-color .4s var(--ease),
-              transform .5s var(--ease), box-shadow .4s var(--ease);
+  position: relative; z-index: 1; width: 100%; overflow: hidden;
+  display: grid; gap: 0; align-content: start;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(20, 28, 72, .72), rgba(9, 13, 34, .92));
+  border: 1px solid rgba(124, 196, 255, .16);
+  box-shadow: 0 14px 34px rgba(2, 4, 14, .45);
+  transition: border-color .4s var(--ease), transform .5s var(--ease), box-shadow .4s var(--ease);
 }
 .tl-item.is-up   .tl-card { grid-row: 1; align-self: end; }
 .tl-item.is-down .tl-card { grid-row: 5; align-self: start; }
 .tl-item:hover .tl-card {
-  background: rgba(124, 196, 255, .1); border-color: rgba(255, 194, 77, .4);
-  box-shadow: 0 18px 40px rgba(2, 4, 14, .5), inset 0 1px 0 rgba(255, 226, 168, .12);
+  border-color: rgba(255, 194, 77, .5);
+  box-shadow: 0 22px 46px rgba(2, 4, 14, .6);
 }
 .tl-item.is-up:hover   .tl-card { transform: translateY(-6px); }
 .tl-item.is-down:hover .tl-card { transform: translateY(6px); }
-.tl-card .show-body { display: grid; gap: 3px; padding: 0 3px 3px; }
+
+/* the photograph runs to the card's edges */
+.show-shot {
+  position: relative; display: block; width: 100%; height: 112px; flex: none; overflow: hidden;
+  background: rgba(124, 196, 255, .06);
+}
+.show-shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.95) brightness(.8);
+  transition: transform .7s var(--ease), filter .45s var(--ease);
+}
+.tl-item:hover .show-shot img { transform: scale(1.07); filter: saturate(1.04) brightness(.98); }
+.show-shot::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent 42%, rgba(9, 13, 34, .96) 100%);
+}
+
+.tl-card .show-body { display: grid; gap: 7px; padding: 11px 13px 13px; }
 /* two lines is what the slot holds; the full name stays in the title attribute */
 .tl-card .show-body h3 {
   font-family: var(--disp); font-weight: 700; color: #fff; letter-spacing: -.01em;
   font-size: clamp(15px, 1.45vw, 18px); line-height: 1.18;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.tl-card .show-body p { font-size: 11.5px; font-weight: 400; color: var(--dim); }
-
-/* thumbnail per show: the zone's own photograph, carrying its type and length */
-.show-shot {
-  position: relative; display: block; width: 100%; height: 104px; flex: none;
-  border-radius: 12px; overflow: hidden;
-  border: 1px solid rgba(124, 196, 255, .16);
-  background: rgba(124, 196, 255, .06);
+/* the two facts, as a single quiet line */
+.show-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sm-kind {
+  font-family: var(--ui); font-size: 8.5px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: #8ff3ff;
 }
-.show-shot img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: saturate(.95) brightness(.86);
-  transition: transform .6s var(--ease), filter .4s var(--ease);
+.sm-kind.t-stage { color: #ffd98a; }
+.sm-kind.t-dance { color: #ff9fdf; }
+.sm-dur {
+  position: relative; padding-left: 9px;
+  font-family: var(--ui); font-size: 9.5px; font-weight: 500; letter-spacing: .06em;
+  color: var(--ink-faint); font-variant-numeric: tabular-nums;
 }
-.tl-item:hover .show-shot img { transform: scale(1.07); filter: saturate(1.05) brightness(1); }
-.show-shot::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(6, 10, 30, .34) 0%, transparent 40%, rgba(6, 9, 26, .8) 100%);
+.sm-dur::before {
+  content: ''; position: absolute; left: 0; top: 50%; width: 3px; height: 3px;
+  border-radius: 50%; background: currentColor; transform: translateY(-50%);
 }
-.show-dur {
-  position: absolute; z-index: 2; right: 7px; bottom: 5px;
-  font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .06em;
-  font-style: normal; color: #eaf2ff;
-}
-
-/* show type: roaming wanders the streets, stage is a fixed performance */
-.show-type {
-  display: inline-flex; align-items: center;
-  font-family: var(--ui); font-weight: 600; font-size: 9px; letter-spacing: .14em; white-space: nowrap;
+/* the first act of the night says so, on the photograph */
+.tl-first {
+  position: absolute; z-index: 2; left: 10px; top: 10px;
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #0b1030;
   padding: 4px 9px; border-radius: 999px;
-  color: #8ff3ff; background: rgba(8, 22, 48, .72); border: 1px solid rgba(53, 224, 255, .35);
+  background: linear-gradient(100deg, #ffd98a, #ffc24d);
 }
-.show-shot .show-type { position: absolute; z-index: 2; left: 7px; top: 7px; backdrop-filter: blur(4px); }
-.show-type.t-stage { color: #ffd98a; background: rgba(48, 32, 8, .72); border-color: rgba(255, 194, 77, .45); }
-.show-type.t-dance { color: #ff9fdf; background: rgba(48, 8, 34, .7); border-color: rgba(255, 62, 200, .4); }
 
 @media (max-width: 760px) {
   /* too narrow to zig-zag: every card hangs below, the time sits on top */
@@ -2355,7 +2362,7 @@ body.chrome-on
   .tl-gap { top: 40px; }
   .tl-item.is-up .tl-time, .tl-item.is-down .tl-time { top: 0; bottom: auto; }
   .tl-item.is-up:hover .tl-card, .tl-item.is-down:hover .tl-card { transform: translateY(-5px); }
-  .show-shot { height: 96px; }
+  .show-shot { height: 100px; }
   .rail-btn { display: none; }        /* swipe instead */
 }
 
