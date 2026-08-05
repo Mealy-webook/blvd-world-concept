@@ -11,13 +11,11 @@
   --purple: #8b5cf6;
   --gold: #ffc24d;
   --pill-grad: linear-gradient(100deg, #9fd0ff 0%, #4da6ff 45%, #6f7bff 100%);
-  /* Type is chosen for reading, not for effect.
-     Newsreader is a screen-first serif with real optical sizing, so a heading
-     at 76px and a card title at 15px each get an instance drawn for that size
-     — no thin display strokes disappearing on a dark background.
-     Inter is drawn for interfaces: tall x-height, open apertures, and an I,
-     l and 1 you can tell apart at 9px in a chip. */
-  --disp: 'Newsreader', Georgia, 'Times New Roman', serif;
+  /* One sans across the whole site — Inter, drawn for interfaces: tall
+     x-height, open apertures, and an I, l and 1 you can tell apart at 9px in
+     a chip. Hierarchy comes from weight and size, not from a second face:
+     titles are bold and white, descriptions are regular. */
+  --disp: 'Inter', system-ui, -apple-system, sans-serif;
   --body: 'Inter', system-ui, -apple-system, sans-serif;
   --ui: 'Inter', system-ui, -apple-system, sans-serif;   /* labels, chips, buttons */
   --ease: cubic-bezier(.32,.72,0,1);
@@ -75,12 +73,11 @@ body.route-home #scroll-rail { opacity: 1; }
 
 /* one heading voice for every section: display face, sky-to-blue wash */
 .sec-title {
-  font-family: var(--disp); font-weight: 400;
-  font-size: clamp(34px, 5.4vw, 76px); line-height: .98; letter-spacing: .01em;
-  background: linear-gradient(180deg, #f2faff 0%, #bfe0ff 40%, #55a0f8 90%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700;
+  font-size: clamp(34px, 5.4vw, 76px); line-height: .98; letter-spacing: -.025em;
+  color: #fff;
 }
-.sec-sub { font-size: clamp(15px, 1.4vw, 18px); font-weight: 450; color: var(--dim); line-height: 1.6; }
+.sec-sub { font-size: clamp(15px, 1.4vw, 18px); font-weight: 400; color: var(--dim); line-height: 1.62; }
 
 /* ── keyboard focus: visible, in-brand, never a browser default ── */
 :focus-visible {
@@ -130,7 +127,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   text-shadow: 0 2px 10px rgba(4, 6, 20, .7);
 }
 .brand-lockup .rs {
-  font-family: var(--disp); letter-spacing: .04em; color: #dff1ff;
+  font-family: var(--disp); font-weight: 700; letter-spacing: -.01em; color: #fff;
   -webkit-text-stroke: 1px rgba(210,240,255,.9);
   text-shadow: 0 2px 10px rgba(4, 6, 20, .7);
 }
@@ -154,7 +151,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #view-intro { background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%); }
 .intro-copy { position: relative; text-align: center; display: grid; gap: 34px; padding: 0 8vw; max-width: 1000px; }
 .type-line {
-  font-family: var(--disp); font-size: clamp(20px, 3.4vw, 44px); letter-spacing: .03em; line-height: 1.25;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(20px, 3.4vw, 44px); letter-spacing: -.01em; line-height: 1.25;
   color: #fff; min-height: 1.2em;
   text-shadow: 0 2px 10px rgba(4, 6, 20, .7);
   opacity: 0; transform: translateY(10px); transition: opacity .4s, transform .4s;
@@ -289,8 +286,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
 .hero-title .line {
   font-size: clamp(52px, 9vw, 132px); letter-spacing: -.015em;
-  background: linear-gradient(178deg, #fffdf7 0%, #ffeccd 46%, #f3d6a3 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: #fff;
   filter: drop-shadow(0 14px 40px rgba(2, 4, 14, .55));
 }
 .hero-title.small .line { font-size: clamp(34px, 5vw, 72px); }
@@ -299,8 +295,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .hero-title.fx .line { position: relative; background: none; color: transparent; filter: none; }
 .hero-title.fx .t-main {
   position: relative; display: block;
-  background: linear-gradient(178deg, #fffdf7 0%, #ffeccd 48%, #eccd9c 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: #fff;
   filter: drop-shadow(0 12px 34px rgba(2, 4, 14, .6));
 }
 /* hero entry animation (staggered rise + blur-in) */
@@ -356,7 +351,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   0%, 100% { transform: translateY(-3%) rotate(-4deg); }
   50%      { transform: translateY(3%)  rotate(4deg); }
 }
-.hero-sub { max-width: 640px; font-size: clamp(15px, 1.35vw, 19px); font-weight: 450; color: #dfe9ff; text-shadow: 0 2px 12px rgba(4,6,20,.8); }
+.hero-sub { max-width: 640px; font-size: clamp(15px, 1.35vw, 19px); font-weight: 400; color: #dfe9ff; text-shadow: 0 2px 12px rgba(4,6,20,.8); }
 .hero-ctas { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
 
 /* booking CTAs with starting prices */
@@ -512,8 +507,8 @@ body.chrome-on
 }
 .eat-text { position: relative; padding: 14px 16px 16px; display: grid; gap: 7px; }
 .eat-text h3 {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: .02em;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: -.015em;
+  color: #fff;
 }
 .ride-kind, .eat-cuisine {
   justify-self: start; font-family: var(--ui); font-weight: 600; font-size: 9.5px; letter-spacing: .18em;
@@ -521,7 +516,7 @@ body.chrome-on
 }
 .ride-kind { color: #8ff3ff; background: rgba(8, 22, 48, .6); border: 1px solid rgba(53, 224, 255, .35); }
 .eat-cuisine { color: #ffe6b0; background: rgba(8, 12, 34, .7); border: 1px solid rgba(255, 194, 77, .42); }
-.eat-text p { font-size: 12.5px; font-weight: 450; color: #b9c8e8; line-height: 1.5; }
+.eat-text p { font-size: 12.5px; font-weight: 400; color: #c3d2ee; line-height: 1.5; }
 .eat-zone { font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #8ff3ff; text-transform: uppercase; }
 
 /* dining: the from-price rides on the photo */
@@ -532,7 +527,7 @@ body.chrome-on
   color: #1a1000; font-size: 9.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
   box-shadow: 0 8px 22px rgba(0, 0, 0, .45); transition: transform .3s;
 }
-.eat-price b { font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; line-height: 1; }
+.eat-price b { font-family: var(--disp); font-weight: 700; font-size: 17px; letter-spacing: -.01em; line-height: 1; }
 .eat-price small { font-size: 8.5px; font-weight: 600; opacity: .72; letter-spacing: .1em; }
 .eat-card:hover .eat-price { transform: translateY(-3px) scale(1.04); }
 
@@ -672,8 +667,8 @@ body.chrome-on
   padding: 16px 16px 12px; flex: none;
 }
 .pp-head h3 {
-  font-family: var(--disp); font-weight: 400; font-size: 20px; letter-spacing: .02em;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: 20px; letter-spacing: -.015em;
+  color: #fff;
 }
 .pp-modes { display: flex; gap: 6px; flex: none; }
 .pp-mode {
@@ -777,7 +772,7 @@ body.chrome-on
 .rm-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rm-text { display: grid; gap: 4px; min-width: 0; }
 .rm-text b {
-  font-family: var(--body); font-weight: 600; font-size: 14px; color: #eaf2ff;
+  font-family: var(--body); font-weight: 700; font-size: 14px; color: #fff; letter-spacing: -.01em;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .rm-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; }
@@ -848,8 +843,8 @@ body.chrome-on
   padding: 18px 18px 20px; display: grid; gap: 8px; justify-items: start; pointer-events: none;
 }
 .fan-meta h3 {
-  font-family: var(--disp); font-weight: 400; font-size: 22px; letter-spacing: .02em; line-height: 1.1;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: 22px; letter-spacing: -.02em; line-height: 1.14;
+  color: #fff;
 }
 /* arrows and dots below the deck */
 .fan-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
@@ -872,7 +867,7 @@ body.chrome-on
 .ride-kind.zone { color: #c4a8ff; background: rgba(24, 12, 48, .6); border-color: rgba(139, 92, 246, .5); }
 .fan-price { display: grid; gap: 1px; }
 .fan-price b {
-  font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; color: #fff;
+  font-family: var(--disp); font-weight: 700; font-size: 17px; letter-spacing: -.01em; color: #fff;
 }
 .fan-price span { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #8f9dc4; }
 .fan-card.is-exp { border-color: rgba(139, 92, 246, .3); }
@@ -898,7 +893,7 @@ body.chrome-on
   display: inline-flex; align-items: center; flex-wrap: wrap; gap: 10px; justify-content: center;
   font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--dim);
 }
-.rc-note b { font-family: var(--disp); font-weight: 400; font-size: 17px; letter-spacing: .02em; color: #fff; }
+.rc-note b { font-family: var(--disp); font-weight: 700; font-size: 17px; letter-spacing: -.01em; color: #fff; }
 
 /* the rides section keeps its own backdrop */
 .rides {
@@ -983,8 +978,8 @@ body.chrome-on
 }
 .tk.is-featured .tk-stub { background: linear-gradient(180deg, rgba(255, 194, 77, .14), rgba(255, 194, 77, .03)); }
 .tk-count {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(38px, 4vw, 52px); line-height: .95;
-  letter-spacing: -.01em; color: #fff;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(38px, 4vw, 52px); line-height: .95;
+  letter-spacing: -.03em; color: #fff;
 }
 .tk.is-featured .tk-count { color: #ffe6ae; }
 .tk-unit {
@@ -1010,18 +1005,18 @@ body.chrome-on
   background: linear-gradient(100deg, #ffd98a, #ffc24d);
 }
 .tk h3 {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(24px, 2.5vw, 32px);
-  line-height: 1.04; letter-spacing: .02em;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(24px, 2.5vw, 32px);
+  line-height: 1.06; letter-spacing: -.02em;
+  color: #fff;
 }
-.tk-blurb { font-size: 13.5px; font-weight: 450; color: #b9c8e8; line-height: 1.55; }
+.tk-blurb { font-size: 13.5px; font-weight: 400; color: #c3d2ee; line-height: 1.55; }
 .tk-list {
   list-style: none; margin-top: 4px;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 22px;
 }
 .tk-list li {
   position: relative; padding-left: 13px;
-  font-size: 12.5px; font-weight: 450; color: #cfe4ff; line-height: 1.5;
+  font-size: 12.5px; font-weight: 400; color: #cfe4ff; line-height: 1.5;
 }
 .tk-list li:first-child { grid-column: 1 / -1; color: #eaf2ff; }
 .tk-list li::before {
@@ -1039,7 +1034,7 @@ body.chrome-on
 .tk-price { display: flex; align-items: baseline; gap: 7px; }
 .tk-price span { font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .14em; color: #8a99c6; }
 .tk-price b {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(34px, 3.6vw, 46px); line-height: 1; color: #fff;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(34px, 3.6vw, 46px); line-height: 1; letter-spacing: -.03em; color: #fff;
 }
 .tk-rate {
   font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
@@ -1125,15 +1120,15 @@ body.chrome-on
 }
 .rx-count {
   position: absolute; top: 16px; right: 18px; display: flex; align-items: baseline; gap: 3px;
-  font-family: var(--disp); font-size: 15px; letter-spacing: .04em; color: rgba(207, 228, 255, .6);
+  font-family: var(--disp); font-weight: 600; font-size: 13px; letter-spacing: .02em; color: rgba(207, 228, 255, .66);
 }
 .rx-count b { font-weight: 400; font-size: 26px; color: #fff; }
 .rx-count i { font-style: normal; opacity: .5; }
 .rx-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: clamp(18px, 2.2vw, 26px); display: grid; gap: 7px; }
 .rx-cap-kind { font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
 .rx-cap-name {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.04; letter-spacing: .01em;
-  background: linear-gradient(180deg, #fff, #dbe9ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(26px, 3vw, 38px); line-height: 1.06; letter-spacing: -.02em;
+  color: #fff;
 }
 .rx-cap-heat { display: flex; align-items: center; gap: 4px; }
 
@@ -1187,8 +1182,8 @@ body.chrome-on
 .rx-row.on .rx-no { color: var(--gold); }
 .rx-thumb { display: none; }
 .rx-name {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(19px, 2.1vw, 27px); line-height: 1.1;
-  color: #dbe9ff; transition: color .4s var(--ease), transform .55s var(--ease);
+  font-family: var(--disp); font-weight: 700; font-size: clamp(19px, 2.1vw, 27px); line-height: 1.14; letter-spacing: -.02em;
+  color: #fff; transition: color .4s var(--ease), transform .55s var(--ease);
 }
 .rx-row.on .rx-name { color: #fff; transform: translateX(4px); }
 .rx-kind {
@@ -1311,7 +1306,7 @@ body.chrome-on
 .bc-foot { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; transform: translateZ(22px); }
 .bc-name { font-family: var(--ui); font-weight: 600; font-size: 10px; letter-spacing: .2em; color: rgba(234, 242, 255, .72); }
 .bc-bal { font-size: 10.5px; font-weight: 600; letter-spacing: .12em; color: rgba(234, 242, 255, .72); text-align: right; }
-.bc-bal b { display: block; font-family: var(--disp); font-weight: 400; font-size: 24px; letter-spacing: .02em; color: #fff; }
+.bc-bal b { display: block; font-family: var(--disp); font-weight: 700; font-size: 24px; letter-spacing: -.02em; color: #fff; }
 /* the pool of light the card floats over */
 .card-glow {
   display: none;
@@ -1381,8 +1376,8 @@ body.chrome-on
   background: rgba(255, 194, 77, .1); border: 1px solid rgba(255, 194, 77, .4);
 }
 .cash-steps h3 {
-  font-family: var(--disp); font-weight: 400; font-size: 19px; letter-spacing: .02em; margin-bottom: 3px;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: 19px; letter-spacing: -.015em; margin-bottom: 3px;
+  color: #fff;
 }
 .cash-steps p { font-size: 13.5px; font-weight: 600; color: #b9c8e8; line-height: 1.5; }
 .cash-cta { display: grid; gap: 12px; justify-items: start; }
@@ -1410,8 +1405,8 @@ body.chrome-on
   background: rgba(8, 12, 34, .7); border: 1px solid rgba(255, 194, 77, .4);
 }
 .eat-body h3 {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: .02em;
-  background: linear-gradient(180deg, #fff, #cfe4ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: -.015em;
+  color: #fff;
 }
 .eat-body p { font-size: 12.5px; font-weight: 600; color: #b9c8e8; line-height: 1.4; }
 .eat-zone { font-size: 10.5px; font-weight: 600; letter-spacing: .1em; color: #8ff3ff; text-transform: uppercase; }
@@ -1497,7 +1492,7 @@ body.chrome-on
 }
 .tl-time {
   position: absolute; z-index: 2; left: 50%; transform: translateX(-50%);
-  font-family: var(--disp); font-weight: 400; font-size: clamp(21px, 2.1vw, 27px);
+  font-family: var(--disp); font-weight: 700; font-size: clamp(21px, 2.1vw, 27px); letter-spacing: -.01em;
   color: var(--gold); letter-spacing: .01em; line-height: 1; text-align: center; white-space: nowrap;
 }
 .tl-item.is-up   .tl-time { top: calc(50% + 16px); }
@@ -1549,10 +1544,11 @@ body.chrome-on
 .tl-card .show-body { display: grid; gap: 3px; padding: 0 3px 3px; }
 /* two lines is what the slot holds; the full name stays in the title attribute */
 .tl-card .show-body h3 {
-  font-size: clamp(15px, 1.45vw, 18px); line-height: 1.16;
+  font-family: var(--disp); font-weight: 700; color: #fff; letter-spacing: -.01em;
+  font-size: clamp(15px, 1.45vw, 18px); line-height: 1.18;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.tl-card .show-body p { font-size: 11.5px; font-weight: 450; }
+.tl-card .show-body p { font-size: 11.5px; font-weight: 400; color: var(--dim); }
 
 /* thumbnail per show: the zone's own photograph, carrying its type and length */
 .show-shot {
@@ -1672,7 +1668,7 @@ body.chrome-on
 .faq-q {
   width: 100%; display: flex; align-items: center; gap: 16px; text-align: left;
   padding: 18px 20px; font-family: var(--body); font-weight: 700;
-  font-size: clamp(15px, 1.5vw, 17px); color: #eaf2ff; line-height: 1.35;
+  font-size: clamp(15px, 1.5vw, 17px); color: #fff; line-height: 1.35; letter-spacing: -.01em;
 }
 .faq-q span { flex: 1; }
 .faq-ic {
@@ -1689,9 +1685,9 @@ body.chrome-on
 .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .42s cubic-bezier(.2,.8,.25,1); }
 .faq-item.open .faq-a { grid-template-rows: 1fr; }
 .faq-a > div { overflow: hidden; }
-.faq-a p { padding: 0 54px 20px 20px; font-size: 14.5px; font-weight: 450; line-height: 1.65; color: var(--dim); max-width: 66ch; }
+.faq-a p { padding: 0 54px 20px 20px; font-size: 14.5px; font-weight: 400; line-height: 1.68; color: var(--dim); max-width: 66ch; }
 .faq-more { display: grid; gap: 14px; justify-items: center; text-align: center; }
-.faq-more p { font-size: 15px; font-weight: 450; color: var(--dim); }
+.faq-more p { font-size: 15px; font-weight: 400; color: var(--dim); }
 
 /* ═══════════════ STICKY BOOKING BAR ═══════════════ */
 #sticky-cta {
@@ -1749,10 +1745,9 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 .xp-head { position: relative; text-align: center; display: grid; justify-items: center; z-index: 3; }
 .xp-title {
-  font-family: var(--disp); font-weight: 400;
+  font-family: var(--disp); font-weight: 700;
   font-size: clamp(30px, 4.6vw, 60px); line-height: .98; letter-spacing: .01em;
-  background: linear-gradient(180deg, #f2faff 0%, #bfe0ff 42%, #55a0f8 92%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: #fff;
   transition: opacity .28s ease, transform .28s ease;
 }
 .xp-title.swap { opacity: 0; transform: translateY(8px); }
@@ -1807,7 +1802,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .xp-buy { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); flex-wrap: wrap; justify-content: center; }
 .xp-price { display: grid; justify-items: start; text-align: left; line-height: 1.2; }
 .xp-price b {
-  font-family: var(--disp); font-weight: 400; font-size: clamp(26px, 2.8vw, 38px); color: #eaf2ff;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(26px, 2.8vw, 38px); letter-spacing: -.02em; color: #fff;
 }
 .xp-per { font-size: 11px; color: var(--dim); font-weight: 700; letter-spacing: .04em; }
 .xp-cta {
@@ -1847,8 +1842,8 @@ body.route-experiences
 .letter-step { position: relative; z-index: 4; text-align: center; display: grid; justify-items: center; gap: 22px; padding: 0 4vw; width: 100%; max-width: min(1100px, 100vw); overflow: hidden; }
 .letter-step.hidden { display: none; }
 .eyebrow { font-family: var(--ui); font-weight: 600; font-size: 14px; letter-spacing: .22em; color: var(--dim); }
-.step-title { font-family: var(--disp); font-size: clamp(26px, 3.6vw, 46px); line-height: 1.12; letter-spacing: .02em;
-  background: linear-gradient(180deg, #eaf6ff, #9fd0ff 60%, #4da6ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+.step-title { font-family: var(--disp); font-weight: 700; font-size: clamp(26px, 3.6vw, 46px); line-height: 1.12; letter-spacing: -.02em;
+  color: #fff;
   }
 .step-title.xl { font-size: clamp(34px, 5vw, 64px); }
 
