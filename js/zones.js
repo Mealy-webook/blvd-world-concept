@@ -17,26 +17,6 @@
     const key = p.zone || (p.label.charAt(0) + p.label.slice(1).toLowerCase());
     if (!toneOf.has(key)) toneOf.set(key, p.tone);
   }
-  // the shows sheet names two zones its own way
-  const ALIAS = { "South Korea": "Korea", "United States": "USA" };
-
-  const expOf = new Map((WBK.parkExperiences || []).map((p) => [p.zone, p.items.length]));
-  const eatOf = (WBK.restaurants || []).reduce((m, r) => (m[r.zone] = (m[r.zone] || 0) + 1, m), {});
-  const showOf = (WBK.showsByZone || []).reduce((m, s) => (m[s.zone] = s.items.length, m), {});
-  const num = (o, k) => (o instanceof Map ? o.get(k) : o[k]) || 0;
-
-  function rows(name) {
-    const alt = ALIAS[name];
-    const out = [];
-    const exp = num(expOf, name) || num(expOf, alt);
-    const eat = num(eatOf, name) || num(eatOf, alt);
-    const show = num(showOf, name) || num(showOf, alt);
-    if (exp) out.push(["To do", exp]);
-    if (eat) out.push(["To eat", eat]);
-    if (show) out.push(["Shows tonight", show]);
-    return out;
-  }
-
   // new zones first, so the ring opens on one
   const items = [...zones].sort((a, b) => (NEW.has(b.name) ? 1 : 0) - (NEW.has(a.name) ? 1 : 0));
 
@@ -56,14 +36,9 @@
         <span class="zc-veil"></span>
         <b class="zc-name">${z.name}</b>
       </span>`,
-    caption: (z) => {
-      const meta = rows(z.name);
-      return `
-        <p class="cf-tag">${NEW.has(z.name) ? "New this season" : "In the park"}</p>
-        <h3 class="cf-title">${z.name}</h3>
-        ${z.blurb ? `<p class="cf-sub">${z.blurb}</p>` : ""}
-        ${meta.length ? `<dl class="cf-meta">${meta.map(([k, v]) =>
-          `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}`;
-    },
+    caption: (z) => `
+      <p class="cf-tag">${NEW.has(z.name) ? "New this season" : "In the park"}</p>
+      <h3 class="cf-title">${z.name}</h3>
+      ${z.blurb ? `<p class="cf-sub">${z.blurb}</p>` : ""}`,
   });
 })();

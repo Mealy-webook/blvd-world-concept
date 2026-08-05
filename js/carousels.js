@@ -137,13 +137,13 @@
     // zone runs several shows we rotate through park imagery that suits the
     // kind of show, so a schedule of nine doesn't repeat one picture nine times.
     const ZONE_SHOT = {
-      "Saudi Arabia": "zones/saudi.jpg", Egypt: "zones/egypt.jpg", "Türkiye": "zones/turkey.jpg",
-      France: "zones/france.jpg", Italy: "zones/italy.jpg", Spain: "zones/park5.jpg",
-      Greece: "zones/park7.jpg", Morocco: "zones/park5.jpg", Levant: "zones/park3.jpg",
-      India: "zones/park6.jpg", China: "zones/china.jpg", Japan: "zones/japan.jpg",
-      Korea: "zones/park6.jpg", Indonesia: "zones/park8.jpg", Asia: "zones/park2.jpg",
-      USA: "zones/usa.jpg", Mexico: "zones/mexico.jpg", Iran: "zones/park4.jpg",
-      Africa: "zones/park1.jpg",
+      "Saudi Arabia": "zones/saudi-arabia.webp", Egypt: "zones/egypt.webp", "Türkiye": "zones/turkey.jpg",
+      France: "zones/france.webp", Italy: "zones/italy.webp", Spain: "zones/spain.webp",
+      Greece: "zones/greece.webp", Morocco: "zones/morocco.webp", Levant: "zones/park3.jpg",
+      India: "zones/india.webp", China: "zones/china.webp", Japan: "zones/japan.webp",
+      Korea: "zones/korea.webp", Indonesia: "zones/indonesia.webp", Asia: "zones/park2.jpg",
+      USA: "zones/usa.jpg", Mexico: "zones/mexico.jpg", Iran: "zones/iran.webp",
+      Africa: "zones/africa.webp",
     };
     const BY_KIND = {
       STAGE:   ["gallery/fireworks.jpg", "gallery/rock-mapping.jpg", "zones/park4.jpg"],
