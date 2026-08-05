@@ -1446,6 +1446,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transition: filter .6s var(--ease);
 }
 .cf-card.is-centre .zc img { filter: none; }
+/* the New tag, top-left — the only corner free of poster artwork on all eight
+   (the Riyadh Season lockup takes the top-right) */
+.zc-new {
+  position: absolute; z-index: 2; left: 12px; top: 12px;
+  font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--btn-ink);
+  padding: 5px 11px; border-radius: var(--r-pill);
+  background: var(--pick);
+  box-shadow: var(--sh-1);
+}
+
 /* the centre card gets a hairline so it reads as picked, not just brighter */
 .cf-card.is-centre { box-shadow: var(--sh-3); }
 .cf-card.is-centre .zc::after {
