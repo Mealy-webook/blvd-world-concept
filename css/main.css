@@ -99,7 +99,7 @@ html, body {
    independently — eyebrow, title, sub, all on the axis — which is the single
    thing that made every section read the same. */
 .zs-head, .rc-head, .pk-head, .rx-head, .bd-head, .eats-head, .shows-head,
-.gal-head, .faq-head, .sp-head, .pm-head, .cash-head {
+.gal-head, .faq-head, .sp-head, .pm-head, .cash-head, .vr-head {
   position: relative;
   display: grid; gap: var(--sp-2); justify-items: center; text-align: center;
   width: 100%; max-width: min(1180px, 100%);
@@ -108,13 +108,13 @@ html, body {
 .zs-head .sec-title, .rc-head .sec-title, .pk-head .sec-title, .rx-head .sec-title,
 .bd-head .sec-title, .eats-head .sec-title, .shows-head .sec-title,
 .gal-head .sec-title, .faq-head .sec-title, .sp-head .sec-title, .pm-head .sec-title,
-.cash-head .sec-title {
+.cash-head .sec-title, .vr-head .sec-title {
   max-width: 22ch;
 }
 .zs-head .sec-sub, .rc-head .sec-sub, .pk-head .sec-sub, .rx-head .sec-sub,
 .bd-head .sec-sub, .eats-head .sec-sub, .shows-head .sec-sub,
 .gal-head .sec-sub, .faq-head .sec-sub, .sp-head .sec-sub, .pm-head .sec-sub,
-.cash-head .sec-sub {
+.cash-head .sec-sub, .vr-head .sec-sub {
   max-width: 48ch;
 }
 /* The number hangs in the margin — but only where there is a margin to hang in.
@@ -822,10 +822,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the type, on the page rather than in a panel ── */
 .eat-text { display: grid; gap: 5px; }
 .eat-meta {
-  font-family: var(--body); font-size: 13px; font-weight: 400; color: #8fa0c8;
-  display: flex; align-items: center; gap: 7px;
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #8fa0c8;
 }
-.eat-meta i { font-style: normal; opacity: .55; }
 .eat-text h3 {
   font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.5vw, 18px);
   letter-spacing: -.015em; color: #fff; line-height: 1.2;
@@ -3096,13 +3095,15 @@ body.route-experiences
 .venuerules > * { width: 100%; max-width: min(1180px, 100%); }
 
 /* the icon row */
+/* one line, all nine. They shrink to fit rather than wrapping, and below the
+   point where that stops being readable the row scrolls sideways instead. */
 .vr-tiles {
   list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: clamp(6px, 1.4vw, 18px);
+  display: flex; flex-wrap: nowrap; justify-content: center;
+  gap: clamp(2px, .8vw, 14px);
 }
 .vr-tile {
-  flex: 0 0 auto; width: clamp(88px, 10vw, 116px);
+  flex: 1 1 0; min-width: 0; max-width: 124px;
   display: grid; justify-items: center; gap: 9px;
   padding: 14px 6px; border-radius: var(--r-md);
   transition: background-color .3s var(--ease);
@@ -3139,8 +3140,15 @@ body.route-experiences
 }
 .vr-more:hover { text-decoration-color: var(--pick); }
 
-@media (max-width: 560px) {
-  .vr-tile { width: clamp(80px, 28vw, 104px); padding: 10px 4px; }
+@media (max-width: 680px) {
+  /* nine across is unreadable on a phone, so the row becomes a scroller */
+  .vr-tiles {
+    justify-content: flex-start; overflow-x: auto; scrollbar-width: none;
+    margin-inline: calc(var(--sec-x) * -1); padding-inline: var(--sec-x);
+    scroll-snap-type: x proximity;
+  }
+  .vr-tiles::-webkit-scrollbar { display: none; }
+  .vr-tile { flex: 0 0 auto; width: 92px; padding: 10px 4px; scroll-snap-align: start; }
   .vr-tile img { width: 28px; height: 28px; }
 }
 @media (max-height: 960px) {

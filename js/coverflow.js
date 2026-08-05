@@ -26,6 +26,7 @@ window.WBK_COVERFLOW = (function () {
       showPagination = true,
       showNavigation = true,
       label = "Cover carousel",
+      start = 0,                  // which index the ring opens on
       onSelect,
     } = opts;
 
@@ -60,10 +61,10 @@ window.WBK_COVERFLOW = (function () {
     const dotsEl = root.querySelector(".cf-dots");
 
     // the fractional index at the centre — the single source of truth
-    let pos = 0;
+    let pos = start;
     // where the current settle is headed; stepping off `pos` would swallow a
     // keypress that lands mid-flight, before the round-off moves
-    let target = 0;
+    let target = start;
     let width = 0, raf = null, drag = null, selected = -1;
     // how far the last press travelled, so a drag never follows a link
     let lastMoved = 0;
@@ -217,7 +218,7 @@ window.WBK_COVERFLOW = (function () {
       else if (Math.abs(target - pos) > 0.0004) settle(target);
     });
 
-    select(0);
+    select(indexAt(start));
     paint();
     return { goTo, nudge, measure };
   }

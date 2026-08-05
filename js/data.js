@@ -52,18 +52,18 @@ window.WBK = {
 
   // dining highlights, one per zone
   restaurants: [
-    { name: "Najd Grill House",      zone: "Saudi Arabia", cuisine: "SAUDI",     img: "saudi.jpg",  from: 85, desc: "Kabsa, mandi and mixed grills in a Najdi mud-brick courtyard." },
-    { name: "Nile Terrace",          zone: "Egypt",        cuisine: "EGYPTIAN",  img: "egypt.jpg",  from: 70, desc: "Koshari and grilled kofta with the pyramid lit behind you." },
-    { name: "Uzung\u00f6l Restaurant", zone: "T\u00fcrkiye", cuisine: "TURKISH",   img: "turkey.jpg", from: 90, desc: "Mezze, kebabs and shisha on a lantern-lit terrace." },
-    { name: "Le Petit Bistro",       zone: "France",       cuisine: "FRENCH",    img: "france.jpg", from: 95, desc: "Cr\u00eapes, steak frites and coffee under the tower." },
-    { name: "Trattoria Bella",       zone: "Italy",        cuisine: "ITALIAN",   img: "italy.jpg",  from: 80, desc: "Wood-fired pizza and gelato beside the Grand Canal." },
-    { name: "Dim Sum Palace",        zone: "China",        cuisine: "CHINESE",   img: "china.jpg",  from: 75, desc: "Steamer baskets and noodle bowls under the red pagoda." },
-    { name: "Ramen Yokocho",         zone: "Japan",        cuisine: "JAPANESE",  img: "japan.jpg",  from: 65, desc: "A narrow alley of ramen counters and taiyaki stands." },
-    { name: "Route 66 Diner",        zone: "United States",cuisine: "AMERICAN",  img: "usa.jpg",    from: 60, desc: "Chrome booths, burgers and milkshakes till late." },
-    { name: "Cantina Azteca",        zone: "Mexico",       cuisine: "MEXICAN",   img: "mexico.jpg", from: 70, desc: "Tacos and horchata below the crimson pyramid." },
-    { name: "Tagine House",          zone: "Morocco",      cuisine: "MOROCCAN",  img: "park5.jpg",  from: 80, desc: "Slow-cooked tagines and mint tea in a riad courtyard." },
-    { name: "Korean BBQ House",      zone: "South Korea",  cuisine: "KOREAN",    img: "park6.jpg",  from: 110, desc: "Tabletop grills, banchan and bingsu for dessert." },
-    { name: "Taverna Blue",          zone: "Greece",       cuisine: "GREEK",      img: "park7.jpg",  from: 85, desc: "Gyros, grilled halloumi and Aegean-blue shutters." },
+    { name: "Najd Grill House",      zone: "Saudi Arabia", cuisine: "SAUDI",     img: "saudi.jpg", food: "najd-grill.webp",  from: 85, desc: "Kabsa, mandi and mixed grills in a Najdi mud-brick courtyard." },
+    { name: "Nile Terrace",          zone: "Egypt",        cuisine: "EGYPTIAN",  img: "egypt.jpg", food: "nile.webp",  from: 70, desc: "Koshari and grilled kofta with the pyramid lit behind you." },
+    { name: "Uzung\u00f6l Restaurant", zone: "T\u00fcrkiye", cuisine: "TURKISH",   img: "turkey.jpg", food: "uzungol.webp", from: 90, desc: "Mezze, kebabs and shisha on a lantern-lit terrace." },
+    { name: "Le Petit Bistro",       zone: "France",       cuisine: "FRENCH",    img: "france.jpg", food: "petit-bistro.webp", from: 95, desc: "Cr\u00eapes, steak frites and coffee under the tower." },
+    { name: "Trattoria Bella",       zone: "Italy",        cuisine: "ITALIAN",   img: "italy.jpg", food: "trattoria.webp",  from: 80, desc: "Wood-fired pizza and gelato beside the Grand Canal." },
+    { name: "Dim Sum Palace",        zone: "China",        cuisine: "CHINESE",   img: "china.jpg", food: "dimsum.webp",  from: 75, desc: "Steamer baskets and noodle bowls under the red pagoda." },
+    { name: "Ramen Yokocho",         zone: "Japan",        cuisine: "JAPANESE",  img: "japan.jpg", food: "ramen.webp",  from: 65, desc: "A narrow alley of ramen counters and taiyaki stands." },
+    { name: "Route 66 Diner",        zone: "United States",cuisine: "AMERICAN",  img: "usa.jpg", food: "route66.webp",    from: 60, desc: "Chrome booths, burgers and milkshakes till late." },
+    { name: "Cantina Azteca",        zone: "Mexico",       cuisine: "MEXICAN",   img: "mexico.jpg", food: "azteca.webp", from: 70, desc: "Tacos and horchata below the crimson pyramid." },
+    { name: "Tagine House",          zone: "Morocco",      cuisine: "MOROCCAN",  img: "park5.jpg", food: "tagine.webp",  from: 80, desc: "Slow-cooked tagines and mint tea in a riad courtyard." },
+    { name: "Korean BBQ House",      zone: "South Korea",  cuisine: "KOREAN",    img: "park6.jpg", food: "koreanbbq.webp",  from: 110, desc: "Tabletop grills, banchan and bingsu for dessert." },
+    { name: "Taverna Blue",          zone: "Greece",       cuisine: "GREEK",      img: "park7.jpg", food: "taverna.webp",  from: 85, desc: "Gyros, grilled halloumi and Aegean-blue shutters." },
   ],
 
   showsByZone: [

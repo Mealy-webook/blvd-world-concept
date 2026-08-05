@@ -95,19 +95,18 @@
     const data = (window.WBK && WBK.restaurants) || [];
     // The webook product-card structure: square image with a save control in
     // its corner, then meta line, name and price set bare underneath. The meta
-    // line carries the cuisine rather than a star rating — we have no ratings
-    // for these, and inventing them would put a number on the page that means
-    // nothing.
+    // line is the kitchen's cuisine and nothing else — "Restaurant" in front of
+    // it was a word every card carried and none of them needed.
     rail.innerHTML = data.map((r) => `
       <article class="eat-card">
         <div class="eat-shot">
-          <img src="img/zones/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
+          <img src="img/food/${r.food}" alt="${r.name}" draggable="false" loading="lazy">
           <button class="eat-fav" type="button" aria-pressed="false" aria-label="Save ${r.name}">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 4.7 13a4.6 4.6 0 0 1 6.5-6.5l.8.8.8-.8A4.6 4.6 0 0 1 19.3 13z"/></svg>
           </button>
         </div>
         <div class="eat-text">
-          <p class="eat-meta">Restaurant <i>·</i> ${r.cuisine}</p>
+          <p class="eat-meta">${r.cuisine}</p>
           <h3>${r.name}</h3>
           <p class="eat-from">From <b>SAR ${r.from}</b></p>
         </div>
