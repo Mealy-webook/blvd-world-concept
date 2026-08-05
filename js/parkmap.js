@@ -29,27 +29,46 @@
      `zone` is the zone whose badge was picked, or null for all of it. */
   let cat = null, zone = null, sortAZ = false;
 
-  // Cover the frame at the artwork's ratio and centre it. Badges are positioned
-  // in percentages of the stage, so keeping the stage the same shape as the art
-  // is what keeps every badge over its zone.
+  // The map lives beside the card, never behind it: this is the strip of frame
+  // the card leaves free — to its right on a wide screen, above it once the card
+  // becomes a bottom sheet.
+  let avX = 0, avY = 0, avW = 0, avH = 0;
+  function measureFree() {
+    const r = frame.getBoundingClientRect();
+    avX = 0; avY = 0; avW = r.width; avH = r.height;
+    if (!panel) return;
+    const p = panel.getBoundingClientRect();
+    const GAP = 14;
+    if (innerWidth > 900) {
+      avX = Math.max(0, p.right - r.left + GAP);
+      avW = Math.max(120, r.width - avX);
+    } else {
+      avH = Math.max(120, p.top - r.top - GAP);
+    }
+  }
+
+  // Fit the whole plan inside that strip, at the artwork's own ratio, so at rest
+  // nothing is cropped and nothing is hidden. Badges are positioned in
+  // percentages of the stage, so keeping the stage the art's shape is what keeps
+  // every badge over its zone.
   function sizeStage() {
     const r = frame.getBoundingClientRect();
     if (!r.width || !r.height) return;
-    baseW = r.width; baseH = r.width / ART;
-    if (baseH < r.height) { baseH = r.height; baseW = r.height * ART; }
+    measureFree();
+    baseW = avW; baseH = avW / ART;
+    if (baseH > avH) { baseH = avH; baseW = avH * ART; }
     stage.style.width = baseW + "px";
     stage.style.height = baseH + "px";
-    stage.style.left = (r.width - baseW) / 2 + "px";
-    stage.style.top = (r.height - baseH) / 2 + "px";
+    stage.style.left = avX + (avW - baseW) / 2 + "px";
+    stage.style.top = avY + (avH - baseH) / 2 + "px";
   }
 
   /* ── view transform ─────────────────────────────────────────────── */
-  // At z = 1 the artwork exactly fills the frame, so panning is clamped to the
-  // slack the zoom creates — the map can never drift off its own frame.
+  // At z = 1 the whole plan is in view, so panning is clamped to the slack the
+  // zoom creates — the map can never drift out of the strip it lives in.
   function clamp() {
-    const r = frame.getBoundingClientRect();
-    const slackX = Math.max(0, (baseW * z - r.width) / 2);
-    const slackY = Math.max(0, (baseH * z - r.height) / 2);
+    const slackX = Math.max(0, (baseW * z - avW) / 2);
+    const slackY = Math.max(0, (baseH * z - avH) / 2);
     tx = Math.max(-slackX, Math.min(slackX, tx));
     ty = Math.max(-slackY, Math.min(slackY, ty));
   }
@@ -67,38 +86,23 @@
 
   // zoom about a point (frame-local px), so the spot under the cursor stays put
   function zoomAt(nz, px, py) {
-    const r = frame.getBoundingClientRect();
     nz = Math.max(MIN, Math.min(MAX, nz));
-    const cx = px - r.width / 2, cy = py - r.height / 2;
+    const cx = px - (avX + avW / 2), cy = py - (avY + avH / 2);
     const k = nz / z;
     tx = cx - (cx - tx) * k;
     ty = cy - (cy - ty) * k;
     z = nz;
     apply();
   }
-  const zoomCentre = (nz) => {
-    const r = frame.getBoundingClientRect();
-    zoomAt(nz, r.width / 2, r.height / 2);
-  };
+  const zoomCentre = (nz) => zoomAt(nz, avX + avW / 2, avY + avH / 2);
 
-  // bring a zone into the middle of the strip the card isn't covering
+  // bring a zone into the middle of the strip the map lives in
   function frameZone(i, nz) {
     const pin = pins[i];
     if (!pin) return;
-    const r = frame.getBoundingClientRect();
     z = Math.max(nz || 2.4, MIN);
-    // aim for the middle of whatever strip the card leaves visible — beside it
-    // on a wide screen, above it once it becomes a bottom sheet
-    let hiddenX = 0, hiddenY = 0;
-    if (panel) {
-      const p = panel.getBoundingClientRect();
-      if (innerWidth > 900) hiddenX = Math.max(0, Math.min(p.right, r.right) - Math.max(p.left, r.left));
-      else hiddenY = Math.max(0, Math.min(p.bottom, r.bottom) - Math.max(p.top, r.top));
-    }
-    const aimX = hiddenX + (r.width - hiddenX) / 2;
-    const aimY = (r.height - hiddenY) / 2;
-    tx = aimX - r.width / 2 - (pin.x / 100 - 0.5) * baseW * z;
-    ty = aimY - r.height / 2 - (pin.y / 100 - 0.5) * baseH * z;
+    tx = -(pin.x / 100 - 0.5) * baseW * z;
+    ty = -(pin.y / 100 - 0.5) * baseH * z;
     apply();
   }
 
@@ -334,6 +338,8 @@
   /* ── the control bar ────────────────────────────────────────────── */
   function view(m) {
     frame.classList.toggle("as-list", m === "list");
+    // the card's width changes, so the strip the map fits into changes with it
+    requestAnimationFrame(() => { sizeStage(); apply(); });
     const mapBtn = document.getElementById("pp-map");
     const listBtn = document.getElementById("pp-listview");
     mapBtn?.classList.toggle("on", m === "map");
@@ -443,8 +449,13 @@
   });
 
   addEventListener("resize", () => { sizeStage(); apply(); });
-  // the view starts hidden, so re-measure once it has real dimensions
-  if (window.ResizeObserver) new ResizeObserver(() => { sizeStage(); apply(); }).observe(frame);
+  // the view starts hidden, so re-measure once it has real dimensions; the card
+  // is watched too, since its size decides how much room the map gets
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(() => { sizeStage(); apply(); });
+    ro.observe(frame);
+    if (panel) ro.observe(panel);
+  }
   paintBadges();
   render();
   sizeStage();
