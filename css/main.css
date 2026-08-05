@@ -1435,38 +1435,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 
 /* ── a zone's card ── */
+/* Every card in the ring is a campaign poster now, so there is no veil, no name
+   overlay and no NEW badge — the artwork carries all three. The poster shows at
+   full strength; only the cards either side of centre are held back, so the one
+   you are looking at is the one that is lit. */
 .zc { position: absolute; inset: 0; display: block; }
-/* a poster card is the artwork, full bleed, at full strength — no dimming, since
-   the poster's own type has to stay legible */
-.zc.is-poster img { filter: none; }
-.cf-card.is-centre .zc.is-poster img { filter: none; }
 .zc img {
   width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
-  filter: saturate(.95) brightness(.82);
+  filter: saturate(.96) brightness(.7);
   transition: filter .6s var(--ease);
 }
-.cf-card.is-centre .zc img { filter: saturate(1.04) brightness(1); }
-.zc-veil {
-  position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, transparent 48%, rgba(5, 8, 24, .88) 100%);
-}
-.zc-name {
-  position: absolute; left: 16px; right: 16px; bottom: 14px;
-  font-family: var(--disp); font-weight: 700; font-size: clamp(16px, 1.7vw, 21px);
-  letter-spacing: -.01em; color: #fff; line-height: 1.1;
-}
-/* the ring's centre gets a hairline in the zone's own colour */
+.cf-card.is-centre .zc img { filter: none; }
+/* the centre card gets a hairline so it reads as picked, not just brighter */
 .cf-card.is-centre { box-shadow: var(--sh-3); }
 .cf-card.is-centre .zc::after {
   content: ''; position: absolute; inset: 0; border-radius: var(--r-lg); pointer-events: none;
-  border: 2px solid var(--tone);
-}
-.zc-new {
-  position: absolute; z-index: 2; left: 14px; top: 14px;
-  font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
-  text-transform: uppercase; color: #0b1030;
-  padding: 5px 11px; border-radius: var(--r-pill);
-  background: var(--pick);
+  border: 2px solid rgba(255, 255, 255, .34);
 }
 
 /* ── arrows ── */
@@ -3007,7 +2991,7 @@ body.route-experiences
    rather than left to the browser to synthesise */
 .bt-price b, .eat-price b, .rc-note b, .tk-price b, .pk-price,
 .tk-count, .cf-one b, .bc-meter dd,
-.rx-reg b, .rx-fast b, .rx-count b, .pb-count b, .pb-n, .zc-no { font-weight: 700; }
+.rx-reg b, .rx-fast b, .rx-count b, .pb-count b, .pb-n { font-weight: 700; }
 
 /* ── figures are set in mono, and only figures ──
    Every price, time, duration, count and hanging section number. Not labels,
@@ -3018,7 +3002,7 @@ body.route-experiences
 .rx-reg b, .rx-fast b, .rx-no, .rx-count, .rx-count b, .cf-one b,
 .eat-price b, .rc-note b, .bt-price b,
 .tl-time, .tl-gap, .sm-dur, .show-note,
-.rp-count, .pb-count b, .zc-no, .pb-n,
+.rp-count, .pb-count b, .pb-n,
 .bc-meter dd, .bc-cur, .bd-note,
 .rx-chip b, .pp-chip b, .show-tabs button b, .tk-fine {
   font-family: var(--mono);
