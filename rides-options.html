@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rides section — four options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/main.css?v=372" />
+<style>
+  /* just the scaffolding for comparing — none of this ships.
+     main.css locks html/body for the app shell, so this page unlocks them. */
+  html, body { height: auto !important; overflow: visible !important; }
+  body { background: #0a0e26; }
+  .pick { padding: 34px var(--sec-x) 0; max-width: 1180px; margin-inline: auto; }
+  .pick h1 { font-family: var(--disp); font-weight: 700; font-size: 26px; color: #fff; letter-spacing: -.02em; }
+  .pick p { font-family: var(--body); color: #9fb0d8; font-size: 14px; margin-top: 8px; max-width: 62ch; line-height: 1.5; }
+  .opt { position: relative; border-top: 1px solid rgba(124,196,255,.16); margin-top: 40px; }
+  .opt-tag {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 12px var(--sec-x); background: rgba(8,12,34,.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(124,196,255,.14);
+  }
+  .opt-tag b { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--pick); letter-spacing: .1em; }
+  .opt-tag span { font-family: var(--disp); font-weight: 700; font-size: 16px; color: #fff; }
+  .opt-tag i { font-family: var(--body); font-style: normal; font-size: 12.5px; color: #8fa0c8; }
+  .stage { min-height: 640px; display: grid; }
+</style>
+</head>
+<body class="typo-body">
+
+<div class="pick">
+  <h1>Rides section — four options</h1>
+  <p>All four are built with the real ride photographs and the site's own type, colour and spacing
+     tokens, so what you see is what would ship. Scroll through and tell me the number.</p>
+</div>
+
+<!-- ══════════ A — PHOTO MOSAIC ══════════ -->
+<section class="opt">
+  <div class="opt-tag"><b>OPTION 1</b><span>Photo mosaic</span><i>photo-led bento; hover pushes in and shows the fare</i></div>
+  <div class="stage">
+    <section class="ridemos" id="opt-mosaic">
+      <div class="rt-head">
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
+        <p class="sec-sub">Fourteen of them, running until the gates close.</p>
+      </div>
+      <div class="rm-grid" id="rm-grid"></div>
+      <div class="rt-foot">
+        <a class="pill solid big-pill" href="#">EXPLORE EVERY RIDE<i class="rc-arrow"></i></a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ══════════ B — CINEMATIC SWITCHER ══════════ -->
+<section class="opt">
+  <div class="opt-tag"><b>OPTION 2</b><span>Cinematic switcher</span><i>one ride fills the section; thumbnails switch, auto-advances</i></div>
+  <div class="stage">
+    <section class="ridecine" id="opt-cine">
+      <div class="rc-plates" id="rc-plates"></div>
+      <div class="rc-veil"></div>
+      <div class="rc-copy">
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <p class="rc-idx"><b id="rc-no">01</b><i>/</i>14</p>
+        <h2 class="sec-title" id="rc-name">Wave Swinger</h2>
+        <p class="rc-meta"><span id="rc-kind">FAMILY SWING</span><em id="rc-fare">SAR 20 · fast 35</em></p>
+        <a class="pill solid big-pill" href="#">EXPLORE EVERY RIDE<i class="rc-arrow"></i></a>
+      </div>
+      <div class="rc-strip" id="rc-strip"></div>
+    </section>
+  </div>
+</section>
+
+<!-- ══════════ C — TICKET STUBS ══════════ -->
+<section class="opt">
+  <div class="opt-tag"><b>OPTION 3</b><span>Ticket stubs</span><i>a strip of perforated ride tickets you drag through</i></div>
+  <div class="stage">
+    <section class="ridestub" id="opt-stub">
+      <div class="rt-head">
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
+        <p class="sec-sub">Fourteen of them, running until the gates close.</p>
+      </div>
+      <div class="rs-strip" id="rs-strip"></div>
+      <div class="rt-foot">
+        <a class="pill solid big-pill" href="#">EXPLORE EVERY RIDE<i class="rc-arrow"></i></a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ══════════ D — BIG-TYPE INDEX ══════════ -->
+<section class="opt">
+  <div class="opt-tag"><b>OPTION 4</b><span>Big-type index</span><i>no photos; two columns, name and fare only</i></div>
+  <div class="stage">
+    <section class="rideidx" id="opt-idx">
+      <div class="rt-head">
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
+        <p class="sec-sub">Fourteen of them, running until the gates close.</p>
+      </div>
+      <ol class="ri-list" id="ri-list"></ol>
+      <div class="rt-foot">
+        <a class="pill solid big-pill" href="#">EXPLORE EVERY RIDE<i class="rc-arrow"></i></a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<style>
+/* ══════════ 1 · PHOTO MOSAIC ══════════ */
+.ridemos {
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; justify-items: center; align-content: center; gap: var(--sp-4);
+}
+.ridemos > * { width: 100%; max-width: min(1180px, 100%); }
+.rm-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: clamp(84px, 12vh, 118px);
+}
+.rm-tile {
+  position: relative; display: block; overflow: hidden;
+  border-radius: var(--r-md); border: var(--b-1); background: var(--s-well);
+  transition: transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
+}
+.rm-tile:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.rm-tile:nth-child(4) { grid-column: span 2; }
+.rm-tile img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.95) brightness(.62); transition: filter .5s var(--ease), transform .7s var(--ease);
+}
+.rm-tile::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(6,9,26,.9) 100%);
+}
+.rm-cap {
+  position: absolute; left: 12px; right: 12px; bottom: 10px; z-index: 2;
+  display: grid; gap: 2px;
+}
+.rm-cap b {
+  font-family: var(--disp); font-weight: 700; color: #fff; line-height: 1.05;
+  font-size: clamp(12px, 1.15vw, 15px); letter-spacing: -.01em;
+}
+.rm-tile:nth-child(1) .rm-cap b { font-size: clamp(20px, 2.4vw, 34px); }
+.rm-cap span {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 500; color: rgba(226,236,255,.7);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .4s var(--ease), transform .4s var(--ease);
+}
+.rm-tile:hover { transform: translateY(-4px); border-color: var(--b-3); box-shadow: var(--sh-2); }
+.rm-tile:hover img { filter: saturate(1.05) brightness(.86); transform: scale(1.05); }
+.rm-tile:hover .rm-cap span { opacity: 1; transform: translateY(0); }
+.rm-more {
+  display: grid; place-content: center; gap: 2px; text-align: center;
+  border-radius: var(--r-md); border: var(--b-2); background: var(--s-float);
+  font-family: var(--disp); font-weight: 700; color: #fff;
+}
+.rm-more b { font-family: var(--mono); font-size: 20px; color: var(--pick); }
+.rm-more span { font-family: var(--ui); font-size: 9px; letter-spacing: .14em; color: #9fb0d8; text-transform: uppercase; }
+
+/* ══════════ 2 · CINEMATIC SWITCHER ══════════ */
+.ridecine {
+  position: relative; overflow: hidden; min-height: 640px;
+  display: grid; align-content: end; gap: var(--sp-4);
+  padding: var(--sec-y) var(--sec-x);
+}
+.rc-plates { position: absolute; inset: 0; }
+.rc-plate { position: absolute; inset: 0; opacity: 0; transition: opacity 1s var(--ease); }
+.rc-plate.on { opacity: 1; }
+.rc-plate img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); }
+.rc-veil {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(6,9,26,.94) 0%, rgba(6,9,26,.7) 46%, rgba(6,9,26,.34) 100%),
+    linear-gradient(180deg, rgba(6,9,26,.7), transparent 34%, rgba(6,9,26,.92));
+}
+.rc-copy {
+  position: relative; z-index: 2; display: grid; justify-items: start; gap: var(--sp-2);
+  width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
+}
+.rc-idx { font-family: var(--mono); font-size: 12px; color: #9fb0d8; letter-spacing: .08em; }
+.rc-idx b { color: var(--pick); font-weight: 700; font-size: 15px; }
+.rc-idx i { opacity: .5; padding: 0 3px; font-style: normal; }
+.ridecine .sec-title { text-align: left; font-size: clamp(38px, 7vw, 92px); }
+.rc-meta { display: flex; align-items: center; gap: 14px; }
+.rc-meta span {
+  font-family: var(--ui); font-weight: 600; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: #fff;
+  padding: 6px 12px; border-radius: var(--r-pill); border: var(--b-gold); background: var(--s-gold);
+}
+.rc-meta em {
+  font-family: var(--mono); font-style: normal; font-size: 11.5px; font-weight: 500;
+  color: rgba(226,236,255,.82); letter-spacing: .03em;
+}
+.rc-copy .pill { margin-top: 6px; }
+.rc-strip {
+  position: relative; z-index: 2;
+  display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none;
+  width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
+}
+.rc-strip::-webkit-scrollbar { display: none; }
+.rc-thumb {
+  position: relative; flex: none; width: clamp(48px, 5.4vw, 70px); aspect-ratio: 1;
+  border-radius: var(--r-sm); overflow: hidden; cursor: pointer;
+  border: 1px solid rgba(124,196,255,.2); opacity: .5;
+  transition: opacity .4s var(--ease), transform .4s var(--ease), border-color .4s var(--ease);
+}
+.rc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.rc-thumb:hover { opacity: .85; transform: translateY(-2px); }
+.rc-thumb.on { opacity: 1; border-color: var(--pick); transform: translateY(-4px); box-shadow: var(--sh-1); }
+
+/* ══════════ 3 · TICKET STUBS ══════════ */
+.ridestub {
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; justify-items: center; align-content: center; gap: var(--sp-4);
+}
+.ridestub > * { width: 100%; max-width: min(1180px, 100%); }
+.rs-strip {
+  display: flex; gap: 0; overflow-x: auto; padding: 14px 0 20px;
+  scrollbar-width: none; scroll-snap-type: x proximity;
+}
+.rs-strip::-webkit-scrollbar { display: none; }
+.rs-stub {
+  position: relative; flex: none; scroll-snap-align: center;
+  width: clamp(132px, 15vw, 178px);
+  display: grid; grid-template-rows: 1fr auto auto;
+  background: #f2f5fd; color: #0a0f28; cursor: pointer;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+  /* the perforation between stubs */
+  border-left: 1.5px dashed rgba(10,15,40,.34);
+}
+.rs-stub:first-child { border-left: 0; border-radius: var(--r-md) 0 0 var(--r-md); }
+.rs-stub:last-child  { border-radius: 0 var(--r-md) var(--r-md) 0; }
+.rs-shot { position: relative; overflow: hidden; aspect-ratio: 4/3; background: #0a0f28; }
+.rs-shot img { width: 100%; height: 100%; object-fit: cover; }
+.rs-body { padding: 9px 11px 4px; display: grid; gap: 2px; }
+.rs-body b { font-family: var(--disp); font-weight: 700; font-size: 13.5px; line-height: 1.12; letter-spacing: -.01em; }
+.rs-body span { font-family: var(--ui); font-size: 8.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #5a6690; }
+.rs-foot {
+  margin: 6px 11px 10px; padding-top: 7px; border-top: 1px dashed rgba(10,15,40,.28);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.rs-foot em { font-family: var(--mono); font-style: normal; font-weight: 700; font-size: 12.5px; letter-spacing: -.02em; }
+.rs-foot i { font-family: var(--mono); font-style: normal; font-size: 8.5px; color: #5a6690; letter-spacing: .04em; }
+.rs-stub:hover { transform: translateY(-9px) rotate(-1deg); box-shadow: var(--sh-3); z-index: 3; }
+.rs-hint { font-family: var(--mono); font-size: 10px; color: #8fa0c8; letter-spacing: .1em; text-align: center; }
+
+/* ══════════ 4 · BIG-TYPE INDEX ══════════ */
+.rideidx {
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; justify-items: center; align-content: center; gap: var(--sp-4);
+}
+.rideidx > * { width: 100%; max-width: min(1180px, 100%); }
+.ri-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(28px, 5vw, 72px);
+}
+.ri-row {
+  display: grid; grid-template-columns: 30px 1fr auto; align-items: baseline; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid rgba(124,196,255,.13);
+  cursor: pointer; transition: border-color .35s var(--ease);
+}
+.ri-row:hover { border-color: rgba(255,194,77,.5); }
+.ri-no { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: #7f8db4; }
+.ri-name {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(17px, 2vw, 26px);
+  letter-spacing: -.02em; color: #c8d7f2; transition: color .35s var(--ease);
+}
+.ri-row:hover .ri-name { color: #fff; }
+.ri-fare { font-family: var(--mono); font-size: 11px; font-weight: 500; color: #8fa0c8; letter-spacing: .02em; }
+.ri-row:hover .ri-fare { color: var(--pick); }
+@media (max-width: 720px) { .ri-list { grid-template-columns: minmax(0, 1fr); } .rm-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+</style>
+
+<script src="js/data.js?v=372"></script>
+<script>
+(function () {
+  const R = window.WBK.rides;
+  const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
+
+  /* 1 — mosaic: the seven biggest names get a tile, the rest a counter */
+  const FEATURE = ["Dragons Fury", "Sky Loop", "Turbo 360", "Drop and Twist", "Super Fly", "Wave Swinger", "Cable Cars"];
+  const feat = FEATURE.map((n) => R.find((r) => r.name === n)).filter(Boolean);
+  document.getElementById("rm-grid").innerHTML =
+    feat.map((r) => `
+      <a class="rm-tile" href="#">
+        <img src="img/rides/${r.img}" alt="${r.name}" loading="lazy">
+        <span class="rm-cap"><b>${r.name}</b><span>SAR ${r.reg} · fast ${r.fast}</span></span>
+      </a>`).join("") +
+    `<a class="rm-more" href="#"><b>+${R.length - feat.length}</b><span>more rides</span></a>`;
+
+  /* 2 — cinematic switcher */
+  const plates = document.getElementById("rc-plates");
+  const strip = document.getElementById("rc-strip");
+  plates.innerHTML = R.map((r, i) => `
+    <div class="rc-plate${i ? "" : " on"}"><img src="img/rides/${r.img}" alt="" loading="${i ? "lazy" : "eager"}"></div>`).join("");
+  strip.innerHTML = R.map((r, i) => `
+    <button class="rc-thumb${i ? "" : " on"}" data-i="${i}" aria-label="${r.name}">
+      <img src="img/rides/${r.img}" alt="" loading="lazy"></button>`).join("");
+  const pl = [...plates.children], th = [...strip.children];
+  const no = document.getElementById("rc-no"), nm = document.getElementById("rc-name");
+  const kd = document.getElementById("rc-kind"), fa = document.getElementById("rc-fare");
+  let ci = 0, timer = null;
+  function goCine(i) {
+    ci = (i + R.length) % R.length;
+    const r = R[ci];
+    pl.forEach((p, n) => p.classList.toggle("on", n === ci));
+    th.forEach((t, n) => t.classList.toggle("on", n === ci));
+    no.textContent = String(ci + 1).padStart(2, "0");
+    nm.textContent = r.name; kd.textContent = r.kind;
+    fa.textContent = `SAR ${r.reg} · fast ${r.fast}`;
+    th[ci].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }
+  strip.addEventListener("click", (e) => {
+    const t = e.target.closest(".rc-thumb");
+    if (t) { clearInterval(timer); goCine(+t.dataset.i); }
+  });
+  timer = setInterval(() => goCine(ci + 1), 3800);
+
+  /* 3 — ticket stubs */
+  document.getElementById("rs-strip").innerHTML = R.map((r) => `
+    <div class="rs-stub">
+      <span class="rs-shot"><img src="img/rides/${r.img}" alt="" loading="lazy"></span>
+      <div class="rs-body"><b>${r.name}</b><span>${r.kind}</span></div>
+      <div class="rs-foot"><em>SAR ${r.reg}</em><i>FAST ${r.fast}</i></div>
+    </div>`).join("");
+
+  /* 4 — big-type index, sorted gentlest first */
+  const sorted = [...R].sort((a, b) => (HEAT[a.kind] || 2) - (HEAT[b.kind] || 2));
+  document.getElementById("ri-list").innerHTML = sorted.map((r, i) => `
+    <li class="ri-row">
+      <span class="ri-no">${String(i + 1).padStart(2, "0")}</span>
+      <span class="ri-name">${r.name}</span>
+      <span class="ri-fare">${r.reg} / ${r.fast}</span>
+    </li>`).join("");
+})();
+</script>
+</body>
+</html>
