@@ -133,28 +133,34 @@
     const flag = (z) => FLAGS[z] || "🌍";
 
 
-    // Every show gets a thumbnail. The zone's own photograph leads; where a
-    // zone runs several shows we rotate through park imagery that suits the
-    // kind of show, so a schedule of nine doesn't repeat one picture nine times.
-    const ZONE_SHOT = {
-      "Saudi Arabia": "zones/saudi-arabia.webp", Egypt: "zones/egypt.webp", "Türkiye": "zones/turkey.jpg",
-      France: "zones/france.webp", Italy: "zones/italy.webp", Spain: "zones/spain.webp",
-      Greece: "zones/greece.webp", Morocco: "zones/morocco.webp", Levant: "zones/park3.jpg",
-      India: "zones/india.webp", China: "zones/china.webp", Japan: "zones/japan.webp",
-      Korea: "zones/korea.webp", Indonesia: "zones/indonesia.webp", Asia: "zones/park2.jpg",
-      USA: "zones/usa.jpg", Mexico: "zones/mexico.jpg", Iran: "zones/iran.webp",
-      Africa: "zones/africa.webp",
+    // Every show gets a photograph of a performance, not of the zone it stands
+    // in — a drum troupe, a flamenco pair, a folk stage. Nine zones have a
+    // picture of their own act; the rest draw on pools sorted by the kind of
+    // show, so a schedule of nine never repeats one picture nine times.
+    const ZONE_SHOW = {
+      "Saudi Arabia": ["saudi.webp"],
+      "Türkiye": ["turkiye.webp"],
+      Spain: ["spain.webp"],
+      Morocco: ["morocco.webp"],
+      China: ["china.webp"],
+      Korea: ["korea.webp", "korea-2.webp"],
+      Indonesia: ["indonesia.webp"],
+      Mexico: ["mexico.webp"],
+      Kuwait: ["kuwait.webp"],
+      Levant: ["levant.webp"],
     };
     const BY_KIND = {
-      STAGE:   ["gallery/fireworks.jpg", "gallery/rock-mapping.jpg", "zones/park4.jpg"],
-      DANCE:   ["gallery/rock-mapping.jpg", "zones/park2.jpg", "gallery/fireworks.jpg"],
-      ROAMING: ["gallery/night-aerial.jpg", "zones/park3.jpg", "gallery/greek-zone.jpg"],
+      STAGE:   ["stage-1.webp", "turkiye.webp", "stage-2.webp"],
+      DANCE:   ["dance-1.webp", "dance-2.webp", "levant.webp"],
+      ROAMING: ["roam-1.webp", "roam-2.webp", "saudi.webp"],
     };
     function showShot(zone, kind, i) {
-      const zoneShot = ZONE_SHOT[zone] || "zones/park1.jpg";
-      if (i % 2 === 0) return zoneShot;                       // the zone leads
+      const own = ZONE_SHOW[zone];
+      // a zone with its own act leads with it, and comes back to it every
+      // other stop rather than letting the generic pool take over
+      if (own && i % 2 === 0) return "shows/" + own[(i / 2) % own.length];
       const pool = BY_KIND[kind.split(" ")[0]] || BY_KIND.ROAMING;
-      return pool[Math.floor(i / 2) % pool.length];
+      return "shows/" + pool[i % pool.length];
     }
 
 

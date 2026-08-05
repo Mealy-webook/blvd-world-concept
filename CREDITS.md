@@ -54,6 +54,29 @@ library:
 - Mexico
 - Thailand
 
+## Show photography — `img/shows/`
+
+The Daily Shows timeline uses photographs of the performances themselves rather
+than of the zones they stand in. Nine zones have a picture of their own act; the
+rest draw on pools sorted by the kind of show (`stage-*`, `dance-*`, `roam-*`).
+
+| File | What it shows | Source |
+| --- | --- | --- |
+| `saudi.webp` | Saudi folk troupe with drums | boulevardriyadhsa.com |
+| `turkiye.webp` | Anatolian folk dance on stage | boulevardriyadhsa.com |
+| `spain.webp` | Flamenco pair before a seated crowd | boulevardriyadhsa.com |
+| `morocco.webp` | Moroccan drummers in purple robes | boulevardriyadhsa.com |
+| `china.webp` | Martial-arts display on the pagoda stage | boulevardriyadhsa.com |
+| `korea.webp`, `korea-2.webp` | Hanbok performers; a breakdance crew | [SPA](https://www.spa.gov.sa/en/N2424672) |
+| `indonesia.webp` | Indonesian dancers in costume | [SPA](https://www.spa.gov.sa/en/N2425934) |
+| `mexico.webp` | Folk dancers before the Mayan temple | boulevardriyadhsa.com |
+| `kuwait.webp` | Kuwaiti drum troupe at the fortress gate | [SPA](https://www.spa.gov.sa/en/N2421653) |
+| `levant.webp` | Qarqian night performers | boulevardriyadhsa.com |
+| `stage-1/2`, `dance-1/2`, `roam-1/2` | Generic stage, dance and roaming acts | boulevardriyadhsa.com, SPA |
+
+Same caveat as the zone photography: **licences unverified, not cleared for
+production.**
+
 ## For production
 
 Replace everything above with photography from webook's own asset library. Nothing
