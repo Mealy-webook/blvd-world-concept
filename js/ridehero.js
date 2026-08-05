@@ -1,12 +1,13 @@
-// ── rides on the home page: the count large, the names live ─────────────
-// The band's backdrop is whichever ride you are pointing at. Left alone it walks
-// the list on its own, so the section is never static; touching the list takes
-// the wheel and keeps it.
+// ── rides on the home page: the names drift, the backdrop follows ───────
+// Only the name shows here — number, intensity and fare live on the rides page.
+// The belt runs continuously and whichever name is crossing the centre line is
+// the live one, so the band is never still. Pointing at a name takes it over.
 (function () {
-  const list = document.getElementById("rh-list");
+  const reel = document.getElementById("rh-reel");
+  const belt = document.getElementById("rh-belt");
   const bg = document.getElementById("rh-bg");
   const split = document.getElementById("rh-split");
-  if (!list || !bg) return;
+  if (!reel || !belt || !bg) return;
   const rides = (window.WBK && WBK.rides) || [];
   if (!rides.length) return;
 
@@ -16,7 +17,7 @@
   const heat = (r) => HEAT[r.kind] || 2;
   const STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ── how the fourteen split by intensity ── */
+  /* ── how the fourteen split by intensity, beside the lead ── */
   if (split) {
     const counts = rides.reduce((m, r) => { const b = BAND[heat(r)]; m[b] = (m[b] || 0) + 1; return m; }, {});
     split.innerHTML = ["thrill", "lively", "gentle"]
@@ -25,12 +26,9 @@
   }
 
   /* ── the backdrop: one plate per ride, only the live one lit ── */
-  // src is held back until a plate is wanted, so the band doesn't pull fourteen
-  // photographs down before anyone has looked at it
   bg.innerHTML = rides.map((r, i) => `
     <span class="rh-plate${i === 0 ? " on" : ""}"><img data-src="img/rides/${r.img}" alt=""></span>`).join("");
   const plates = [...bg.children];
-
   function load(i) {
     const el = plates[i];
     if (!el) return;
@@ -38,69 +36,87 @@
     if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
   }
 
-  /* ── the names ── */
-  list.innerHTML = rides.map((r, i) => {
-    const h = heat(r);
-    return `
-      <li class="rh-item" data-i="${i}" style="--d:${Math.min(i, 9) * 40}ms">
-        <a class="rh-link" href="#/rides">
-          <span class="rh-no">${String(i + 1).padStart(2, "0")}</span>
-          <span class="rh-name">${r.name}</span>
-          <span class="rh-bars b${h}" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="rh-fare">SAR ${r.reg}</span>
-        </a>
-      </li>`;
-  }).join("");
-  const items = [...list.children];
+  /* ── the belt: the names twice over, so the loop has no seam ── */
+  const row = (r, i) => `
+    <button class="rh-word" type="button" data-i="${i}">
+      <span>${r.name}</span>
+    </button>`;
+  belt.innerHTML = rides.map(row).join("") + rides.map(row).join("");
+  const words = [...belt.children];
 
   let live = -1;
   function show(i) {
     if (i === live || !rides[i]) return;
     live = i;
-    load(i); load(i + 1);
+    load(i); load((i + 1) % rides.length);
     plates.forEach((p, n) => p.classList.toggle("on", n === i));
-    items.forEach((it, n) => it.classList.toggle("on", n === i));
+    words.forEach((w) => w.classList.toggle("on", +w.dataset.i === i));
   }
 
-  // pointer or keyboard, same handler
-  list.addEventListener("pointerover", (e) => {
-    const it = e.target.closest(".rh-item");
-    if (it) { stop(); show(+it.dataset.i); }
-  });
-  list.addEventListener("focusin", (e) => {
-    const it = e.target.closest(".rh-item");
-    if (it) { stop(); show(+it.dataset.i); }
-  });
+  /* ── the name crossing the centre is the live one ── */
+  let raf = null, held = false;
+  function follow() {
+    raf = null;
+    if (!held) {
+      const mid = reel.getBoundingClientRect().top + reel.clientHeight / 2;
+      let best = -1, bestD = Infinity;
+      for (const w of words) {
+        const b = w.getBoundingClientRect();
+        if (!b.height) continue;
+        const d = Math.abs(b.top + b.height / 2 - mid);
+        if (d < bestD) { bestD = d; best = +w.dataset.i; }
+      }
+      if (best >= 0) show(best);
+    }
+    if (running) raf = requestAnimationFrame(follow);
+  }
 
-  /* ── left alone, it walks the list itself ── */
-  let timer = null;
+  let running = false;
   function start() {
-    if (STILL || timer) return;
-    timer = setInterval(() => show((live + 1) % rides.length), 3200);
+    if (STILL || running) return;
+    running = true;
+    belt.classList.add("rolling");
+    raf = requestAnimationFrame(follow);
   }
-  function stop() { if (timer) { clearInterval(timer); timer = null; } }
-  list.addEventListener("pointerleave", start);
-  // and only while the band is actually on screen
+  function stop() {
+    running = false;
+    belt.classList.remove("rolling");
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }
+
+  // pointing at a name holds it; leaving hands the belt back
+  belt.addEventListener("pointerover", (e) => {
+    const w = e.target.closest(".rh-word");
+    if (!w) return;
+    held = true;
+    belt.classList.add("paused");
+    show(+w.dataset.i);
+  });
+  belt.addEventListener("focusin", (e) => {
+    const w = e.target.closest(".rh-word");
+    if (w) { held = true; belt.classList.add("paused"); show(+w.dataset.i); }
+  });
+  reel.addEventListener("pointerleave", () => { held = false; belt.classList.remove("paused"); });
+
+  /* ── it only runs while the band is on screen and the tab is watched ──
+     Scroll maths rather than an observer: the page scrolls inside #view-home,
+     and an observer rooted there is unreliable about delivering — the heading
+     reveal was bitten by exactly that. */
   const sec = document.getElementById("rides2");
-  if (sec && window.IntersectionObserver) {
-    new IntersectionObserver((es) => {
-      for (const en of es) en.isIntersecting ? start() : stop();
-    }, { threshold: 0.25 }).observe(sec);
-  } else {
-    start();
+  const home = document.getElementById("view-home");
+  function check() {
+    if (!sec) return;
+    const b = sec.getBoundingClientRect();
+    const vh = (home ? home.clientHeight : innerHeight) || 1;
+    const top = home ? home.getBoundingClientRect().top : 0;
+    const onScreen = b.bottom - top > vh * 0.1 && b.top - top < vh * 0.9;
+    if (onScreen && !document.hidden) start(); else stop();
   }
-  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+  home && home.addEventListener("scroll", check, { passive: true });
+  addEventListener("resize", check);
+  document.addEventListener("visibilitychange", check);
+  check();
 
-  /* ── the names rise in as the band arrives ── */
-  if (STILL) {
-    items.forEach((it) => it.classList.add("in"));
-  } else {
-    const io = new IntersectionObserver((es) => {
-      for (const en of es) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-    }, { threshold: 0.3 });
-    items.forEach((it) => io.observe(it));
-    setTimeout(() => items.forEach((it) => it.classList.add("in")), 4000);
-  }
-
+  if (STILL) words.forEach((w) => w.classList.add("in"));
   show(0);
 })();
