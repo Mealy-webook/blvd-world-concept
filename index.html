@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=356" />
+<link rel="stylesheet" href="css/main.css?v=363" />
 </head>
 <body class="typo-body">
 
@@ -199,9 +199,17 @@
     </section>
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
+    <!-- ── the card: one object, and the three moments around it ── -->
     <section class="cashless" id="cashless">
-      <div class="cash-grid">
-        <!-- the card: tilts to the pointer, layers lift on Z (js/cashless.js) -->
+      <div class="cash-head reveal">
+        <p class="eyebrow"><span class="sec-num">03</span> ONE CARD, ALL NIGHT</p>
+        <h2 class="sec-title">GO CASHLESS</h2>
+        <p class="sec-sub">Every ticket comes with a BLVD card. Top it up in the webook app and tap
+          it to play — rides, arcades and skill games, never a queue at a till.</p>
+      </div>
+
+      <div class="cash-stage">
+        <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
         <div class="card-stage" id="card-stage">
           <div class="blvd-card" id="blvd-card">
             <i class="bc-foil" aria-hidden="true"></i>
@@ -211,55 +219,38 @@
               <span class="bc-tap">TAP TO PLAY</span>
             </div>
             <div class="bc-chip" aria-hidden="true"><i></i><i></i><i></i></div>
-            <p class="bc-num">5312 &nbsp;7788 &nbsp;0142 &nbsp;2026</p>
+            <p class="bc-num">5312 7788 0142 2026</p>
             <div class="bc-foot">
               <span class="bc-name">GAME &amp; RIDE CARD</span>
               <span class="bc-bal">SAR <b id="bc-amount">250</b></span>
             </div>
             <i class="bc-glare" aria-hidden="true"></i>
           </div>
-          <div class="card-glow" aria-hidden="true"></div>
-
-        </div>
         </div>
 
-        <div class="cash-copy">
-          <div class="cash-head reveal">
-            <p class="eyebrow"><span class="sec-num">03</span> ONE CARD, ALL NIGHT</p>
-            <h2 class="sec-title">GO CASHLESS</h2>
-            <p class="sec-sub">Every Boulevard World ticket comes with a BLVD card. Top it up in the
-              webook app and tap it to play — rides, arcades and skill games, no queuing at a till.</p>
-          </div>
+        <!-- the three moments, set like a printed receipt beside it -->
+        <ol class="cash-steps reveal">
+          <li>
+            <span class="cs-num">01</span>
+            <b class="cs-do">Book any ticket</b>
+            <span class="cs-say">Entry, entry + experience or a ride package — the card is yours at the gate</span>
+          </li>
+          <li>
+            <span class="cs-num">02</span>
+            <b class="cs-do">Top up in the app</b>
+            <span class="cs-say">Before you arrive, or from anywhere in the park, as often as you like</span>
+          </li>
+          <li>
+            <span class="cs-num">03</span>
+            <b class="cs-do">Tap and play</b>
+            <span class="cs-say">One tap at every ride and skill game — the balance follows you all night</span>
+          </li>
+        </ol>
+      </div>
 
-          <ol class="cash-steps reveal">
-            <li>
-              <span class="cs-num">01</span>
-              <div>
-                <h3>Book any ticket</h3>
-                <p>Entry, entry + experience or a ride package — the card is yours at the gate.</p>
-              </div>
-            </li>
-            <li>
-              <span class="cs-num">02</span>
-              <div>
-                <h3>Top up in the webook app</h3>
-                <p>Add credit before you arrive or from anywhere in the park, as often as you like.</p>
-              </div>
-            </li>
-            <li>
-              <span class="cs-num">03</span>
-              <div>
-                <h3>Tap and play</h3>
-                <p>One tap at every ride and skill game. Your balance follows you all night.</p>
-              </div>
-            </li>
-          </ol>
-
-          <div class="cash-cta reveal">
-            <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">GET THE WEBOOK APP</a>
-            <p class="cash-note">Balance stays on the card &#183; refundable on unused credit</p>
-          </div>
-        </div>
+      <div class="cash-cta reveal">
+        <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">GET THE WEBOOK APP</a>
+        <p class="cash-note">Balance stays on the card &#183; unused credit refundable</p>
       </div>
     </section>
 
@@ -679,23 +670,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=356"></script>
-  <script src="js/borders.js?v=356"></script>
-  <script src="js/scene.js?v=356"></script>
-  <script src="js/app.js?v=356"></script>
-  <script src="js/experiences.js?v=356"></script>
-  <script src="js/carousels.js?v=356"></script>
-  <script src="js/coverflow.js?v=356"></script>
-  <script src="js/zones.js?v=356"></script>
-  <script src="js/gallery.js?v=356"></script>
-  <script src="js/parkmap.js?v=356"></script>
-  <script src="js/sponsors.js?v=356"></script>
-  <script src="js/cashless.js?v=356"></script>
-  <script src="js/headings.js?v=356"></script>
-  <script src="js/bundles.js?v=356"></script>
-  <script src="js/ridehero.js?v=356"></script>
-  <script src="js/ridex.js?v=356"></script>
+  <script src="js/data.js?v=363"></script>
+  <script src="js/borders.js?v=363"></script>
+  <script src="js/scene.js?v=363"></script>
+  <script src="js/app.js?v=363"></script>
+  <script src="js/experiences.js?v=363"></script>
+  <script src="js/carousels.js?v=363"></script>
+  <script src="js/coverflow.js?v=363"></script>
+  <script src="js/zones.js?v=363"></script>
+  <script src="js/gallery.js?v=363"></script>
+  <script src="js/parkmap.js?v=363"></script>
+  <script src="js/sponsors.js?v=363"></script>
+  <script src="js/cashless.js?v=363"></script>
+  <script src="js/headings.js?v=363"></script>
+  <script src="js/bundles.js?v=363"></script>
+  <script src="js/ridehero.js?v=363"></script>
+  <script src="js/ridex.js?v=363"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=356"></script> -->
+  <script type="module" src="js/globe.js?v=363"></script> -->
 </body>
 </html>
