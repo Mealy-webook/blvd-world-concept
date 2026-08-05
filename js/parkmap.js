@@ -30,6 +30,8 @@
   let cat = null, zone = null, sortAZ = false;
   // which place is picked, and the list the pins were built from
   let picked = -1, pickedList = [];
+  // how far the last pointer press travelled, so a pan is never taken for a pick
+  let lastMoved = 0;
 
   // The map lives beside the card, never behind it: this is the strip of frame
   // the card leaves free — to its right on a wide screen, above it once the card
@@ -217,9 +219,14 @@
     b.style.setProperty("--y", pin.y + "%");
     b.style.setProperty("--tone", pin.tone);
     b.dataset.i = i;
-    b.innerHTML = `<b class="pb-n"></b><span class="pb-name">${pin.label}</span>`;
+    // The zone's name is printed on the artwork just above this anchor, and that
+    // plate is what the eye goes for — but it is pixels, not an element. This
+    // transparent pad makes the plate and the badge one target.
+    b.innerHTML = `<i class="pb-hit" aria-hidden="true"></i>` +
+                  `<b class="pb-n"></b><span class="pb-name">${pin.label}</span>`;
     b.addEventListener("click", (e) => {
       e.stopPropagation();
+      if (lastMoved > 4) return;                     // that was a pan, not a pick
       select(i, 2.4);
     });
     pinLayer.appendChild(b);
@@ -234,6 +241,23 @@
     shows: ["show", "shows"],
     zones: ["zone", "zones"],
   };
+
+  // Where zones cluster their pads overlap, and whichever painted last would win
+  // — so "Asia" could select Japan. A click on a pad is resolved to the nearest
+  // anchor instead, which is always the zone the reader meant.
+  pinLayer.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("pb-hit")) return;
+    e.stopPropagation();
+    if (lastMoved > 4) return;                       // that was a pan, not a pick
+    let best = -1, bestD = Infinity;
+    nodes.forEach((nd, i) => {
+      if (nd.classList.contains("away")) return;
+      const r = nd.getBoundingClientRect();          // the anchor itself is 0x0
+      const d = (r.left - e.clientX) ** 2 + (r.top - e.clientY) ** 2;
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    if (best >= 0) select(best, 2.4);
+  }, true);
 
   function paintBadges() {
     nodes.forEach((nd, i) => {
@@ -368,7 +392,11 @@
       b.className = "pm-poi";
       b.innerHTML = `<span class="poi-head">${svg(CAT_ICON[it.cat] || "pin")}</span>` +
                     `<span class="poi-tag">${it.name}</span>`;
-      b.addEventListener("click", (e) => { e.stopPropagation(); focusRow(k); });
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (lastMoved > 4) return;                   // that was a pan, not a pick
+        focusRow(k);
+      });
       pinLayer.appendChild(b);
       return b;
     });
@@ -590,28 +618,39 @@
 
   /* ── pan: pointer drag, only meaningful once zoomed ─────────────── */
   let drag = null;
+  // A drag may start anywhere on the artwork, badges and pads included — 26 pads
+  // would otherwise be 26 dead spots for panning. Whether it was a click or a
+  // drag is decided afterwards, by how far the pointer travelled.
   frame.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".pm-badge, .pm-zoom, .pm-status, .pm-panel")) return;
+    if (e.target.closest(".pm-zoom, .pm-status, .pm-panel")) return;
     focus = null;                      // panning by hand releases the hold
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx, ty, moved: 0 };
-    frame.setPointerCapture(e.pointerId);
-    frame.classList.add("dragging");
+    // The pointer is captured only once a drag is really under way. Capturing on
+    // press retargets the click that follows to the frame, which swallowed taps
+    // on a badge or its pad.
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx, ty, moved: 0, held: false };
   });
   frame.addEventListener("pointermove", (e) => {
     if (!drag || e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     drag.moved = Math.max(drag.moved, Math.abs(dx) + Math.abs(dy));
+    if (drag.moved <= 4) return;                     // still a tap, not a drag
+    if (!drag.held) {
+      drag.held = true;
+      frame.setPointerCapture(e.pointerId);
+      frame.classList.add("dragging");
+    }
     tx = drag.tx + dx; ty = drag.ty + dy;
     apply();
   });
   const endDrag = (e) => {
     if (!drag || e.pointerId !== drag.id) return;
+    lastMoved = drag.moved;
     frame.classList.remove("dragging");
     drag = null;
   };
   // a click on the artwork itself, or Escape, puts the card away
   frame.addEventListener("click", (e) => {
-    if (drag && drag.moved > 4) return;
+    if (lastMoved > 4) return;
     if (e.target.closest(".pm-poi, .pm-badge, .pm-panel, .pm-zoom, .pm-status")) return;
     clearPick();
   });

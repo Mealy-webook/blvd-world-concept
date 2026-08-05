@@ -127,9 +127,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   outline-offset: 3px;
 }
 .pill:focus-visible, .tk-cta:focus-visible { outline-offset: 4px; }
-/* dots and badges are small by design — give them a real touch target */
-.fan-dots button, .pm-badge, .sp-plate { position: relative; }
-.fan-dots button::after, .pm-badge::after {
+/* dots are small by design — give them a real touch target. The map badges
+   carry their own pad instead (.pb-hit), which also covers the printed name. */
+.fan-dots button, .sp-plate { position: relative; }
+.fan-dots button::after {
   content: ''; position: absolute; left: 50%; top: 50%;
   width: 44px; height: 44px; transform: translate(-50%, -50%);
 }
@@ -603,6 +604,15 @@ body.chrome-on
    stays legible at every zoom */
 .pm-badge { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; z-index: 3; }
 .pm-badge > * { transform: scale(var(--inv, 1)); transform-origin: 50% 50%; }
+/* The target covers the printed name plate above the anchor as well as the badge
+   below it. It deliberately does NOT counter-scale: sized in the artwork's own
+   terms it stays over its own plate, where a fixed-pixel pad would be far wider
+   than the gap between neighbouring zones at low zoom and steal their clicks. */
+.pb-hit {
+  position: absolute; left: -32px; top: -30px; width: 64px; height: 48px;
+  border-radius: 8px; transform: none;
+}
+.pm-badge.away .pb-hit { pointer-events: none; }
 .pb-n {
   position: absolute; left: -17px; top: 6px;
   display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px;
