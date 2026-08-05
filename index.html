@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=444" />
+<link rel="stylesheet" href="css/main.css?v=446" />
 </head>
 <body class="typo-body">
 
@@ -488,8 +488,6 @@
       </a>
       <div class="rx-head reveal">
         <h2 class="sec-title">EXPLORE RIDES</h2>
-        <p class="sec-sub">From the Wave Swinger to Dragons Fury, all fourteen run all night.
-          Regular queue and fast track, side by side.</p>
       </div>
 
       <!-- the stage is gone: every row carries its own thumbnail, so the list
@@ -689,14 +687,19 @@
   <div id="sticky-cta" aria-hidden="true">
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
-      <a href="#globe-sec" data-sec="globe-sec">Explore</a>
-      <a href="#pex" data-sec="pex">Experiences</a>
-      <a href="#/packages">Packages</a>
+      <!-- In page order. Only the tabs with data-sec are scroll-spied, because
+           only those point at a section on this page; the rest are routes.
+           Dining and Shows are no longer sections here — dining lives on the
+           map's dining filter and the schedule has its own page — and the globe
+           tab is gone with the hidden globe. -->
+      <a href="#pex" data-sec="pex">Zones</a>
       <a href="#/rides">Rides</a>
+      <a href="#/packages">Packages</a>
       <a href="#cashless" data-sec="cashless">Card</a>
-      <a href="#eats" data-sec="eats">Dining</a>
-      <a href="#shows" data-sec="shows">Shows</a>
+      <a href="#/map?cat=dining">Dining</a>
+      <a href="#/shows">Shows</a>
       <a href="#gallery" data-sec="gallery">Gallery</a>
+      <a href="#rules" data-sec="rules">Rules</a>
       <a href="#faqs" data-sec="faqs">FAQ</a>
       <a href="#sponsors" data-sec="sponsors">Partners</a>
     </nav>
@@ -709,23 +712,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=444"></script>
-  <script src="js/borders.js?v=444"></script>
-  <script src="js/scene.js?v=444"></script>
-  <script src="js/app.js?v=444"></script>
-  <script src="js/experiences.js?v=444"></script>
-  <script src="js/carousels.js?v=444"></script>
-  <script src="js/coverflow.js?v=444"></script>
-  <script src="js/zones.js?v=444"></script>
-  <script src="js/gallery.js?v=444"></script>
-  <script src="js/parkmap.js?v=444"></script>
-  <script src="js/sponsors.js?v=444"></script>
-  <script src="js/cashless.js?v=444"></script>
-  <script src="js/headings.js?v=444"></script>
-  <script src="js/bundles.js?v=444"></script>
-  <script src="js/ridex.js?v=444"></script>
-  <script src="js/cursor.js?v=444"></script>
+  <script src="js/data.js?v=446"></script>
+  <script src="js/borders.js?v=446"></script>
+  <script src="js/scene.js?v=446"></script>
+  <script src="js/app.js?v=446"></script>
+  <script src="js/experiences.js?v=446"></script>
+  <script src="js/carousels.js?v=446"></script>
+  <script src="js/coverflow.js?v=446"></script>
+  <script src="js/zones.js?v=446"></script>
+  <script src="js/gallery.js?v=446"></script>
+  <script src="js/parkmap.js?v=446"></script>
+  <script src="js/sponsors.js?v=446"></script>
+  <script src="js/cashless.js?v=446"></script>
+  <script src="js/headings.js?v=446"></script>
+  <script src="js/bundles.js?v=446"></script>
+  <script src="js/ridex.js?v=446"></script>
+  <script src="js/cursor.js?v=446"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=444"></script> -->
+  <script type="module" src="js/globe.js?v=446"></script> -->
 </body>
 </html>
