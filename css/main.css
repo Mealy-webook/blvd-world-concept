@@ -1420,11 +1420,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .cf-frame.grabbing { cursor: grabbing; }
 .cf-frame:focus-visible { outline: 2px solid var(--gold); outline-offset: -6px; border-radius: var(--r-lg); }
 .cf-track {
-  position: relative; height: var(--cf-card); user-select: none;
+  /* the cards are 3:4, so the track is a third taller than the card is wide —
+     it used to be exactly --cf-card, which was right only while they were square
+     and now clipped the bottom third of every poster */
+  position: relative; height: calc(var(--cf-card) * 4 / 3); user-select: none;
   transform-style: preserve-3d;
 }
 .cf-card {
-  position: absolute; left: 50%; top: 0; width: var(--cf-card); aspect-ratio: 1;
+  position: absolute; left: 50%; top: 0; width: var(--cf-card); aspect-ratio: 3 / 4;
   border-radius: var(--r-lg); overflow: hidden; will-change: transform;
   background: var(--s-well);
   box-shadow: var(--sh-3);
@@ -1433,6 +1436,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 /* ── a zone's card ── */
 .zc { position: absolute; inset: 0; display: block; }
+/* a poster card is the artwork, full bleed, at full strength — no dimming, since
+   the poster's own type has to stay legible */
+.zc.is-poster img { filter: none; }
+.cf-card.is-centre .zc.is-poster img { filter: none; }
 .zc img {
   width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
   filter: saturate(.95) brightness(.82);
@@ -1949,6 +1956,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    ticket stubs, a typographic index. They were different forms of the same
    thing: a directory. The rides already have a directory at #/rides. So this is
    a poster — one photograph, one number, one way through, and nothing else. */
+/* the section rule sets display: grid at 0,2,0, which outranks the user agent's
+   [hidden] { display: none } at 0,1,0 — so hiding it needs saying explicitly */
+.ridetrack[hidden], .ridetrack.is-poster[hidden] { display: none; }
 .ridetrack.is-poster {
   position: relative; overflow: hidden;
   display: grid; align-content: end; justify-items: start;

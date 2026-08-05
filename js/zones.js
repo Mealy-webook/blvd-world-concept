@@ -24,11 +24,19 @@
     root,
     items,
     label: "The park's zones",
-    cardWidth: "clamp(176px, 24vw, 292px)",
+    cardWidth: "clamp(148px, 18vw, 232px)",   // 3:4 cards, so narrower than the old squares
     rotate: 46,
     depth: 0.62,
     fade: 0.12,
-    card: (z) => `
+    // A zone with a campaign poster shows the poster and nothing else — the
+    // artwork already carries the country name, the Riyadh Season lockup and the
+    // BLVD World mark, so a veil and a second name on top would only fight it.
+    // A zone without one keeps the photograph, darkened, with its name set over.
+    card: (z) => z.poster ? `
+      <span class="zc is-poster">
+        <img src="img/zones/posters/${z.poster}" alt="${z.name}"
+             draggable="false" loading="lazy">
+      </span>` : `
       <span class="zc" style="--tone:${toneOf.get(z.name) || "#ffc24d"}">
         <img src="img/zones/${(z.imgs && z.imgs[0]) || "park1.jpg"}" alt="${z.name}"
              draggable="false" loading="lazy">
