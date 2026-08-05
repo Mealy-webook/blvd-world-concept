@@ -114,6 +114,7 @@
   const heroScene = document.getElementById("street");
   if (homeView) {
     const rail = document.querySelector("#scroll-rail i");
+    const cue = document.querySelector(".scroll-cue");
     const stickyBar = document.getElementById("sticky-cta");
     const tabs = [...document.querySelectorAll("#sticky-cta [data-sec]")];
 
@@ -150,6 +151,9 @@
         globeHolder.style.setProperty("--globe-s", (0.62 + ge * 0.38).toFixed(3));
         globeHolder.style.setProperty("--globe-o", ge.toFixed(3));
       }
+
+      // the cue has done its job once you have started scrolling
+      if (cue) cue.style.opacity = String(1 - Math.min(p * 3, 1));
 
       // scroll-spy: highlight whichever section owns the upper third
       if (tabs.length) {

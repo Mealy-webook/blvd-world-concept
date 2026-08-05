@@ -2743,6 +2743,63 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 @media (max-width: 1080px) { .sc-tabs { display: none; } }
 .sc-pill { font-size: 13px; padding: 12px 24px; }
 
+/* ── the Book menu ──
+   One control in the bar instead of two competing pills, holding the same four
+   ways in as the hero tiles. */
+.bookmenu { position: relative; }
+.bm-btn { display: inline-flex; align-items: center; gap: 10px; }
+.bm-caret {
+  width: 7px; height: 7px; flex: none;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .3s var(--ease);
+}
+.bookmenu.open .bm-caret { transform: translateY(1px) rotate(-135deg); }
+
+.bm-list {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 140;
+  min-width: 250px; padding: 8px;
+  display: grid; gap: 2px;
+  border-radius: var(--r-md);
+  background-color: #0a0f28;                  /* opaque: it floats over content */
+  background-image: var(--s-card);
+  border: var(--b-2); box-shadow: var(--sh-3);
+}
+.bm-list[hidden] { display: none; }
+.bookmenu.open .bm-list { animation: bmIn .24s var(--ease) both; }
+@keyframes bmIn { from { opacity: 0; transform: translateY(-6px); } }
+
+.bm-list a {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 11px 12px; border-radius: var(--r-sm);
+  transition: background-color .2s var(--ease);
+}
+.bm-list a:hover, .bm-list a:focus-visible {
+  background-color: rgba(199, 226, 255, .12); outline: none;
+}
+.bm-list b {
+  font-family: var(--disp); font-weight: 700; font-size: 15px; letter-spacing: -.01em;
+  color: #fff;
+}
+.bm-list a span {
+  font-family: var(--mono); font-size: 11px; font-weight: 500; color: #9fb0d8;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.bm-note {
+  margin: 4px 12px 6px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #7f8db4;
+}
+
+@media (max-width: 760px) {
+  .bm-list { min-width: 210px; }
+  .bm-list b { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bm-caret { transition: none; }
+  .bookmenu.open .bm-list { animation: none; }
+}
+
 @media (max-width: 760px) {
   .sc-logo .brand-img.small { height: 56px; margin: -14px 0 -14px -4px; }
   .sc-pill { font-size: 11px; padding: 10px 14px; letter-spacing: .04em; }

@@ -253,3 +253,49 @@
   });
   check();
 })();
+
+// ── the Book menu in the tab bar ────────────────────────────────────────
+// One control holding the same four ways in as the hero tiles. Closes on a
+// choice, on Escape, on a click outside, and when the bar itself is hidden.
+(function bookMenu() {
+  const wrap = document.getElementById("bookmenu");
+  const btn = document.getElementById("bm-btn");
+  const list = document.getElementById("bm-list");
+  if (!wrap || !btn || !list) return;
+
+  const open = () => {
+    wrap.classList.add("open");
+    list.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+  };
+  const close = () => {
+    wrap.classList.remove("open");
+    list.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  };
+  const toggle = () => (wrap.classList.contains("open") ? close() : open());
+
+  btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+  // a choice has been made, so the menu has done its job
+  list.addEventListener("click", (e) => { if (e.target.closest("a")) close(); });
+  document.addEventListener("click", (e) => {
+    if (wrap.classList.contains("open") && !wrap.contains(e.target)) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !wrap.classList.contains("open")) return;
+    close();
+    btn.focus();                       // don't leave the focus stranded
+  });
+  // arrow keys walk the menu, as a menu should
+  list.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    e.preventDefault();
+    const items = [...list.querySelectorAll("a")];
+    const at = items.indexOf(document.activeElement);
+    const next = e.key === "ArrowDown" ? at + 1 : at - 1;
+    items[(next + items.length) % items.length].focus();
+  });
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") { e.preventDefault(); open(); list.querySelector("a").focus(); }
+  });
+})();

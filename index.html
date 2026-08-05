@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=446" />
+<link rel="stylesheet" href="css/main.css?v=449" />
 </head>
 <body class="typo-body">
 
@@ -119,6 +119,7 @@
             include <b>entry</b></p>
         </div>
       </div>
+      <div class="scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
     </div>
 
     <!-- ── globe: letters from the world ── -->
@@ -687,17 +688,12 @@
   <div id="sticky-cta" aria-hidden="true">
     <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
     <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
-      <!-- In page order. Only the tabs with data-sec are scroll-spied, because
-           only those point at a section on this page; the rest are routes.
-           Dining and Shows are no longer sections here — dining lives on the
-           map's dining filter and the schedule has its own page — and the globe
-           tab is gone with the hidden globe. -->
+      <!-- Sections on this page only, in page order. The routed pages — rides,
+           packages, the schedule, the map's dining filter — are reached from the
+           Book menu and the sections' own buttons, not from here, so every tab
+           is scroll-spied and none of them navigates away. -->
       <a href="#pex" data-sec="pex">Zones</a>
-      <a href="#/rides">Rides</a>
-      <a href="#/packages">Packages</a>
       <a href="#cashless" data-sec="cashless">Card</a>
-      <a href="#/map?cat=dining">Dining</a>
-      <a href="#/shows">Shows</a>
       <a href="#gallery" data-sec="gallery">Gallery</a>
       <a href="#rules" data-sec="rules">Rules</a>
       <a href="#faqs" data-sec="faqs">FAQ</a>
@@ -705,30 +701,53 @@
     </nav>
     <div class="sc-actions">
       <a href="#/map" class="sc-icon" aria-label="Open the map" title="Map"><span class="ppi-map"></span></a>
-      <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid sc-pill">BOOK ENTRY TICKET</a>
-      <a href="#/experiences" class="pill ghost sc-pill">BOOK ENTRY + EXPERIENCE</a>
+
+      <!-- one Book control holding the same four ways in as the hero tiles, so
+           the two never drift apart -->
+      <div class="bookmenu" id="bookmenu">
+        <button class="pill solid sc-pill bm-btn" id="bm-btn" type="button"
+                aria-expanded="false" aria-haspopup="true" aria-controls="bm-list">
+          BOOK
+          <i class="bm-caret" aria-hidden="true"></i>
+        </button>
+        <div class="bm-list" id="bm-list" role="menu" aria-labelledby="bm-btn" hidden>
+          <a role="menuitem" href="https://webook.com" target="_blank" rel="noopener">
+            <b>Entry ticket</b><span>from SAR 50</span>
+          </a>
+          <a role="menuitem" href="#/packages">
+            <b>Rides</b><span>from SAR 89</span>
+          </a>
+          <a role="menuitem" href="#/experiences">
+            <b>Experiences</b><span>from SAR 150</span>
+          </a>
+          <a role="menuitem" href="#/map?cat=dining">
+            <b>Restaurants</b><span>from SAR 100</span>
+          </a>
+          <p class="bm-note">All of them include entry</p>
+        </div>
+      </div>
     </div>
   </div>
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=446"></script>
-  <script src="js/borders.js?v=446"></script>
-  <script src="js/scene.js?v=446"></script>
-  <script src="js/app.js?v=446"></script>
-  <script src="js/experiences.js?v=446"></script>
-  <script src="js/carousels.js?v=446"></script>
-  <script src="js/coverflow.js?v=446"></script>
-  <script src="js/zones.js?v=446"></script>
-  <script src="js/gallery.js?v=446"></script>
-  <script src="js/parkmap.js?v=446"></script>
-  <script src="js/sponsors.js?v=446"></script>
-  <script src="js/cashless.js?v=446"></script>
-  <script src="js/headings.js?v=446"></script>
-  <script src="js/bundles.js?v=446"></script>
-  <script src="js/ridex.js?v=446"></script>
-  <script src="js/cursor.js?v=446"></script>
+  <script src="js/data.js?v=449"></script>
+  <script src="js/borders.js?v=449"></script>
+  <script src="js/scene.js?v=449"></script>
+  <script src="js/app.js?v=449"></script>
+  <script src="js/experiences.js?v=449"></script>
+  <script src="js/carousels.js?v=449"></script>
+  <script src="js/coverflow.js?v=449"></script>
+  <script src="js/zones.js?v=449"></script>
+  <script src="js/gallery.js?v=449"></script>
+  <script src="js/parkmap.js?v=449"></script>
+  <script src="js/sponsors.js?v=449"></script>
+  <script src="js/cashless.js?v=449"></script>
+  <script src="js/headings.js?v=449"></script>
+  <script src="js/bundles.js?v=449"></script>
+  <script src="js/ridex.js?v=449"></script>
+  <script src="js/cursor.js?v=449"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=446"></script> -->
+  <script type="module" src="js/globe.js?v=449"></script> -->
 </body>
 </html>
