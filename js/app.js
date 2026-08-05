@@ -229,3 +229,27 @@
 
   function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 })();
+
+// ── back to top ─────────────────────────────────────────────────────────
+// The home page is long and its sections are a screen each, so once you are
+// within a screen of the end there is a way back up. It watches the scroll of
+// #view-home rather than the window, because that is what actually scrolls, and
+// it only ever shows on the home route.
+(function backToTop() {
+  const btn = document.getElementById("to-top");
+  const home = document.getElementById("view-home");
+  if (!btn || !home) return;
+
+  function check() {
+    const near = home.scrollTop + home.clientHeight * 1.6 >= home.scrollHeight;
+    btn.classList.toggle("on", near && home.classList.contains("active"));
+  }
+  home.addEventListener("scroll", check, { passive: true });
+  addEventListener("resize", check);
+  // the route can change under it, and the class is what the check reads
+  new MutationObserver(check).observe(home, { attributes: true, attributeFilter: ["class"] });
+  btn.addEventListener("click", () => {
+    home.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+  check();
+})();

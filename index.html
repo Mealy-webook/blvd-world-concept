@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=442" />
+<link rel="stylesheet" href="css/main.css?v=444" />
 </head>
 <body class="typo-body">
 
@@ -21,6 +21,11 @@
   <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
 
   <div id="scroll-rail" aria-hidden="true"><i></i></div>
+
+  <!-- shows itself once the home page is within a screen of its end -->
+  <button id="to-top" type="button" aria-label="Back to the top">
+    <i class="tt-arrow" aria-hidden="true"></i>Top
+  </button>
 
   <!-- ══════════ LOADER ══════════ -->
   <section id="view-loader" class="view active">
@@ -450,7 +455,7 @@
   <!-- ══════════ DAILY SHOWS (own route: #/shows) ══════════ -->
   <section id="view-shows" class="view">
     <section class="shows is-page" id="shows">
-      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="shows-head reveal">
@@ -478,16 +483,13 @@
 
   <section id="view-rides" class="view">
     <section class="ridex" id="ridespage">
-      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="rx-head reveal">
-        <p class="eyebrow">HOLD ON TIGHT</p>
-        <h2 class="sec-title">FOURTEEN RIDES</h2>
+        <h2 class="sec-title">EXPLORE RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury, all fourteen run all night.
           Regular queue and fast track, side by side.</p>
-        <p class="rx-fare-note">Single-ride prices, per person &#183; <b>fast track</b> is the shorter
-          queue &#183; a ride package works out cheaper from the third ride on</p>
       </div>
 
       <!-- the stage is gone: every row carries its own thumbnail, so the list
@@ -514,7 +516,7 @@
   <!-- ══════════ RIDE PACKAGES (own page) ══════════ -->
   <section id="view-packages" class="view">
     <section class="bundles" id="packagespage">
-      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="bd-head reveal">
@@ -555,7 +557,9 @@
         </div>
       </footer>
 
-      <a href="#/" class="xp-back">← BACK</a>
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
     </div>
   </section>
 
@@ -705,23 +709,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=442"></script>
-  <script src="js/borders.js?v=442"></script>
-  <script src="js/scene.js?v=442"></script>
-  <script src="js/app.js?v=442"></script>
-  <script src="js/experiences.js?v=442"></script>
-  <script src="js/carousels.js?v=442"></script>
-  <script src="js/coverflow.js?v=442"></script>
-  <script src="js/zones.js?v=442"></script>
-  <script src="js/gallery.js?v=442"></script>
-  <script src="js/parkmap.js?v=442"></script>
-  <script src="js/sponsors.js?v=442"></script>
-  <script src="js/cashless.js?v=442"></script>
-  <script src="js/headings.js?v=442"></script>
-  <script src="js/bundles.js?v=442"></script>
-  <script src="js/ridex.js?v=442"></script>
-  <script src="js/cursor.js?v=442"></script>
+  <script src="js/data.js?v=444"></script>
+  <script src="js/borders.js?v=444"></script>
+  <script src="js/scene.js?v=444"></script>
+  <script src="js/app.js?v=444"></script>
+  <script src="js/experiences.js?v=444"></script>
+  <script src="js/carousels.js?v=444"></script>
+  <script src="js/coverflow.js?v=444"></script>
+  <script src="js/zones.js?v=444"></script>
+  <script src="js/gallery.js?v=444"></script>
+  <script src="js/parkmap.js?v=444"></script>
+  <script src="js/sponsors.js?v=444"></script>
+  <script src="js/cashless.js?v=444"></script>
+  <script src="js/headings.js?v=444"></script>
+  <script src="js/bundles.js?v=444"></script>
+  <script src="js/ridex.js?v=444"></script>
+  <script src="js/cursor.js?v=444"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=442"></script> -->
+  <script type="module" src="js/globe.js?v=444"></script> -->
 </body>
 </html>
