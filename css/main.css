@@ -11,15 +11,19 @@
   --purple: #8b5cf6;
   --gold: #ffc24d;
   --pill-grad: linear-gradient(100deg, #9fd0ff 0%, #4da6ff 45%, #6f7bff 100%);
-  /* Clash Display for headings: a tight, high-waisted grotesque with real
-     character at size — the display face behind a lot of award-shelf work, and
-     the reason those pages read as designed rather than set. Satoshi carries
-     everything else: a clean geometric-humanist sans that stays legible at 9px
-     in a chip and doesn't fight the display face above it. No serif anywhere;
-     titles stay bold and white, descriptions regular. */
-  --disp: 'Clash Display', 'Satoshi', system-ui, sans-serif;
-  --body: 'Satoshi', system-ui, -apple-system, sans-serif;
-  --ui: 'Satoshi', system-ui, -apple-system, sans-serif;   /* labels, chips, buttons */
+  /* This is a listings publication — twenty countries, a nightly schedule, a
+     rate card — so it is set like a printed programme.
+     Bricolage Grotesque carries the display voice: variable on optical size and
+     width, with letterforms odd enough (that g, that R) to be recognisable
+     rather than the same wide grotesque every dark site reaches for.
+     Instrument Sans reads: warm, neutral, unworn.
+     JetBrains Mono is for FIGURES ONLY — times, prices, counts, durations, the
+     numbers hanging beside each section. Never for prose, never for decoration.
+     That is what makes a programme look set rather than styled. */
+  --disp: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
+  --body: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --ui: 'Instrument Sans', system-ui, -apple-system, sans-serif;   /* labels, chips, buttons */
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --ease: cubic-bezier(.32,.72,0,1);
   --hand: 'Caveat', cursive;
   /* the park map's own backdrop, sampled from the artwork's edges, so the map
@@ -63,24 +67,42 @@ html, body {
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-/* anywhere digits sit in a column — prices, times, counts — they line up */
-.tk-price b, .tk-count, .tk-rate, .tl-time, .rx-count, .rx-no, .eat-price b,
-.rc-note b, .fan-price b, .bc-num, .bc-bal b, .sec-num, .bd-note {
-  font-variant-numeric: tabular-nums;
-}
 /* running text gets a comfortable measure and leading */
 .sec-sub { max-width: 66ch; }
 
-/* ── one head block per section ──
-   Twelve sections had written this out separately, differing only in a
-   max-width nobody would notice. */
+/* ── one head block per section, set like a programme's ──
+   Left-set with the section's number hanging out in the margin beside it, and a
+   rule under the eyebrow. Twelve sections had each centre-stacked this
+   independently — eyebrow, title, sub, all on the axis — which is the single
+   thing that made every section read the same. */
 .zs-head, .rc-head, .pk-head, .rx-head, .bd-head, .eats-head, .shows-head,
 .gal-head, .faq-head, .sp-head, .pm-head, .rh-head {
-  display: grid; gap: 14px; justify-items: center; text-align: center;
-  padding: 0 var(--sec-x); max-width: min(760px, 100%);
+  position: relative;
+  display: grid; gap: 12px; justify-items: start; text-align: left;
+  width: 100%; max-width: min(1180px, 100%);
+  margin-inline: auto; padding: 0 var(--sec-x);
 }
-/* the rides band sets its lead to the left */
-.rh-lead { justify-items: start; text-align: left; }
+.zs-head .sec-title, .rc-head .sec-title, .pk-head .sec-title, .rx-head .sec-title,
+.bd-head .sec-title, .eats-head .sec-title, .shows-head .sec-title,
+.gal-head .sec-title, .faq-head .sec-title, .sp-head .sec-title, .pm-head .sec-title {
+  max-width: 22ch;
+}
+.zs-head .sec-sub, .rc-head .sec-sub, .pk-head .sec-sub, .rx-head .sec-sub,
+.bd-head .sec-sub, .eats-head .sec-sub, .shows-head .sec-sub,
+.gal-head .sec-sub, .faq-head .sec-sub, .sp-head .sec-sub, .pm-head .sec-sub {
+  max-width: 48ch;
+}
+/* the number hangs in the margin rather than sitting inline before the label */
+.eyebrow { display: inline-flex; align-items: baseline; gap: 0; }
+.eyebrow > .sec-num {
+  position: absolute; left: 0; top: .1em;
+  margin: 0; font-size: 11px; opacity: 1;
+}
+@media (min-width: 1100px) {
+  .eyebrow > .sec-num { left: -46px; }
+}
+/* the rules run the width of the head's text, not the whole column */
+.eyebrow::after { right: auto; width: 100%; min-width: 180px; }
 
 /* ── headings set themselves as they scroll in ──
    Each word sits in its own clipping box and rises out of it, so the line
@@ -102,14 +124,7 @@ html, body {
   transition: transform .9s var(--ease) .15s;
 }
 .eyebrow.set::after { transform: scaleX(1); }
-/* centred heads read better with the rule growing from the middle */
-.zs-head .eyebrow::after, .rc-head .eyebrow::after, .pk-head .eyebrow::after,
-.eats-head .eyebrow::after, .shows-head .eyebrow::after, .gal-head .eyebrow::after,
-.faq-head .eyebrow::after, .sp-head .eyebrow::after, .rx-head .eyebrow::after,
-.bd-head .eyebrow::after {
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  transform-origin: center;
-}
+/* the rule always draws from the left, the way a rule under a standfirst does */
 @media (prefers-reduced-motion: reduce) {
   .sec-title .sw-i { transform: none; transition: none; }
   .eyebrow::after { transform: scaleX(1); transition: none; }
@@ -152,9 +167,9 @@ body.route-home #scroll-rail { opacity: 1; }
 /* one heading voice for every section: display face, sky-to-blue wash */
 .sec-title {
   font-family: var(--disp); font-weight: 700;
-  font-size: clamp(34px, 5.4vw, 76px); line-height: 1; letter-spacing: -.01em;
-  /* Clash's space glyph is tight at display sizes; open it back up */
-  word-spacing: .08em;
+  font-size: clamp(34px, 5.4vw, 76px); line-height: .96; letter-spacing: -.02em;
+  /* Bricolage runs wide, so the display sizes want a narrower cut of it */
+  font-stretch: 88%; font-variation-settings: 'wdth' 88;
   color: #fff;
 }
 .sec-sub { font-size: clamp(15px, 1.4vw, 18px); font-weight: 400; color: var(--dim); line-height: 1.62; }
@@ -366,7 +381,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
 .hero-title .line {
-  font-size: clamp(52px, 9vw, 132px); letter-spacing: -.02em; word-spacing: .06em;
+  font-size: clamp(52px, 9vw, 132px); letter-spacing: -.03em;
+  font-stretch: 84%; font-variation-settings: 'wdth' 84;
   color: #fff;
   filter: drop-shadow(var(--sh-2));
 }
@@ -1593,7 +1609,7 @@ body.chrome-on
 
 /* ── the index ── */
 .rx-side { display: grid; gap: 18px; }
-.rx-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.rx-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
 .rx-chip {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--ui); font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
@@ -2210,8 +2226,10 @@ body.chrome-on
 }
 /* zone chips, each flying its country's flag */
 .show-tabs {
-  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-  width: 100%; max-width: min(1000px, 100%);
+  /* set to the same axis as the head above it, not centred against it */
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;
+  width: 100%; max-width: min(1180px, 100%);
+  margin-inline: auto; padding: 0 var(--sec-x);
 }
 .show-tabs button {
   display: inline-flex; align-items: center; gap: 8px;
@@ -2636,7 +2654,7 @@ body.route-experiences
   background: linear-gradient(180deg, transparent, rgba(5, 8, 24, .8)); }
 .letter-step { position: relative; z-index: 4; text-align: center; display: grid; justify-items: center; gap: 22px; padding: 0 4vw; width: 100%; max-width: min(1100px, 100vw); overflow: hidden; }
 .letter-step.hidden { display: none; }
-.eyebrow { font-family: var(--ui); font-weight: 600; font-size: 14px; letter-spacing: .22em; color: var(--dim); }
+.eyebrow { font-family: var(--ui); font-weight: 600; font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--dim); }
 .step-title { font-family: var(--disp); font-weight: 700; font-size: clamp(26px, 3.6vw, 46px); line-height: 1.12; letter-spacing: -.02em;
   color: #fff;
   }
@@ -2834,3 +2852,32 @@ body.route-experiences
   .tray-row { grid-template-columns: repeat(6, 48px); }
   .tray-row button { height: 48px; font-size: 24px; }
 }
+
+/* ═══════════════ FIGURES ═══════════════ */
+/* mono has no weight above 700, so anything asking for 800+ is capped here
+   rather than left to the browser to synthesise */
+.bt-price b, .eat-price b, .rc-note b, .tk-price b, .pk-price,
+.rh-count, .tk-count, .cf-meta dd, .rh-stat dd, .cf-one b, .bc-bal b,
+.rx-reg b, .rx-fast b, .rx-count b, .pb-count b, .pb-n, .zc-no { font-weight: 700; }
+
+/* ── figures are set in mono, and only figures ──
+   Every price, time, duration, count and hanging section number. Not labels,
+   not prose, not headings — a programme sets its schedule in mono because the
+   columns have to line up, and that discipline is the whole effect. */
+.sec-num,
+.tk-price b, .tk-count, .tk-rate, .pk-price, .pk-count,
+.rx-reg b, .rx-fast b, .rx-no, .rx-count, .rx-count b, .cf-one b,
+.eat-price b, .rc-note b, .bt-price b, .cf-meta dd,
+.tl-time, .tl-gap, .sm-dur, .show-note,
+.rh-count, .rh-stat dd, .pb-count b, .zc-no, .pb-n,
+.bc-num, .bc-bal b, .bd-note,
+.rx-chip b, .pp-chip b, .show-tabs button b, .tk-fine {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01", "zero" 0;
+}
+/* mono runs wide, so the figures pull their tracking in a little */
+.tk-price b, .pk-price, .rh-count, .tk-count, .tl-time, .rx-count b, .cf-one b,
+.bc-bal b, .rh-stat dd, .cf-meta dd { letter-spacing: -.03em; }
+/* and the small uppercase mono bits open out instead */
+.sec-num, .tl-gap, .sm-dur, .show-note, .tk-rate, .bd-note, .tk-fine { letter-spacing: .06em; }
