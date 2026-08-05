@@ -49,53 +49,55 @@
     return;
   }
 
-  // the scrolling ancestor an element actually lives in
-  const scrollerOf = (el) => el.closest("#view-home, #view-rides, #view-packages, .pp-list") || null;
+  /* ── when a heading is "in" ──
+     Two mechanisms, on purpose. The observer is the primary and is rooted on the
+     box the element actually scrolls in — the views are fixed, internally
+     scrolling containers, so the default viewport root reports the whole page as
+     visible at once. The scroll pass is the backstop, matching what the .reveal
+     system does, for the case where a rooted observer delivers nothing. Neither
+     can leave a heading behind its own mask. */
+  const scrollerOf = (el) => el.closest("#view-home, #view-rides, #view-packages") || null;
 
-  // group by scroller, and give each group an observer rooted there
   const groups = new Map();
   for (const el of watch) {
     const root = scrollerOf(el);
     if (!groups.has(root)) groups.set(root, []);
     groups.get(root).push(el);
   }
+
+  const done = (el) => el.classList.add("set");
+
   for (const [root, els] of groups) {
     const io = new IntersectionObserver((entries) => {
       for (const en of entries) {
         if (!en.isIntersecting) continue;
-        en.target.classList.add("set");
+        done(en.target);
         io.unobserve(en.target);
       }
     }, { root, threshold: 0.3, rootMargin: "0px 0px -6% 0px" });
     els.forEach((el) => io.observe(el));
   }
 
-  // Backstop, matching the .reveal system: scrolling past a heading sets it even
-  // if its observer missed, so a heading is never stuck behind its own mask.
-  for (const root of groups.keys()) {
-    if (!root) continue;
-    root.addEventListener("scroll", () => {
-      const vh = root.clientHeight || 1;
-      for (const el of groups.get(root)) {
-        if (!el.classList.contains("set") &&
-            el.getBoundingClientRect().top - root.getBoundingClientRect().top < vh * 0.9) {
-          el.classList.add("set");
-        }
-      }
-    }, { passive: true });
+  function update(root) {
+    const els = groups.get(root);
+    if (!els) return;
+    const top = root ? root.getBoundingClientRect().top : 0;
+    const vh = (root ? root.clientHeight : innerHeight) || 1;
+    for (const el of els) {
+      if (el.classList.contains("set")) continue;
+      const y = el.getBoundingClientRect().top - top;
+      if (y < vh * 0.88 && y > -el.offsetHeight - vh) done(el);
+    }
   }
+  const updateAll = () => groups.forEach((_, root) => update(root));
 
-  // a route that opens mid-page has its headings already past the fold, so set
-  // whatever is on screen when the view arrives
-  addEventListener("hashchange", () => {
-    requestAnimationFrame(() => {
-      const view = document.querySelector(".view.active");
-      if (!view) return;
-      const vh = view.clientHeight || innerHeight;
-      view.querySelectorAll(".sec-title:not(.set), .eyebrow:not(.set)").forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.top < vh * 0.95) el.classList.add("set");
-      });
-    });
-  });
+  for (const root of groups.keys()) {
+    if (root) root.addEventListener("scroll", () => update(root), { passive: true });
+  }
+  addEventListener("resize", updateAll);
+  // a route that opens mid-page has its headings already past the fold
+  addEventListener("hashchange", () => requestAnimationFrame(updateAll));
+
+  // fail-open: a heading must never be left behind its own mask
+  setTimeout(() => watch.forEach(done), 5000);
 })();
