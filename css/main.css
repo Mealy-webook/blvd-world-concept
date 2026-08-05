@@ -1323,9 +1323,12 @@ body.chrome-on
 
 /* ── the home page's way in to it: five stubs, read at a glance ── */
 .pkcall {
+  /* off the home page — the hero's CTA and the Packages tab are the way to
+     #/packages. Delete this one line to bring the entry block back. */
+  display: none;
   position: relative; z-index: 11;
   padding: clamp(60px, 11vh, 110px) 6vw;
-  display: grid; gap: clamp(26px, 4vh, 42px); justify-items: center; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(26px, 4vh, 42px); justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
 .pk-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(760px, 100%); }
 .pk-row {
