@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=241" />
+<link rel="stylesheet" href="css/main.css?v=251" />
 </head>
 <body class="typo-body">
 
@@ -108,25 +108,28 @@
 
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
 
-    <!-- ── this season's new zones: a rail of plates through to the map ── -->
-    <section class="zonesec" id="pex">
-      <div class="zs-head reveal">
+    <!-- ── this season's new zones: the same fanned deck the experiences used ── -->
+    <section class="rides pex zonefan" id="pex">
+      <div class="rides-head reveal">
         <p class="eyebrow"><span class="sec-num">01</span> NEW FOR THIS SEASON</p>
-        <h2 class="sec-title">DISCOVER THE NEW ZONES</h2>
-        <p class="sec-sub">Twenty countries, one boulevard. Each zone builds its own streets,
-          kitchens and stages — open one to see what is waiting inside it.</p>
+        <h2 class="sec-title">FIVE NEW ZONES</h2>
+        <p class="sec-sub">Each one builds its own streets, kitchens and stages. Deal through the
+          five that are new this season, then open any of them on the map.</p>
       </div>
 
-      <div class="rail-wrap">
-        <button class="rail-btn prev" id="zs-prev" aria-label="Previous zones">&#8249;</button>
-        <div class="rail zs-rail" id="zs-rail"></div>
-        <button class="rail-btn next" id="zs-next" aria-label="More zones">&#8250;</button>
+      <div class="fan-stage">
+        <div class="fan-deck" id="zone-fan"></div>
+      </div>
+      <div class="fan-nav">
+        <button class="rail-btn prev" id="zone-prev" aria-label="Previous zone">&#8249;</button>
+        <div class="fan-dots" id="zone-dots"></div>
+        <button class="rail-btn next" id="zone-next" aria-label="Next zone">&#8250;</button>
       </div>
 
       <div class="ride-cta reveal">
         <p class="rc-note">Every zone is included with park entry &#183; from <b>SAR 50</b></p>
         <a href="#/map" class="pill solid big-pill">
-          OPEN THE PARK MAP
+          EXPLORE ALL ZONES
           <i class="rc-arrow" aria-hidden="true"></i>
         </a>
       </div>
@@ -454,6 +457,11 @@
 
         <div class="rx-side">
           <div class="rx-filters" id="rx-filters" role="group" aria-label="Filter rides by intensity"></div>
+          <!-- the two price columns, named once at the top of the list -->
+          <p class="rx-cols" aria-hidden="true">
+            <span class="rx-cols-reg">Regular</span>
+            <span class="rx-cols-fast">Fast track</span>
+          </p>
           <ul class="rx-index" id="rx-index"></ul>
         </div>
       </div>
@@ -659,22 +667,22 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=241"></script>
-  <script src="js/borders.js?v=241"></script>
-  <script src="js/scene.js?v=241"></script>
-  <script src="js/app.js?v=241"></script>
-  <script src="js/experiences.js?v=241"></script>
-  <script src="js/carousels.js?v=241"></script>
-  <script src="js/fan.js?v=241"></script>
-  <script src="js/gallery.js?v=241"></script>
-  <script src="js/parkmap.js?v=241"></script>
-  <script src="js/sponsors.js?v=241"></script>
-  <script src="js/cashless.js?v=241"></script>
-  <script src="js/zones.js?v=241"></script>
-  <script src="js/headings.js?v=241"></script>
-  <script src="js/bundles.js?v=241"></script>
-  <script src="js/ridex.js?v=241"></script>
+  <script src="js/data.js?v=251"></script>
+  <script src="js/borders.js?v=251"></script>
+  <script src="js/scene.js?v=251"></script>
+  <script src="js/app.js?v=251"></script>
+  <script src="js/experiences.js?v=251"></script>
+  <script src="js/carousels.js?v=251"></script>
+  <script src="js/fan.js?v=251"></script>
+  <script src="js/zones.js?v=251"></script>
+  <script src="js/gallery.js?v=251"></script>
+  <script src="js/parkmap.js?v=251"></script>
+  <script src="js/sponsors.js?v=251"></script>
+  <script src="js/cashless.js?v=251"></script>
+  <script src="js/headings.js?v=251"></script>
+  <script src="js/bundles.js?v=251"></script>
+  <script src="js/ridex.js?v=251"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=241"></script> -->
+  <script type="module" src="js/globe.js?v=251"></script> -->
 </body>
 </html>

@@ -319,6 +319,11 @@
     rows.forEach((r, i) => r.classList.toggle("on", i === k));
     const row = rows[k];
     if (!row) return;
+    // if the search field is covering the list, get out of its way
+    if (panel?.classList.contains("searching")) {
+      panel.classList.remove("searching");
+      document.getElementById("pp-searchbtn")?.classList.remove("on");
+    }
     const delta = row.getBoundingClientRect().top - listEl.getBoundingClientRect().top;
     listEl.scrollTo({
       top: Math.max(0, listEl.scrollTop + delta - (listEl.clientHeight - row.offsetHeight) / 2),

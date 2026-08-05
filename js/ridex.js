@@ -48,10 +48,8 @@
           <span class="rx-name">${r.name}</span>
           <span class="rx-kind">${r.kind}</span>
           ${bars(h)}
-          <span class="rx-fare">
-            <b>SAR ${r.reg}</b>
-            <i>SAR ${r.fast} fast</i>
-          </span>
+          <span class="rx-reg"><b>SAR ${r.reg}</b></span>
+          <span class="rx-fast"><b>SAR ${r.fast}</b></span>
           <span class="rx-go" aria-hidden="true">↗</span>
         </button>
       </li>`;

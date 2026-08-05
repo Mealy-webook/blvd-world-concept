@@ -215,6 +215,8 @@
 
       prevVisible = new Set(map.keys());
       dots.forEach((d, i) => d.classList.toggle("on", i === center));
+      // the fronted card is the only one whose own controls should act
+      cards.forEach((c, i) => c.classList.toggle("is-front", i === center));
     }
 
     function cycle(dir) {
@@ -240,6 +242,12 @@
     /* ── wiring ── */
     const prev = prevId && document.getElementById(prevId);
     const next = nextId && document.getElementById(nextId);
+    // With every card on the table there is nothing to page to — clicking a card
+    // forward is the whole interaction — so the arrows would be dead controls.
+    if (!paginated) {
+      prev && prev.setAttribute("hidden", "");
+      next && next.setAttribute("hidden", "");
+    }
     prev && prev.addEventListener("click", () => cycle("left"));
     next && next.addEventListener("click", () => cycle("right"));
     dots.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
@@ -264,7 +272,10 @@
       const c = e.target.closest(".fan-card");
       if (!c) return;
       const i = cards.indexOf(c);
-      if (i !== center) goTo(i);
+      if (i !== center) {
+        e.preventDefault();          // don't follow a link on a card off to the side
+        goTo(i);
+      }
     });
 
     // the multipliers are read from the viewport, so re-lay-out whenever it
@@ -303,9 +314,11 @@
     return { cycle, goTo };
   }
 
-  /* ── the deck now serves the experiences only: the rides moved to their own
-     page (#/rides), where they read as an index rather than a fanned deck ── */
-  /* ── the premium experiences ── */
+  // the deck is shared: the experiences below, and the zones from js/zones.js
+  window.WBK_FAN = { make: makeFan };
+
+  /* ── the premium experiences deck, and the zones deck, use the same factory:
+     the rides left for their own page (#/rides), where they read as an index ── */
   makeFan({
     deckId: "pex-fan", prevId: "pex-prev", nextId: "pex-next", dotsId: "pex-dots",
     items: (window.WBK && WBK.experiences) || [],

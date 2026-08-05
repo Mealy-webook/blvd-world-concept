@@ -839,7 +839,15 @@ body.chrome-on
   transition: background .25s var(--ease), border-color .25s var(--ease);
 }
 .pp-row:hover, .pp-row:focus-visible { background: rgba(124, 196, 255, .07); border-color: rgba(124, 196, 255, .22); }
-.pp-row.on { background: rgba(255, 194, 77, .1); border-color: rgba(255, 194, 77, .4); }
+/* the row for the pin you picked: a gold edge and a lift, so it is obvious
+   which of the list the map is pointing at */
+.pp-row.on {
+  background: rgba(255, 194, 77, .14); border-color: rgba(255, 194, 77, .55);
+  box-shadow: inset 3px 0 0 var(--gold), 0 10px 26px rgba(2, 4, 14, .4);
+}
+.pp-row.on .rm-text b { color: #ffe6ae; }
+.pp-row.on .rm-shot { border-color: rgba(255, 194, 77, .5); }
+.pp-row.on .rm-go { border-color: var(--gold); }
 .rm-shot {
   width: 100px; height: 115px; border-radius: 12px; overflow: hidden; flex: none;
   background: rgba(124, 196, 255, .06); border: 1px solid rgba(124, 196, 255, .14);
@@ -1021,87 +1029,37 @@ body.chrome-on
 .rides-head { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: min(720px, 100%); }
 
 /* ═══════════════ THIS SEASON'S ZONES ═══════════════ */
-.zonesec {
-  position: relative; z-index: 11;
-  padding: clamp(60px, 11vh, 110px) 0 clamp(60px, 11vh, 110px);
-  display: grid; gap: clamp(26px, 4vh, 44px); justify-items: center; grid-template-columns: minmax(0, 1fr);
+/* the same fanned deck as the experiences, with its own card face */
+.rail-btn[hidden] { display: none; }
+.zonefan .fan-card.is-zone { border-color: color-mix(in srgb, var(--tone) 45%, transparent); }
+.fan-card.is-zone .fan-meta { gap: 8px; }
+.fan-card.is-zone .ride-kind.zone {
+  color: #0b1030; background: var(--tone); border-color: transparent;
 }
-.zs-head { text-align: center; display: grid; gap: 14px; justify-items: center; padding: 0 6vw; max-width: min(760px, 100%); }
-.zs-rail {
-  display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-  scroll-behavior: smooth; padding: 6px 2px 14px; scrollbar-width: none; cursor: grab;
-}
-.zs-rail::-webkit-scrollbar { display: none; }
-.zs-rail.grabbing { cursor: grabbing; scroll-behavior: auto; }
-
-.zs-card {
-  position: relative; flex: 0 0 auto; width: clamp(240px, 25vw, 300px);
-  scroll-snap-align: center;
-  display: grid; grid-template-rows: auto 1fr auto; gap: 14px;
-  padding: 8px 8px 16px; border-radius: 20px;
-  background: linear-gradient(180deg, rgba(20, 28, 72, .55), rgba(10, 14, 40, .82));
-  border: 1px solid rgba(124, 196, 255, .14);
-  opacity: 0; transform: translateY(16px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease),
-              border-color .4s var(--ease), box-shadow .4s var(--ease);
-}
-.zs-card.in { opacity: 1; transform: none; transition-delay: var(--d, 0ms); }
-.zs-card:hover {
-  border-color: var(--tone); box-shadow: 0 24px 52px rgba(2, 4, 14, .55);
-  transform: translateY(-6px);
-}
-.zs-shot {
-  position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden;
-  background: rgba(124, 196, 255, .06);
-}
-.zs-shot img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: saturate(.95) brightness(.8);
-  transition: transform .8s var(--ease), filter .5s var(--ease);
-}
-.zs-card:hover .zs-shot img { transform: scale(1.06); filter: saturate(1.05) brightness(.95); }
-.zs-shot::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, transparent 45%, rgba(6, 9, 26, .78) 100%);
-}
-/* the zone's number, in its own colour on the map */
-.zs-no {
-  position: absolute; z-index: 2; left: 10px; top: 10px;
-  display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 8px;
-  border-radius: 9px; background: var(--tone);
-  font-family: var(--ui); font-weight: 700; font-size: 12px; color: #fff;
-  border: 2px solid rgba(255, 255, 255, .9); font-variant-numeric: tabular-nums;
-}
-.zs-text { display: grid; gap: 6px; align-content: start; padding: 0 8px; }
-.zs-text b {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(19px, 1.9vw, 23px);
-  letter-spacing: -.02em; color: #fff; line-height: 1.1;
-}
-.zs-blurb { font-size: 13px; font-weight: 400; color: var(--dim); line-height: 1.5; }
-.zs-bits { display: flex; flex-wrap: wrap; gap: 5px 7px; margin-top: 3px; }
-.zs-bits i {
-  font-style: normal; font-family: var(--ui); font-size: 9.5px; font-weight: 600;
+.zf-blurb { font-size: 12.5px; font-weight: 400; color: #c3d2ee; line-height: 1.45; }
+.zf-bits { display: flex; flex-wrap: wrap; gap: 5px 6px; }
+.zf-bits i {
+  font-style: normal; font-family: var(--ui); font-size: 9px; font-weight: 600;
   letter-spacing: .08em; text-transform: uppercase; color: #cfe4ff;
-  padding: 4px 8px; border-radius: 999px;
+  padding: 3px 7px; border-radius: 999px;
   background: rgba(124, 196, 255, .1); border: 1px solid rgba(124, 196, 255, .2);
 }
-.zs-open {
-  justify-self: start; margin: 0 8px;
-  display: inline-flex; align-items: center; gap: 8px;
+/* only the fronted card offers its link, so a card off to the side can be
+   clicked forward without navigating */
+.zf-open {
+  justify-self: start; margin-top: 2px;
+  display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .14em;
   text-transform: uppercase; color: var(--gold);
-  transition: gap .35s var(--ease);
+  opacity: 0; pointer-events: none; transition: opacity .35s var(--ease), gap .35s var(--ease);
 }
-.zs-open::after {
+.zf-open::after {
   content: ''; width: 6px; height: 6px;
   border-right: 1.6px solid currentColor; border-top: 1.6px solid currentColor;
   transform: rotate(45deg);
 }
-.zs-card:hover .zs-open { gap: 13px; }
-
-@media (max-width: 700px) {
-  .zs-card { width: clamp(220px, 74vw, 268px); }
-}
+.fan-card.is-zone.is-front .zf-open { opacity: 1; pointer-events: auto; }
+.fan-card.is-zone.is-front .zf-open:hover { gap: 12px; }
 
 /* ═══════════════ BUNDLES ═══════════════ */
 /* the fanned-deck markup only serves the experiences now; the rides have their
@@ -1358,7 +1316,7 @@ body.chrome-on
 .rx-row.gone { display: none; }
 .rx-hit {
   position: relative; overflow: hidden; width: 100%; cursor: pointer;
-  display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto auto 26px;
+  display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto 82px 82px 26px;
   align-items: center; gap: clamp(10px, 1.4vw, 18px);
   padding: clamp(12px, 1.5vw, 17px) 10px; text-align: left;
   background: none; border: 0; color: inherit;
@@ -1398,17 +1356,26 @@ body.chrome-on
 }
 .rx-row.on .rx-go { opacity: 1; transform: none; }
 
-/* the two fares, on every row and on the stage */
-.rx-fare { display: grid; justify-items: end; gap: 1px; text-align: right; }
-.rx-fare b {
+/* the two fares as their own columns, named once at the top of the list */
+/* The header can't share the rows' grid — their leading tracks are content-sized
+   and differ. It is pinned to the right edge instead, past the same trailing
+   gutter the rows leave for the arrow, with columns of the same fixed width. */
+.rx-cols {
+  --fare-w: 82px; --fare-gap: clamp(10px, 1.4vw, 18px); --fare-tail: 26px;
+  display: flex; justify-content: flex-end; gap: var(--fare-gap);
+  padding: 0 calc(10px + var(--fare-tail) + var(--fare-gap)) 4px 10px;
+  font-family: var(--ui); font-size: 9px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.rx-cols span { width: var(--fare-w); text-align: right; flex: none; }
+.rx-cols-fast { color: var(--gold); }
+.rx-reg, .rx-fast { text-align: right; }
+.rx-reg b, .rx-fast b {
   font-family: var(--disp); font-weight: 700; font-size: 15px; letter-spacing: -.01em;
-  color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1;
+  font-variant-numeric: tabular-nums; line-height: 1.1;
 }
-.rx-fare i {
-  font-style: normal; font-family: var(--ui); font-size: 9.5px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase; color: var(--gold);
-  font-variant-numeric: tabular-nums;
-}
+.rx-reg b { color: #fff; }
+.rx-fast b { color: var(--gold); }
 .rx-cap-fare { display: flex; gap: 18px; margin-top: 4px; }
 .cf-one { display: grid; gap: 1px; }
 .cf-one small {
@@ -1444,7 +1411,8 @@ body.chrome-on
   .rx-stage { display: none; }
   /* the stage is off here, so the row keeps the fares — the kind chip goes
      instead, since a price is worth more than a label */
-  .rx-hit { grid-template-columns: 30px 56px minmax(0, 1fr) auto auto 26px; }
+  .rx-hit { grid-template-columns: 30px 56px minmax(0, 1fr) auto 68px 68px 26px; }
+  .rx-cols { --fare-w: 68px; }
   .rx-thumb {
     display: block; width: 56px; height: 56px; border-radius: 13px; overflow: hidden;
     border: 1px solid rgba(124, 196, 255, .16);
@@ -1454,9 +1422,12 @@ body.chrome-on
 }
 @media (max-width: 460px) {
   /* narrowest: the fare stays, the intensity bars step aside for it */
-  .rx-hit { grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; }
+  /* thumb · name · regular · fast — no arrow, so no trailing gutter */
+  .rx-hit { grid-template-columns: 46px minmax(0, 1fr) 58px 58px; gap: 10px; }
+  .rx-cols { --fare-w: 58px; --fare-gap: 10px; --fare-tail: 0px; }
   .rx-no, .rx-go, .rx-hit .rx-heat { display: none; }
-  .rx-fare b { font-size: 14px; }
+  .rx-reg b, .rx-fast b { font-size: 13.5px; }
+  .rx-cols { font-size: 8px; letter-spacing: .1em; }
   .rx-thumb { width: 46px; height: 46px; }
 }
 @media (prefers-reduced-motion: reduce) {
