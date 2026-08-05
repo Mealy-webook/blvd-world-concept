@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=421" />
+<link rel="stylesheet" href="css/main.css?v=432" />
 </head>
 <body class="typo-body">
 
@@ -87,7 +87,7 @@
               <svg viewBox="0 0 24 24"><path d="M12 2.4s5.4 4.6 5.4 9.9a5.4 5.4 0 1 1-10.8 0C6.6 7 12 2.4 12 2.4zm0 6.3a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2z"/></svg>
             </span>
             <span class="bt-text">
-              <b class="bt-name">Ride package</b>
+              <b class="bt-name">Rides</b>
               <span class="bt-price">from <b>SAR 89</b></span>
             </span>
             <i class="bt-go" aria-hidden="true"></i>
@@ -97,7 +97,7 @@
               <svg viewBox="0 0 24 24"><path d="M12 2.6 14.9 9l6.9.6-5.2 4.6 1.5 6.8L12 17.4 5.9 21l1.5-6.8L2.2 9.6 9.1 9z"/></svg>
             </span>
             <span class="bt-text">
-              <b class="bt-name">Entry + experience</b>
+              <b class="bt-name">Experiences</b>
               <span class="bt-price">from <b>SAR 150</b></span>
             </span>
             <i class="bt-go" aria-hidden="true"></i>
@@ -108,10 +108,12 @@
             </span>
             <span class="bt-text">
               <b class="bt-name">Restaurants</b>
-              <span class="bt-price">four take <b>bookings</b></span>
+              <span class="bt-price">from <b>SAR 100</b></span>
             </span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
+          <p class="bt-note">Ride packages, experiences and restaurant bookings all
+            include <b>entry</b></p>
         </div>
       </div>
     </div>
@@ -141,6 +143,10 @@
       <div class="ride-cta reveal">
         <a href="#/map" class="pill solid big-pill">
           EXPLORE MAP
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
+        <a href="#/shows" class="pill ghost big-pill">
+          DAILY SHOWS SCHEDULE
           <i class="rc-arrow" aria-hidden="true"></i>
         </a>
       </div>
@@ -256,7 +262,7 @@
           <li>
             <span class="cs-num">02</span>
             <b class="cs-do">Top up in the app</b>
-            <span class="cs-say">Before you arrive, or from anywhere in the park, as often as you like</span>
+            <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
           </li>
           <li>
             <span class="cs-num">03</span>
@@ -266,6 +272,12 @@
         </ol>
       </div>
 
+      <div class="cash-go reveal">
+        <a class="pill solid big-pill" href="#/rides">
+          SEE RIDE PRICES
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
+      </div>
     </section>
 
     <!-- ── restaurants ── -->
@@ -286,33 +298,12 @@
     </section>
 
     <!-- ── daily shows ── -->
-    <section class="shows" id="shows">
-      <div class="shows-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> EVERY NIGHT, EVERY ZONE</p>
-        <h2 class="sec-title">TONIGHT'S LINE&#8209;UP</h2>
-        <p class="sec-sub">Parades, folkloric dance, storytellers, the Mesaharati — every zone comes
-          alive from 8:30 PM until well past 1 AM. Pick a country and plan your night.</p>
-      </div>
-      <div class="show-tabs" id="show-tabs" role="tablist"></div>
-      <div class="tl-wrap">
-        <button class="rail-btn prev" id="show-prev" aria-label="Earlier in the night">&#8249;</button>
-        <div class="show-rail" id="show-rail"></div>
-        <button class="rail-btn next" id="show-next" aria-label="Later in the night">&#8250;</button>
-      </div>
-      <div class="show-actions">
-        <a class="pill solid" id="dl-schedule"
-           href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
-           target="_blank" rel="noopener" download>
-          <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
-        </a>
-        <p class="show-note">Ramadan schedule · times may vary by night</p>
-      </div>
-    </section>
+
 
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> THE PARK AFTER DARK</p>
+        <p class="eyebrow"><span class="sec-num">05</span> BLVD WORLD AFTER DARK</p>
         <h2 class="sec-title">SEE IT FOR<br/>YOURSELF</h2>
         <p class="sec-sub">Fireworks over the lake. Projections on the rock. Cable cars gliding over
           the Greek quarter. This is what your night actually looks like.</p>
@@ -327,7 +318,7 @@
          linked — the MCP asset URLs expire after about a week. -->
     <section class="venuerules" id="rules">
       <div class="vr-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">06</span> BEFORE YOU GO</p>
         <h2 class="sec-title">VENUE RULES</h2>
       </div>
 
@@ -384,7 +375,7 @@
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">08</span> ANY QUESTIONS</p>
+        <p class="eyebrow"><span class="sec-num">07</span> ANY QUESTIONS</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -393,7 +384,7 @@
     <!-- ── sponsors: the partner tiers from the official map ── -->
     <section class="sponsors" id="sponsors">
       <div class="sp-head reveal">
-        <p class="eyebrow"><span class="sec-num">09</span> THEY MAKE THE SEASON</p>
+        <p class="eyebrow"><span class="sec-num">08</span> THEY MAKE THE SEASON</p>
         <h2 class="sec-title">OUR PARTNERS</h2>
         <p class="sec-sub">The brands making this season happen.</p>
       </div>
@@ -410,7 +401,7 @@
       <div class="pm-frame" id="pm-frame">
         <div class="pm-stage" id="pm-stage">
           <img class="pm-img" id="pm-img" src="img/map/park-map.jpg"
-            alt="Official BLVD World park map" draggable="false" />
+            alt="Official BLVD World map" draggable="false" />
           <div class="pm-pins" id="pm-pins"></div>
         </div>
 
@@ -439,7 +430,7 @@
                   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h2v2H3zm4 0h10v2H7zM3 9h2v2H3zm4 0h10v2H7zm-4 4h2v2H3zm4 0h10v2H7z"/></svg>
                 </button>
               </div>
-              <button class="pv-search" id="pp-searchbtn" type="button" aria-label="Search the park" aria-pressed="false">
+              <button class="pv-search" id="pp-searchbtn" type="button" aria-label="Search BLVD World" aria-pressed="false">
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.9 11.4a5 5 0 1 0-1.5 1.5l3.6 3.6 1.5-1.5zM8.5 12a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
               </button>
             </div>
@@ -447,7 +438,7 @@
 
           <div class="pb-search" id="pp-search">
             <input id="pp-q" type="search" placeholder="Search rides, dining, shows&#8230;"
-              autocomplete="off" aria-label="Search the park" />
+              autocomplete="off" aria-label="Search BLVD World" />
           </div>
 
           <!-- categories. Once one is chosen it stands alone with a clear button,
@@ -495,12 +486,41 @@
         </div>
 
         <p class="pm-hint" id="pm-hint">Tap a zone &#183; drag to pan &#183; &#8984;/ctrl + scroll to zoom</p>
-        <p class="pm-credit">Official park map &#183; Boulevard World, Riyadh Season</p>
+        <p class="pm-credit">Official map &#183; BLVD World, Riyadh Season</p>
       </div>
     </section>
   </section>
 
   <!-- ══════════ RIDES (own page) ══════════ -->
+  <!-- ══════════ DAILY SHOWS (own route: #/shows) ══════════ -->
+  <section id="view-shows" class="view">
+    <section class="shows is-page" id="shows">
+      <a href="#/" class="rx-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
+      <div class="shows-head reveal">
+        <p class="eyebrow">EVERY NIGHT, EVERY ZONE</p>
+        <h2 class="sec-title">TONIGHT'S LINE&#8209;UP</h2>
+        <p class="sec-sub">Parades, folkloric dance, storytellers, the Mesaharati — every zone comes
+          alive from 8:30 PM until well past 1 AM. Pick a country and plan your night.</p>
+      </div>
+      <div class="show-tabs" id="show-tabs" role="tablist"></div>
+      <div class="tl-wrap">
+        <button class="rail-btn prev" id="show-prev" aria-label="Earlier in the night">&#8249;</button>
+        <div class="show-rail" id="show-rail"></div>
+        <button class="rail-btn next" id="show-next" aria-label="Later in the night">&#8250;</button>
+      </div>
+      <div class="show-actions">
+        <a class="pill solid" id="dl-schedule"
+           href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
+           target="_blank" rel="noopener" download>
+          <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
+        </a>
+        <p class="show-note">Ramadan schedule · times may vary by night</p>
+      </div>
+    </section>
+  </section>
+
   <section id="view-rides" class="view">
     <section class="ridex" id="ridespage">
       <a href="#/" class="rx-back" aria-label="Back to the landing page">
@@ -735,7 +755,7 @@
       <a href="#sponsors" data-sec="sponsors">Partners</a>
     </nav>
     <div class="sc-actions">
-      <a href="#/map" class="sc-icon" aria-label="Open the park map" title="Park map"><span class="ppi-map"></span></a>
+      <a href="#/map" class="sc-icon" aria-label="Open the map" title="Map"><span class="ppi-map"></span></a>
       <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid sc-pill">BOOK ENTRY TICKET</a>
       <a href="#/experiences" class="pill ghost sc-pill">BOOK ENTRY + EXPERIENCE</a>
     </div>
@@ -743,23 +763,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=421"></script>
-  <script src="js/borders.js?v=421"></script>
-  <script src="js/scene.js?v=421"></script>
-  <script src="js/app.js?v=421"></script>
-  <script src="js/experiences.js?v=421"></script>
-  <script src="js/carousels.js?v=421"></script>
-  <script src="js/coverflow.js?v=421"></script>
-  <script src="js/zones.js?v=421"></script>
-  <script src="js/gallery.js?v=421"></script>
-  <script src="js/parkmap.js?v=421"></script>
-  <script src="js/sponsors.js?v=421"></script>
-  <script src="js/cashless.js?v=421"></script>
-  <script src="js/headings.js?v=421"></script>
-  <script src="js/bundles.js?v=421"></script>
-  <script src="js/ridex.js?v=421"></script>
-  <script src="js/cursor.js?v=421"></script>
+  <script src="js/data.js?v=432"></script>
+  <script src="js/borders.js?v=432"></script>
+  <script src="js/scene.js?v=432"></script>
+  <script src="js/app.js?v=432"></script>
+  <script src="js/experiences.js?v=432"></script>
+  <script src="js/carousels.js?v=432"></script>
+  <script src="js/coverflow.js?v=432"></script>
+  <script src="js/zones.js?v=432"></script>
+  <script src="js/gallery.js?v=432"></script>
+  <script src="js/parkmap.js?v=432"></script>
+  <script src="js/sponsors.js?v=432"></script>
+  <script src="js/cashless.js?v=432"></script>
+  <script src="js/headings.js?v=432"></script>
+  <script src="js/bundles.js?v=432"></script>
+  <script src="js/ridex.js?v=432"></script>
+  <script src="js/cursor.js?v=432"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=421"></script> -->
+  <script type="module" src="js/globe.js?v=432"></script> -->
 </body>
 </html>

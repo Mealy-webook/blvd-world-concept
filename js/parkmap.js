@@ -193,7 +193,7 @@
     items.push({
       cat: "zones", group: p.gate ? "GATES" : "ZONES", name: p.gate ? p.label : key,
       zone: key, img: zoneImg.get(key), pin: i, desc: p.extra?.blurb,
-      meta: [["pin", p.gate ? "Park entrance" : bits.join(" · ") || "Walk-through zone"]],
+      meta: [["pin", p.gate ? "Main entrance" : bits.join(" · ") || "Walk-through zone"]],
     });
   });
 
@@ -476,7 +476,7 @@
     if (titleEl) {
       titleEl.hidden = filtered && !zone;
       if (zone) titleEl.textContent = zone;
-      else if (!filtered) titleEl.textContent = "Discover the park";
+      else if (!filtered) titleEl.textContent = "Discover BLVD World";
     }
     if (countEl) {
       countEl.hidden = !filtered;
@@ -498,7 +498,7 @@
 
     if (!list.length) {
       listEl.innerHTML = `<p class="pp-empty">${q
-        ? `Nothing in ${zone || "the park"} matches “${q}”.`
+        ? `Nothing in ${zone || "BLVD World"} matches “${q}”.`
         : `No attractions, kitchens or shows are listed for ${zone || "this filter"} yet.`}</p>`;
       return;
     }

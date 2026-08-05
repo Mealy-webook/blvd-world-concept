@@ -13,7 +13,7 @@
     { img: "beast-gate.jpg",    cap: "Into Beast Land" },
     { img: "skyloop-night.jpg", cap: "Sky Loop after dark" },
     { img: "amazonia-sign.jpg", cap: "Amazonia Awakens" },
-    { img: "night-aerial.jpg",  cap: "One park, many worlds" },
+    { img: "night-aerial.jpg",  cap: "One night, many worlds" },
   ];
 
   const plate = (p) => `

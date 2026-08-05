@@ -11,6 +11,7 @@
     map: $("#view-map"),
     rides: $("#view-rides"),
     packages: $("#view-packages"),
+    shows: $("#view-shows"),
   };
 
   let booted = false;
