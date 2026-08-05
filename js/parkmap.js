@@ -28,6 +28,8 @@
      `cat` is the chosen category, or null for the park as a whole.
      `zone` is the zone whose badge was picked, or null for all of it. */
   let cat = null, zone = null, sortAZ = false;
+  // which place is picked, and the list the pins were built from
+  let picked = -1, pickedList = [];
 
   // The map lives beside the card, never behind it: this is the strip of frame
   // the card leaves free — to its right on a wide screen, above it once the card
@@ -76,6 +78,7 @@
   function apply() {
     clamp();
     placePois();
+    if (picked >= 0 && poiNodes[picked]) placeCard(poiNodes[picked]);
     stage.style.transform = `translate(${tx}px, ${ty}px) scale(${z})`;
     pinLayer.style.setProperty("--inv", 1 / z);
     frame.classList.toggle("zoomed", z > 1.02);
@@ -286,7 +289,65 @@
     poiNodes.forEach((n, k) => {
       n.style.setProperty("--x", at[k].x + "%");
       n.style.setProperty("--y", at[k].y + "%");
+      // the card opens on whichever side has room for it
+      n.classList.toggle("to-left", at[k].x > 58);
+      n.classList.toggle("to-top", at[k].y > 62);
     });
+  }
+
+  // Where a card's action goes. There is no page per place in this build, so it
+  // points at the section that actually covers that kind of thing rather than
+  // inventing a detail route.
+  const GOES = {
+    rides: ["#/rides", "See the rides"],
+    dining: ["#/", "See the kitchens"],
+    shows: ["#/", "Tonight's schedule"],
+    zones: ["#/", "About the zone"],
+  };
+
+  // One card for the whole map, a child of the frame rather than of a pin: a card
+  // inside the transformed stage cannot be kept within the frame's edges, and on
+  // a narrow screen it ran straight off the side.
+  const card = document.createElement("div");
+  card.className = "poi-card";
+  card.hidden = true;
+  frame.appendChild(card);
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".poi-close")) { e.stopPropagation(); clearPick(); }
+  });
+
+  function fillCard(it) {
+    const [href, label] = GOES[it.cat] || GOES.zones;
+    const meta = it.meta.map(([kk, v]) => `<span>${svg(kk)}${v}</span>`).join("");
+    card.innerHTML = `
+      <button class="poi-close" type="button">Close</button>
+      <div class="poi-card-in">
+        <span class="poi-shot">${it.img ? `<img src="${it.img}" alt="" loading="lazy">` : ""}</span>
+        <div class="poi-text">
+          <b>${it.name}</b>
+          <span class="poi-meta">${meta}</span>
+          ${it.desc ? `<span class="poi-desc">${it.desc}</span>` : ""}
+          <a class="poi-go" href="${href}">${label}</a>
+        </div>
+      </div>`;
+  }
+
+  // place it beside the pin, then pull it back inside the frame
+  function placeCard(pin) {
+    if (card.hidden) return;
+    const f = frame.getBoundingClientRect();
+    const p = pin.getBoundingClientRect();
+    const cw = card.offsetWidth, ch = card.offsetHeight;
+    const GAP = 18, EDGE = 12;
+    let x = p.left - f.left + GAP;
+    if (x + cw > f.width - EDGE) x = p.left - f.left - cw - GAP;   // flip
+    let y = p.top - f.top - ch - GAP;                              // above the pin
+    if (y < EDGE) y = p.top - f.top + GAP;                         // else below
+    // whatever the pin's position, the card stays on the map
+    const panelR = panel && innerWidth > 900 ? panel.getBoundingClientRect().right - f.left + EDGE : EDGE;
+    const maxY = (panel && innerWidth <= 900 ? panel.getBoundingClientRect().top - f.top : f.height) - ch - EDGE;
+    card.style.left = Math.max(panelR, Math.min(x, f.width - cw - EDGE)) + "px";
+    card.style.top = Math.max(EDGE, Math.min(y, Math.max(EDGE, maxY))) + "px";
   }
 
   let poiNodes = [];
@@ -296,6 +357,7 @@
     if (!zone) return;
     const anchor = pins[pinOf.get(zone)];
     if (!anchor) return;
+    pickedList = list;
     poiNodes = list.map((it, k) => {
       const b = document.createElement("button");
       b.type = "button";
@@ -303,6 +365,7 @@
       b.style.setProperty("--tone", toneOf.get(zone) || "#ffc24d");
       b.dataset.k = k;
       b.setAttribute("aria-label", `${it.name} — ${zone}`);
+      b.className = "pm-poi";
       b.innerHTML = `<span class="poi-head">${svg(CAT_ICON[it.cat] || "pin")}</span>` +
                     `<span class="poi-tag">${it.name}</span>`;
       b.addEventListener("click", (e) => { e.stopPropagation(); focusRow(k); });
@@ -312,8 +375,22 @@
     placePois(true);
   }
 
-  // pin and row are two views of the same thing: picking either lights both
+  // nothing picked: the map comes back up and the card closes
+  function clearPick() {
+    frame.classList.remove("has-pick");
+    card.hidden = true;
+    picked = -1;
+    poiNodes.forEach((n) => n.classList.remove("on"));
+    listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
+  }
+
+  // pin and row are two views of the same thing: picking either lights both,
+  // dims the rest of the map, and opens the card beside the pin
   function focusRow(k) {
+    frame.classList.add("has-pick");
+    picked = k;
+    if (pickedList[k]) { fillCard(pickedList[k]); card.hidden = false; }
+    if (poiNodes[k]) placeCard(poiNodes[k]);
     poiNodes.forEach((n, i) => n.classList.toggle("on", i === k));
     const rows = [...listEl.querySelectorAll(".pp-row")];
     rows.forEach((r, i) => r.classList.toggle("on", i === k));
@@ -438,6 +515,7 @@
     if (zoom) frameZone(i, zoom);
     if (!pin.gate) {
       zone = keyOf(pin);
+      clearPick();            // a new zone starts with nothing picked
       paintBadges();          // the other zones step off the map
       render();
       listEl.scrollTop = 0;
@@ -488,6 +566,7 @@
   // the zone chip's cross puts the whole park back
   function clearZone() {
     zone = null; focus = null;
+    clearPick();                       // nothing is picked, so nothing is dimmed
     nodes.forEach((n) => n.classList.remove("on"));
     z = 1; tx = ty = 0; apply();
     paintBadges();
@@ -530,6 +609,14 @@
     frame.classList.remove("dragging");
     drag = null;
   };
+  // a click on the artwork itself, or Escape, puts the card away
+  frame.addEventListener("click", (e) => {
+    if (drag && drag.moved > 4) return;
+    if (e.target.closest(".pm-poi, .pm-badge, .pm-panel, .pm-zoom, .pm-status")) return;
+    clearPick();
+  });
+  addEventListener("keydown", (e) => { if (e.key === "Escape") clearPick(); });
+
   frame.addEventListener("pointerup", endDrag);
   frame.addEventListener("pointercancel", endDrag);
 

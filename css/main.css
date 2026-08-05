@@ -666,6 +666,91 @@ body.chrome-on
 .pm-poi:hover .poi-tag, .pm-poi:focus-visible .poi-tag, .pm-poi.on .poi-tag { opacity: 1; top: 8px; }
 .pm-poi.on { z-index: 5; }
 
+/* ── hover: the pin lifts and names itself ── */
+.pm-poi:hover .poi-head, .pm-poi:focus-visible .poi-head {
+  transform: scale(calc(var(--inv, 1) * 1.22));
+}
+
+/* ── picked: the rest of the map dims, this pin stays up, its card opens ── */
+.pm-frame.has-pick .pm-img { filter: brightness(.42) saturate(.75); }
+.pm-frame.has-pick .pm-badge:not(.on) { opacity: .25; }
+.pm-frame.has-pick .pm-poi:not(.on) { opacity: .38; }
+.pm-img { transition: filter .45s var(--ease); }
+.pm-poi, .pm-badge { transition: opacity .45s var(--ease); }
+.pm-poi.on .poi-head { transform: scale(calc(var(--inv, 1) * 1.3)); }
+.pm-poi.on .poi-tag { opacity: 0; }          /* the card carries the name now */
+
+/* one card for the map, a child of the frame so it can be kept inside it */
+.poi-card {
+  position: absolute; z-index: 9; left: 0; top: 0;
+  width: 320px; text-align: left;
+  padding: 10px; border-radius: 16px;
+  background: linear-gradient(180deg, rgba(12, 18, 46, .98), rgba(7, 11, 32, .99));
+  border: 1px solid rgba(255, 194, 77, .45);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .7);
+  backdrop-filter: blur(10px);
+}
+.poi-card[hidden] { display: none; }
+.poi-card:not([hidden]) { animation: poiPop .32s var(--ease) both; }
+@keyframes poiPop { from { opacity: 0; transform: translateY(8px); } }
+
+.poi-close {
+  position: absolute; top: -14px; right: 10px;
+  font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: #0b1030;
+  padding: 6px 14px; border-radius: 999px;
+  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  box-shadow: 0 6px 16px rgba(2, 4, 14, .5);
+}
+.poi-close:hover { filter: brightness(1.08); }
+.poi-card-in { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; }
+.poi-shot {
+  width: 92px; height: 106px; border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(124, 196, 255, .16); background: rgba(124, 196, 255, .06);
+}
+.poi-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.poi-text { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.poi-text b {
+  font-family: var(--disp); font-weight: 700; font-size: 17px; letter-spacing: -.015em; color: #fff;
+  line-height: 1.15;
+}
+.poi-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.poi-meta span {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--body); font-size: 12px; font-weight: 400; color: var(--dim);
+}
+.poi-desc { font-size: 12px; font-weight: 400; line-height: 1.45; color: #c3d2ee; }
+.poi-go {
+  justify-self: start; margin-top: 2px;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gold);
+  transition: gap .3s var(--ease);
+}
+.poi-go::after {
+  content: ''; width: 6px; height: 6px;
+  border-right: 1.6px solid currentColor; border-top: 1.6px solid currentColor;
+  transform: rotate(45deg);
+}
+.poi-go:hover { gap: 12px; }
+
+/* the matching row opens up to the same detail, as on the reference */
+.pp-row.on .rm-desc { display: block; font-size: 12.5px; font-weight: 400; line-height: 1.5; color: #c3d2ee; }
+.pp-row.on .rm-more {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--gold);
+}
+.pp-row.on { align-items: start; }
+.pp-row.on .rm-shot { align-self: start; }
+
+@media (max-width: 900px) {
+  /* narrow: the card takes the width it can and stays above the sheet */
+  .poi-card { width: min(300px, calc(100vw - 24px)); }
+  .poi-card-in { grid-template-columns: 68px minmax(0, 1fr); }
+  .poi-shot { width: 68px; height: 80px; }
+}
+
 /* the zone reads as a chip in the row, ahead of the categories */
 .pp-chip.is-zone {
   color: #0b1030; background: linear-gradient(100deg, #a8f0c0, #6fe3a0); border-color: transparent;
