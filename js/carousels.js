@@ -196,46 +196,42 @@
     function paint(zi) {
       const z = zones[zi];
       if (!z) return;
-      // the night as a ribbon: stops alternate above and below the spine, the
-      // time reads on the empty side, and the wait between acts is printed on
-      // the spine itself rather than repeated inside every card
+      // The night as a programme, read down the page: the time hangs in the left
+      // margin, the act sits beside it, and the wait between acts is printed on
+      // the rule that separates them. The horizontal timeline this replaces was
+      // built for a band on the home page; this is a page, so the schedule can
+      // simply be a schedule.
       rail.innerHTML = z.items.map((s, i) => {
         const prev = i ? z.items[i - 1] : null;
         return `
-        <article class="tl-item is-${i % 2 ? "down" : "up"}${i === 0 ? " is-first" : ""}"
-                 style="--d:${Math.min(i, 6) * 60}ms">
-          ${prev ? `<span class="tl-gap">${gapText(prev, s)}</span>` : ""}
-          <div class="tl-card">
-            <span class="show-shot">
-              <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
+        <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
+          ${prev ? `<span class="sch-gap"><i></i>${gapText(prev, s)}<i></i></span>` : ""}
+          <span class="sch-time">${s.t}<small>${s.ap}</small></span>
+          <span class="sch-shot">
+            <img src="img/${showShot(z.zone, s.ty, i)}" alt="" loading="lazy" draggable="false">
+          </span>
+          <span class="sch-body">
+            <b class="sch-name" title="${s.n}">${s.n}</b>
+            <span class="sch-meta">
+              <em class="sm-kind t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</em>
+              <em class="sm-dur">${s.m} min</em>
+              ${prev ? "" : '<em class="sm-open">Opens the night</em>'}
             </span>
-            <div class="show-body">
-              <h3 title="${s.n}">${s.n}</h3>
-              <p class="show-meta">
-                <span class="sm-kind t-${s.ty.split(" ")[0].toLowerCase()}">${s.ty}</span>
-                <span class="sm-dur">${s.m} min</span>
-              </p>
-            </div>
-            ${prev ? "" : '<span class="tl-first">Opens the night</span>'}
-          </div>
-          <span class="tl-stem" aria-hidden="true"></span>
-          <span class="tl-node" aria-hidden="true"><i></i></span>
-          <p class="tl-time">${s.t}<small>${s.ap}</small></p>
-        </article>`;
+          </span>
+        </li>`;
       }).join("");
-      rail.scrollLeft = 0;                  // a new zone starts at dusk again
-      ctl && ctl.edges();
+      rail.scrollTop = 0;
 
-      // reveal the stops in sequence as the timeline arrives
-      const items = $$(".tl-item", rail);
+      // the rows arrive in sequence
+      const rows = $$(".sch-row", rail);
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        items.forEach((it) => it.classList.add("in"));
+        rows.forEach((r) => r.classList.add("in"));
       } else {
         const io = new IntersectionObserver((es) => {
-          for (const en of es) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-        }, { threshold: 0.2 });
-        items.forEach((it) => io.observe(it));
-        setTimeout(() => items.forEach((it) => it.classList.add("in")), 3500);
+          for (const e of es) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        }, { root: rail, threshold: 0.2 });
+        rows.forEach((r) => io.observe(r));
+        setTimeout(() => rows.forEach((r) => r.classList.add("in")), 3000);
       }
 
       $$("button", tabs).forEach((b, i) => {
@@ -244,12 +240,7 @@
       });
     }
 
-    tabs.innerHTML = zones.map((z, i) => `
-      <button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? "on" : ""}">
-        <span class="tab-flag" aria-hidden="true">${flag(z.zone)}</span>${z.zone}
-      </button>`).join("");
     $$("button", tabs).forEach((b, i) => b.addEventListener("click", () => paint(i)));
-    const ctl = makeRail(rail, $("#show-prev"), $("#show-next"));
     paint(0);
   })();
 })();

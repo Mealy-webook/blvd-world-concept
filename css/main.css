@@ -420,7 +420,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 /* hero UI ── the hero is the arched heading and the four tiles, on the page's
    own colour. No footage, no built scene, so nothing needs a veil over it. */
-.hero-ui { position: relative; z-index: 5; text-align: center; padding: 12vh 6vw 0; display: grid; justify-items: center; gap: 22px; transform-style: preserve-3d; will-change: transform; }
+/* The bottom padding is what keeps the tiles and the note clear of the scroll
+   indicator pinned at 4vh — without it the note sat on top of it. */
+.hero-ui {
+  position: relative; z-index: 5; text-align: center;
+  padding: 11vh 6vw calc(4vh + 74px);
+  display: grid; justify-items: center; gap: 20px;
+  transform-style: preserve-3d; will-change: transform;
+}
 .hero-logo {
   height: clamp(66px, 8.5vw, 116px); width: auto; margin-bottom: -6px;
   filter: brightness(0) invert(1) drop-shadow(var(--sh-1));
@@ -750,8 +757,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .sponsors .sp-plate img, .sponsors .sp-tier:first-child .sp-plate img { height: clamp(34px, 4.4vh, 52px); }
 /* the schedule's rail gives height back on a short stage */
 @media (max-height: 900px) {
-  .tl-item { grid-template-rows: 168px 20px 20px 20px 168px; }
-  .show-shot { height: 88px; }
+  .sch-row { padding: 11px 8px; }
 }
 
 /* ═══════════════ SCROLL CUE ═══════════════ */
@@ -2431,131 +2437,72 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 
 /* ── the night as a ribbon: stops alternate above and below the spine ── */
-.tl-wrap {
-  position: relative; width: 100%; max-width: min(1240px, 100%);
-  display: flex; align-items: center; gap: 8px;
-}
+/* ── the night's programme ──
+   Read down the page: the time hangs in the left margin, the act sits beside it,
+   and the wait between acts is printed on the rule that separates them. This
+   replaces a horizontal zig-zag timeline, which was built for a band on the home
+   page — on a page of its own the schedule can just be a schedule. */
 .show-rail {
-  position: relative; flex: 1; min-width: 0;
-  display: flex; align-items: stretch; gap: 0;
-  overflow-x: auto; overflow-y: hidden;
-  scroll-snap-type: x proximity; scroll-behavior: smooth;
-  padding: 0 2px; scrollbar-width: none; cursor: grab;
-  /* the ends of the night fade out rather than being cut off */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  list-style: none; margin: 0; padding: 0;
+  width: 100%; max-width: min(880px, 100%); margin-inline: auto;
+  max-height: min(58dvh, 560px); overflow-y: auto; scrollbar-width: thin;
+  padding-right: 6px;
 }
-.show-rail::-webkit-scrollbar { display: none; }
-.show-rail.grabbing { cursor: grabbing; scroll-behavior: auto; }
-.show-note { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: #8a99c6; }
+.show-rail::-webkit-scrollbar { width: 7px; }
+.show-rail::-webkit-scrollbar-thumb { background: rgba(124, 196, 255, .22); border-radius: var(--r-pill); }
 
-/* one stop: card on its side of the spine, node on it, time opposite the card.
-   The two card slots are equal and fixed, which puts the node — and the length
-   of spine each stop carries — exactly halfway down at any viewport, and means
-   a card can never grow past the rail and be clipped. */
-.tl-item {
-  position: relative; flex: 0 0 auto; width: clamp(212px, 21vw, 246px);
-  display: grid; grid-template-rows: 210px 24px 20px 24px 210px;
-  justify-items: center; scroll-snap-align: center; padding: 0 8px;
-  opacity: 0; transform: translateY(12px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
-  transition-delay: var(--d, 0ms);
+.sch-row {
+  position: relative;
+  display: grid; grid-template-columns: 84px 76px minmax(0, 1fr);
+  align-items: center; gap: clamp(12px, 1.6vw, 22px);
+  padding: 14px 8px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .55s var(--ease) var(--d), transform .55s var(--ease) var(--d),
+              background-color .3s var(--ease);
+  border-radius: var(--r-md);
 }
-.tl-item.in { opacity: 1; transform: none; }
-/* each stop draws its own length of spine, so the line arrives with the stops */
-.tl-item::after {
-  content: ''; position: absolute; z-index: 0; left: 0; right: 0; top: 50%;
-  height: 2px; transform: translateY(-1px);
-  background: rgba(255, 194, 77, .34);
-}
-.tl-item:first-child::after { left: 50%; }
-.tl-item:last-child::after  { right: 50%; }
+.sch-row.in { opacity: 1; transform: none; }
+.sch-row:hover { background-color: rgba(124, 196, 255, .06); }
 
-/* how long until the next act, printed on the spine between the two nodes */
-.tl-gap {
-  position: absolute; z-index: 2; left: 0; top: 50%; transform: translate(-50%, -50%);
-  font-family: var(--ui); font-size: 9px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: #9fb0d8; white-space: nowrap;
-  padding: 3px 8px; border-radius: var(--r-pill);
-  background: rgba(9, 13, 34, .92); border: var(--b-1);
+/* the wait between two acts, printed on the rule that divides them */
+.sch-gap {
+  position: absolute; left: 0; right: 0; top: -1px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: #6d7ba4;
+  pointer-events: none;
 }
-.tl-time {
-  position: absolute; z-index: 2; left: 50%; transform: translateX(-50%);
-  font-family: var(--disp); font-weight: 700; font-size: clamp(21px, 2.1vw, 27px); letter-spacing: -.01em;
-  color: var(--gold); letter-spacing: .01em; line-height: 1; text-align: center; white-space: nowrap;
-}
-.tl-item.is-up   .tl-time { top: calc(50% + 16px); }
-.tl-item.is-down .tl-time { bottom: calc(50% + 16px); }
-.tl-time small {
-  display: inline-block; margin-left: 4px; font-family: var(--ui); font-size: 9.5px;
-  font-weight: 600; letter-spacing: .14em; color: #a9b6d8; text-shadow: none;
-}
-.tl-node { grid-row: 3; z-index: 2; display: grid; place-items: center; }
-.tl-node i {
-  width: 11px; height: 11px; border-radius: 50%;
-  background: #0b1030; border: 2px solid rgba(255, 194, 77, .85);
-  transition: background .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
-}
-.tl-item.is-first .tl-node i {
-  background: var(--pick);
-  box-shadow: 0 0 0 5px rgba(255, 194, 77, .16);
-}
-.tl-item:hover .tl-node i {
-  background: var(--pick);
-  transform: scale(1.3);
-}
-/* the stem joining node to card */
-.tl-stem {
-  z-index: 1; width: 1px; justify-self: center; align-self: stretch;
-  background: linear-gradient(180deg, rgba(255, 194, 77, .45), rgba(255, 194, 77, .12));
-}
-.tl-item.is-up   .tl-stem { grid-row: 2; background: linear-gradient(0deg, rgba(255, 194, 77, .45), rgba(255, 194, 77, .12)); }
-.tl-item.is-down .tl-stem { grid-row: 4; }
+.sch-gap i { flex: 1; height: 1px; background: rgba(124, 196, 255, .13); }
 
-/* ── the card: photograph on top, name and two facts under it ── */
-.tl-card {
-  position: relative; z-index: 1; width: 100%; overflow: hidden;
-  display: grid; gap: 0; align-content: start;
-  border-radius: var(--r-lg);
-  background: linear-gradient(180deg, rgba(20, 28, 72, .72), rgba(9, 13, 34, .92));
-  border: var(--b-1);
-  box-shadow: var(--sh-2);
-  transition: border-color .4s var(--ease), transform .5s var(--ease), box-shadow .4s var(--ease);
+.sch-time {
+  font-family: var(--mono); font-weight: 700; font-size: clamp(15px, 1.6vw, 19px);
+  letter-spacing: -.02em; color: #fff; font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline; gap: 4px;
 }
-.tl-item.is-up   .tl-card { grid-row: 1; align-self: end; }
-.tl-item.is-down .tl-card { grid-row: 5; align-self: start; }
-.tl-item:hover .tl-card {
-  border-color: rgba(255, 194, 77, .5);
-  box-shadow: var(--sh-2);
+.sch-time small {
+  font-size: 9.5px; font-weight: 500; letter-spacing: .08em; color: #8fa0c8;
 }
-.tl-item.is-up:hover   .tl-card { transform: translateY(-6px); }
-.tl-item.is-down:hover .tl-card { transform: translateY(6px); }
+.sch-row.is-first .sch-time { color: var(--pick); }
 
-/* the photograph runs to the card's edges */
-.show-shot {
-  position: relative; display: block; width: 100%; height: 112px; flex: none; overflow: hidden;
-  background: var(--s-well);
+.sch-shot {
+  display: block; width: 76px; aspect-ratio: 4 / 3; overflow: hidden;
+  border-radius: var(--r-sm); border: var(--b-1); background: var(--s-well);
 }
-.show-shot img {
+.sch-shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: saturate(.95) brightness(.8);
-  transition: transform .7s var(--ease), filter .45s var(--ease);
+  filter: saturate(.95) brightness(.82);
+  transition: transform .6s var(--ease), filter .4s var(--ease);
 }
-.tl-item:hover .show-shot img { transform: scale(1.07); filter: saturate(1.04) brightness(.98); }
-.show-shot::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, transparent 42%, rgba(9, 13, 34, .96) 100%);
-}
+.sch-row:hover .sch-shot img { transform: scale(1.06); filter: none; }
 
-.tl-card .show-body { display: grid; gap: 7px; padding: 11px 13px 13px; }
-/* two lines is what the slot holds; the full name stays in the title attribute */
-.tl-card .show-body h3 {
+.sch-body { display: grid; gap: 5px; min-width: 0; }
+.sch-name {
   font-family: var(--disp); font-weight: 700; color: #fff; letter-spacing: -.01em;
-  font-size: clamp(15px, 1.45vw, 18px); line-height: 1.18;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: clamp(15px, 1.5vw, 18px); line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-/* the two facts, as a single quiet line */
-.show-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sch-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sch-meta em { font-style: normal; }
 .sm-kind {
   font-family: var(--ui); font-size: 8.5px; font-weight: 600; letter-spacing: .14em;
   text-transform: uppercase; color: #8ff3ff;
@@ -2564,35 +2511,28 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .sm-kind.t-dance { color: #ff9fdf; }
 .sm-dur {
   position: relative; padding-left: 9px;
-  font-family: var(--ui); font-size: 9.5px; font-weight: 500; letter-spacing: .06em;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .06em;
   color: var(--ink-faint); font-variant-numeric: tabular-nums;
 }
 .sm-dur::before {
   content: ''; position: absolute; left: 0; top: 50%; width: 3px; height: 3px;
   border-radius: 50%; background: currentColor; transform: translateY(-50%);
 }
-/* the first act of the night says so, on the photograph */
-.tl-first {
-  position: absolute; z-index: 2; left: 10px; top: 10px;
-  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: #0b1030;
-  padding: 4px 9px; border-radius: var(--r-pill);
-  background: var(--pick);
+.sm-open {
+  font-family: var(--ui); font-size: 8px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--btn-ink);
+  padding: 3px 8px; border-radius: var(--r-pill); background: var(--pick);
 }
 
-@media (max-width: 760px) {
-  /* too narrow to zig-zag: every card hangs below, the time sits on top */
-  .tl-item { width: clamp(196px, 64vw, 236px); grid-template-rows: 30px 0 20px 24px 216px; }
-  .tl-item.is-up .tl-card, .tl-item.is-down .tl-card { grid-row: 5; align-self: start; }
-  .tl-item.is-up .tl-stem, .tl-item.is-down .tl-stem {
-    grid-row: 4; background: linear-gradient(180deg, rgba(255, 194, 77, .45), rgba(255, 194, 77, .12));
-  }
-  .tl-item::after { top: 40px; }
-  .tl-gap { top: 40px; }
-  .tl-item.is-up .tl-time, .tl-item.is-down .tl-time { top: 0; bottom: auto; }
-  .tl-item.is-up:hover .tl-card, .tl-item.is-down:hover .tl-card { transform: translateY(-5px); }
-  .show-shot { height: 100px; }
-  .rail-btn { display: none; }        /* swipe instead */
+@media (max-width: 620px) {
+  /* the time moves above the act, so the name gets the full width */
+  .sch-row { grid-template-columns: 62px minmax(0, 1fr); gap: 12px; }
+  .sch-time { grid-column: 1 / -1; }
+  .sch-shot { width: 62px; }
+  .sch-name { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sch-row, .sch-shot img { transition: none; }
 }
 
 .show-actions { display: grid; gap: 12px; justify-items: center; }
@@ -3147,7 +3087,7 @@ body.route-experiences
 .tk-price b, .tk-count, .tk-rate, .pk-price, .pk-count,
 .rx-reg b, .rx-fast b, .rx-no, .rx-count, .rx-count b, .cf-one b,
 .eat-price b, .rc-note b, .bt-price b,
-.tl-time, .tl-gap, .sm-dur, .show-note,
+.sch-time, .sch-gap, .sm-dur, .show-note,
 .rp-count, .pb-count b, .pb-n,
 .bc-meter dd, .bc-cur, .bd-note,
 .rx-chip b, .pp-chip b, .show-tabs button b, .tk-fine {
@@ -3156,10 +3096,10 @@ body.route-experiences
   font-feature-settings: "ss01", "zero" 0;
 }
 /* mono runs wide, so the figures pull their tracking in a little */
-.tk-price b, .pk-price, .tk-count, .tl-time, .rx-count b, .cf-one b,
+.tk-price b, .pk-price, .tk-count, .sch-time, .rx-count b, .cf-one b,
 .bc-meter dd { letter-spacing: -.03em; }
 /* and the small uppercase mono bits open out instead */
-.sec-num, .tl-gap, .sm-dur, .show-note, .tk-rate, .bd-note, .tk-fine { letter-spacing: .06em; }
+.sch-gap, .sm-dur, .show-note, .tk-rate, .bd-note, .tk-fine { letter-spacing: .06em; }
 
 /* ═══════════════ FITTING THE STAGE ═══════════════ */
 /* ── fitting the stage ──
@@ -3180,11 +3120,9 @@ body.route-experiences
   .shows .show-tabs button { flex: none; }
 }
 @media (max-height: 960px) {
-  /* the schedule's stops */
-  .tl-item { grid-template-rows: 150px 18px 20px 18px 150px; }
-  .show-shot { height: 82px; }
-  .tl-card .show-body { padding: 9px 11px 11px; }
-  .show-rail { padding: 0 2px; }
+  /* the schedule's rows */
+  .sch-row { padding: 10px 8px; }
+  .sch-shot { width: 66px; }
   /* the card and its steps */
   .cash-stage { gap: clamp(18px, 2.6vw, 40px); }
   .blvd-card { transform: scale(.88); }
