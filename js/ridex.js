@@ -50,7 +50,6 @@
           ${bars(h)}
           <span class="rx-reg"><b>SAR ${r.reg}</b></span>
           <span class="rx-fast"><b>SAR ${r.fast}</b></span>
-          <span class="rx-go" aria-hidden="true">↗</span>
         </button>
       </li>`;
   }).join("");
@@ -147,15 +146,3 @@
   // the page's CTA is a plain link to #/packages — no handler needed
 })();
 
-// ── the home page's way in: a strip of the ride photographs ─────────────
-(function ridesCall() {
-  const strip = document.getElementById("rc-strip");
-  if (!strip) return;
-  const rides = (window.WBK && WBK.rides) || [];
-  if (!rides.length) return;
-  // a gentle up-and-down across the row, so the strip reads as a hand of cards
-  strip.innerHTML = rides.map((r, i) => `
-    <span class="rc-cell" style="--lift:${(i % 2 ? 10 : -10)}px">
-      <img src="img/rides/${r.img}" alt="" loading="lazy" draggable="false">
-    </span>`).join("");
-})();

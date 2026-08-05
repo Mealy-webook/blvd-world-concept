@@ -35,9 +35,9 @@
     card.style.animation = "";                      // let the float resume
   });
 
-  /* ── top-up: the chips run the balance up on the card itself ── */
+  /* ── tapping the card spends a play ── */
+  // the top-up strip is gone, so this is the only thing that moves the balance
   const amount = document.getElementById("bc-amount");
-  const tapNote = document.getElementById("tu-tap");
   let balance = parseInt(amount.textContent, 10) || 0;
   let counting = null;
 
@@ -57,23 +57,12 @@
     })(performance.now());
   }
 
-  document.querySelectorAll(".tu-chip").forEach((chip) => {
-    chip.addEventListener("click", () => runTo(balance + Number(chip.dataset.add)));
-  });
-
-  // tapping the card spends a play: ring out of the chip, balance down
   card.addEventListener("click", () => {
-    if (balance < 25) { tapNote.textContent = "TOP UP TO PLAY"; return; }
+    if (balance < 25) return;                       // nothing left to spend
     card.classList.remove("tapped");
     void card.offsetWidth;                          // restart the ring animation
     card.classList.add("tapped");
-    tapNote.textContent = "− SAR 25 · RIDE UNLOCKED";
-    tapNote.classList.add("on");
     runTo(balance - 25);
-    setTimeout(() => {
-      card.classList.remove("tapped");
-      tapNote.textContent = "TAP TO PLAY";
-      tapNote.classList.remove("on");
-    }, 1600);
+    setTimeout(() => card.classList.remove("tapped"), 1600);
   });
 })();

@@ -63,8 +63,7 @@
         <h3 class="cf-title">${z.name}</h3>
         ${z.blurb ? `<p class="cf-sub">${z.blurb}</p>` : ""}
         ${meta.length ? `<dl class="cf-meta">${meta.map(([k, v]) =>
-          `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}
-        <a class="cf-go" href="#/map?zone=${encodeURIComponent(z.name)}">Open on the map</a>`;
+          `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}`;
     },
   });
 })();

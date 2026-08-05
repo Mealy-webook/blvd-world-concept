@@ -12,7 +12,7 @@
      for the handwritten letter -->
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=294" />
+<link rel="stylesheet" href="css/main.css?v=304" />
 </head>
 <body class="typo-body">
 
@@ -145,9 +145,8 @@
       <div class="zone-flow" id="zone-flow"></div>
 
       <div class="ride-cta reveal">
-        <p class="rc-note">Every zone is included with park entry &#183; from <b>SAR 50</b></p>
         <a href="#/map" class="pill solid big-pill">
-          EXPLORE ALL ZONES
+          EXPLORE ZONES ON MAP
           <i class="rc-arrow" aria-hidden="true"></i>
         </a>
       </div>
@@ -174,24 +173,26 @@
       </div>
     </section>
 
-    <!-- ── rides: the way through to their own page ── -->
-    <section class="ridecall" id="rides2">
-      <div class="rc-head reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
-        <h2 class="sec-title">FOURTEEN RIDES</h2>
-        <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all
-          night. Open the full index to see what each one does to you.</p>
-      </div>
+    <!-- ── rides: the count set large, the names live, the backdrop following ── -->
+    <section class="ridehero" id="rides2">
+      <div class="rh-bg" id="rh-bg" aria-hidden="true"></div>
+      <div class="rh-scrim" aria-hidden="true"></div>
 
-      <!-- a look at what is through the door, built from the ride photos -->
-      <div class="rc-strip reveal" id="rc-strip" aria-hidden="true"></div>
+      <div class="rh-inner">
+        <div class="rh-lead reveal">
+          <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+          <p class="rh-count" aria-hidden="true">14</p>
+          <h2 class="sec-title rh-title">RIDES, ALL NIGHT</h2>
+          <p class="sec-sub">Every one of them runs until the park closes. Point at a name and see
+            what you are getting into.</p>
+          <dl class="rh-split" id="rh-split"></dl>
+          <a class="pill solid big-pill rh-cta" href="#/rides">
+            EXPLORE EVERY RIDE
+            <i class="rc-arrow" aria-hidden="true"></i>
+          </a>
+        </div>
 
-      <div class="rc-go reveal">
-        <a class="pill solid big-pill" href="#/rides">
-          SEE ALL FOURTEEN RIDES
-          <i class="rc-arrow" aria-hidden="true"></i>
-        </a>
-        <p class="rc-note">Included in every ride package &#183; from <b>SAR 89</b></p>
+        <ol class="rh-list reveal" id="rh-list"></ol>
       </div>
     </section>
 
@@ -217,16 +218,7 @@
           </div>
           <div class="card-glow" aria-hidden="true"></div>
 
-          <!-- top-up demo: the amounts drive the balance on the card -->
-          <div class="topup" id="topup">
-            <span class="tu-label">TOP UP</span>
-            <div class="tu-chips">
-              <button class="tu-chip" type="button" data-add="50">+50</button>
-              <button class="tu-chip" type="button" data-add="100">+100</button>
-              <button class="tu-chip" type="button" data-add="250">+250</button>
-            </div>
-            <span class="tu-tap" id="tu-tap">TAP TO PLAY</span>
-          </div>
+        </div>
         </div>
 
         <div class="cash-copy">
@@ -486,7 +478,7 @@
 
       <div class="ride-cta reveal">
         <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
-        <a href="#/packages" class="pill solid big-pill">SEE THE RIDE PACKAGES</a>
+        <a href="#/packages" class="pill solid big-pill">EXPLORE THE RIDE PACKAGES</a>
       </div>
     </section>
   </section>
@@ -685,22 +677,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=294"></script>
-  <script src="js/borders.js?v=294"></script>
-  <script src="js/scene.js?v=294"></script>
-  <script src="js/app.js?v=294"></script>
-  <script src="js/experiences.js?v=294"></script>
-  <script src="js/carousels.js?v=294"></script>
-  <script src="js/coverflow.js?v=294"></script>
-  <script src="js/zones.js?v=294"></script>
-  <script src="js/gallery.js?v=294"></script>
-  <script src="js/parkmap.js?v=294"></script>
-  <script src="js/sponsors.js?v=294"></script>
-  <script src="js/cashless.js?v=294"></script>
-  <script src="js/headings.js?v=294"></script>
-  <script src="js/bundles.js?v=294"></script>
-  <script src="js/ridex.js?v=294"></script>
+  <script src="js/data.js?v=304"></script>
+  <script src="js/borders.js?v=304"></script>
+  <script src="js/scene.js?v=304"></script>
+  <script src="js/app.js?v=304"></script>
+  <script src="js/experiences.js?v=304"></script>
+  <script src="js/carousels.js?v=304"></script>
+  <script src="js/coverflow.js?v=304"></script>
+  <script src="js/zones.js?v=304"></script>
+  <script src="js/gallery.js?v=304"></script>
+  <script src="js/parkmap.js?v=304"></script>
+  <script src="js/sponsors.js?v=304"></script>
+  <script src="js/cashless.js?v=304"></script>
+  <script src="js/headings.js?v=304"></script>
+  <script src="js/bundles.js?v=304"></script>
+  <script src="js/ridehero.js?v=304"></script>
+  <script src="js/ridex.js?v=304"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=294"></script> -->
+  <script type="module" src="js/globe.js?v=304"></script> -->
 </body>
 </html>
