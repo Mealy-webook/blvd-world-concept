@@ -20,6 +20,9 @@
   --ui: 'Inter', system-ui, -apple-system, sans-serif;   /* labels, chips, buttons */
   --ease: cubic-bezier(.32,.72,0,1);
   --hand: 'Caveat', cursive;
+  /* the park map's own backdrop, sampled from the artwork's edges, so the map
+     page and the plan on it are one continuous surface */
+  --map-bg: #223a76;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -548,22 +551,15 @@ body.chrome-on
   position: relative; width: 100%; min-width: 0;
   aspect-ratio: 3855 / 2110; overflow: hidden;
   cursor: grab; touch-action: pan-y pinch-zoom;
-  /* the plan is fitted into the strip beside the card, so the rest of the frame
-     shows through as night sky rather than as a black box */
-  background:
-    radial-gradient(120% 90% at 30% 10%, #101a3d 0%, transparent 60%),
-    linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  /* the artwork's own backdrop, sampled from its edges — the fitted plan then
+     merges into the page instead of sitting on it as a plate */
+  background: var(--map-bg);
 }
 .pm-frame.dragging { cursor: grabbing; }
 .pm-stage {
   position: absolute; inset: 0; transform-origin: 50% 50%;
   transition: transform .6s var(--ease);
-  /* a soft edge, so the fitted plan reads as a plate on the night rather than
-     something pasted into the corner */
-  border-radius: 14px; box-shadow: 0 24px 60px rgba(2, 4, 14, .5);
 }
-/* the badges must escape the rounded clip, so only the picture is clipped */
-.pm-img { border-radius: inherit; }
 .pm-frame.dragging .pm-stage { transition: none; }
 .pm-img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; }
 .pm-pins { position: absolute; inset: 0; }
@@ -795,7 +791,8 @@ body.chrome-on
 
 /* ── zoom, hint, credit ── */
 .pm-zoom {
-  position: absolute; z-index: 6; right: 14px; bottom: 14px;
+  /* stacked above the credit line, which owns the bottom right corner */
+  position: absolute; z-index: 6; right: 14px; bottom: 44px;
   display: grid; gap: 8px;
 }
 .pm-zoom button {
@@ -1975,7 +1972,7 @@ body.route-experiences
 /* ═══════════════ PARK MAP AS ITS OWN ROUTE (#/map) ═══════════════ */
 #view-map {
   display: block; overflow: hidden;            /* the map owns the whole viewport */
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--map-bg);
 }
 #view-map .pmap { padding: 0; gap: 0; height: 100%; }
 /* the frame no longer keeps the artwork's ratio — the stage does, sized by
@@ -1984,9 +1981,18 @@ body.route-experiences
 #view-map .pm-stage { inset: auto; }
 /* attribution sits over the art, bottom left, out of the layout */
 #view-map .pm-credit {
-  position: absolute; z-index: 6; left: 16px; bottom: 16px; margin: 0;
-  font-size: 9.5px; letter-spacing: .12em; color: rgba(207, 228, 255, .5);
-  text-shadow: 0 1px 6px rgba(2, 4, 14, .9);
+  /* bottom right, clear of the card on the left and the zoom column below it */
+  position: absolute; z-index: 6; right: 16px; bottom: 16px; left: auto; margin: 0;
+  text-align: right;
+  /* the page is lighter now that it carries the map's own blue, so the credit
+     line has to come up with it to stay readable (4.99:1) */
+  font-size: 9.5px; letter-spacing: .12em; color: rgba(207, 228, 255, .7);
+  text-shadow: 0 1px 6px rgba(2, 4, 14, .6);
+}
+@media (max-width: 900px) {
+  /* the card owns the bottom 58% of the frame here, so the credit rides just
+     above its top edge rather than colliding with the artwork's own logos */
+  #view-map .pm-credit { bottom: calc(58% + 20px); right: 10px; }
 }
 /* back to the landing page, sitting beside the title */
 .map-back {
