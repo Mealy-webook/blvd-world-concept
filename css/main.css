@@ -363,12 +363,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   object-fit: cover; object-position: 50% 62%;   /* keep the waterline low */
   z-index: 0; pointer-events: none;
 }
+/* The footage plays in full colour. Nothing washes over the middle of the frame
+   — only the two bands the type actually sits in are darkened: a short one under
+   the nav, and the foot of the frame where the tiles and the scroll cue are. */
 .hero-veil {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    radial-gradient(90% 62% at 50% 34%, rgba(6, 10, 30, .62), transparent 70%),
-    radial-gradient(120% 80% at 50% 8%, rgba(6, 10, 30, .68), transparent 60%),
-    linear-gradient(180deg, rgba(6, 10, 30, .5) 0%, rgba(6, 10, 30, .1) 46%, rgba(9, 6, 26, .78) 100%);
+    linear-gradient(180deg, rgba(6, 10, 30, .6) 0%, rgba(6, 10, 30, .14) 13%, transparent 24%),
+    linear-gradient(0deg, rgba(6, 9, 26, .8) 0%, rgba(6, 9, 26, .3) 17%, transparent 36%);
 }
 /* the footage already carries the skyline, wheel and reflections */
 .street .scene, .street .landmarks, .street #stars-home, .street .fold-bloom { display: none; }
@@ -384,7 +386,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-size: clamp(52px, 9vw, 132px); letter-spacing: -.03em;
   font-stretch: 84%; font-variation-settings: 'wdth' 84;
   color: #fff;
-  filter: drop-shadow(var(--sh-2));
+  /* no wash behind it now, so the title carries its own contrast: a tight halo
+     for the letter edges and a wide one to seat it on the footage */
+  filter: drop-shadow(0 2px 10px rgba(2, 4, 14, .85)) drop-shadow(0 16px 44px rgba(2, 4, 14, .7));
 }
 .hero-title.small .line { font-size: clamp(34px, 5vw, 72px); }
 
@@ -393,7 +397,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .hero-title.fx .t-main {
   position: relative; display: block;
   color: #fff;
-  filter: drop-shadow(var(--sh-2));
+  filter: drop-shadow(0 2px 10px rgba(2, 4, 14, .85)) drop-shadow(0 16px 44px rgba(2, 4, 14, .7));
 }
 /* hero entry animation (staggered rise + blur-in) */
 .view.active .hero-title .line { animation: heroIn .9s .55s cubic-bezier(.2,.8,.25,1) both; }
