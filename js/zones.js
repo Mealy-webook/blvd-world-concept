@@ -38,7 +38,6 @@
       </span>`,
     caption: (z) => `
       <p class="cf-tag">${NEW.has(z.name) ? "New this season" : "In the park"}</p>
-      <h3 class="cf-title">${z.name}</h3>
-      ${z.blurb ? `<p class="cf-sub">${z.blurb}</p>` : ""}`,
+      <h3 class="cf-title">${z.name}</h3>`,
   });
 })();

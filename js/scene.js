@@ -1,64 +1,5 @@
 // ── neon street scene: signs, windows, wheel, starfields, parallax ──
 (function () {
-  const SIGNS_LEFT = [
-    { t: "BLVD", c: "n-blue", f: "framed", top: 6, left: 12, size: 36, rot: 0 },
-    { t: "webook", c: "n-cyan", f: "pillf", top: 74, left: 14, size: 15, rot: -1, cls: "slow" },
-    { t: "بوليفارد", c: "n-pink", f: "framed", top: 17, left: 48, size: 26, rot: -2 },
-    { t: "LIVE", c: "n-cyan", f: "pillf", top: 14, left: 8, size: 18, rot: 2, cls: "fast" },
-    { t: "🎟 TICKETS", c: "n-gold", f: "framed", top: 27, left: 20, size: 17, rot: 0 },
-    { t: "موسم الرياض", c: "n-purple", f: "framed", top: 36, left: 44, size: 22, rot: -1.5 },
-    { t: "♥", c: "n-pink", f: "pillf", top: 33, left: 10, size: 24, rot: -6, cls: "slow" },
-    { t: "STAGE 4", c: "n-green", f: "framed", top: 47, left: 26, size: 15, rot: 1 },
-    { t: "الليل لنا", c: "n-cyan", f: "noframe", top: 56, left: 46, size: 20, rot: -2 },
-    { t: "✦ JOIN US ✦", c: "n-blue", f: "framed", top: 58, left: 12, size: 16, rot: 0, cls: "fast" },
-    { t: "NEON ALLEY", c: "n-pink", f: "pillf", top: 68, left: 30, size: 14, rot: 2 },
-  ];
-  const SIGNS_RIGHT = [
-    { t: "RIYADH SEASON", c: "n-purple", f: "framed", top: 7, left: 18, size: 26, rot: 0 },
-    { t: "SEASON FM", c: "n-cyan", f: "pillf", top: 19, left: 44, size: 17, rot: 2, cls: "slow" },
-    { t: "웹북", c: "n-pink", f: "framed", top: 18, left: 10, size: 24, rot: -2 },
-    { t: "🎆 TONIGHT", c: "n-gold", f: "framed", top: 30, left: 30, size: 18, rot: 1 },
-    { t: "حياك", c: "n-green", f: "pillf", top: 28, left: 8, size: 20, rot: -4 },
-    { t: "BLVD WORLD", c: "n-blue", f: "framed", top: 40, left: 40, size: 20, rot: -1 },
-    { t: "☆", c: "n-gold", f: "pillf", top: 42, left: 14, size: 24, rot: 8, cls: "fast" },
-    { t: "FAN ZONE", c: "n-pink", f: "framed", top: 52, left: 26, size: 17, rot: 0 },
-    { t: "وناسة", c: "n-cyan", f: "framed", top: 62, left: 44, size: 20, rot: 2 },
-    { t: "OPEN LATE", c: "n-green", f: "noframe", top: 66, left: 12, size: 14, rot: -1, cls: "slow" },
-  ];
-
-  function buildWall(el, signs) {
-    if (!el) return;
-    let html = "";
-    // dim windows
-    for (let i = 0; i < 40; i++) {
-      const top = 4 + Math.random() * 78;
-      const left = 2 + Math.random() * 90;
-      const on = Math.random() > 0.5 ? "opacity:.9" : "opacity:.35";
-      html += `<i class="win" style="top:${top}%;left:${left}%;${on}"></i>`;
-    }
-    for (const s of signs) {
-      const cls = `sign ${s.c} ${s.f} ${s.cls || ""}`;
-      const delay = (Math.random() * 6).toFixed(2);
-      html += `<span class="${cls}" style="top:${s.top}%;left:${s.left}%;font-size:${s.size}px;transform:rotate(${s.rot}deg);animation-delay:-${delay}s">${s.t}</span>`;
-    }
-    el.innerHTML = html;
-  }
-
-  function buildWheel() {
-    const spokes = document.querySelector(".wheel .spokes");
-    const pods = document.querySelector(".wheel .pods");
-    if (!spokes) return;
-    let sp = "", pd = "";
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      const x = 100 + Math.cos(a) * 78, y = 100 + Math.sin(a) * 78;
-      sp += `<line x1="100" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
-      pd += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4"/>`;
-    }
-    spokes.innerHTML = sp;
-    pods.innerHTML = pd;
-  }
-
   // starfield on any .stars canvas in the active view
   const fields = [];
   function initStars(canvas) {
@@ -104,12 +45,6 @@
 
   // hero landmark layers from Figma (positions as % of the 1512x982 frame)
   // clipped edges of the source art are anchored past the viewport so cuts never show
-  // The landmark layers are gone from the hero — no Taj Mahal, Eiffel, pyramids,
-  // Grendizer, Galata tower or Plaza de Toros standing along the street. lmEls
-  // stays as an empty list so the scroll fold below has nothing to fold and
-  // simply does no work.
-  const lmEls = [];
-
   // floating props (assets go in img/props/ — hidden until real PNGs exist)
   const PROPS = [
     { file: "prop-a.png", fb: "💜", x: 8,  y: 22, sz: 84,  depth: 1.6, glow: "rgba(196,168,255,.8)", dur: 5.4 },
@@ -147,49 +82,27 @@
     }
   }
 
-  // The mouse parallax is gone — no scene tilt, no title counter-tilt, no prop
-  // or landmark drift following the pointer. The hero holds still. What is kept
-  // is the scroll hand-off: scrollP (0→1 over the first viewport) is written by
-  // the scroll handler below, and folds the landmarks away as the page leaves.
-  const scene = document.getElementById("scene");
+  // The hero is a heading and three tiles on the page's own colour. There is no
+  // scene left to tilt or fold — only the block itself, which lifts and fades as
+  // the page scrolls past it. scrollP (0→1 over the first viewport) is written by
+  // the scroll handler below.
   const heroUi = document.querySelector(".hero-ui");
   let scrollP = 0;
-  if (scene) {
+  if (heroUi) {
     (function fold() {
-      if (heroUi) {
-        heroUi.style.transform =
-          `translate3d(0, ${(-scrollP * 90).toFixed(1)}px, 0) scale(${(1 - scrollP * 0.06).toFixed(4)})`;
-        heroUi.style.opacity = String(1 - Math.min(scrollP * 1.5, 1));
-      }
-      for (const l of lmEls) {
-        // the fold: each landmark is drawn down and inward toward the planet
-        // rising from below, nearer layers going first
-        const f = Math.min(1, Math.max(0, (scrollP - 0.06 * l.depth) / 0.7));
-        const e = f * f * (3 - 2 * f);                    // smoothstep
-        const px = (0.5 - l.cx) * innerWidth * e * 0.72;
-        const py = innerHeight * e * 0.42;
-        const sc = 1.04 - e * 0.78;
-        const rot = (0.5 - l.cx) * -26 * e;
-        l.el.style.transform =
-          `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
-        l.el.style.opacity = (1 - Math.pow(e, 1.7)).toFixed(3);
-      }
+      heroUi.style.transform =
+        `translate3d(0, ${(-scrollP * 90).toFixed(1)}px, 0) scale(${(1 - scrollP * 0.06).toFixed(4)})`;
+      heroUi.style.opacity = String(1 - Math.min(scrollP * 1.5, 1));
       requestAnimationFrame(fold);
     })();
   }
-
-  buildWall(document.getElementById("wall-left"), SIGNS_LEFT);
-  buildWall(document.getElementById("wall-right"), SIGNS_RIGHT);
-  buildWheel();
 
   // ── scroll: hero hand-off + reveals + card parallax ────────
   const homeView = document.getElementById("view-home");
   const heroScene = document.getElementById("street");
   if (homeView) {
-    const cue = document.querySelector(".scroll-cue");
     const rail = document.querySelector("#scroll-rail i");
     const stickyBar = document.getElementById("sticky-cta");
-    const bloom = document.getElementById("fold-bloom");
     const tabs = [...document.querySelectorAll("#sticky-cta [data-sec]")];
 
     // tabs scroll the inner container (a plain anchor jump would not work,
@@ -217,15 +130,6 @@
         heroScene.style.opacity = String(1 - fade * fade);
       }
 
-      // light swells from below as the world is drawn in, peaking just before
-      // the planet takes over, then falling away
-      if (bloom) {
-        const b = Math.min(1, Math.max(0, (p - 0.1) / 0.62));
-        const peak = Math.sin(b * Math.PI);              // 0 → 1 → 0
-        bloom.style.setProperty("--bloom-o", (peak * 0.85).toFixed(3));
-        bloom.style.setProperty("--bloom-s", (0.55 + b * 0.85).toFixed(3));
-      }
-
       // the planet swells up into frame as the fold completes
       if (globeHolder) {
         const g = Math.min(1, Math.max(0, (p - 0.24) / 0.76));
@@ -234,7 +138,6 @@
         globeHolder.style.setProperty("--globe-s", (0.62 + ge * 0.38).toFixed(3));
         globeHolder.style.setProperty("--globe-o", ge.toFixed(3));
       }
-      if (cue) cue.style.opacity = String(1 - Math.min(p * 3, 1));
 
       // scroll-spy: highlight whichever section owns the upper third
       if (tabs.length) {
