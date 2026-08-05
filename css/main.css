@@ -3147,3 +3147,60 @@ body.route-experiences
   .vr-tile { padding: 9px 6px; }
   .vr-list { gap: 6px; }
 }
+
+/* ═══════════════ THE CURSOR ═══════════════ */
+/* js/cursor.js only runs on a fine pointer with motion allowed, and adds
+   .has-cursor when it does — so the native cursor is never hidden anywhere this
+   replacement is not actually drawing. This block sits at the end of the file
+   because it has to beat every `cursor: pointer` declared above it. */
+html.has-cursor, html.has-cursor *,
+html.has-cursor a, html.has-cursor button, html.has-cursor [role="button"] { cursor: none; }
+/* a caret still has to be findable */
+html.has-cursor input, html.has-cursor textarea, html.has-cursor [contenteditable],
+html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
+
+.cur { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0; }
+.cur.on { opacity: 1; }
+/* difference blending is what keeps one colour legible over a lit poster, a dark
+   photograph and the night sky alike */
+.cur-dot, .cur-ring {
+  position: fixed; left: 0; top: 0; display: block;
+  border-radius: 50%; will-change: transform;
+  mix-blend-mode: difference;
+}
+.cur-dot {
+  width: 7px; height: 7px; background: #fff;
+  transition: width .3s var(--ease), height .3s var(--ease), opacity .25s var(--ease);
+}
+.cur-ring {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(255, 255, 255, .85);
+  display: grid; place-items: center;
+  transition: width .38s var(--ease), height .38s var(--ease),
+              background-color .3s var(--ease), border-color .3s var(--ease);
+}
+.cur-word {
+  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #fff;
+  opacity: 0; transform: scale(.8);
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+
+/* over something interactive the ring opens up and the dot gets out of the way */
+.cur.is-hit .cur-ring { width: 54px; height: 54px; background-color: rgba(255, 255, 255, .14); }
+.cur.is-hit .cur-dot { width: 0; height: 0; }
+
+/* over something draggable it opens further and says so */
+.cur.is-grab .cur-ring {
+  width: 74px; height: 74px;
+  background-color: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .5);
+}
+.cur.is-grab .cur-dot { width: 0; height: 0; }
+.cur.is-grab .cur-word { opacity: 1; transform: scale(1); }
+
+/* pressing pulls it in */
+.cur.is-down .cur-ring { width: 26px; height: 26px; background-color: rgba(255, 255, 255, .2); }
+.cur.is-down.is-grab .cur-ring { width: 58px; height: 58px; }
+
+/* over a field, hand the caret back */
+.cur.is-text .cur-dot, .cur.is-text .cur-ring { opacity: 0; }
