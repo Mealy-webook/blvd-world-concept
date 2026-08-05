@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blvd-world",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4919"],
+      "port": 4919
+    }
+  ]
+}

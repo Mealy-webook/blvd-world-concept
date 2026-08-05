@@ -120,7 +120,8 @@
   });
 
   // one interaction, whichever side it starts from: the pin lights up, the map
-  // flies onto it, and the panel scrolls its row into view and highlights it
+  // flies onto it, and the panel narrows to that zone — its attractions, its
+  // kitchens, its shows — instead of listing the whole park behind it.
   function select(i, zoom) {
     const pin = pins[i];
     nodes.forEach((n, k) => n.classList.toggle("on", k === i));
@@ -128,6 +129,14 @@
     if (zoom) framePin(i, zoom);
 
     const key = keyOf(pin);
+    // a gate isn't a zone with things in it, so it doesn't narrow the list
+    if (!pin.gate) {
+      zone = key;
+      catLocked = false;                // show every category this zone has
+      render();
+      listEl.scrollTop = 0;
+    }
+
     const row = [...listEl.querySelectorAll(".pp-row")]
       .find((r) => r.dataset.pin === String(i)) ||
       [...listEl.querySelectorAll(".pp-row")].find((r) => r.textContent.includes(key));
@@ -221,23 +230,47 @@
   };
   const svg = (k) => `<svg class="rm-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="${ICON[k] || ICON.pin}"/></svg>`;
 
+  /* ── what the panel is showing ──
+     `zone` is the zone picked on the map, or null for the whole park.
+     `catLocked` says whether the reader chose a category chip themselves: on a
+     fresh zone we show everything that zone has, and a chip then narrows it. */
+  let zone = null, catLocked = true;
+
   function render() {
     const cat = document.querySelector(".pp-chip.on")?.dataset.cat || "rides";
     const q = (document.getElementById("pp-q")?.value || "").trim().toLowerCase();
     const hits = items.filter((it) =>
-      it.cat === cat &&
+      (catLocked ? it.cat === cat : it.cat !== "zones") &&
+      (!zone || it.zone === zone) &&
       (!q || it.name.toLowerCase().includes(q) || (it.zone || "").toLowerCase().includes(q)));
 
+    // the header says what's being shown, and offers the way back out
+    if (zoneBar) {
+      zoneBar.hidden = !zone;
+      if (zone) {
+        zoneBar.querySelector(".pz-name").textContent = zone;
+        zoneBar.querySelector(".pz-count").textContent =
+          hits.length ? `${hits.length} thing${hits.length > 1 ? "s" : ""} to do` : "Nothing listed yet";
+      }
+    }
+
     if (!hits.length) {
-      listEl.innerHTML = `<p class="pp-empty">Nothing matches “${q}”.</p>`;
+      // say what's missing from the sheets, not what the zone is like — the
+      // official lists don't cover every zone
+      listEl.innerHTML = q
+        ? `<p class="pp-empty">Nothing in ${zone || "the park"} matches “${q}”.</p>`
+        : `<p class="pp-empty">No attractions, kitchens or shows are listed for ${zone} yet.</p>`;
       return;
     }
+
+    // inside one zone, "experiences by zone" is a heading about nothing
+    const heading = (g) => (zone && g === "EXPERIENCES BY ZONE" ? "ATTRACTIONS & EXPERIENCES" : g);
 
     let html = "", group = null, n = 0;
     for (const it of hits) {
       if (it.group !== group) {
         group = it.group;
-        html += `<h4 class="pp-group">${group}</h4>`;
+        html += `<h4 class="pp-group">${heading(group)}</h4>`;
       }
       const pi = it.pin !== undefined ? it.pin : (it.zone !== undefined ? pinOf.get(it.zone) : undefined);
       html += `
@@ -262,10 +295,21 @@
   }
 
   /* ── panel controls ─────────────────────────────────────────────── */
+  // the bar that says which zone the list is narrowed to, and clears it
+  const zoneBar = document.getElementById("pp-zone");
+  zoneBar?.querySelector(".pz-clear")?.addEventListener("click", () => {
+    zone = null;
+    catLocked = true;
+    nodes.forEach((n) => n.classList.remove("on"));
+    render();
+    listEl.scrollTop = 0;
+  });
+
   document.querySelectorAll(".pp-chip").forEach((chip) => {
     chip.addEventListener("click", () => {
       document.querySelectorAll(".pp-chip").forEach((c) => c.classList.remove("on"));
       chip.classList.add("on");
+      catLocked = true;              // an explicit choice narrows the zone view
       render();
       listEl.scrollTop = 0;
       // dim the pins that have nothing in the chosen category
@@ -351,6 +395,9 @@
     z = 1; tx = ty = 0; apply();
     nodes.forEach((n) => n.classList.remove("on"));
     listEl.querySelectorAll(".pp-row.on").forEach((r) => r.classList.remove("on"));
+    zone = null; catLocked = true;      // back to the whole park
+    render();
+    listEl.scrollTop = 0;
   });
 
   addEventListener("resize", () => { sizeStage(); apply(); });

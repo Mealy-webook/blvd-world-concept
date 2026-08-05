@@ -6,51 +6,12 @@
 <title>BLVD World — The Biggest Fan Letter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=174" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,400&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/main.css?v=181" />
 </head>
 <body class="typo-body">
 
   <div id="scroll-rail" aria-hidden="true"><i></i></div>
-
-  <!-- SVG filter defs (replicated from the reference site's title effects) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <filter id="title-fx" x="-20%" y="-20%" width="140%" height="140%">
-        <feOffset in="SourceAlpha" dx="3" dy="3" result="sh2-o"/>
-        <feFlood flood-color="#009FEF" result="sh2-c"/>
-        <feComposite in="sh2-c" in2="sh2-o" operator="in" result="sh2"/>
-        <feOffset in="SourceAlpha" dx="1.5" dy="1.5" result="sh1-o"/>
-        <feFlood flood-color="#002d86" result="sh1-c"/>
-        <feComposite in="sh1-c" in2="sh1-o" operator="in" result="sh1"/>
-        <feMorphology in="SourceAlpha" operator="dilate" radius="0.75" result="ol-s"/>
-        <feFlood flood-color="#89ECFF" result="ol-c"/>
-        <feComposite in="ol-c" in2="ol-s" operator="in" result="ol"/>
-        <feOffset in="SourceGraphic" dx="0" dy="1.2" result="dk-o"/>
-        <feGaussianBlur in="dk-o" stdDeviation="0.7" result="dk-b"/>
-        <feComposite in="SourceGraphic" in2="dk-b" operator="out" result="dk-i"/>
-        <feFlood flood-color="#000000" flood-opacity="0.3" result="dk-c"/>
-        <feComposite in="dk-c" in2="dk-i" operator="in" result="dk"/>
-        <feOffset in="SourceGraphic" dx="-0.6" dy="-1.2" result="lt-o"/>
-        <feGaussianBlur in="lt-o" stdDeviation="0.7" result="lt-b"/>
-        <feComposite in="SourceGraphic" in2="lt-b" operator="out" result="lt-i"/>
-        <feFlood flood-color="#8AECFF" flood-opacity="0.45" result="lt-c"/>
-        <feComposite in="lt-c" in2="lt-i" operator="in" result="lt"/>
-        <feMerge>
-          <feMergeNode in="sh2"/><feMergeNode in="sh1"/><feMergeNode in="ol"/>
-          <feMergeNode in="SourceGraphic"/><feMergeNode in="dk"/><feMergeNode in="lt"/>
-        </feMerge>
-      </filter>
-      <filter id="text-inset" x="-50%" y="-50%" width="200%" height="200%">
-        <feOffset dx="0" dy="0.5"/>
-        <feGaussianBlur stdDeviation="0.5" result="ob"/>
-        <feComposite operator="out" in="SourceGraphic" in2="ob" result="inv"/>
-        <feFlood flood-color="#00C3FF" flood-opacity="1" result="c"/>
-        <feComposite operator="in" in="c" in2="inv" result="sh"/>
-        <feComposite operator="over" in="sh" in2="SourceGraphic"/>
-      </filter>
-    </defs>
-  </svg>
 
   <!-- ══════════ LOADER ══════════ -->
   <section id="view-loader" class="view active">
@@ -116,8 +77,8 @@
       <div class="hero-ui">
         <img class="hero-logo" src="img/blvd-world-logo.svg" alt="BLVD World" />
         <h1 class="hero-title fx" id="hero-title">
-          <span class="line"><span class="t-glow">EXPLORE</span><span class="t-main">EXPLORE</span></span>
-          <span class="line"><span class="t-glow">NEW WORLDS.</span><span class="t-main">NEW WORLDS.</span></span>
+          <span class="line"><span class="t-main">EXPLORE</span></span>
+          <span class="line"><span class="t-main">NEW WORLDS.</span></span>
         </h1>
         <div class="book-ctas">
           <a href="https://webook.com" target="_blank" rel="noopener" class="book-cta feature">
@@ -429,6 +390,17 @@
               <button class="pp-chip" data-cat="zones" type="button"><i class="cc cc-zones"></i>Zones</button>
             </div>
 
+            <!-- shown once a zone is picked on the map: what the list is
+                 narrowed to, and the way back to the whole park -->
+            <div class="pp-zone" id="pp-zone" hidden aria-live="polite">
+              <span class="pz-dot" aria-hidden="true"></span>
+              <span class="pz-text">
+                <b class="pz-name"></b>
+                <small class="pz-count"></small>
+              </span>
+              <button class="pz-clear" type="button">All of the park</button>
+            </div>
+
             <div class="pp-list" id="pp-list"></div>
           </aside>
 
@@ -637,20 +609,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=174"></script>
-  <script src="js/borders.js?v=174"></script>
-  <script src="js/scene.js?v=174"></script>
-  <script src="js/app.js?v=174"></script>
-  <script src="js/experiences.js?v=174"></script>
-  <script src="js/carousels.js?v=174"></script>
-  <script src="js/fan.js?v=174"></script>
-  <script src="js/gallery.js?v=174"></script>
-  <script src="js/parkmap.js?v=174"></script>
-  <script src="js/sponsors.js?v=174"></script>
-  <script src="js/cashless.js?v=174"></script>
-  <script src="js/bundles.js?v=174"></script>
-  <script src="js/ridex.js?v=174"></script>
+  <script src="js/data.js?v=181"></script>
+  <script src="js/borders.js?v=181"></script>
+  <script src="js/scene.js?v=181"></script>
+  <script src="js/app.js?v=181"></script>
+  <script src="js/experiences.js?v=181"></script>
+  <script src="js/carousels.js?v=181"></script>
+  <script src="js/fan.js?v=181"></script>
+  <script src="js/gallery.js?v=181"></script>
+  <script src="js/parkmap.js?v=181"></script>
+  <script src="js/sponsors.js?v=181"></script>
+  <script src="js/cashless.js?v=181"></script>
+  <script src="js/bundles.js?v=181"></script>
+  <script src="js/ridex.js?v=181"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=174"></script> -->
+  <script type="module" src="js/globe.js?v=181"></script> -->
 </body>
 </html>
