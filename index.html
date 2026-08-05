@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=385" />
+<link rel="stylesheet" href="css/main.css?v=393" />
 </head>
 <body class="typo-body">
 
@@ -40,9 +40,7 @@
     <!-- the hero's night sky, held behind every section below it -->
     <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
 
-    <div id="street" class="street plain">
-      <video class="hero-video" id="hero-video" src="video/hero-loop.mp4"
-             autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <div id="street" class="street">
       <div class="hero-veil" aria-hidden="true"></div>
       <canvas id="stars-home" class="stars"></canvas>
       <div class="scene" id="scene">
@@ -73,15 +71,27 @@
         </div>
       </div>
 
-      <div class="landmarks" id="landmarks"></div>
-      <div class="fold-bloom" id="fold-bloom" aria-hidden="true"></div>
-      <div class="lm-scrim"></div>
       <div class="props" id="props"></div>
       <div class="hero-ui">
         <img class="hero-logo" src="img/blvd-world-logo.svg" alt="BLVD World" />
-        <h1 class="hero-title fx" id="hero-title">
-          <span class="line"><span class="t-main">EXPLORE</span></span>
-          <span class="line"><span class="t-main">NEW WORLDS.</span></span>
+        <!-- the title is set on two arcs, so it domes over the rock in the
+             footage the way a park gate arches over its entrance -->
+        <h1 class="hero-title arch" id="hero-title">
+          <span class="sr-only">Explore new worlds.</span>
+          <svg class="arch-type" viewBox="0 0 1000 430" aria-hidden="true" focusable="false">
+            <defs>
+              <!-- two concentric domes. The radii are what keep the lines from
+                   crossing: a tighter arc bows further and eats into the line
+                   below it, so the lower, longer arc is the flatter of the two. -->
+              <path id="arch-a" d="M 300 152 A 520 520 0 0 1 700 152" fill="none" />
+              <path id="arch-b" d="M 58 408 A 1100 1100 0 0 1 942 408" fill="none" />
+            </defs>
+            <!-- text-anchor belongs on the <text>, not the <textPath>: on the
+                 path it is ignored, and the words run off down one shoulder of
+                 the arc instead of sitting centred on top of it -->
+            <text class="at-1" text-anchor="middle"><textPath href="#arch-a" startOffset="50%">EXPLORE</textPath></text>
+            <text class="at-2" text-anchor="middle"><textPath href="#arch-b" startOffset="50%">NEW WORLDS.</textPath></text>
+          </svg>
         </h1>
         <!-- three ways in, as tiles rather than buttons -->
         <div class="book-tiles">
@@ -274,10 +284,6 @@
         </ol>
       </div>
 
-      <div class="cash-cta reveal">
-        <a href="https://webook.com" target="_blank" rel="noopener" class="pill solid big-pill">GET THE WEBOOK APP</a>
-        <p class="cash-note">Balance stays on the card &#183; unused credit refundable</p>
-      </div>
     </section>
 
     <!-- ── restaurants ── -->
@@ -692,26 +698,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=385"></script>
-  <script src="js/borders.js?v=385"></script>
-  <script src="js/scene.js?v=385"></script>
-  <script src="js/app.js?v=385"></script>
-  <script src="js/experiences.js?v=385"></script>
-  <script src="js/carousels.js?v=385"></script>
-  <script src="js/coverflow.js?v=385"></script>
-  <script src="js/zones.js?v=385"></script>
-  <script src="js/gallery.js?v=385"></script>
-  <script src="js/parkmap.js?v=385"></script>
-  <script src="js/sponsors.js?v=385"></script>
-  <script src="js/cashless.js?v=385"></script>
-  <script src="js/headings.js?v=385"></script>
-  <script src="js/bundles.js?v=385"></script>
-  <script src="js/ridehero.js?v=385"></script>
-  <script src="js/ridex.js?v=385"></script>
+  <script src="js/data.js?v=393"></script>
+  <script src="js/borders.js?v=393"></script>
+  <script src="js/scene.js?v=393"></script>
+  <script src="js/app.js?v=393"></script>
+  <script src="js/experiences.js?v=393"></script>
+  <script src="js/carousels.js?v=393"></script>
+  <script src="js/coverflow.js?v=393"></script>
+  <script src="js/zones.js?v=393"></script>
+  <script src="js/gallery.js?v=393"></script>
+  <script src="js/parkmap.js?v=393"></script>
+  <script src="js/sponsors.js?v=393"></script>
+  <script src="js/cashless.js?v=393"></script>
+  <script src="js/headings.js?v=393"></script>
+  <script src="js/bundles.js?v=393"></script>
+  <script src="js/ridehero.js?v=393"></script>
+  <script src="js/ridex.js?v=393"></script>
   <!-- last: it rewraps every section's children, so everything that queries them
        by selector has already run -->
-  <script src="js/flow.js?v=385"></script>
+  <script src="js/flow.js?v=393"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=385"></script> -->
+  <script type="module" src="js/globe.js?v=393"></script> -->
 </body>
 </html>

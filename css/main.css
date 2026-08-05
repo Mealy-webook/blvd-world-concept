@@ -101,7 +101,7 @@ html, body {
 .zs-head, .rc-head, .pk-head, .rx-head, .bd-head, .eats-head, .shows-head,
 .gal-head, .faq-head, .sp-head, .pm-head, .rt-head, .cash-head {
   position: relative;
-  display: grid; gap: var(--sp-2); justify-items: start; text-align: left;
+  display: grid; gap: var(--sp-2); justify-items: center; text-align: center;
   width: 100%; max-width: min(1180px, 100%);
   margin-inline: auto; padding: 0 var(--sec-x);
 }
@@ -122,9 +122,8 @@ html, body {
    number with nowhere to go lands on top of the words. */
 .eyebrow { display: inline-flex; align-items: baseline; gap: .9em; }
 .eyebrow > .sec-num { margin: 0; font-size: 11px; opacity: 1; }
-@media (min-width: 1120px) {
-  .eyebrow > .sec-num { position: absolute; left: -46px; top: .1em; }
-}
+/* the number used to hang in the margin beside a left-set head. A centred head
+   has no margin to hang into, so it now always sits inline before the label. */
 /* the rules run the width of the head's text, not the whole column */
 .eyebrow::after { right: auto; width: 100%; min-width: 180px; }
 
@@ -281,12 +280,44 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 @keyframes blink { 50% { border-color: transparent; } }
 .intro-logo { justify-self: center; transition: opacity .8s, transform .8s; }
 .hidden-soft { opacity: 0; transform: scale(.92); }
+/* Skip is the one control on the intro, so it reads as a real button rather
+   than an underlined word: a solid pill in the page's action colour, sized to
+   be hit without aiming, with the arrow it implies. */
 .skip-btn {
-  position: absolute; bottom: 7vh; left: 50%; transform: translateX(-50%);
-  font-family: var(--ui); font-weight: 600; letter-spacing: .1em; font-size: 15px; color: #cfe4ff; padding-bottom: 6px;
-  border-bottom: 3px solid var(--blue);
+  position: absolute; bottom: 8vh; left: 50%;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 15px 26px; border-radius: var(--r-pill);
+  font-family: var(--ui); font-weight: 700; letter-spacing: .12em; font-size: 14px;
+  text-transform: uppercase;
+  color: var(--btn-ink); background: var(--btn);
+  border: 0; cursor: pointer;
+  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .28);
+  transform: translateX(-50%);
+  transition: background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
 }
-.skip-btn:hover { color: #fff; }
+.skip-btn::after {
+  content: ''; width: 8px; height: 8px; flex: none;
+  border-right: 2px solid currentColor; border-top: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .3s var(--ease);
+}
+.skip-btn:hover {
+  background: #fff;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: var(--sh-3), inset 0 -2px 0 rgba(8, 16, 31, .28);
+}
+.skip-btn:hover::after { transform: rotate(45deg) translate(2px, -2px); }
+.skip-btn:active { transform: translateX(-50%) translateY(0); box-shadow: var(--sh-1); }
+/* it pulses once, a couple of seconds in, so it is noticed without nagging */
+.view.active .skip-btn { animation: skipIn .6s .9s var(--ease) both; }
+@keyframes skipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view.active .skip-btn { animation: none; }
+  .skip-btn, .skip-btn::after { transition: none; }
+}
 
 /* ═══════════════ HOME / STREET SCENE ═══════════════ */
 #view-home {
@@ -320,9 +351,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .layer { will-change: transform; }
 
 /* plain hero: hide the CSS street scenery, keep starfield */
-.street.plain .wall, .street.plain .wheel-wrap,
-.street.plain .strings, .street.plain .ground { display: none; }
-
 /* walls */
 .wall {
   position: absolute; top: -6%; height: 96%; width: 58%;
@@ -385,24 +413,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .r3 { right: 26%; background: #8b5cf6; width: 18%; } .r4 { right: 1%; background: #12c9e8; }
 
 /* hero UI */
-/* ── hero video: the animated scene stands in for the static layers ── */
-.hero-video {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 62%;   /* keep the waterline low */
-  z-index: 0; pointer-events: none;
-}
-/* The footage plays in full colour. Nothing washes over the middle of the frame
-   — only the two bands the type actually sits in are darkened: a short one under
-   the nav, and the foot of the frame where the tiles and the scroll cue are. */
+/* The footage is gone; the hero is the built scene again — starfield, walls,
+   wheel, string lights, ground reflections and the landmark layers. Only the two
+   bands the type actually sits in are darkened: a short one under the nav, and
+   the foot of the frame where the tiles and the scroll cue are. */
 .hero-veil {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     linear-gradient(180deg, rgba(6, 10, 30, .6) 0%, rgba(6, 10, 30, .14) 13%, transparent 24%),
     linear-gradient(0deg, rgba(6, 9, 26, .8) 0%, rgba(6, 9, 26, .3) 17%, transparent 36%);
 }
-/* the footage already carries the skyline, wheel and reflections */
-.street .scene, .street .landmarks, .street #stars-home, .street .fold-bloom { display: none; }
-@media (prefers-reduced-motion: reduce) { .hero-video { animation: none; } }
 
 .hero-ui { position: relative; z-index: 5; text-align: center; padding: 12vh 6vw 0; display: grid; justify-items: center; gap: 22px; transform-style: preserve-3d; will-change: transform; }
 .hero-logo {
@@ -427,10 +447,41 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   color: #fff;
   filter: drop-shadow(0 2px 10px rgba(2, 4, 14, .85)) drop-shadow(0 16px 44px rgba(2, 4, 14, .7));
 }
+
+/* ── the arched title ──
+   Two concentric arcs of real type on an SVG path, so the words bend rather
+   than sit on a straight baseline. The tighter, higher arc carries the first
+   word; the wider one below carries the second, and the pair domes over the
+   rock in the hero footage. */
+.hero-title.arch { display: block; width: min(1120px, 94vw); line-height: 1; }
+.arch-type {
+  display: block; width: 100%; height: auto; overflow: visible;
+  filter: drop-shadow(0 2px 10px rgba(2, 4, 14, .85)) drop-shadow(0 16px 44px rgba(2, 4, 14, .7));
+}
+.arch-type text {
+  fill: #fff; font-family: var(--disp); font-weight: 800;
+  font-variation-settings: 'wdth' 84;      /* the same condensed cut as the rest */
+  letter-spacing: -.012em;
+}
+.at-1 { font-size: 92px; }
+.at-2 { font-size: 120px; }
+/* on a phone the arc would flatten to nothing at this width, so it opens out */
+@media (max-width: 700px) {
+  .at-1 { font-size: 104px; }
+  .at-2 { font-size: 128px; }
+}
+
+/* a label for screen readers only — the arc itself is decorative markup */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
 /* hero entry animation (staggered rise + blur-in) */
 .view.active .hero-title .line { animation: heroIn .9s .55s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-title .line:nth-child(2) { animation-delay: .67s; }
 .view.active .hero-title .line:nth-child(3) { animation-delay: .79s; }
+.view.active .hero-title.arch .arch-type { animation: heroIn 1s .55s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-sub   { animation: heroIn .9s .98s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-ctas  { animation: heroIn .9s 1.1s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-ui .hero-logo { animation: heroLogoIn .9s .74s cubic-bezier(.2,.8,.25,1) both; }
@@ -487,56 +538,55 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the hero's three ways in, as tiles ── */
 .book-tiles {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(10px, 1.2vw, 16px); width: min(920px, 100%);
+  gap: clamp(12px, 1.4vw, 20px); width: min(1080px, 100%);
 }
 .bt {
   position: relative; overflow: hidden;
-  display: grid; grid-template-columns: 44px minmax(0, 1fr) 26px;
-  align-items: center; gap: 14px; text-align: left;
-  padding: 16px 16px 16px 14px; border-radius: var(--r-lg);
-  background: rgba(8, 12, 34, .62);
-  border: var(--b-2);
-  backdrop-filter: blur(14px);
-  box-shadow: var(--sh-2);
+  display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px;
+  align-items: center; gap: 17px; text-align: left;
+  padding: 22px 22px 22px 19px; border-radius: var(--r-lg);
+  background: rgba(6, 9, 28, .88);
+  border: 1px solid rgba(159, 208, 255, .34);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--sh-3), var(--sh-in);
   transition: transform .45s var(--ease), border-color .35s var(--ease),
               background .35s var(--ease), box-shadow .35s var(--ease);
 }
 .bt:hover {
-  transform: translateY(-5px);
-  background: rgba(12, 18, 46, .78); border-color: rgba(199, 226, 255, .5);
-  box-shadow: var(--sh-2);
+  transform: translateY(-7px);
+  background: rgba(10, 15, 40, .94); border-color: rgba(215, 236, 255, .72);
+  box-shadow: var(--sh-3), var(--sh-in);
 }
 /* the first is the one most people want */
 .bt.is-lead {
-  background:
-    radial-gradient(120% 140% at 0% 0%, rgba(77, 166, 255, .3), transparent 62%),
-    rgba(8, 12, 34, .68);
-  border-color: rgba(159, 208, 255, .5);
+  background: rgba(6, 9, 28, .92);
+  border-color: rgba(255, 194, 77, .55);
+  box-shadow: var(--sh-3), var(--sh-in), 0 0 0 3px rgba(255, 194, 77, .12);
 }
 .bt.is-lead:hover { border-color: rgba(215, 236, 255, .8); }
 .bt-ic {
-  display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-md);
-  background: rgba(159, 208, 255, .12); border: var(--b-2);
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: var(--r-md);
+  background: rgba(159, 208, 255, .16); border: var(--b-2);
   transition: background .35s var(--ease);
 }
-.bt-ic svg { width: 21px; height: 21px; fill: #cfe4ff; }
+.bt-ic svg { width: 26px; height: 26px; fill: #cfe4ff; }
 .bt.is-lead .bt-ic { background: linear-gradient(150deg, rgba(159, 208, 255, .32), rgba(77, 166, 255, .2)); }
 .bt.is-lead .bt-ic svg { fill: #fff; }
 .bt:hover .bt-ic { background: rgba(159, 208, 255, .24); }
 .bt-text { display: grid; gap: 3px; min-width: 0; }
 .bt-name {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.5vw, 18px);
-  letter-spacing: -.01em; color: #fff; line-height: 1.15;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(17px, 1.9vw, 23px);
+  letter-spacing: -.015em; color: #fff; line-height: 1.1;
 }
 .bt-price {
-  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; color: #8a99c6;
+  font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: #9fb0d8;
 }
 .bt-price b { color: var(--gold); font-variant-numeric: tabular-nums; }
 .bt.is-lead .bt-price b { color: #8ff3ff; }
 .bt-go {
-  justify-self: end; position: relative; width: 8px; height: 8px;
-  border-right: 1.8px solid rgba(207, 228, 255, .6); border-top: 1.8px solid rgba(207, 228, 255, .6);
+  justify-self: end; position: relative; width: 10px; height: 10px;
+  border-right: 2px solid rgba(207, 228, 255, .7); border-top: 2px solid rgba(207, 228, 255, .7);
   transform: rotate(45deg);
   transition: border-color .3s var(--ease), transform .4s var(--ease);
 }
@@ -551,8 +601,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .bt:hover::after { opacity: 1; transform: translateX(60%); }
 
 @media (max-width: 820px) {
-  .book-tiles { grid-template-columns: minmax(0, 1fr); width: min(420px, 100%); gap: 9px; }
-  .bt { padding: 13px 14px; border-radius: var(--r-lg); }
+  .book-tiles { grid-template-columns: minmax(0, 1fr); width: min(460px, 100%); gap: 10px; }
+  .bt { grid-template-columns: 48px minmax(0, 1fr) 26px; gap: 14px; padding: 16px 17px; }
+  .bt-ic { width: 48px; height: 48px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bt, .bt::after { transition: none; }
@@ -2362,14 +2413,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 .cs-say { font-size: 13px; font-weight: 400; color: var(--dim); line-height: 1.5; max-width: 40ch; }
 
-.cash-cta {
-  width: 100%; max-width: min(1180px, 100%); margin-inline: auto; padding: 0 var(--sec-x);
-  display: grid; gap: 10px; justify-items: start;
-}
-.cash-note {
-  font-family: var(--mono); font-size: 10.5px; font-weight: 400; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--ink-faint);
-}
 
 /* side by side for as long as there is room: stacking is what made this section
    taller than its stage */
