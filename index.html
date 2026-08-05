@@ -10,9 +10,15 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=400" />
+<link rel="stylesheet" href="css/main.css?v=408" />
 </head>
 <body class="typo-body">
+
+  <!-- the night sky, behind every view and every section. It sits on the body
+       rather than inside a view: .view carries a filter, which makes it the
+       containing block for fixed children, so a sky nested in one was sized by
+       whatever that view happened to be doing. -->
+  <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
 
   <div id="scroll-rail" aria-hidden="true"><i></i></div>
 
@@ -26,7 +32,6 @@
 
   <!-- ══════════ INTRO ══════════ -->
   <section id="view-intro" class="view">
-    <canvas id="stars-intro" class="stars"></canvas>
     <div class="intro-copy">
       <p class="type-line" data-line="TWENTY COUNTRIES. ONE UNFORGETTABLE NIGHT."></p>
       <p class="type-line" data-line="ALL OF IT IN THE HEART OF RIYADH."></p>
@@ -37,9 +42,6 @@
 
   <!-- ══════════ HOME / HERO ══════════ -->
   <section id="view-home" class="view">
-    <!-- the hero's night sky, held behind every section below it -->
-    <canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
-
     <div id="street" class="street">
       <!-- The hero is the heading and the three tiles, nothing else: no
            starfield, no wheel, no signed walls, no string lights, no ground
@@ -304,10 +306,71 @@
       <div class="gal-belts" id="gal-belts"></div>
     </section>
 
+    <!-- ── venue rules (Figma node 16001:45722) ──
+         The icon row, the numbered rules and the read-more are the design's;
+         the type, colour and spacing are this project's tokens. The nine icons
+         are the exported Figma assets, committed to img/rules/ rather than
+         linked — the MCP asset URLs expire after about a week. -->
+    <section class="venuerules" id="rules">
+      <div class="vr-head reveal">
+        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
+        <h2 class="sec-title">VENUE RULES</h2>
+      </div>
+
+      <ul class="vr-tiles reveal">
+          <li class="vr-tile">
+            <img src="img/rules/music-note.svg" alt="" aria-hidden="true" />
+            <span>Music performance</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/forest.svg" alt="" aria-hidden="true" />
+            <span>Outdoors experience</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/no-food.svg" alt="" aria-hidden="true" />
+            <span>No outside food</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/pets.svg" alt="" aria-hidden="true" />
+            <span>No pets allowed</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/garage.svg" alt="" aria-hidden="true" />
+            <span>Parking available</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/no-reentry.svg" alt="" aria-hidden="true" />
+            <span>Re-entry prohibited</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/no-photography.svg" alt="" aria-hidden="true" />
+            <span>No photography</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/smoke-free.svg" alt="" aria-hidden="true" />
+            <span>No smoking</span>
+          </li>
+          <li class="vr-tile">
+            <img src="img/rules/non-refundable.svg" alt="" aria-hidden="true" />
+            <span>Non refundable</span>
+          </li>
+      </ul>
+
+      <ol class="vr-list reveal">
+          <li>Food and beverages from outside are not allowed. Food trucks will be available.</li>
+          <li>Animals are not allowed.</li>
+          <li>No professional cameras and video recorders are permitted at the venue.</li>
+          <li>The ticket holder consents to photographs, video and audio recordings of the ticket holder being captured and used in printed and electronic media, including the internet, as an attendee at the venue.</li>
+          <li>Smoking is strictly prohibited on the premises, including e-cigarettes. The use of lighters and matches is also prohibited inside the site, except in areas designated for smoking.</li>
+      </ol>
+
+      <a class="vr-more reveal" href="https://webook.com" target="_blank" rel="noopener">Read more</a>
+    </section>
+
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> BEFORE YOU GO</p>
+        <p class="eyebrow"><span class="sec-num">08</span> ANY QUESTIONS</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -316,7 +379,7 @@
     <!-- ── sponsors: the partner tiers from the official map ── -->
     <section class="sponsors" id="sponsors">
       <div class="sp-head reveal">
-        <p class="eyebrow"><span class="sec-num">08</span> THEY MAKE THE SEASON</p>
+        <p class="eyebrow"><span class="sec-num">09</span> THEY MAKE THE SEASON</p>
         <h2 class="sec-title">OUR PARTNERS</h2>
         <p class="sec-sub">The brands making this season happen.</p>
       </div>
@@ -666,25 +729,22 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=400"></script>
-  <script src="js/borders.js?v=400"></script>
-  <script src="js/scene.js?v=400"></script>
-  <script src="js/app.js?v=400"></script>
-  <script src="js/experiences.js?v=400"></script>
-  <script src="js/carousels.js?v=400"></script>
-  <script src="js/coverflow.js?v=400"></script>
-  <script src="js/zones.js?v=400"></script>
-  <script src="js/gallery.js?v=400"></script>
-  <script src="js/parkmap.js?v=400"></script>
-  <script src="js/sponsors.js?v=400"></script>
-  <script src="js/cashless.js?v=400"></script>
-  <script src="js/headings.js?v=400"></script>
-  <script src="js/bundles.js?v=400"></script>
-  <script src="js/ridex.js?v=400"></script>
-  <!-- last: it rewraps every section's children, so everything that queries them
-       by selector has already run -->
-  <script src="js/flow.js?v=400"></script>
+  <script src="js/data.js?v=408"></script>
+  <script src="js/borders.js?v=408"></script>
+  <script src="js/scene.js?v=408"></script>
+  <script src="js/app.js?v=408"></script>
+  <script src="js/experiences.js?v=408"></script>
+  <script src="js/carousels.js?v=408"></script>
+  <script src="js/coverflow.js?v=408"></script>
+  <script src="js/zones.js?v=408"></script>
+  <script src="js/gallery.js?v=408"></script>
+  <script src="js/parkmap.js?v=408"></script>
+  <script src="js/sponsors.js?v=408"></script>
+  <script src="js/cashless.js?v=408"></script>
+  <script src="js/headings.js?v=408"></script>
+  <script src="js/bundles.js?v=408"></script>
+  <script src="js/ridex.js?v=408"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=400"></script> -->
+  <script type="module" src="js/globe.js?v=408"></script> -->
 </body>
 </html>

@@ -6,8 +6,11 @@
     const ctx = canvas.getContext("2d");
     const state = { canvas, ctx, stars: [] };
     function size() {
-      canvas.width = canvas.offsetWidth * devicePixelRatio;
-      canvas.height = canvas.offsetHeight * devicePixelRatio;
+      // the page sky spans the viewport; a view's canvas spans its own box
+      const w = canvas.offsetWidth || innerWidth;
+      const h = canvas.offsetHeight || innerHeight;
+      canvas.width = w * devicePixelRatio;
+      canvas.height = h * devicePixelRatio;
       state.stars = Array.from({ length: 140 }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -18,6 +21,13 @@
     }
     size();
     window.addEventListener("resize", size);
+    // The page sky is measured while the loader is still the active view, so it
+    // has no box yet and sizes to 0x0 — and a canvas at 0x0 draws nothing however
+    // long it waits. A ResizeObserver re-sizes it the moment it gains one.
+    if (window.ResizeObserver) new ResizeObserver(() => {
+      if (canvas.offsetWidth && canvas.width !== canvas.offsetWidth * devicePixelRatio) size();
+
+    }).observe(canvas);
     fields.push(state);
   }
   document.querySelectorAll("canvas.stars").forEach(initStars);
@@ -26,7 +36,9 @@
   function tick() {
     t += 0.016;
     for (const f of fields) {
-      if (!f.canvas.closest(".view.active")) continue;
+      // the page sky lives on the body, so it always draws; a view's own canvas
+      // only draws while that view is the active one
+      if (f.canvas.id !== "stars-page" && !f.canvas.closest(".view.active")) continue;
       const { ctx, canvas, stars } = f;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const st of stars) {

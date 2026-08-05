@@ -93,21 +93,34 @@
     const rail = $("#eat-rail");
     if (!rail) return;
     const data = (window.WBK && WBK.restaurants) || [];
+    // The webook product-card structure: square image with a save control in
+    // its corner, then meta line, name and price set bare underneath. The meta
+    // line carries the cuisine rather than a star rating — we have no ratings
+    // for these, and inventing them would put a number on the page that means
+    // nothing.
     rail.innerHTML = data.map((r) => `
       <article class="eat-card">
         <div class="eat-shot">
           <img src="img/zones/${r.img}" alt="${r.name}" draggable="false" loading="lazy">
-          <span class="eat-price">from <b>SAR ${r.from}</b><small>per person</small></span>
+          <button class="eat-fav" type="button" aria-pressed="false" aria-label="Save ${r.name}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 4.7 13a4.6 4.6 0 0 1 6.5-6.5l.8.8.8-.8A4.6 4.6 0 0 1 19.3 13z"/></svg>
+          </button>
         </div>
         <div class="eat-text">
+          <p class="eat-meta">Restaurant <i>·</i> ${r.cuisine}</p>
           <h3>${r.name}</h3>
-          <p>${r.desc}</p>
-          <span class="eat-zone">${r.zone} zone</span>
+          <p class="eat-from">From <b>SAR ${r.from}</b></p>
         </div>
-        <i class="sheen" aria-hidden="true"></i>
       </article>`).join("");
+    // the heart is a local toggle; there is no account to save against yet
+    rail.addEventListener("click", (e) => {
+      const fav = e.target.closest(".eat-fav");
+      if (!fav) return;
+      e.preventDefault();
+      const on = fav.classList.toggle("on");
+      fav.setAttribute("aria-pressed", on ? "true" : "false");
+    });
     makeRail(rail, $("#eat-prev"), $("#eat-next"));
-    liven(rail, ".eat-card");
     stagger(rail);
   })();
 

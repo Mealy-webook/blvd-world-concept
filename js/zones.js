@@ -36,8 +36,8 @@
         <span class="zc-veil"></span>
         <b class="zc-name">${z.name}</b>
       </span>`,
-    caption: (z) => `
-      <p class="cf-tag">${NEW.has(z.name) ? "New this season" : "In the park"}</p>
-      <h3 class="cf-title">${z.name}</h3>`,
+    // no caption under the ring: the zone's name is already on its own card,
+    // and repeating it below only pushed the dots and the CTA down
+    showCaption: false,
   });
 })();
