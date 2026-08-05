@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=397" />
+<link rel="stylesheet" href="css/main.css?v=399" />
 </head>
 <body class="typo-body">
 
@@ -155,32 +155,26 @@
     <!-- ── rides: the count set large, the names live, the backdrop following ── -->
     <!-- fourteen rides strung along three intensity rails: the shape of the
          section is the answer to "how wild does this get?" -->
-    <section class="ridetrack" id="rides2">
-      <div class="rt-head reveal">
+    <!-- A poster, not a directory. All fourteen rides, their fares, filters and
+         a stage live on #/rides; this section's only job is to make you want to
+         go there, so it is one photograph, one number and one way through. -->
+    <section class="ridetrack is-poster" id="rides2">
+      <figure class="rp-shot">
+        <img src="img/rides/sky-loop.jpg" alt="" draggable="false" />
+      </figure>
+      <div class="rp-scrim" aria-hidden="true"></div>
+      <div class="rp-copy reveal">
         <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
         <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
-        <p class="sec-sub">Fourteen of them, running until the gates close. Strung out here from
-          the gentlest to the ones that take your voice — point at any name.</p>
-      </div>
-
-      <!-- three rails, built from the ride sheet in js/ridehero.js -->
-      <div class="rt-bands reveal" id="rt-bands"></div>
-
-      <div class="rt-foot reveal">
+        <p class="rp-line">
+          <b class="rp-count">14</b>
+          <span>rides, running until the gates close</span>
+        </p>
         <a class="pill solid big-pill" href="#/rides">
           EXPLORE EVERY RIDE
           <i class="rc-arrow" aria-hidden="true"></i>
         </a>
       </div>
-
-      <!-- the photograph that follows whatever is being pointed at -->
-      <figure class="rt-peek" id="rt-peek" aria-hidden="true">
-        <span class="rt-peek-shot"><img alt="" draggable="false" /></span>
-        <figcaption>
-          <b class="rt-peek-name"></b>
-          <span class="rt-peek-fare"></span>
-        </figcaption>
-      </figure>
     </section>
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
@@ -669,26 +663,25 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=397"></script>
-  <script src="js/borders.js?v=397"></script>
-  <script src="js/scene.js?v=397"></script>
-  <script src="js/app.js?v=397"></script>
-  <script src="js/experiences.js?v=397"></script>
-  <script src="js/carousels.js?v=397"></script>
-  <script src="js/coverflow.js?v=397"></script>
-  <script src="js/zones.js?v=397"></script>
-  <script src="js/gallery.js?v=397"></script>
-  <script src="js/parkmap.js?v=397"></script>
-  <script src="js/sponsors.js?v=397"></script>
-  <script src="js/cashless.js?v=397"></script>
-  <script src="js/headings.js?v=397"></script>
-  <script src="js/bundles.js?v=397"></script>
-  <script src="js/ridehero.js?v=397"></script>
-  <script src="js/ridex.js?v=397"></script>
+  <script src="js/data.js?v=399"></script>
+  <script src="js/borders.js?v=399"></script>
+  <script src="js/scene.js?v=399"></script>
+  <script src="js/app.js?v=399"></script>
+  <script src="js/experiences.js?v=399"></script>
+  <script src="js/carousels.js?v=399"></script>
+  <script src="js/coverflow.js?v=399"></script>
+  <script src="js/zones.js?v=399"></script>
+  <script src="js/gallery.js?v=399"></script>
+  <script src="js/parkmap.js?v=399"></script>
+  <script src="js/sponsors.js?v=399"></script>
+  <script src="js/cashless.js?v=399"></script>
+  <script src="js/headings.js?v=399"></script>
+  <script src="js/bundles.js?v=399"></script>
+  <script src="js/ridex.js?v=399"></script>
   <!-- last: it rewraps every section's children, so everything that queries them
        by selector has already run -->
-  <script src="js/flow.js?v=397"></script>
+  <script src="js/flow.js?v=399"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=397"></script> -->
+  <script type="module" src="js/globe.js?v=399"></script> -->
 </body>
 </html>
