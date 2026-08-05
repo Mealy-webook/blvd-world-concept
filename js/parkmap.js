@@ -135,7 +135,7 @@
   // a zone-name → photo lookup, so every row can carry a thumbnail
   const zoneImg = new Map();
   for (const p of WBK.parkExperiences || []) if (p.img) zoneImg.set(p.zone, "img/zones/" + p.img);
-  for (const r of WBK.restaurants || []) if (!zoneImg.has(r.zone)) zoneImg.set(r.zone, "img/zones/" + r.img);
+  for (const r of WBK.restaurants || []) if (r.zone && !zoneImg.has(r.zone)) zoneImg.set(r.zone, "img/zones/" + r.img);
   for (const zn of WBK.zones || []) if (!zoneImg.has(zn.name) && zn.imgs?.length) zoneImg.set(zn.name, "img/zones/" + zn.imgs[0]);
   for (const pin of pins) {
     const k = keyOf(pin);
@@ -163,10 +163,17 @@
     cat: "rides", group: "ATTRACTIONS & EXPERIENCES", name: n, zone: p.zone,
     img: zoneImg.get(p.zone), meta: [["pin", p.zone]],
   })));
+  // the row shows the food and the booking condition; a restaurant with no
+  // pavilion recorded gets no location line rather than an empty one, and none
+  // of the four has a price, so nothing prints "from SAR undefined"
   (WBK.restaurants || []).forEach((r) => items.push({
     cat: "dining", group: "PLACES TO EAT", name: r.name, zone: r.zone,
-    img: "img/zones/" + r.img, desc: r.desc,
-    meta: [["pin", r.zone], ["price", "from SAR " + r.from]],
+    img: r.food ? "img/food/" + r.food : "img/zones/" + r.img, desc: r.desc,
+    meta: [
+      ...(r.zone ? [["pin", r.zone]] : []),
+      ["fork", r.cuisine],
+      ...(r.booking ? [["time", r.booking]] : r.from ? [["price", "from SAR " + r.from]] : []),
+    ],
   }));
   (WBK.showsByZone || []).forEach((s) => s.items.forEach((it) => items.push({
     cat: "shows", group: "TONIGHT'S SHOWS", name: it.n, zone: s.zone,
@@ -717,7 +724,16 @@
 
   // a plate on the home page links to #/map?zone=Egypt — open on that zone, and
   // keep answering later links while the route is already up
+  // #/map?zone=Greece flies to a zone; #/map?cat=dining opens the map already
+  // filtered to a category, so something elsewhere on the site can hand off to
+  // the right list rather than dropping you at the whole park
   function fromHash() {
+    const c = location.hash.match(/[?&]cat=([^&]+)/);
+    if (c) {
+      const want = decodeURIComponent(c[1]);
+      const chip = document.querySelector(`.pp-chip[data-cat="${want}"]`);
+      if (chip && !chip.classList.contains("on")) chip.click();
+    }
     const m = location.hash.match(/[?&]zone=([^&]+)/);
     if (!m) return;
     const want = decodeURIComponent(m[1]);

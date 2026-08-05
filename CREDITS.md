@@ -45,27 +45,22 @@ production.**
 
 ## Food photography — `img/food/` — all cleared for reuse
 
-The dining cards show the kitchen's food rather than the zone it stands in.
-Every one of these twelve came from Wikimedia Commons under a licence that
-permits reuse, so unlike the zone and show photography **this set is cleared**.
-CC BY and CC BY-SA require the attribution below to be kept; CC BY-SA also
-requires derivatives to carry the same licence. Cropped square and re-encoded
-as 700px WebP — cropping is the only change made.
+The dining cards show the kitchen's food rather than the zone it stands in. All
+four came from Wikimedia Commons under a licence that permits reuse, so unlike
+the zone, poster and show imagery **this set is cleared**. CC BY-SA requires the
+attribution below to be kept and derivatives to carry the same licence. Cropped
+square and re-encoded as 700px WebP — cropping is the only change made.
 
-| File | Kitchen and dish | Licence | Credit | Source |
+| File | Restaurant and dish | Licence | Credit | Source |
 | --- | --- | --- | --- | --- |
-| `najd-grill.webp` | Najd Grill House — kabsa | Public domain | Basel15 at en.wikipedia | [Kabsa.jpg](https://commons.wikimedia.org/wiki/File:Kabsa.jpg) |
-| `nile.webp` | Nile Terrace — koshari | CC BY-SA 4.0 | Dina Said  | [Egyptian Food.jpg](https://commons.wikimedia.org/wiki/File:Egyptian_Food.jpg) |
-| `uzungol.webp` | Uzungöl Restaurant — ezme, hummus, haydari | CC BY-SA 4.0 | E4024 | [Ezme-Hummus-Haydari.jpg](https://commons.wikimedia.org/wiki/File:Ezme-Hummus-Haydari.jpg) |
-| `petit-bistro.webp` | Le Petit Bistro — steak frites | CC BY 4.0 | Missvain | [Reel and Brand - September 2021 - Sarah Stierch 05.jpg](https://commons.wikimedia.org/wiki/File:Reel_and_Brand_-_September_2021_-_Sarah_Stierch_05.jpg) |
-| `trattoria.webp` | Trattoria Bella — pizza margherita | CC BY-SA 3.0 | Eq_it-na_pizza-margherita_sep2005_sml.jpg: E | [Eq it-na pizza-margherita sep2005 sml-2.png](https://commons.wikimedia.org/wiki/File:Eq_it-na_pizza-margherita_sep2005_sml-2.png) |
-| `dimsum.webp` | Dim Sum Palace — dim sum | CC0 | afterdog | [Dim Sum Breakfast.jpg](https://commons.wikimedia.org/wiki/File:Dim_Sum_Breakfast.jpg) |
-| `ramen.webp` | Ramen Yokocho — tonkotsu ramen | CC BY-SA 4.0 | Gatorfan252525 | [A bowl of tonkotsu ramen at Ichiran in Tokyo in July 2026.jpg](https://commons.wikimedia.org/wiki/File:A_bowl_of_tonkotsu_ramen_at_Ichiran_in_Tokyo_in_July_2026.jpg) |
-| `route66.webp` | Route 66 Diner — cheeseburger | CC BY-SA 4.0 | Kiddo27 | [Cheeseburger and sweet potato fries at Original Mels.jpg](https://commons.wikimedia.org/wiki/File:Cheeseburger_and_sweet_potato_fries_at_Original_Mels.jpg) |
-| `azteca.webp` | Cantina Azteca — tacos al pastor | CC BY 2.0 | City Foodsters | [(El Flaco) Al Pastor Tacos.jpg](https://commons.wikimedia.org/wiki/File:(El_Flaco)_Al_Pastor_Tacos.jpg) |
-| `tagine.webp` | Tagine House — Moroccan tagine | CC BY-SA 4.0 | Khammal92 | [Moroccan tagine.jpg](https://commons.wikimedia.org/wiki/File:Moroccan_tagine.jpg) |
-| `koreanbbq.webp` | Korean BBQ House — grill and banchan | CC BY 2.0 | suksim | [Korean barbecue-Grill and banchan.jpg](https://commons.wikimedia.org/wiki/File:Korean_barbecue-Grill_and_banchan.jpg) |
-| `taverna.webp` | Taverna Blue — lamb gyros | CC BY 2.0 | insatiablemunch | [Lamb Gyros Sydney.jpg](https://commons.wikimedia.org/wiki/File:Lamb_Gyros_Sydney.jpg) |
+| `nile.webp` | Tante — Egyptian spread | CC BY-SA 4.0 | Dina Said | [Egyptian Food.jpg](https://commons.wikimedia.org/wiki/File:Egyptian_Food.jpg) |
+| `route66.webp` | Superheroes Restaurant — burger and fries | CC BY-SA 4.0 | Kiddo27 | [Cheeseburger and sweet potato fries at Original Mels.jpg](https://commons.wikimedia.org/wiki/File:Cheeseburger_and_sweet_potato_fries_at_Original_Mels.jpg) |
+| `sakura.webp` | Sakura Lounge — nigiri assortment | CC BY-SA 4.0 | RightCowLeftCoast | [Nigiri assortment.jpg](https://commons.wikimedia.org/wiki/File:Nigiri_assortment.jpg) |
+| `eos.webp` | EOS Restaurant — horiatiki salad | CC BY-SA 4.0 | Jpatokal | [Greece Food Horiatiki.JPG](https://commons.wikimedia.org/wiki/File:Greece_Food_Horiatiki.JPG) |
+
+Ten further dishes were sourced and credited here when the dining list ran to
+twelve kitchens. They came out with the list; `git log img/food/` has them if the
+list grows again.
 
 ## Still placeholders
 

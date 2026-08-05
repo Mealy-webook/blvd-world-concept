@@ -51,19 +51,24 @@ window.WBK = {
   ],
 
   // dining highlights, one per zone
+  // The four sit-down restaurants that actually take bookings. There is no price
+  // for any of them in what we have, so the card's third line carries the
+  // booking condition — which is real, sourced information — rather than a
+  // number that would be invented. Superheroes has no pavilion recorded, so it
+  // has no zone: it shows in the dining rail but cannot be placed on the map.
   restaurants: [
-    { name: "Najd Grill House",      zone: "Saudi Arabia", cuisine: "SAUDI",     img: "saudi.jpg", food: "najd-grill.webp",  from: 85, desc: "Kabsa, mandi and mixed grills in a Najdi mud-brick courtyard." },
-    { name: "Nile Terrace",          zone: "Egypt",        cuisine: "EGYPTIAN",  img: "egypt.jpg", food: "nile.webp",  from: 70, desc: "Koshari and grilled kofta with the pyramid lit behind you." },
-    { name: "Uzung\u00f6l Restaurant", zone: "T\u00fcrkiye", cuisine: "TURKISH",   img: "turkey.jpg", food: "uzungol.webp", from: 90, desc: "Mezze, kebabs and shisha on a lantern-lit terrace." },
-    { name: "Le Petit Bistro",       zone: "France",       cuisine: "FRENCH",    img: "france.jpg", food: "petit-bistro.webp", from: 95, desc: "Cr\u00eapes, steak frites and coffee under the tower." },
-    { name: "Trattoria Bella",       zone: "Italy",        cuisine: "ITALIAN",   img: "italy.jpg", food: "trattoria.webp",  from: 80, desc: "Wood-fired pizza and gelato beside the Grand Canal." },
-    { name: "Dim Sum Palace",        zone: "China",        cuisine: "CHINESE",   img: "china.jpg", food: "dimsum.webp",  from: 75, desc: "Steamer baskets and noodle bowls under the red pagoda." },
-    { name: "Ramen Yokocho",         zone: "Japan",        cuisine: "JAPANESE",  img: "japan.jpg", food: "ramen.webp",  from: 65, desc: "A narrow alley of ramen counters and taiyaki stands." },
-    { name: "Route 66 Diner",        zone: "United States",cuisine: "AMERICAN",  img: "usa.jpg", food: "route66.webp",    from: 60, desc: "Chrome booths, burgers and milkshakes till late." },
-    { name: "Cantina Azteca",        zone: "Mexico",       cuisine: "MEXICAN",   img: "mexico.jpg", food: "azteca.webp", from: 70, desc: "Tacos and horchata below the crimson pyramid." },
-    { name: "Tagine House",          zone: "Morocco",      cuisine: "MOROCCAN",  img: "park5.jpg", food: "tagine.webp",  from: 80, desc: "Slow-cooked tagines and mint tea in a riad courtyard." },
-    { name: "Korean BBQ House",      zone: "South Korea",  cuisine: "KOREAN",    img: "park6.jpg", food: "koreanbbq.webp",  from: 110, desc: "Tabletop grills, banchan and bingsu for dessert." },
-    { name: "Taverna Blue",          zone: "Greece",       cuisine: "GREEK",      img: "park7.jpg", food: "taverna.webp",  from: 85, desc: "Gyros, grilled halloumi and Aegean-blue shutters." },
+    { name: "Tante", zone: "Egypt", cuisine: "EGYPTIAN", img: "egypt.jpg",
+      food: "nile.webp", booking: "Reservations on webook",
+      desc: "A high-end Egyptian kitchen in the Egypt pavilion, owned by the actor Ashraf Abdelbaky, and one of the zone's best-known sit-down tables. Book through webook.com." },
+    { name: "Superheroes Restaurant", cuisine: "THEMED DINING", img: "park2.jpg",
+      food: "route66.webp", booking: "Reservations accepted",
+      desc: "A themed room built for families. It takes reservations, which can also ease your way into the zone \u2014 though it stays busy even with a booking." },
+    { name: "Sakura Lounge", zone: "Japan", cuisine: "JAPANESE FUSION", img: "japan.jpg",
+      food: "sakura.webp", booking: "Book ahead \u00b7 queues after 7 PM",
+      desc: "Sit-down Japanese fusion in the Japan pavilion. Popular enough that the queue builds from about 7 PM, so book ahead." },
+    { name: "EOS Restaurant", zone: "Greece", cuisine: "MEDITERRANEAN", img: "greece.webp",
+      food: "eos.webp", booking: "Reservations for sit-down tables",
+      desc: "A specialty Mediterranean venue in the Greece pavilion serving formal meals, Ramadan iftar among them. Sit-down tables run on reservations." },
   ],
 
   showsByZone: [

@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=418" />
+<link rel="stylesheet" href="css/main.css?v=421" />
 </head>
 <body class="typo-body">
 
@@ -99,6 +99,16 @@
             <span class="bt-text">
               <b class="bt-name">Entry + experience</b>
               <span class="bt-price">from <b>SAR 150</b></span>
+            </span>
+            <i class="bt-go" aria-hidden="true"></i>
+          </a>
+          <a class="bt" href="#/map?cat=dining">
+            <span class="bt-ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 2.5v7a3 3 0 0 0 2 2.8V21.5h2V12.3a3 3 0 0 0 2-2.8v-7h-2v6h-1v-6H8v6H7v-6zm10.5 0c-1.5 0-2.7 2-2.7 4.5 0 2 .8 3.6 1.9 4.2v10.3h2V11.2c1.1-.6 1.9-2.2 1.9-4.2 0-2.5-1.2-4.5-2.7-4.5z"/></svg>
+            </span>
+            <span class="bt-text">
+              <b class="bt-name">Restaurants</b>
+              <span class="bt-price">four take <b>bookings</b></span>
             </span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
@@ -259,12 +269,14 @@
     </section>
 
     <!-- ── restaurants ── -->
-    <section class="eats" id="eats">
+    <!-- hidden from the home page: the four bookable restaurants are reachable
+         from the hero tile, which opens the map already filtered to dining -->
+    <section class="eats" id="eats" hidden>
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> EAT YOUR WAY AROUND</p>
-        <h2 class="sec-title">TWELVE KITCHENS,<br/>ONE BOULEVARD</h2>
-        <p class="sec-sub">Every zone cooks its own country. Najdi grills to ramen counters,
-          tagines to tacos — a world of dinner, all in one night, all on foot.</p>
+        <p class="eyebrow"><span class="sec-num">04</span> BOOK A TABLE</p>
+        <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
+        <p class="sec-sub">Four kitchens take reservations — Egyptian, Japanese fusion,
+          Mediterranean and a themed room for families. Book before you go and skip the queue.</p>
       </div>
       <div class="rail-wrap">
         <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">‹</button>
@@ -731,23 +743,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=418"></script>
-  <script src="js/borders.js?v=418"></script>
-  <script src="js/scene.js?v=418"></script>
-  <script src="js/app.js?v=418"></script>
-  <script src="js/experiences.js?v=418"></script>
-  <script src="js/carousels.js?v=418"></script>
-  <script src="js/coverflow.js?v=418"></script>
-  <script src="js/zones.js?v=418"></script>
-  <script src="js/gallery.js?v=418"></script>
-  <script src="js/parkmap.js?v=418"></script>
-  <script src="js/sponsors.js?v=418"></script>
-  <script src="js/cashless.js?v=418"></script>
-  <script src="js/headings.js?v=418"></script>
-  <script src="js/bundles.js?v=418"></script>
-  <script src="js/ridex.js?v=418"></script>
-  <script src="js/cursor.js?v=418"></script>
+  <script src="js/data.js?v=421"></script>
+  <script src="js/borders.js?v=421"></script>
+  <script src="js/scene.js?v=421"></script>
+  <script src="js/app.js?v=421"></script>
+  <script src="js/experiences.js?v=421"></script>
+  <script src="js/carousels.js?v=421"></script>
+  <script src="js/coverflow.js?v=421"></script>
+  <script src="js/zones.js?v=421"></script>
+  <script src="js/gallery.js?v=421"></script>
+  <script src="js/parkmap.js?v=421"></script>
+  <script src="js/sponsors.js?v=421"></script>
+  <script src="js/cashless.js?v=421"></script>
+  <script src="js/headings.js?v=421"></script>
+  <script src="js/bundles.js?v=421"></script>
+  <script src="js/ridex.js?v=421"></script>
+  <script src="js/cursor.js?v=421"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=418"></script> -->
+  <script type="module" src="js/globe.js?v=421"></script> -->
 </body>
 </html>

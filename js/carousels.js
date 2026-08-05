@@ -108,7 +108,7 @@
         <div class="eat-text">
           <p class="eat-meta">${r.cuisine}</p>
           <h3>${r.name}</h3>
-          <p class="eat-from">From <b>SAR ${r.from}</b></p>
+          <p class="eat-from">${r.booking ? `<b>${r.booking}</b>` : `From <b>SAR ${r.from}</b>`}</p>
         </div>
       </article>`).join("");
     // the heart is a local toggle; there is no account to save against yet

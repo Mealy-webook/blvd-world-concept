@@ -543,9 +543,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* booking CTAs with starting prices */
 /* ── the hero's three ways in, as tiles ── */
 .book-tiles {
+  /* Entry ticket spans the top on its own — it is the one most people want and
+     the cheapest way in — with the other three in a row beneath it. */
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(12px, 1.4vw, 20px); width: min(1080px, 100%);
 }
+.bt.is-lead { grid-column: 1 / -1; }
 /* One solid, two outlined. On a dark plate a dark glass tile has no figure to
    its ground and simply disappears — which is what these did once the video
    behind them went. The site already has a primary-action style in .pill.solid
@@ -2347,6 +2350,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 @media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
 
 /* ═══════════════ RESTAURANTS ═══════════════ */
+/* the section rule sets display: grid, which outranks the user agent's
+   [hidden] { display: none } — so hiding it needs saying explicitly */
+.eats[hidden] { display: none; }
 .eats {
   position: relative; z-index: 11;
   padding: var(--sec-y) var(--sec-x);
