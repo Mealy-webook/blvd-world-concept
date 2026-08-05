@@ -292,11 +292,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #view-home {
   background: var(--page-bg);
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
-  /* one section per gesture. scroll-snap-stop: always on each section is what
-     makes a single wheel flick land on the next one rather than skimming past
-     two; mandatory keeps it settled. A section taller than the stage still
-     scrolls freely inside itself, so nothing is ever unreachable. */
-  scroll-snap-type: y mandatory;
+  /* No vertical snapping. The sections used to snap one per gesture, but the
+     story-scroll hinge is a scrubbed transition — snapping skipped straight
+     over the middle of it, so the swing only ever showed as a flick. Free
+     scrolling lets the hinge play out. */
 }
 #view-home:not(.active) { overflow: hidden; }
 .street {
@@ -626,20 +625,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .street,
 .zonesec, .ridetrack, .cashless, .eats, .shows, .gallery, .faqs, .sponsors, .pkcall {
   min-height: 100dvh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 .zonesec, .ridetrack, .cashless, .eats, .shows, .gallery, .faqs, .sponsors {
   align-content: center;
 }
-/* the questions go two-up on a wide stage, which is the only way eight of them
-   fit one screen without the list scrolling inside itself */
+/* Five questions read as one column — they fit a stage with room to spare, and
+   two columns of five leaves a lopsided three-and-two. */
 .faqs { gap: var(--sp-4); }
-@media (min-width: 900px) {
-  .faq-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--sp-2); }
-}
-/* and a safety net: however many questions arrive, the list never pushes the
-   section past its stage */
+/* a safety net all the same: however many questions arrive, the list never
+   pushes the section past its stage */
 .faq-list {
   max-height: min(62dvh, 660px); overflow-y: auto; scrollbar-width: thin;
   padding-right: 6px;
@@ -3123,48 +3117,58 @@ body.route-experiences
 }
 
 /* ── the story-scroll hinge (js/flow.js) ──
-   Each section's contents live in a .flow-in wrapper that arrives rotated about
-   its bottom-left corner and swings level as the section comes up the screen.
-   The wrapper carries the rotation rather than the section itself: a snap target
-   with a transform on it reports a moved box, and the snapping goes wrong. */
+   Each section's contents live in a .flow-in plate that arrives rotated about its
+   bottom-left corner and swings level as the section comes up the screen. The
+   colour rides on the plate, not on the section, exactly as the reference does:
+   the demo spreads its backgroundColor onto the rotating inner container, so what
+   hinges in is a coloured panel rather than skewed type. The section stays
+   transparent and clips, and the section behind shows through the corners the
+   turning plate leaves open.
+
+   The section is sticky, standing in for the reference's ScrollTrigger pin —
+   without it the outgoing section scrolls away and the plate swings over a void. */
+.zonesec, .ridetrack, .cashless, .eats, .shows, .gallery, .faqs, .sponsors, .pkcall {
+  position: sticky; top: 0;
+  overflow: hidden;
+  background-color: transparent;
+  /* the padding moves onto the plate, or the plate sits inset inside its own
+     section and reads as a floating panel instead of a full-bleed one */
+  padding: 0;
+}
 .flow-in {
   display: grid; grid-template-columns: minmax(0, 1fr);
   justify-items: inherit; align-content: inherit;
   gap: inherit;
-  width: 100%; min-height: 100%;
+  width: 100%;
+  /* 100dvh, not 100%: the section's height is auto, so a percentage min-height
+     on the plate resolves to auto and it only grows as tall as its contents */
+  min-height: 100dvh;
+  padding: var(--sec-y) var(--sec-x);
+  background-color: var(--plate, var(--logo-2));
   transform-origin: bottom left;
   will-change: transform;
   backface-visibility: hidden;      /* keeps type crisp mid-rotation */
 }
-/* The reference pins each section so the next one hinges over it, and every
-   section there carries a solid background colour — without one, pinned sections
-   stack up transparently and three headlines land on top of each other. So each
-   section here becomes an opaque plate, sticking at the top of the scroller while
-   the next swings over it. The tones stay inside the existing palette; this is a
-   stack of dark plates, not a colour scheme. */
-.zonesec, .ridetrack, .cashless, .eats, .shows, .gallery, .faqs, .sponsors, .pkcall {
-  position: sticky; top: 0;
-  overflow: hidden;
-  background-color: var(--logo-2);
-}
 /* The plates are the BLVD World logo's own colours — the four dark steps of the
    navy ladder in the mark itself, so the stack is the brand rather than an
-   invented scheme. Adjacent plates never repeat, and the palest step lands on
-   the gallery, which is almost all photography and carries the least small type. */
-.pkcall    { background-color: var(--logo-1); }
-.ridetrack { background-color: var(--logo-1); }
-.cashless  { background-color: var(--logo-3); }
-.eats      { background-color: var(--logo-2); }
-.shows     { background-color: var(--logo-1); }
-.gallery   { background-color: var(--logo-4); }
-.faqs      { background-color: var(--logo-3); }
-.sponsors  { background-color: var(--logo-2); }
-/* the plate's own edge, so the hinge has a lip to catch the light on */
-.zonesec::after, .ridetrack::after, .cashless::after, .eats::after, .shows::after,
-.gallery::after, .faqs::after, .sponsors::after {
+   invented scheme. Adjacent plates never repeat, and the palest step lands on the
+   gallery, which is almost all photography and carries the least small type. */
+.zonesec   { --plate: var(--logo-2); }
+.pkcall    { --plate: var(--logo-1); }
+.ridetrack { --plate: var(--logo-1); }
+.cashless  { --plate: var(--logo-3); }
+.eats      { --plate: var(--logo-2); }
+.shows     { --plate: var(--logo-1); }
+.gallery   { --plate: var(--logo-4); }
+.faqs      { --plate: var(--logo-3); }
+.sponsors  { --plate: var(--logo-2); }
+/* the plate's leading edge, so the hinge has a lip to catch the light on */
+.flow-in::before {
   content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 3;
-  border-top: 1px solid rgba(124, 196, 255, .1);
+  border-top: 1px solid rgba(124, 196, 255, .12);
 }
+/* the two sections whose contents run to the edge keep no inline padding */
+.zonesec > .flow-in, .gallery > .flow-in { padding-inline: 0; }
 /* the zone ring's cards recede on Z, so it keeps its own overflow */
 .zonesec { overflow: clip visible; }
 @media (prefers-reduced-motion: reduce) {

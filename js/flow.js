@@ -5,11 +5,13 @@
 // on rising z-index so the incoming one hinges over the one it replaces.
 //
 // What is NOT ported is the machinery: this project has no React, no Tailwind and
-// no build step, and GSAP's ScrollTrigger would have to pin every section — which
-// fights the CSS scroll-snap that gives this page its one-section-per-gesture
-// scrolling. The snap already holds each section in place, so the rotation is
-// driven straight off scroll position instead, exactly as js/headings.js and the
-// .reveal system do. No dependencies, and nothing to fight over the scroller.
+// no build step. The rotation is driven straight off scroll position instead,
+// exactly as js/headings.js and the .reveal system do, and CSS `position: sticky`
+// stands in for ScrollTrigger's pin. No dependencies.
+//
+// The page used to snap one section per gesture. It no longer does: snapping
+// jumped straight over the middle of this transition, so the swing only ever
+// registered as a flick. Free scrolling lets it play out.
 (function () {
   const STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const home = document.getElementById("view-home");
@@ -22,9 +24,9 @@
 
   const MAX = 26;              // degrees the section is turned when it is a screen away
 
-  // Each section gets an inner wrapper to turn, so the rotation never lands on the
-  // element that scroll-snap is measuring — a snap target with a transform on it
-  // reports a moved box and the snapping goes wrong.
+  // Each section gets an inner plate to turn. The rotation must not land on the
+  // section itself: the section is what stays pinned and clips, and the plate is
+  // what swings inside it, carrying the colour with it.
   const inners = secs.map((sec, i) => {
     let inner = sec.querySelector(":scope > .flow-in");
     if (!inner) {
