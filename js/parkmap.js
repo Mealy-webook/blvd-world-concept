@@ -566,4 +566,16 @@
   render();
   sizeStage();
   apply();
+
+  // a plate on the home page links to #/map?zone=Egypt — open on that zone, and
+  // keep answering later links while the route is already up
+  function fromHash() {
+    const m = location.hash.match(/[?&]zone=([^&]+)/);
+    if (!m) return;
+    const want = decodeURIComponent(m[1]);
+    const i = pinOf.has(want) ? pinOf.get(want) : pins.findIndex((p) => keyOf(p) === want);
+    if (i >= 0) requestAnimationFrame(() => select(i, 2.4));
+  }
+  addEventListener("hashchange", fromHash);
+  fromHash();
 })();

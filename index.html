@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=231" />
+<link rel="stylesheet" href="css/main.css?v=241" />
 </head>
 <body class="typo-body">
 
@@ -108,27 +108,27 @@
 
     <!-- ── park map: full-bleed plan with a floating discovery panel ── -->
 
-    <!-- ── experiences: the same fanned deck, its own content ── -->
-    <section class="rides pex" id="pex">
-      <div class="rides-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> STEP INSIDE SOMETHING ELSE</p>
-        <h2 class="sec-title">TEN EXPERIENCES</h2>
-        <p class="sec-sub">Ski a real snow dome, break out of a pharaoh's tomb, meet the dolphins —
-          every experience ticket includes park entry.</p>
+    <!-- ── this season's new zones: a rail of plates through to the map ── -->
+    <section class="zonesec" id="pex">
+      <div class="zs-head reveal">
+        <p class="eyebrow"><span class="sec-num">01</span> NEW FOR THIS SEASON</p>
+        <h2 class="sec-title">DISCOVER THE NEW ZONES</h2>
+        <p class="sec-sub">Twenty countries, one boulevard. Each zone builds its own streets,
+          kitchens and stages — open one to see what is waiting inside it.</p>
       </div>
 
-      <div class="fan-stage">
-        <div class="fan-deck" id="pex-fan"></div>
-      </div>
-      <div class="fan-nav">
-        <button class="rail-btn prev" id="pex-prev" aria-label="Previous experiences">&#8249;</button>
-        <div class="fan-dots" id="pex-dots"></div>
-        <button class="rail-btn next" id="pex-next" aria-label="More experiences">&#8250;</button>
+      <div class="rail-wrap">
+        <button class="rail-btn prev" id="zs-prev" aria-label="Previous zones">&#8249;</button>
+        <div class="rail zs-rail" id="zs-rail"></div>
+        <button class="rail-btn next" id="zs-next" aria-label="More zones">&#8250;</button>
       </div>
 
       <div class="ride-cta reveal">
-        <p class="rc-note">Experiences from <b>SAR 150</b> per person</p>
-        <a href="#/experiences" class="pill solid big-pill">BOOK ENTRY + EXPERIENCE</a>
+        <p class="rc-note">Every zone is included with park entry &#183; from <b>SAR 50</b></p>
+        <a href="#/map" class="pill solid big-pill">
+          OPEN THE PARK MAP
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
       </div>
     </section>
 
@@ -432,6 +432,8 @@
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury — every one of them runs all night.
           Run down the list; whatever you land on stands up beside it.</p>
+        <p class="rx-fare-note">Single-ride prices, per person &#183; <b>fast track</b> is the shorter
+          queue &#183; a ride package works out cheaper from the third ride on</p>
       </div>
 
       <div class="rx-split reveal">
@@ -445,6 +447,7 @@
               <p class="rx-cap-kind" id="rx-cap-kind"></p>
               <h3 class="rx-cap-name" id="rx-cap-name"></h3>
               <p class="rx-cap-heat" id="rx-cap-heat"></p>
+              <p class="rx-cap-fare" id="rx-cap-fare"></p>
             </div>
           </div>
         </div>
@@ -656,20 +659,22 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=231"></script>
-  <script src="js/borders.js?v=231"></script>
-  <script src="js/scene.js?v=231"></script>
-  <script src="js/app.js?v=231"></script>
-  <script src="js/experiences.js?v=231"></script>
-  <script src="js/carousels.js?v=231"></script>
-  <script src="js/fan.js?v=231"></script>
-  <script src="js/gallery.js?v=231"></script>
-  <script src="js/parkmap.js?v=231"></script>
-  <script src="js/sponsors.js?v=231"></script>
-  <script src="js/cashless.js?v=231"></script>
-  <script src="js/bundles.js?v=231"></script>
-  <script src="js/ridex.js?v=231"></script>
+  <script src="js/data.js?v=241"></script>
+  <script src="js/borders.js?v=241"></script>
+  <script src="js/scene.js?v=241"></script>
+  <script src="js/app.js?v=241"></script>
+  <script src="js/experiences.js?v=241"></script>
+  <script src="js/carousels.js?v=241"></script>
+  <script src="js/fan.js?v=241"></script>
+  <script src="js/gallery.js?v=241"></script>
+  <script src="js/parkmap.js?v=241"></script>
+  <script src="js/sponsors.js?v=241"></script>
+  <script src="js/cashless.js?v=241"></script>
+  <script src="js/zones.js?v=241"></script>
+  <script src="js/headings.js?v=241"></script>
+  <script src="js/bundles.js?v=241"></script>
+  <script src="js/ridex.js?v=241"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=231"></script> -->
+  <script type="module" src="js/globe.js?v=241"></script> -->
 </body>
 </html>

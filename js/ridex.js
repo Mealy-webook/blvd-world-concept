@@ -48,6 +48,10 @@
           <span class="rx-name">${r.name}</span>
           <span class="rx-kind">${r.kind}</span>
           ${bars(h)}
+          <span class="rx-fare">
+            <b>SAR ${r.reg}</b>
+            <i>SAR ${r.fast} fast</i>
+          </span>
           <span class="rx-go" aria-hidden="true">↗</span>
         </button>
       </li>`;
@@ -58,6 +62,7 @@
   const capKind = document.getElementById("rx-cap-kind");
   const capName = document.getElementById("rx-cap-name");
   const capHeat = document.getElementById("rx-cap-heat");
+  const capFare = document.getElementById("rx-cap-fare");
   const frame = document.querySelector(".rx-frame");
 
   let active = -1;
@@ -72,6 +77,9 @@
     capKind.textContent = r.kind;
     capName.textContent = r.name;
     capHeat.innerHTML = `${bars(h)}<em>${LABEL[BAND[h]]}</em>`;
+    if (capFare) capFare.innerHTML =
+      `<span class="cf-one"><small>Regular queue</small><b>SAR ${r.reg}</b></span>` +
+      `<span class="cf-one is-fast"><small>Fast track</small><b>SAR ${r.fast}</b></span>`;
     if (!still && frame) {                 // restart the slow push-in
       frame.classList.remove("drift");
       void frame.offsetWidth;

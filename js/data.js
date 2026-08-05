@@ -11,25 +11,30 @@ window.WBK = {
 
   stickers: ["💜", "⭐", "🎟️", "🎆", "🌙", "🎶"],
 
-  // rides, from the official park sheet
-  // rides, from the official park sheet. Photography is representative
-  // BLVD World imagery, not a shot of each individual ride.
+  // ── the fourteen rides ──────────────────────────────────────────
+  // Photography is representative BLVD World imagery, not a shot of each ride.
+  // `reg` and `fast` are the single-ride prices, regular queue and fast track.
+  // THESE ARE PLACEHOLDERS. The only rate card we have covers the five ride
+  // packages, so these are scaled from it: Value Deal is SAR 89 for 5 rides
+  // (17.80 each) and Unlimited Regular 199 against Unlimited Fast 349 puts fast
+  // track at 1.75x. Replace the two numbers on each line with the real ones.
   rides: [
-    { name: "Wave Swinger",     kind: "FAMILY SWING", img: "wave-swinger.jpg" },
-    { name: "Turbo 360",        kind: "THRILL",       img: "turbo-360.jpg" },
-    { name: "Drop and Twist",   kind: "THRILL",       img: "drop-and-twist.jpg" },
-    { name: "Carousel",         kind: "FAMILY",       img: "carousel.jpg" },
-    { name: "Sky Loop",         kind: "THRILL",       img: "sky-loop.jpg" },
-    { name: "Enjoy The Flight", kind: "AERIAL",       img: "enjoy-the-flight.jpg" },
-    { name: "Cable Cars",       kind: "SCENIC",       img: "cable-cars.jpg" },
-    { name: "Taxi Mania",       kind: "FAMILY",       img: "taxi-mania.jpg" },
-    { name: "Convoy Figure 8",  kind: "FAMILY",       img: "convoy-figure-8.jpg" },
-    { name: "View Tower",       kind: "SCENIC",       img: "view-tower.jpg" },
-    { name: "Super Fly",        kind: "THRILL",       img: "super-fly.jpg" },
-    { name: "Amazonia Awakens", kind: "ADVENTURE",    img: "amazonia-awakens.jpg" },
-    { name: "Dragons Fury",     kind: "THRILL",       img: "dragons-fury.jpg" },
-    { name: "Air Max",          kind: "THRILL",       img: "air-max.jpg" },
+    { name: "Wave Swinger",     kind: "FAMILY SWING", img: "wave-swinger.jpg", reg: 20, fast: 35 },
+    { name: "Turbo 360",        kind: "THRILL",       img: "turbo-360.jpg", reg: 30, fast: 50 },
+    { name: "Drop and Twist",   kind: "THRILL",       img: "drop-and-twist.jpg", reg: 30, fast: 50 },
+    { name: "Carousel",         kind: "FAMILY",       img: "carousel.jpg", reg: 15, fast: 25 },
+    { name: "Sky Loop",         kind: "THRILL",       img: "sky-loop.jpg", reg: 30, fast: 50 },
+    { name: "Enjoy The Flight", kind: "AERIAL",       img: "enjoy-the-flight.jpg", reg: 30, fast: 50 },
+    { name: "Cable Cars",       kind: "SCENIC",       img: "cable-cars.jpg", reg: 15, fast: 25 },
+    { name: "Taxi Mania",       kind: "FAMILY",       img: "taxi-mania.jpg", reg: 15, fast: 25 },
+    { name: "Convoy Figure 8",  kind: "FAMILY",       img: "convoy-figure-8.jpg", reg: 15, fast: 25 },
+    { name: "View Tower",       kind: "SCENIC",       img: "view-tower.jpg", reg: 15, fast: 25 },
+    { name: "Super Fly",        kind: "THRILL",       img: "super-fly.jpg", reg: 30, fast: 50 },
+    { name: "Amazonia Awakens", kind: "ADVENTURE",    img: "amazonia-awakens.jpg", reg: 20, fast: 35 },
+    { name: "Dragons Fury",     kind: "THRILL",       img: "dragons-fury.jpg", reg: 30, fast: 50 },
+    { name: "Air Max",          kind: "THRILL",       img: "air-max.jpg", reg: 30, fast: 50 },
   ],
+
 
   // park experiences grouped by zone, from the same sheet
   parkExperiences: [
