@@ -50,12 +50,11 @@
   }
 
   /* ── when a heading is "in" ──
-     Two mechanisms, on purpose. The observer is the primary and is rooted on the
-     box the element actually scrolls in — the views are fixed, internally
-     scrolling containers, so the default viewport root reports the whole page as
-     visible at once. The scroll pass is the backstop, matching what the .reveal
-     system does, for the case where a rooted observer delivers nothing. Neither
-     can leave a heading behind its own mask. */
+     Scroll maths, not IntersectionObserver. These views are fixed, filtered,
+     internally scrolling boxes; an observer rooted on one reports every heading
+     as visible at once in some conditions, which sets the whole page before the
+     reader has scrolled a pixel and kills the animation outright. The .reveal
+     system in scene.js does its own maths for the same reason. */
   const scrollerOf = (el) => el.closest("#view-home, #view-rides, #view-packages") || null;
 
   const groups = new Map();
@@ -67,17 +66,6 @@
 
   const done = (el) => el.classList.add("set");
 
-  for (const [root, els] of groups) {
-    const io = new IntersectionObserver((entries) => {
-      for (const en of entries) {
-        if (!en.isIntersecting) continue;
-        done(en.target);
-        io.unobserve(en.target);
-      }
-    }, { root, threshold: 0.3, rootMargin: "0px 0px -6% 0px" });
-    els.forEach((el) => io.observe(el));
-  }
-
   function update(root) {
     const els = groups.get(root);
     if (!els) return;
@@ -85,8 +73,10 @@
     const vh = (root ? root.clientHeight : innerHeight) || 1;
     for (const el of els) {
       if (el.classList.contains("set")) continue;
+      if (!el.offsetParent) continue;          // a hidden section has no fold
       const y = el.getBoundingClientRect().top - top;
-      if (y < vh * 0.88 && y > -el.offsetHeight - vh) done(el);
+      // on screen, or already gone past — never everything at once
+      if (y < vh * 0.86) done(el);
     }
   }
   const updateAll = () => groups.forEach((_, root) => update(root));
@@ -98,6 +88,24 @@
   // a route that opens mid-page has its headings already past the fold
   addEventListener("hashchange", () => requestAnimationFrame(updateAll));
 
-  // fail-open: a heading must never be left behind its own mask
-  setTimeout(() => watch.forEach(done), 5000);
+  /* ── the first pass waits for the page ──
+     The loader and intro run for several seconds. A pass fired at load would
+     resolve against a page nobody is looking at yet; worse, an unconditional
+     fail-open on a timer fired during the intro and set every heading before
+     the first scroll. Both wait for the home view to actually come up. */
+  const home = document.getElementById("view-home");
+  function begin() {
+    requestAnimationFrame(updateAll);
+    // and a long backstop, so a heading can never stay behind its mask
+    setTimeout(() => watch.forEach(done), 20000);
+  }
+  if (!home || home.classList.contains("active")) begin();
+  else {
+    const mo = new MutationObserver(() => {
+      if (!home.classList.contains("active")) return;
+      mo.disconnect();
+      begin();
+    });
+    mo.observe(home, { attributes: true, attributeFilter: ["class"] });
+  }
 })();
