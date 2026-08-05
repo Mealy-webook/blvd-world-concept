@@ -35,44 +35,13 @@
     card.style.animation = "";                      // let the float resume
   });
 
-  /* ── tapping the card spends a play ── */
-  // the top-up strip is gone, so this is the only thing that moves the balance
-  const amount = document.getElementById("bc-amount");
-  const ridesEl = document.getElementById("bc-rides");
-  let balance = parseInt(amount.textContent, 10) || 0;
-  let rides = ridesEl ? parseInt(ridesEl.textContent, 10) || 0 : 0;
-  let counting = null;
-
-  function runTo(target) {
-    cancelAnimationFrame(counting);
-    const from = balance, delta = target - from, t0 = performance.now();
-    amount.classList.add("bump");
-    (function step(now) {
-      const p = Math.min(1, (now - t0) / 550);
-      const e = 1 - Math.pow(1 - p, 3);             // ease out
-      amount.textContent = Math.round(from + delta * e);
-      if (p < 1) counting = requestAnimationFrame(step);
-      else {
-        balance = target;
-        setTimeout(() => amount.classList.remove("bump"), 260);
-      }
-    })(performance.now());
-  }
-
+  /* ── tapping the card rings ── */
+  // The rides and cash figures are inside the card artwork now, so there is
+  // nothing to count down; the tap is the ring alone.
   card.addEventListener("click", () => {
-    if (balance < 25 && rides < 1) return;          // nothing left to spend
     card.classList.remove("tapped");
     void card.offsetWidth;                          // restart the ring animation
     card.classList.add("tapped");
-    // a ride comes off the ride count first; once those run out it costs cash
-    if (rides > 0 && ridesEl) {
-      rides -= 1;
-      ridesEl.textContent = rides;
-      ridesEl.classList.add("bump");
-      setTimeout(() => ridesEl.classList.remove("bump"), 260);
-    } else {
-      runTo(balance - 25);
-    }
     setTimeout(() => card.classList.remove("tapped"), 1600);
   });
 })();

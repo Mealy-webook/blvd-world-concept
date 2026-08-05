@@ -418,18 +418,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .r1 { left: 2%;  background: #2f7ef7; } .r2 { left: 27%; background: #ff3ec8; width: 18%; }
 .r3 { right: 26%; background: #8b5cf6; width: 18%; } .r4 { right: 1%; background: #12c9e8; }
 
-/* hero UI */
-/* The footage is gone; the hero is the built scene again — starfield, walls,
-   wheel, string lights, ground reflections and the landmark layers. Only the two
-   bands the type actually sits in are darkened: a short one under the nav, and
-   the foot of the frame where the tiles and the scroll cue are. */
-.hero-veil {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(6, 10, 30, .6) 0%, rgba(6, 10, 30, .14) 13%, transparent 24%),
-    linear-gradient(0deg, rgba(6, 9, 26, .8) 0%, rgba(6, 9, 26, .3) 17%, transparent 36%);
-}
-
+/* hero UI ── the hero is the arched heading and the four tiles, on the page's
+   own colour. No footage, no built scene, so nothing needs a veil over it. */
 .hero-ui { position: relative; z-index: 5; text-align: center; padding: 12vh 6vw 0; display: grid; justify-items: center; gap: 22px; transform-style: preserve-3d; will-change: transform; }
 .hero-logo {
   height: clamp(66px, 8.5vw, 116px); width: auto; margin-bottom: -6px;
@@ -1414,7 +1404,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .fan-card.h3 .rh-label { color: #ffc79a; }
 
 /* ── rides bundles: just the way in, since there may be several ── */
-.ride-cta { display: grid; gap: 12px; justify-items: center; text-align: center; }
+/* side by side, wrapping only when there is genuinely no room */
+.ride-cta {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  align-items: center; justify-content: center; text-align: center;
+}
 .rc-note {
   display: inline-flex; align-items: center; flex-wrap: wrap; gap: 10px; justify-content: center;
   font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--dim);
@@ -1708,8 +1702,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   display: grid; gap: clamp(30px, 5vh, 52px); justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
 .rx-split {
-  width: 100%; max-width: min(1180px, 100%);
-  display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  /* one column now the stage has gone; the list is the page */
+  width: 100%; max-width: min(860px, 100%);
+  display: grid; grid-template-columns: minmax(0, 1fr);
   gap: clamp(26px, 4vw, 62px); align-items: start;
 }
 
@@ -1786,7 +1781,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .rx-row.gone { display: none; }
 .rx-hit {
   position: relative; overflow: hidden; width: 100%; cursor: pointer;
-  display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto 82px 82px;
+  display: grid; grid-template-columns: 34px 56px minmax(0, 1fr) auto auto 82px 82px;
   align-items: center; gap: clamp(10px, 1.4vw, 18px);
   padding: clamp(12px, 1.5vw, 17px) 10px; text-align: left;
   background: none; border: 0; color: inherit;
@@ -1807,7 +1802,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   color: var(--ink-faint); transition: color .4s var(--ease);
 }
 .rx-row.on .rx-no { color: var(--gold); }
-.rx-thumb { display: none; }
+/* every fare row carries the ride's picture, at every width */
+.rx-thumb {
+  display: block; width: 56px; height: 56px; flex: none;
+  border-radius: var(--r-md); overflow: hidden; border: var(--b-1);
+  background: var(--s-well);
+}
+.rx-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.96) brightness(.86); transition: filter .4s var(--ease);
+}
+.rx-row.on .rx-thumb { border-color: rgba(255, 194, 77, .55); }
+.rx-row.on .rx-thumb img { filter: none; }
 .rx-name {
   font-family: var(--disp); font-weight: 700; font-size: clamp(19px, 2.1vw, 27px); line-height: 1.14; letter-spacing: -.02em;
   color: #fff; transition: color .4s var(--ease), transform .55s var(--ease);
@@ -1870,17 +1876,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 @media (max-width: 1000px) {
   /* the stage steps aside: each row carries its own picture instead */
-  .rx-split { grid-template-columns: minmax(0, 1fr); max-width: 620px; }
-  .rx-stage { display: none; }
+  .rx-split { max-width: 620px; }
   /* the stage is off here, so the row keeps the fares — the kind chip goes
      instead, since a price is worth more than a label */
   .rx-hit { grid-template-columns: 30px 56px minmax(0, 1fr) auto 68px 68px 26px; }
   .rx-cols { --fare-w: 68px; }
-  .rx-thumb {
-    display: block; width: 56px; height: 56px; border-radius: var(--r-md); overflow: hidden;
-    border: var(--b-1);
-  }
-  .rx-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .rx-kind { display: none; }
 }
 @media (max-width: 460px) {
@@ -2194,8 +2194,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   position: relative; perspective: 1100px; display: grid; place-items: center;
   padding: clamp(6px, 1.5vh, 20px) 0;
 }
+/* The card face is the supplied artwork, unaltered. Everything that used to be
+   built in CSS — wordmark, issuer lockup, field, the rides and cash figures, the
+   tap mark — is inside the image, so the only things left here are the shape,
+   the tilt and the glare. */
+.blvd-card.is-art > img {
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit;
+}
 .blvd-card {
-  position: relative; width: min(430px, 100%); aspect-ratio: 1.585 / 1;  /* ID-1, as a real card */
+  position: relative; width: min(430px, 100%); aspect-ratio: 1.583 / 1;  /* the artwork's own ratio */
   border-radius: var(--r-lg); overflow: hidden;
   display: grid; grid-template-rows: auto 1fr auto;
   transform-style: preserve-3d;
@@ -2203,9 +2210,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transform: rotateX(var(--rx, 8deg)) rotateY(var(--ry, -14deg));
   animation: cardFloat 7s ease-in-out infinite;
   background: #12132e;
-  border: 1px solid rgba(255, 255, 255, .16);
-  box-shadow: var(--sh-3), 0 1px 0 rgba(255, 255, 255, .22) inset;
+  box-shadow: var(--sh-3);
 }
+.blvd-card.is-art { border: 0; }
 .card-stage:hover .blvd-card { animation-play-state: paused; }
 @keyframes cardFloat {
   0%, 100% { transform: rotateX(8deg) rotateY(-14deg) translateY(0); }

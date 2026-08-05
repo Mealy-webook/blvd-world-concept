@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=432" />
+<link rel="stylesheet" href="css/main.css?v=442" />
 </head>
 <body class="typo-body">
 
@@ -33,9 +33,8 @@
   <!-- ══════════ INTRO ══════════ -->
   <section id="view-intro" class="view">
     <div class="intro-copy">
-      <p class="type-line" data-line="TWENTY COUNTRIES. ONE UNFORGETTABLE NIGHT."></p>
-      <p class="type-line" data-line="ALL OF IT IN THE HEART OF RIYADH."></p>
-      <img class="brand-img med intro-logo hidden-soft" src="img/blvd-world-logo.svg" alt="BLVD World" />
+      <p class="type-line" data-line="BLVD WORLD THIS SEASON TAKES YOU ON A MAGICAL EXPERIENCE"></p>
+      <p class="type-line" data-line="FROM THE HEART OF RIYADH."></p>
     </div>
     <button id="skip-intro" class="skip-btn">SKIP INTRO</button>
   </section>
@@ -43,9 +42,8 @@
   <!-- ══════════ HOME / HERO ══════════ -->
   <section id="view-home" class="view">
     <div id="street" class="street">
-      <!-- The hero is the heading and the three tiles, nothing else: no
-           starfield, no wheel, no signed walls, no string lights, no ground
-           reflections, no floating props, no logo, no scroll cue. -->
+      <!-- The hero is the arched heading and the four tiles, on the page's own
+           colour. The footage carried a generator watermark and is gone. -->
       <div class="hero-ui">
         <!-- the title is set on two arcs, doming the way a park gate arches
              over its entrance -->
@@ -122,7 +120,7 @@
     <section class="globe-sec" id="globe-sec">
       <div id="globe-holder"></div>
       <div class="gallery-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> DRAG TO EXPLORE</p>
+        <p class="eyebrow">DRAG TO EXPLORE</p>
       </div>
     </section>
 
@@ -132,10 +130,7 @@
     <!-- ── every zone in the park, on the coverflow ── -->
     <section class="zonesec" id="pex">
       <div class="zs-head reveal">
-        <p class="eyebrow"><span class="sec-num">01</span> NOW IN BLVD WORLD</p>
-        <h2 class="sec-title">CHOOSE YOUR WORLD</h2>
-        <p class="sec-sub">Each one builds its own streets, its own kitchens, its own stage.
-          Spin the ring, then open any of them on the map.</p>
+        <h2 class="sec-title">TRAVEL THE WORLD<br/>IN ONE NIGHT</h2>
       </div>
 
       <div class="zone-flow" id="zone-flow"></div>
@@ -155,7 +150,6 @@
     <!-- ── packages: the way through to their own page ── -->
     <section class="pkcall" id="bundles">
       <div class="pk-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> PICK YOUR NIGHT</p>
         <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
         <p class="sec-sub">Grab a handful of rides and spend them your way, or strap on a
           bracelet and go unlimited until the gates close.</p>
@@ -187,7 +181,7 @@
       </figure>
       <div class="rp-scrim" aria-hidden="true"></div>
       <div class="rp-copy reveal">
-        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <p class="eyebrow">HOLD ON TIGHT</p>
         <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
         <p class="rp-line">
           <b class="rp-count">14</b>
@@ -204,8 +198,7 @@
     <!-- ── the card: one object, and the three moments around it ── -->
     <section class="cashless" id="cashless">
       <div class="cash-head reveal">
-        <p class="eyebrow"><span class="sec-num">03</span> ONE CARD, ALL NIGHT</p>
-        <h2 class="sec-title">LEAVE YOUR WALLET</h2>
+        <h2 class="sec-title">GO CASHLESS</h2>
         <p class="sec-sub">Every ticket comes with a BLVD card. Load it in the webook app, then
           tap and go — rides, arcades, skill games. No tills. No cash. No queue.</p>
       </div>
@@ -213,41 +206,11 @@
       <div class="cash-stage">
         <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
         <div class="card-stage" id="card-stage">
-          <!-- the real BLVD World card: park photograph as the field, the
-               issuer lockup across the top, rides and cash on a dark band -->
-          <div class="blvd-card" id="blvd-card">
-            <img class="bc-field" src="img/gallery/fireworks.jpg" alt="" aria-hidden="true" />
-            <i class="bc-wash" aria-hidden="true"></i>
-            <i class="bc-sheen" aria-hidden="true"></i>
-
-            <div class="bc-top">
-              <div class="bc-issuer">
-                <b class="bc-wordmark">BLVD WORLD</b>
-                <span class="bc-expiry">Expires: April 2027</span>
-              </div>
-              <div class="bc-marks" aria-label="Saudi Arabia · Riyadh Season · webook">
-                <span class="bc-mark">Saudi</span>
-                <span class="bc-mark">Riyadh Season</span>
-                <span class="bc-mark is-wbk">webook</span>
-              </div>
-            </div>
-
-            <img class="bc-emblem" src="img/blvd-world-logo.svg" alt="BLVD World" />
-
-            <div class="bc-band">
-              <dl class="bc-meter">
-                <div>
-                  <dt>Rides</dt>
-                  <dd id="bc-rides">10</dd>
-                </div>
-                <div>
-                  <dt>Cash</dt>
-                  <dd><span class="bc-cur">SAR</span> <b id="bc-amount">100</b></dd>
-                </div>
-              </dl>
-              <span class="bc-tap">Tap to pay <i class="bc-wave" aria-hidden="true"></i></span>
-            </div>
-
+          <!-- the card artwork as supplied, used as-is: the wordmark, the
+               issuer lockup, the field, the rides and cash figures and the tap
+               mark are all in the image. Only the tilt and the glare are ours. -->
+          <div class="blvd-card is-art" id="blvd-card">
+            <img src="img/blvd-card.png" alt="BLVD World card — 10 rides, SAR 100" draggable="false" />
             <i class="bc-glare" aria-hidden="true"></i>
           </div>
         </div>
@@ -285,7 +248,6 @@
          from the hero tile, which opens the map already filtered to dining -->
     <section class="eats" id="eats" hidden>
       <div class="eats-head reveal">
-        <p class="eyebrow"><span class="sec-num">04</span> BOOK A TABLE</p>
         <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
         <p class="sec-sub">Four kitchens take reservations — Egyptian, Japanese fusion,
           Mediterranean and a themed room for families. Book before you go and skip the queue.</p>
@@ -303,10 +265,7 @@
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
-        <p class="eyebrow"><span class="sec-num">05</span> BLVD WORLD AFTER DARK</p>
-        <h2 class="sec-title">SEE IT FOR<br/>YOURSELF</h2>
-        <p class="sec-sub">Fireworks over the lake. Projections on the rock. Cable cars gliding over
-          the Greek quarter. This is what your night actually looks like.</p>
+        <h2 class="sec-title">THE NIGHT IN PICTURES</h2>
       </div>
       <div class="gal-belts" id="gal-belts"></div>
     </section>
@@ -318,7 +277,6 @@
          linked — the MCP asset URLs expire after about a week. -->
     <section class="venuerules" id="rules">
       <div class="vr-head reveal">
-        <p class="eyebrow"><span class="sec-num">06</span> BEFORE YOU GO</p>
         <h2 class="sec-title">VENUE RULES</h2>
       </div>
 
@@ -375,7 +333,6 @@
     <!-- ── FAQs ── -->
     <section class="faqs" id="faqs">
       <div class="faq-head reveal">
-        <p class="eyebrow"><span class="sec-num">07</span> ANY QUESTIONS</p>
         <h2 class="sec-title">GOOD TO KNOW</h2>
       </div>
       <div class="faq-list" id="faq-list"></div>
@@ -384,9 +341,7 @@
     <!-- ── sponsors: the partner tiers from the official map ── -->
     <section class="sponsors" id="sponsors">
       <div class="sp-head reveal">
-        <p class="eyebrow"><span class="sec-num">08</span> THEY MAKE THE SEASON</p>
         <h2 class="sec-title">OUR PARTNERS</h2>
-        <p class="sec-sub">The brands making this season happen.</p>
       </div>
       <div class="sp-tiers" id="sp-tiers"></div>
     </section>
@@ -530,27 +485,14 @@
         <p class="eyebrow">HOLD ON TIGHT</p>
         <h2 class="sec-title">FOURTEEN RIDES</h2>
         <p class="sec-sub">From the Wave Swinger to Dragons Fury, all fourteen run all night.
-          Run down the list — whatever you land on stands up beside it.</p>
+          Regular queue and fast track, side by side.</p>
         <p class="rx-fare-note">Single-ride prices, per person &#183; <b>fast track</b> is the shorter
           queue &#183; a ride package works out cheaper from the third ride on</p>
       </div>
 
+      <!-- the stage is gone: every row carries its own thumbnail, so the list
+           stands alone at full width -->
       <div class="rx-split reveal">
-        <!-- the stage: the ride under the cursor, held large -->
-        <div class="rx-stage" aria-hidden="true">
-          <div class="rx-frame">
-            <div class="rx-plates" id="rx-plates"></div>
-            <div class="rx-veil"></div>
-            <p class="rx-count"><b id="rx-cap-no">01</b><i>/</i>14</p>
-            <div class="rx-caption">
-              <p class="rx-cap-kind" id="rx-cap-kind"></p>
-              <h3 class="rx-cap-name" id="rx-cap-name"></h3>
-              <p class="rx-cap-heat" id="rx-cap-heat"></p>
-              <p class="rx-cap-fare" id="rx-cap-fare"></p>
-            </div>
-          </div>
-        </div>
-
         <div class="rx-side">
           <div class="rx-filters" id="rx-filters" role="group" aria-label="Filter rides by intensity"></div>
           <!-- the two price columns, named once at the top of the list -->
@@ -763,23 +705,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=432"></script>
-  <script src="js/borders.js?v=432"></script>
-  <script src="js/scene.js?v=432"></script>
-  <script src="js/app.js?v=432"></script>
-  <script src="js/experiences.js?v=432"></script>
-  <script src="js/carousels.js?v=432"></script>
-  <script src="js/coverflow.js?v=432"></script>
-  <script src="js/zones.js?v=432"></script>
-  <script src="js/gallery.js?v=432"></script>
-  <script src="js/parkmap.js?v=432"></script>
-  <script src="js/sponsors.js?v=432"></script>
-  <script src="js/cashless.js?v=432"></script>
-  <script src="js/headings.js?v=432"></script>
-  <script src="js/bundles.js?v=432"></script>
-  <script src="js/ridex.js?v=432"></script>
-  <script src="js/cursor.js?v=432"></script>
+  <script src="js/data.js?v=442"></script>
+  <script src="js/borders.js?v=442"></script>
+  <script src="js/scene.js?v=442"></script>
+  <script src="js/app.js?v=442"></script>
+  <script src="js/experiences.js?v=442"></script>
+  <script src="js/carousels.js?v=442"></script>
+  <script src="js/coverflow.js?v=442"></script>
+  <script src="js/zones.js?v=442"></script>
+  <script src="js/gallery.js?v=442"></script>
+  <script src="js/parkmap.js?v=442"></script>
+  <script src="js/sponsors.js?v=442"></script>
+  <script src="js/cashless.js?v=442"></script>
+  <script src="js/headings.js?v=442"></script>
+  <script src="js/bundles.js?v=442"></script>
+  <script src="js/ridex.js?v=442"></script>
+  <script src="js/cursor.js?v=442"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=432"></script> -->
+  <script type="module" src="js/globe.js?v=442"></script> -->
 </body>
 </html>

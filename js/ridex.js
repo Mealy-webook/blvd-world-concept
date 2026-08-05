@@ -4,9 +4,8 @@
 // whole set is scannable at once and still gets a full-size photograph.
 (function () {
   const index = document.getElementById("rx-index");
-  const plates = document.getElementById("rx-plates");
   const filters = document.getElementById("rx-filters");
-  if (!index || !plates) return;
+  if (!index) return;
   const rides = (window.WBK && WBK.rides) || [];
   if (!rides.length) return;
 
@@ -19,23 +18,7 @@
 
   const bars = (h) => `<span class="rx-heat b${h}"><i></i><i></i><i></i></span>`;
 
-  /* ── the stage: one plate per ride, only the chosen one lit ── */
-  // src is held back until a plate is first asked for, so arriving at the
-  // section doesn't pull fourteen photographs down at once
-  plates.innerHTML = rides.map((r, i) => `
-    <figure class="rx-plate${i === 0 ? " on" : ""}" data-i="${i}">
-      <img data-src="img/rides/${r.img}" alt="" draggable="false">
-    </figure>`).join("");
-  const plateEls = [...plates.children];
-
-  function load(i) {
-    const el = plateEls[i];
-    // below the split's breakpoint the stage is off, and the rows carry their
-    // own thumbnails — no reason to fetch a full plate nobody can see
-    if (!el || !plates.offsetParent) return;
-    const img = el.firstElementChild;
-    if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
-  }
+  /* the stage is gone; each row carries its own thumbnail */
 
   /* ── the index ── */
   index.innerHTML = rides.map((r, i) => {
@@ -55,33 +38,11 @@
   }).join("");
   const rows = [...index.children];
 
-  const capNo = document.getElementById("rx-cap-no");
-  const capKind = document.getElementById("rx-cap-kind");
-  const capName = document.getElementById("rx-cap-name");
-  const capHeat = document.getElementById("rx-cap-heat");
-  const capFare = document.getElementById("rx-cap-fare");
-  const frame = document.querySelector(".rx-frame");
-
   let active = -1;
   function select(i) {
     if (i === active || !rides[i]) return;
     active = i;
-    load(i); load(i + 1); load(i - 1);
-    plateEls.forEach((p, n) => p.classList.toggle("on", n === i));
     rows.forEach((r, n) => r.classList.toggle("on", n === i));
-    const r = rides[i], h = heat(r);
-    capNo.textContent = no(i);
-    capKind.textContent = r.kind;
-    capName.textContent = r.name;
-    capHeat.innerHTML = `${bars(h)}<em>${LABEL[BAND[h]]}</em>`;
-    if (capFare) capFare.innerHTML =
-      `<span class="cf-one"><small>Regular queue</small><b>SAR ${r.reg}</b></span>` +
-      `<span class="cf-one is-fast"><small>Fast track</small><b>SAR ${r.fast}</b></span>`;
-    if (!still && frame) {                 // restart the slow push-in
-      frame.classList.remove("drift");
-      void frame.offsetWidth;
-      frame.classList.add("drift");
-    }
   }
 
   // pointer and keyboard land on the same handler
@@ -140,8 +101,6 @@
   }
 
   select(0);
-  // a window widened past the breakpoint brings the stage back empty
-  addEventListener("resize", () => load(active));
 
   // the page's CTA is a plain link to #/packages — no handler needed
 })();

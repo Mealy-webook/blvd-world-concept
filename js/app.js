@@ -67,7 +67,7 @@
       caret.remove();
       await sleep(420);
     }
-    $(".intro-logo").classList.remove("hidden-soft");
+    // the intro carries no logo any more
     await sleep(3000);
     endIntro();
   }
