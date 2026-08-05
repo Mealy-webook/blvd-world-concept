@@ -10,7 +10,12 @@
   --magenta: #ff3ec8;
   --purple: #8b5cf6;
   --gold: #ffc24d;
-  --pill-grad: linear-gradient(100deg, #9fd0ff 0%, #4da6ff 45%, #6f7bff 100%);
+  /* Solid buttons are one flat colour. A gradient on a button reads as a stock
+     component rather than a decision, and it fought the mono figures sitting
+     next to it. */
+  --btn: #cfe4ff;          /* the solid button's face */
+  --btn-ink: #08101f;      /* and the ink on it */
+  --pick: #ffc24d;         /* a chosen chip */
   /* This is a listings publication — twenty countries, a nightly schedule, a
      rate card — so it is set like a printed programme.
      Bricolage Grotesque carries the display voice: variable on optical size and
@@ -241,7 +246,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #view-loader { background: radial-gradient(120% 90% at 30% 20%, #0d1330 0%, #05060f 55%, #140a20 100%); }
 .loader-inner { text-align: center; display: grid; gap: 42px; justify-items: center; }
 .loader-bar { width: 240px; height: 6px; border-radius: var(--r-pill); background: rgba(159,176,216,.18); overflow: hidden; }
-.loader-bar i { display: block; height: 100%; width: 0%; border-radius: var(--r-pill); background: var(--pill-grad); transition: width .25s ease; }
+.loader-bar i { display: block; height: 100%; width: 0%; border-radius: var(--r-pill); background: var(--btn); transition: width .25s ease; }
 
 /* ═══════════════ INTRO ═══════════════ */
 #view-intro { background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%); }
@@ -268,6 +273,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #view-home {
   background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
+  /* one section per gesture. scroll-snap-stop: always on each section is what
+     makes a single wheel flick land on the next one rather than skimming past
+     two; mandatory keeps it settled. A section taller than the stage still
+     scrolls freely inside itself, so nothing is ever unreachable. */
+  scroll-snap-type: y mandatory;
 }
 #view-home:not(.active) { overflow: hidden; }
 .street {
@@ -540,10 +550,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 .pill:hover { transform: translateY(-2px); }
 .pill.solid {
-  color: #0b1030; background: var(--pill-grad);
-  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(10, 20, 60, .35);
+  color: var(--btn-ink); background: var(--btn);
+  /* a hard bottom edge instead of a gradient: it reads as a printed key */
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(8, 16, 31, .28);
+  transition: background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
 }
-.pill.solid:hover { box-shadow: var(--sh-1), inset 0 -2px 0 rgba(10, 20, 60, .35); }
+.pill.solid:hover { background: #fff; box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .28); }
+.pill.solid:active { transform: translateY(0); box-shadow: inset 0 2px 0 rgba(8, 16, 31, .22); }
 .pill.ghost {
   color: #eaf2ff; border: var(--b-3);
   background: rgba(10, 16, 48, .4); backdrop-filter: blur(6px);
@@ -585,6 +598,38 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 @keyframes archZoom {
   from { transform: translateX(-50%) scale(1); }
   to   { transform: translateX(-50%) scale(17); }
+}
+
+/* ── every section is a full-height stage ──
+   Content is centred in it rather than sitting at the top with a gap below, and
+   the vertical rhythm tightens so a section fits the stage instead of spilling
+   into the next one. */
+.street,
+.zonesec, .ridehero, .cashless, .eats, .shows, .gallery, .faqs, .sponsors, .pkcall {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.zonesec, .ridehero, .cashless, .eats, .shows, .gallery, .faqs, .sponsors {
+  align-content: center;
+  padding-block: clamp(30px, 6vh, 64px);
+}
+/* twelve questions will always be taller than one stage, so the list scrolls
+   inside its own */
+.faq-list {
+  max-height: min(58dvh, 620px); overflow-y: auto; scrollbar-width: thin;
+  padding-right: 6px;
+}
+.faq-list::-webkit-scrollbar { width: 7px; }
+.faq-list::-webkit-scrollbar-thumb { background: rgba(124, 196, 255, .22); border-radius: var(--r-pill); }
+/* the sponsor tiers close up to fit one stage */
+.sponsors .sp-tiers { gap: clamp(18px, 3vh, 30px); }
+.sponsors .sp-tier { gap: clamp(12px, 2vh, 18px); }
+.sponsors .sp-plate img, .sponsors .sp-tier:first-child .sp-plate img { height: clamp(34px, 4.4vh, 52px); }
+/* the schedule's rail gives height back on a short stage */
+@media (max-height: 900px) {
+  .tl-item { grid-template-rows: 168px 20px 20px 20px 168px; }
+  .show-shot { height: 88px; }
 }
 
 /* ═══════════════ CHROME ═══════════════ */
@@ -836,7 +881,7 @@ body.chrome-on
   font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .14em;
   text-transform: uppercase; color: #0b1030;
   padding: 6px 14px; border-radius: var(--r-pill);
-  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  background: var(--pick);
   box-shadow: var(--sh-1);
 }
 .poi-close:hover { filter: brightness(1.08); }
@@ -966,12 +1011,12 @@ body.chrome-on
 }
 .pv svg, .pv-search svg { width: 16px; height: 16px; fill: currentColor; }
 .pv:hover, .pv-search:hover { color: #fff; background: rgba(124, 196, 255, .16); }
-.pv.on { color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d); }
+.pv.on { color: var(--btn-ink); background: var(--pick); }
 .pv-search {
   width: 34px; height: 34px;
   background: rgba(124, 196, 255, .08); border: var(--b-2);
 }
-.pv-search.on { color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d); border-color: transparent; }
+.pv-search.on { color: var(--btn-ink); background: var(--pick); border-color: transparent; }
 
 .pb-search { display: none; flex: none; padding: 0 20px 12px; }
 .pm-panel.searching .pb-search { display: block; }
@@ -999,7 +1044,7 @@ body.chrome-on
 }
 .ch-x::before { transform: rotate(45deg); }
 .ch-x::after  { transform: rotate(-45deg); }
-.pp-chip.on { color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d); border-color: transparent; }
+.pp-chip.on { color: var(--btn-ink); background: var(--pick); border-color: transparent; }
 .pp-chip.on .ch-ic { opacity: 1; }
 .pp-chip.on .ch-x { display: block; }
 /* once a category is chosen it stands alone, as on the reference page */
@@ -1202,7 +1247,7 @@ body.chrome-on
 }
 .fan-dots button:hover { background: rgba(124, 196, 255, .5); }
 .fan-dots button.on {
-  background: linear-gradient(160deg, #ffd98a, #ffc24d); transform: scale(1.45);
+  background: var(--pick); transform: scale(1.45);
 }
 @media (max-width: 1023px) { .fan-stage { height: min(32rem, 62vh); } .fan-card { border-radius: var(--r-lg); } .fan-meta h3 { font-size: 19px; } }
 @media (max-width: 767px)  { .fan-stage { height: min(28rem, 60vh); } .fan-meta { padding: 14px; } .fan-meta h3 { font-size: 17px; } }
@@ -1299,7 +1344,7 @@ body.chrome-on
   font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
   text-transform: uppercase; color: #0b1030;
   padding: 5px 11px; border-radius: var(--r-pill);
-  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  background: var(--pick);
 }
 
 /* ── arrows ── */
@@ -1482,7 +1527,7 @@ body.chrome-on
 .tk-tag em {
   font-style: normal; font-size: 9px; letter-spacing: .16em; color: #0b1030;
   padding: 4px 10px; border-radius: var(--r-pill);
-  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  background: var(--pick);
 }
 .tk h3 {
   font-family: var(--disp); font-weight: 700; font-size: clamp(24px, 2.5vw, 32px);
@@ -1503,7 +1548,7 @@ body.chrome-on
   content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%;
   background: linear-gradient(160deg, #8ff3ff, #35e0ff);
 }
-.tk.is-featured .tk-list li::before { background: linear-gradient(160deg, #ffd98a, #ffc24d); }
+.tk.is-featured .tk-list li::before { background: var(--pick); }
 
 /* the price end, where every ticket lines up */
 .tk-end {
@@ -1624,7 +1669,7 @@ body.chrome-on
 }
 .rx-chip b { font-weight: 600; font-size: 10px; opacity: .6; }
 .rx-chip:hover { color: #fff; background: rgba(124, 196, 255, .14); transform: translateY(-1px); }
-.rx-chip.on { color: #0b1030; border-color: transparent; background: linear-gradient(100deg, #ffd98a, #ffc24d); }
+.rx-chip.on { color: #0b1030; border-color: transparent; background: var(--pick); }
 .rx-chip.on b { opacity: .55; }
 
 .rx-index { display: grid; list-style: none; }
@@ -1714,7 +1759,7 @@ body.chrome-on
 .rx-heat i:nth-child(1) { height: 6px; } .rx-heat i:nth-child(2) { height: 9px; } .rx-heat i:nth-child(3) { height: 12px; }
 .rx-heat.b1 i:nth-child(1),
 .rx-heat.b2 i:nth-child(1), .rx-heat.b2 i:nth-child(2),
-.rx-heat.b3 i { background: linear-gradient(180deg, #ffd98a, #ffc24d); }
+.rx-heat.b3 i { background: var(--pick); }
 .rx-cap-heat em {
   margin-left: 6px; font-style: normal; font-family: var(--ui);
   font-size: 9.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #cfe4ff;
@@ -2244,7 +2289,7 @@ body.chrome-on
 }
 .show-tabs button:hover { color: #eaf2ff; background: rgba(124, 196, 255, .12); transform: translateY(-1px); }
 .show-tabs button.on {
-  color: #0b1030; background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  color: var(--btn-ink); background: var(--pick);
   border-color: transparent;
 }
 .tab-flag {
@@ -2320,11 +2365,11 @@ body.chrome-on
   transition: background .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
 }
 .tl-item.is-first .tl-node i {
-  background: linear-gradient(160deg, #ffd98a, #ffc24d);
+  background: var(--pick);
   box-shadow: 0 0 0 5px rgba(255, 194, 77, .16);
 }
 .tl-item:hover .tl-node i {
-  background: linear-gradient(160deg, #ffd98a, #ffc24d);
+  background: var(--pick);
   transform: scale(1.3);
 }
 /* the stem joining node to card */
@@ -2400,7 +2445,7 @@ body.chrome-on
   font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #0b1030;
   padding: 4px 9px; border-radius: var(--r-pill);
-  background: linear-gradient(100deg, #ffd98a, #ffc24d);
+  background: var(--pick);
 }
 
 @media (max-width: 760px) {
@@ -2624,7 +2669,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .xp-per { font-size: 11px; color: var(--dim); font-weight: 700; letter-spacing: .04em; }
 .xp-cta {
   font-family: var(--ui); font-weight: 600; font-size: 15px; letter-spacing: .16em;
-  padding: 16px 46px; border-radius: var(--r-pill); color: #0b1030; background: var(--pill-grad);
+  padding: 16px 46px; border-radius: var(--r-pill); color: #0b1030; background: var(--btn);
   box-shadow: var(--sh-1), inset 0 -2px 0 rgba(10, 20, 60, .35);
   transition: transform .2s, box-shadow .2s;
 }
@@ -2636,7 +2681,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
   width: 7px; height: 7px; border-radius: 50%; background: rgba(159, 176, 216, .38); padding: 0;
   transition: width .3s cubic-bezier(.2,.8,.25,1), background .3s, box-shadow .3s;
 }
-.xp-dots button.on { width: 26px; border-radius: var(--r-pill); background: var(--pill-grad); }
+.xp-dots button.on { width: 26px; border-radius: var(--r-pill); background: var(--btn); }
 
 .xp-back {
   position: absolute; left: 4vw; top: clamp(16px, 3vh, 34px); z-index: 8;
@@ -2885,3 +2930,53 @@ body.route-experiences
 .bc-bal b, .rh-stat dd, .cf-meta dd { letter-spacing: -.03em; }
 /* and the small uppercase mono bits open out instead */
 .sec-num, .tl-gap, .sm-dur, .show-note, .tk-rate, .bd-note, .tk-fine { letter-spacing: .06em; }
+
+/* ═══════════════ FITTING THE STAGE ═══════════════ */
+/* ── fitting the stage ──
+   Measured, not guessed: at an 800-900px stage these are the sections that
+   spilled, and this is what each gives back. Anything still taller than the
+   stage scrolls inside it rather than being cut. */
+@media (min-width: 700px) {
+  /* the schedule: chips on one scrolling row instead of three stacked */
+  .shows .show-tabs {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .shows .show-tabs::-webkit-scrollbar { display: none; }
+  .shows .show-tabs button { flex: none; }
+}
+@media (max-height: 960px) {
+  /* the schedule's stops */
+  .tl-item { grid-template-rows: 150px 18px 20px 18px 150px; }
+  .show-shot { height: 82px; }
+  .tl-card .show-body { padding: 9px 11px 11px; }
+  .show-rail { padding: 0 2px; }
+  /* the card and its steps */
+  .cash-grid { gap: clamp(20px, 3vw, 44px); }
+  .blvd-card { transform: scale(.88); }
+  .cash-steps { gap: 10px; }
+  .cash-steps li { padding: 9px 0; }
+  /* the ride names */
+  .rh-reel { height: clamp(210px, 30vh, 300px); }
+  .rh-count { font-size: clamp(64px, 8vh, 120px); }
+  /* the zone ring */
+  .cf { --cf-card: clamp(150px, 19vw, 232px) !important; }
+  .cf-frame { padding: clamp(16px, 2.4vh, 30px) 0; }
+  /* the questions */
+  .faq-list { max-height: min(48dvh, 520px); }
+  /* the zone ring's caption and dots */
+  .cf-caption { gap: 4px; }
+  .cf-meta { margin-top: 3px; }
+  .cf-dots { margin-top: 2px; }
+  .zonesec { gap: clamp(12px, 2vh, 24px); }
+  /* the gallery's belts */
+  .gal-belts { gap: 12px; }
+  .gal-run { height: clamp(120px, 17vh, 190px); }
+  .gallery { gap: clamp(18px, 3vh, 32px); }
+  /* the sponsor rows */
+  .sponsors { gap: clamp(20px, 3vh, 34px); }
+  .sp-label { padding-bottom: 8px; font-size: 11px; }
+  /* the schedule, once more */
+  .shows { gap: clamp(16px, 2.6vh, 30px); }
+  .show-actions { gap: 8px; }
+}
