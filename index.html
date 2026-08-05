@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=399" />
+<link rel="stylesheet" href="css/main.css?v=400" />
 </head>
 <body class="typo-body">
 
@@ -49,13 +49,16 @@
              over its entrance -->
         <h1 class="hero-title arch" id="hero-title">
           <span class="sr-only">Explore new worlds.</span>
-          <svg class="arch-type" viewBox="0 0 1000 400" aria-hidden="true" focusable="false">
+          <svg class="arch-type" viewBox="0 120 1000 292" aria-hidden="true" focusable="false">
             <defs>
-              <!-- two concentric domes, set close so the pair reads as one arch
-                   rather than two separate curves. The radii are what keep the
-                   lines from crossing: a tighter arc bows further and eats into
-                   the line below it, so the lower, longer arc is the flatter. -->
-              <path id="arch-a" d="M 300 172 A 520 520 0 0 1 700 172" fill="none" />
+              <!-- Genuinely concentric: both arcs share the centre (500, 1399.3),
+                   so their baselines stay exactly 100 units apart the whole way
+                   across and the gap never opens up in the middle. That was the
+                   bug in the earlier pass — the arcs had different curvature, so
+                   a bounding-box gap of 11 units still left 81 units of daylight
+                   at the crown. 100 units of separation less the 86-unit cap
+                   height of the lower line leaves a constant 14. -->
+              <path id="arch-a" d="M 300 216.1 A 1200 1200 0 0 1 700 216.1" fill="none" />
               <path id="arch-b" d="M 58 392 A 1100 1100 0 0 1 942 392" fill="none" />
             </defs>
             <!-- text-anchor belongs on the <text>, not the <textPath>: on the
@@ -663,25 +666,25 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=399"></script>
-  <script src="js/borders.js?v=399"></script>
-  <script src="js/scene.js?v=399"></script>
-  <script src="js/app.js?v=399"></script>
-  <script src="js/experiences.js?v=399"></script>
-  <script src="js/carousels.js?v=399"></script>
-  <script src="js/coverflow.js?v=399"></script>
-  <script src="js/zones.js?v=399"></script>
-  <script src="js/gallery.js?v=399"></script>
-  <script src="js/parkmap.js?v=399"></script>
-  <script src="js/sponsors.js?v=399"></script>
-  <script src="js/cashless.js?v=399"></script>
-  <script src="js/headings.js?v=399"></script>
-  <script src="js/bundles.js?v=399"></script>
-  <script src="js/ridex.js?v=399"></script>
+  <script src="js/data.js?v=400"></script>
+  <script src="js/borders.js?v=400"></script>
+  <script src="js/scene.js?v=400"></script>
+  <script src="js/app.js?v=400"></script>
+  <script src="js/experiences.js?v=400"></script>
+  <script src="js/carousels.js?v=400"></script>
+  <script src="js/coverflow.js?v=400"></script>
+  <script src="js/zones.js?v=400"></script>
+  <script src="js/gallery.js?v=400"></script>
+  <script src="js/parkmap.js?v=400"></script>
+  <script src="js/sponsors.js?v=400"></script>
+  <script src="js/cashless.js?v=400"></script>
+  <script src="js/headings.js?v=400"></script>
+  <script src="js/bundles.js?v=400"></script>
+  <script src="js/ridex.js?v=400"></script>
   <!-- last: it rewraps every section's children, so everything that queries them
        by selector has already run -->
-  <script src="js/flow.js?v=399"></script>
+  <script src="js/flow.js?v=400"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=399"></script> -->
+  <script type="module" src="js/globe.js?v=400"></script> -->
 </body>
 </html>
