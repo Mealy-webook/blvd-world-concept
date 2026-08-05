@@ -16,7 +16,7 @@
   const countEl = document.getElementById("pb-count");
   const sortBtn = document.getElementById("pp-sort");
   const sortLabel = document.getElementById("pp-sort-label");
-  const zoneBar = document.getElementById("pp-zone");
+  const zoneChip = document.getElementById("pp-zonechip");
   const pins = WBK.mapPins || [];
 
   const MIN = 1, MAX = 4.6;
@@ -75,6 +75,7 @@
 
   function apply() {
     clamp();
+    placePois();
     stage.style.transform = `translate(${tx}px, ${ty}px) scale(${z})`;
     pinLayer.style.setProperty("--inv", 1 / z);
     frame.classList.toggle("zoomed", z > 1.02);
@@ -86,6 +87,7 @@
 
   // zoom about a point (frame-local px), so the spot under the cursor stays put
   function zoomAt(nz, px, py) {
+    focus = null;                        // zooming by hand releases the hold
     nz = Math.max(MIN, Math.min(MAX, nz));
     const cx = px - (avX + avW / 2), cy = py - (avY + avH / 2);
     const k = nz / z;
@@ -96,11 +98,20 @@
   }
   const zoomCentre = (nz) => zoomAt(nz, avX + avW / 2, avY + avH / 2);
 
-  // bring a zone into the middle of the strip the map lives in
+  // Bring a zone into the middle of the strip the map lives in. The target is
+  // held rather than turned into pixels once: rendering the card can resize it,
+  // which resizes the strip and the stage under it, and a translation worked out
+  // against the old stage would leave the zone off to one side.
+  let focus = null;                    // { i, z } — the zone the view is held on
   function frameZone(i, nz) {
-    const pin = pins[i];
+    focus = { i, z: Math.max(nz || 2.4, MIN) };
+    reframe();
+  }
+  function reframe() {
+    if (!focus) return;
+    const pin = pins[focus.i];
     if (!pin) return;
-    z = Math.max(nz || 2.4, MIN);
+    z = focus.z;
     tx = -(pin.x / 100 - 0.5) * baseW * z;
     ty = -(pin.y / 100 - 0.5) * baseH * z;
     apply();
@@ -231,6 +242,87 @@
         : `${key} — ${n} ${NOUN[cat || "all"][n === 1 ? 0 : 1]}, zoom in`);
       // a zone with nothing of the chosen kind steps back rather than vanishing
       nd.classList.toggle("empty", !pins[i].gate && n === 0);
+      // inside a zone, every other badge leaves the map so the zone has it alone
+      nd.classList.toggle("away", !!zone && key !== zone);
+      nd.classList.toggle("on", !!zone && key === zone);
+    });
+  }
+
+  /* ── inside a zone: its own things, pinned on the artwork ─────────
+     The reference drops the land badges once you are in a land and shows one
+     pin per place. BLVD's sheets carry no coordinate for any single place —
+     only the 26 zone anchors — so these are ARRANGED around the zone's anchor
+     rather than surveyed: even spacing, no claim about where a thing really is.
+     Feed real x/y per item and the layout function is all that changes. */
+  const CAT_ICON = { rides: "heat", dining: "fork", shows: "time", zones: "pin" };
+
+  // An even spread around a point (phyllotaxis). The radius is reckoned in
+  // screen pixels — pins counter-scale with the zoom, so a radius in stage
+  // percent would crowd them at one zoom and fling them apart at another — and
+  // then converted to stage percent. x is divided by the artwork's ratio so the
+  // ring reads as a circle rather than an ellipse.
+  const GOLDEN = 2.399963229728653;
+  function spread(n, cx, cy) {
+    // ~34px between neighbours, which clears a 26px pin head with room to spare
+    const R = 20 * Math.sqrt(n) + 14;
+    const rvMax = (R * 100) / Math.max(1, baseH * z);
+    return Array.from({ length: n }, (_, k) => {
+      const t = GOLDEN * k, rv = rvMax * Math.sqrt((k + 0.55) / n);
+      return { x: cx + (rv / ART) * Math.cos(t), y: cy + rv * Math.sin(t) };
+    });
+  }
+
+  // re-seat the existing pins without rebuilding them, for when the zoom or the
+  // strip changes under them
+  let lastPlaceZ = 0;
+  function placePois(force) {
+    if (!poiNodes.length || !zone) return;
+    // the layout only depends on the zoom, so panning doesn't need to redo it
+    if (!force && Math.abs(z - lastPlaceZ) < 0.001) return;
+    lastPlaceZ = z;
+    const anchor = pins[pinOf.get(zone)];
+    if (!anchor) return;
+    const at = spread(poiNodes.length, anchor.x, anchor.y);
+    poiNodes.forEach((n, k) => {
+      n.style.setProperty("--x", at[k].x + "%");
+      n.style.setProperty("--y", at[k].y + "%");
+    });
+  }
+
+  let poiNodes = [];
+  function renderPois(list) {
+    poiNodes.forEach((n) => n.remove());
+    poiNodes = [];
+    if (!zone) return;
+    const anchor = pins[pinOf.get(zone)];
+    if (!anchor) return;
+    poiNodes = list.map((it, k) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pm-poi";
+      b.style.setProperty("--tone", toneOf.get(zone) || "#ffc24d");
+      b.dataset.k = k;
+      b.setAttribute("aria-label", `${it.name} — ${zone}`);
+      b.innerHTML = `<span class="poi-head">${svg(CAT_ICON[it.cat] || "pin")}</span>` +
+                    `<span class="poi-tag">${it.name}</span>`;
+      b.addEventListener("click", (e) => { e.stopPropagation(); focusRow(k); });
+      pinLayer.appendChild(b);
+      return b;
+    });
+    placePois(true);
+  }
+
+  // pin and row are two views of the same thing: picking either lights both
+  function focusRow(k) {
+    poiNodes.forEach((n, i) => n.classList.toggle("on", i === k));
+    const rows = [...listEl.querySelectorAll(".pp-row")];
+    rows.forEach((r, i) => r.classList.toggle("on", i === k));
+    const row = rows[k];
+    if (!row) return;
+    const delta = row.getBoundingClientRect().top - listEl.getBoundingClientRect().top;
+    listEl.scrollTo({
+      top: Math.max(0, listEl.scrollTop + delta - (listEl.clientHeight - row.offsetHeight) / 2),
+      behavior: "smooth",
     });
   }
 
@@ -241,6 +333,7 @@
     time: "M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4zm.7 7.1H5.9V7.2h1.6V4h1.2z",
     price: "M8 1.4 9.9 6h4.7l-3.8 2.9 1.4 4.7L8 10.8l-4.2 2.8 1.4-4.7L1.4 6h4.7z",
     heat: "M8 1.2s3.6 3.1 3.6 6.6a3.6 3.6 0 1 1-7.2 0C4.4 4.3 8 1.2 8 1.2z",
+    fork: "M4 1.5v5a2 2 0 0 0 1.3 1.9V14.5h1.4V8.4A2 2 0 0 0 8 6.5v-5H6.7v4H6v-4H4.7v4H4zm7 0c-1 0-1.8 1.3-1.8 3 0 1.3.5 2.4 1.2 2.8v7.2h1.4V7.3c.7-.4 1.2-1.5 1.2-2.8 0-1.7-.8-3-1.8-3z",
   };
   const svg = (k) => `<svg class="rm-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="${ICON[k] || ICON.pin}"/></svg>`;
 
@@ -258,28 +351,35 @@
   function render() {
     const list = hits();
 
-    // the title becomes a count the moment the park is filtered
-    const filtered = !!(cat || zone || document.getElementById("pp-q")?.value.trim());
-    if (titleEl) titleEl.hidden = filtered;
+    // Inside a zone the card takes the zone's name and counts its locations, as
+    // the reference does. Otherwise the title gives way to a result count the
+    // moment anything is filtered.
+    const q = document.getElementById("pp-q")?.value.trim();
+    const filtered = !!(cat || zone || q);
+    if (titleEl) {
+      titleEl.hidden = filtered && !zone;
+      if (zone) titleEl.textContent = zone;
+      else if (!filtered) titleEl.textContent = "Discover the park";
+    }
     if (countEl) {
       countEl.hidden = !filtered;
+      countEl.classList.toggle("as-sub", !!zone);
       countEl.querySelector("b").textContent = list.length;
-      countEl.querySelector("span").textContent = list.length === 1 ? "result" : "results";
+      countEl.querySelector("span").textContent = zone
+        ? (list.length === 1 ? "location" : "locations")
+        : (list.length === 1 ? "result" : "results");
     }
     if (sortBtn) sortBtn.hidden = !filtered;
     panel?.classList.toggle("has-cat", !!cat);
-
-    if (zoneBar) {
-      zoneBar.hidden = !zone;
-      if (zone) {
-        zoneBar.querySelector(".pz-name").textContent = zone;
-        zoneBar.querySelector(".pz-count").textContent =
-          list.length ? `${list.length} thing${list.length > 1 ? "s" : ""} to do` : "Nothing listed yet";
-      }
+    panel?.classList.toggle("in-zone", !!zone);
+    if (zoneChip) {
+      zoneChip.hidden = !zone;
+      if (zone) zoneChip.querySelector("span").textContent = zone;
     }
 
+    renderPois(list);
+
     if (!list.length) {
-      const q = document.getElementById("pp-q")?.value.trim();
       listEl.innerHTML = `<p class="pp-empty">${q
         ? `Nothing in ${zone || "the park"} matches “${q}”.`
         : `No attractions, kitchens or shows are listed for ${zone || "this filter"} yet.`}</p>`;
@@ -308,13 +408,16 @@
     }
     listEl.innerHTML = html;
 
-    listEl.querySelectorAll(".pp-row").forEach((row) => {
+    listEl.querySelectorAll(".pp-row").forEach((row, k) => {
       row.addEventListener("click", () => {
+        // inside a zone the row simply lights its own pin; outside it, the row
+        // is a way into whichever zone the thing belongs to
+        if (zone) { view("map"); focusRow(k); return; }
         listEl.querySelectorAll(".pp-row").forEach((r) => r.classList.remove("on"));
         row.classList.add("on");
         const pi = row.dataset.pin;
         if (pi !== "") {
-          view("map");                      // show the move it's about to make
+          view("map");
           select(Number(pi), 2.4);
         }
       });
@@ -330,6 +433,7 @@
     if (zoom) frameZone(i, zoom);
     if (!pin.gate) {
       zone = keyOf(pin);
+      paintBadges();          // the other zones step off the map
       render();
       listEl.scrollTop = 0;
     }
@@ -339,7 +443,7 @@
   function view(m) {
     frame.classList.toggle("as-list", m === "list");
     // the card's width changes, so the strip the map fits into changes with it
-    requestAnimationFrame(() => { sizeStage(); apply(); });
+    requestAnimationFrame(() => { sizeStage(); reframe(); apply(); });
     const mapBtn = document.getElementById("pp-map");
     const listBtn = document.getElementById("pp-listview");
     mapBtn?.classList.toggle("on", m === "map");
@@ -376,12 +480,16 @@
     listEl.scrollTop = 0;
   });
 
-  zoneBar?.querySelector(".pz-clear")?.addEventListener("click", () => {
-    zone = null;
+  // the zone chip's cross puts the whole park back
+  function clearZone() {
+    zone = null; focus = null;
     nodes.forEach((n) => n.classList.remove("on"));
+    z = 1; tx = ty = 0; apply();
+    paintBadges();
     render();
     listEl.scrollTop = 0;
-  });
+  }
+  zoneChip?.addEventListener("click", clearZone);
 
   const q = document.getElementById("pp-q");
   q?.addEventListener("input", () => { render(); listEl.scrollTop = 0; });
@@ -400,6 +508,7 @@
   let drag = null;
   frame.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".pm-badge, .pm-zoom, .pm-status, .pm-panel")) return;
+    focus = null;                      // panning by hand releases the hold
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx, ty, moved: 0 };
     frame.setPointerCapture(e.pointerId);
     frame.classList.add("dragging");
@@ -439,20 +548,17 @@
   document.getElementById("pm-out")?.addEventListener("click", () => zoomCentre(z / 1.5));
   document.getElementById("pm-reset")?.addEventListener("click", () => {
     z = 1; tx = ty = 0; apply();
-    nodes.forEach((n) => n.classList.remove("on"));
-    cat = null; zone = null;
+    cat = null;
     document.querySelectorAll(".pp-chip").forEach((c) => c.classList.remove("on"));
     view("map");
-    paintBadges();
-    render();
-    listEl.scrollTop = 0;
+    clearZone();
   });
 
-  addEventListener("resize", () => { sizeStage(); apply(); });
+  addEventListener("resize", () => { sizeStage(); reframe(); apply(); });
   // the view starts hidden, so re-measure once it has real dimensions; the card
   // is watched too, since its size decides how much room the map gets
   if (window.ResizeObserver) {
-    const ro = new ResizeObserver(() => { sizeStage(); apply(); });
+    const ro = new ResizeObserver(() => { sizeStage(); reframe(); apply(); });
     ro.observe(frame);
     if (panel) ro.observe(panel);
   }

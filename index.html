@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=208" />
+<link rel="stylesheet" href="css/main.css?v=216" />
 </head>
 <body class="typo-body">
 
@@ -406,6 +406,12 @@
           <!-- categories. Once one is chosen it stands alone with a clear button,
                and the sort control appears beside it. -->
           <div class="pb-chips" id="pp-chips" role="group" aria-label="Categories">
+            <!-- set once a zone is picked; its cross puts the whole park back -->
+            <button class="pp-chip is-zone" id="pp-zonechip" type="button" hidden>
+              <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6a4.2 4.2 0 0 0-4.2 4.2c0 3 4.2 8.6 4.2 8.6s4.2-5.6 4.2-8.6A4.2 4.2 0 0 0 8 1.6zm0 5.9a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6z"/></svg>
+              <span></span>
+              <i class="ch-x" aria-hidden="true"></i>
+            </button>
             <button class="pp-chip" data-cat="rides" type="button">
               <svg class="ch-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2s3.6 3.1 3.6 6.6a3.6 3.6 0 1 1-7.2 0C4.4 4.3 8 1.2 8 1.2z"/></svg>
               <span>Rides &amp; Attractions</span>
@@ -430,16 +436,6 @@
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2.5 2.4 5.6h1.9v7.9h1.4V5.6h1.9zm6 11-2.6-3.1h1.9V2.5h1.4v7.9h1.9z"/></svg>
               <span id="pp-sort-label">Sort &#183; A–Z</span>
             </button>
-          </div>
-
-          <!-- set once a zone badge is picked: what the list is narrowed to -->
-          <div class="pp-zone" id="pp-zone" hidden aria-live="polite">
-            <span class="pz-dot" aria-hidden="true"></span>
-            <span class="pz-text">
-              <b class="pz-name"></b>
-              <small class="pz-count"></small>
-            </span>
-            <button class="pz-clear" type="button">All of the park</button>
           </div>
 
           <div class="pp-list" id="pp-list"></div>
@@ -633,20 +629,20 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=208"></script>
-  <script src="js/borders.js?v=208"></script>
-  <script src="js/scene.js?v=208"></script>
-  <script src="js/app.js?v=208"></script>
-  <script src="js/experiences.js?v=208"></script>
-  <script src="js/carousels.js?v=208"></script>
-  <script src="js/fan.js?v=208"></script>
-  <script src="js/gallery.js?v=208"></script>
-  <script src="js/parkmap.js?v=208"></script>
-  <script src="js/sponsors.js?v=208"></script>
-  <script src="js/cashless.js?v=208"></script>
-  <script src="js/bundles.js?v=208"></script>
-  <script src="js/ridex.js?v=208"></script>
+  <script src="js/data.js?v=216"></script>
+  <script src="js/borders.js?v=216"></script>
+  <script src="js/scene.js?v=216"></script>
+  <script src="js/app.js?v=216"></script>
+  <script src="js/experiences.js?v=216"></script>
+  <script src="js/carousels.js?v=216"></script>
+  <script src="js/fan.js?v=216"></script>
+  <script src="js/gallery.js?v=216"></script>
+  <script src="js/parkmap.js?v=216"></script>
+  <script src="js/sponsors.js?v=216"></script>
+  <script src="js/cashless.js?v=216"></script>
+  <script src="js/bundles.js?v=216"></script>
+  <script src="js/ridex.js?v=216"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=208"></script> -->
+  <script type="module" src="js/globe.js?v=216"></script> -->
 </body>
 </html>

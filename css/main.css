@@ -597,6 +597,58 @@ body.chrome-on
 }
 .pm-badge:hover .pb-name, .pm-badge:focus-visible .pb-name, .pm-badge.on .pb-name { opacity: 1; top: 50px; }
 
+/* ── inside a zone: a pin per place ── */
+/* the badges of every other zone leave the map, so the chosen zone has it to
+   itself and its own places can be read */
+.pm-badge.away { opacity: 0; pointer-events: none; transform: scale(.6); }
+.pm-badge { transition: opacity .45s var(--ease), transform .45s var(--ease); }
+
+.pm-poi { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; z-index: 4; }
+.pm-poi > * { transform: scale(var(--inv, 1)); transform-origin: 50% 100%; }
+/* a teardrop, tinted with the zone's own colour */
+.poi-head {
+  position: absolute; left: -13px; top: -34px;
+  display: grid; place-items: center; width: 26px; height: 30px;
+  background: var(--tone, #ffc24d);
+  border: 2px solid rgba(255, 255, 255, .92);
+  border-radius: 50% 50% 50% 50% / 46% 46% 60% 60%;
+  clip-path: polygon(50% 100%, 0 62%, 0 0, 100% 0, 100% 62%);
+  box-shadow: 0 4px 12px rgba(2, 4, 14, .55);
+  transition: transform .3s var(--ease), background .3s;
+}
+.poi-head .rm-ic { width: 12px; height: 12px; fill: #fff; opacity: 1; margin-top: -4px; }
+.pm-poi:hover .poi-head { transform: scale(calc(var(--inv, 1) * 1.15)); }
+.pm-poi.on .poi-head { background: #fff; }
+.pm-poi.on .poi-head .rm-ic { fill: #0b1030; }
+/* the name shows on hover, and stays out while another pin is picked */
+.poi-tag {
+  position: absolute; left: 0; top: 4px; transform: translateX(-50%) scale(var(--inv, 1));
+  transform-origin: 50% 0;
+  font-family: var(--ui); font-weight: 600; font-size: 10px; letter-spacing: .02em;
+  white-space: nowrap; color: #fff; padding: 4px 9px; border-radius: 7px;
+  background: rgba(6, 10, 30, .94); border: 1px solid rgba(255, 255, 255, .2);
+  opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), top .25s var(--ease);
+}
+.pm-poi:hover .poi-tag, .pm-poi:focus-visible .poi-tag, .pm-poi.on .poi-tag { opacity: 1; top: 8px; }
+.pm-poi.on { z-index: 5; }
+
+/* the zone reads as a chip in the row, ahead of the categories */
+.pp-chip.is-zone {
+  color: #0b1030; background: linear-gradient(100deg, #a8f0c0, #6fe3a0); border-color: transparent;
+}
+.pp-chip.is-zone .ch-ic { opacity: 1; }
+.pp-chip.is-zone .ch-x { display: block; }
+.pp-chip.is-zone[hidden] { display: none; }
+/* a chosen zone shows its own chip beside whatever category is active */
+.pm-panel.in-zone.has-cat .pp-chip.is-zone { display: inline-flex; }
+/* the count sits under the zone name rather than replacing it */
+.pm-panel.in-zone .pp-head { flex-wrap: wrap; }
+.pb-count.as-sub {
+  flex-basis: 100%; margin: -8px 0 0; font-family: var(--ui);
+  font-size: 12px; font-weight: 600; letter-spacing: .04em; color: #cfe4ff;
+}
+.pb-count.as-sub b { font-size: 12px; }
+
 /* ── status strip, top-right ── */
 .pm-status {
   position: absolute; z-index: 6; top: 14px; right: 14px;
