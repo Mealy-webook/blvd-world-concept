@@ -34,6 +34,16 @@
   /* the park map's own backdrop, sampled from the artwork's edges, so the map
      page and the plan on it are one continuous surface */
   --map-bg: #223a76;
+  /* straight off img/blvd-world-logo.svg: the mark's four dark navy steps, then
+     its two accents. Nothing here is invented. */
+  --logo-1: #03003C;   /* the deepest navy, the mark's body */
+  --logo-2: #001D5F;
+  --logo-3: #212859;
+  --logo-4: #263D87;   /* the indigo step */
+  --logo-gold: #D9A320;
+  /* one page backdrop, defined once instead of nine times */
+  --page-bg: linear-gradient(180deg, var(--logo-1) 0%, var(--logo-2) 55%, var(--logo-3) 100%);
+  --logo-cyan: #00E7F6;
 
   /* ── the design system ──
      Every surface, edge, corner and shadow on the site comes from one of these.
@@ -258,7 +268,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .loader-bar i { display: block; height: 100%; width: 0%; border-radius: var(--r-pill); background: var(--btn); transition: width .25s ease; }
 
 /* ═══════════════ INTRO ═══════════════ */
-#view-intro { background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%); }
+#view-intro { background: var(--page-bg); }
 .intro-copy { position: relative; text-align: center; display: grid; gap: 34px; padding: 0 8vw; max-width: 1000px; }
 .type-line {
   font-family: var(--disp); font-weight: 700; font-size: clamp(20px, 3.4vw, 44px); letter-spacing: -.01em; line-height: 1.25;
@@ -280,7 +290,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 /* ═══════════════ HOME / STREET SCENE ═══════════════ */
 #view-home {
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
   /* one section per gesture. scroll-snap-stop: always on each section is what
      makes a single wheel flick land on the next one rather than skimming past
@@ -292,7 +302,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .street {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
   perspective: 780px; perspective-origin: 50% 42%;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
   display: flex; align-items: center; justify-content: center;
 }
 .scene { position: absolute; inset: 0; transform-style: preserve-3d; }
@@ -587,7 +597,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #arch-stage.off { opacity: 0; transition: opacity .4s; }
 .arch-bg {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
   transition: opacity .5s;
 }
 #arch-stage.thru .arch-bg { opacity: 0; }
@@ -1110,6 +1120,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   padding: 18px 8px 8px;
 }
 .pp-group:first-child { padding-top: 6px; }
+/* the way out of a group, the way the reference closes each one */
+.pp-groupgo {
+  display: inline-flex; align-items: center; gap: 9px;
+  margin: 4px 8px 2px; padding: 9px 2px;
+  font-family: var(--ui); font-weight: 600; font-size: 11.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--pick); text-decoration: none;
+  border-top: 1px solid rgba(124, 196, 255, .14);
+  width: calc(100% - 16px);
+  transition: color .3s var(--ease), gap .3s var(--ease);
+}
+.pp-groupgo i {
+  width: 13px; height: 1.5px; background: currentColor; position: relative; flex: none;
+}
+.pp-groupgo i::after {
+  content: ''; position: absolute; right: 0; top: 50%; width: 6px; height: 6px;
+  border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+.pp-groupgo:hover { color: #fff; gap: 13px; }
 .pp-row {
   display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center;
   gap: 16px; width: 100%; text-align: left;
@@ -1815,7 +1844,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the packages' own page (#/packages) ── */
 #view-packages {
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
 }
 #view-packages .bundles { padding-top: clamp(76px, 10vh, 120px); }
 
@@ -1880,7 +1909,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the rides' own page (#/rides) ── */
 #view-rides {
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
 }
 #view-rides .ridex { padding-top: clamp(76px, 10vh, 120px); }
 .rx-back {
@@ -2017,7 +2046,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the packages' own page (#/packages) ── */
 #view-packages {
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
 }
 #view-packages .bundles { padding-top: clamp(76px, 10vh, 120px); }
 
@@ -2082,7 +2111,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ── the rides' own page (#/rides) ── */
 #view-rides {
   display: block; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
-  background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%);
+  background: var(--page-bg);
 }
 #view-rides .ridex { padding-top: clamp(76px, 10vh, 120px); }
 .rx-back {
@@ -2708,7 +2737,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 
 /* ═══════════════ EXPERIENCES (light editorial stage) ═══════════════ */
-#view-experiences { background: linear-gradient(180deg, #060a1e 0%, #0b1030 45%, #170b2c 100%); }
+#view-experiences { background: var(--page-bg); }
 .xp-stage {
   position: absolute; inset: 0; overflow: hidden;
   /* cards · dots · name+description+price */
@@ -3091,4 +3120,53 @@ body.route-experiences
   /* the schedule, once more */
   .shows { gap: clamp(16px, 2.6vh, 30px); }
   .show-actions { gap: 8px; }
+}
+
+/* ── the story-scroll hinge (js/flow.js) ──
+   Each section's contents live in a .flow-in wrapper that arrives rotated about
+   its bottom-left corner and swings level as the section comes up the screen.
+   The wrapper carries the rotation rather than the section itself: a snap target
+   with a transform on it reports a moved box, and the snapping goes wrong. */
+.flow-in {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  justify-items: inherit; align-content: inherit;
+  gap: inherit;
+  width: 100%; min-height: 100%;
+  transform-origin: bottom left;
+  will-change: transform;
+  backface-visibility: hidden;      /* keeps type crisp mid-rotation */
+}
+/* The reference pins each section so the next one hinges over it, and every
+   section there carries a solid background colour — without one, pinned sections
+   stack up transparently and three headlines land on top of each other. So each
+   section here becomes an opaque plate, sticking at the top of the scroller while
+   the next swings over it. The tones stay inside the existing palette; this is a
+   stack of dark plates, not a colour scheme. */
+.zonesec, .ridetrack, .cashless, .eats, .shows, .gallery, .faqs, .sponsors, .pkcall {
+  position: sticky; top: 0;
+  overflow: hidden;
+  background-color: var(--logo-2);
+}
+/* The plates are the BLVD World logo's own colours — the four dark steps of the
+   navy ladder in the mark itself, so the stack is the brand rather than an
+   invented scheme. Adjacent plates never repeat, and the palest step lands on
+   the gallery, which is almost all photography and carries the least small type. */
+.pkcall    { background-color: var(--logo-1); }
+.ridetrack { background-color: var(--logo-1); }
+.cashless  { background-color: var(--logo-3); }
+.eats      { background-color: var(--logo-2); }
+.shows     { background-color: var(--logo-1); }
+.gallery   { background-color: var(--logo-4); }
+.faqs      { background-color: var(--logo-3); }
+.sponsors  { background-color: var(--logo-2); }
+/* the plate's own edge, so the hinge has a lip to catch the light on */
+.zonesec::after, .ridetrack::after, .cashless::after, .eats::after, .shows::after,
+.gallery::after, .faqs::after, .sponsors::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  border-top: 1px solid rgba(124, 196, 255, .1);
+}
+/* the zone ring's cards recede on Z, so it keeps its own overflow */
+.zonesec { overflow: clip visible; }
+@media (prefers-reduced-motion: reduce) {
+  .flow-in { transform: none !important; }
 }

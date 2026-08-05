@@ -496,9 +496,25 @@
       return;
     }
 
+    // Each group closes with a way through to the section that covers it, the way
+    // the reference ends every group with VIEW ALL <CATEGORY>. It is only worth
+    // showing where the group actually has a page behind it.
+    const GROUP_GO = {
+      "THINGS TO DO": ["#/rides", "View all rides"],
+      "RIDES & ATTRACTIONS": ["#/rides", "View all rides"],
+      "RECORD-BREAKING RIDES": ["#/rides", "View all rides"],
+      "PLACES TO EAT": ["#/", "View all dining"],
+      "TONIGHT'S SHOWS": ["#/", "View the full schedule"],
+    };
+    const groupGo = (g) => {
+      const hit = GROUP_GO[(g || "").toUpperCase()];
+      return hit ? `<a class="pp-groupgo" href="${hit[0]}">${hit[1]}<i aria-hidden="true"></i></a>` : "";
+    };
+
     let html = "", group = null;
     for (const it of list) {
       if (!sortAZ && it.group !== group) {
+        if (group) html += groupGo(group);        // close the group we are leaving
         group = it.group;
         html += `<h4 class="pp-group">${group}</h4>`;
       }
@@ -516,6 +532,7 @@
           </span>
         </button>`;
     }
+    if (!sortAZ && group) html += groupGo(group);   // and the last one
     listEl.innerHTML = html;
 
     listEl.querySelectorAll(".pp-row").forEach((row, k) => {
