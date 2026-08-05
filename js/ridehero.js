@@ -1,122 +1,133 @@
-// ── rides on the home page: the names drift, the backdrop follows ───────
-// Only the name shows here — number, intensity and fare live on the rides page.
-// The belt runs continuously and whichever name is crossing the centre line is
-// the live one, so the band is never still. Pointing at a name takes it over.
+// ── the home page's rides band: three intensity rails ───────────────────
+// Fourteen rides strung along GENTLE / LIVELY / FULL THROTTLE. The length of
+// each rail is the section's real content — you can see at a glance that this
+// park is thrill-heavy — and pointing at a name floats its photograph in.
 (function () {
-  const reel = document.getElementById("rh-reel");
-  const belt = document.getElementById("rh-belt");
-  const bg = document.getElementById("rh-bg");
-  const split = document.getElementById("rh-split");
-  if (!reel || !belt || !bg) return;
+  const bands = document.getElementById("rt-bands");
+  const peek = document.getElementById("rt-peek");
+  const sec = document.getElementById("rides2");
+  if (!bands || !sec) return;
   const rides = (window.WBK && WBK.rides) || [];
   if (!rides.length) return;
 
   const HEAT = { THRILL: 3, AERIAL: 3, ADVENTURE: 2, "FAMILY SWING": 2, FAMILY: 1, SCENIC: 1 };
   const BAND = { 1: "gentle", 2: "lively", 3: "thrill" };
-  const LABEL = { gentle: "Gentle", lively: "Lively", thrill: "Full throttle" };
   const heat = (r) => HEAT[r.kind] || 2;
-  const STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ── how the fourteen split by intensity, beside the lead ── */
-  if (split) {
-    const counts = rides.reduce((m, r) => { const b = BAND[heat(r)]; m[b] = (m[b] || 0) + 1; return m; }, {});
-    split.innerHTML = ["thrill", "lively", "gentle"]
-      .filter((b) => counts[b])
-      .map((b) => `<div class="rh-stat b-${b}"><dt>${LABEL[b]}</dt><dd>${counts[b]}</dd></div>`).join("");
-  }
+  // gentlest rail first, so the section reads top to bottom, calm to wild
+  const ORDER = [
+    ["gentle", "Gentle"],
+    ["lively", "Lively"],
+    ["thrill", "Full throttle"],
+  ];
 
-  /* ── the backdrop: one plate per ride, only the live one lit ── */
-  bg.innerHTML = rides.map((r, i) => `
-    <span class="rh-plate${i === 0 ? " on" : ""}"><img data-src="img/rides/${r.img}" alt=""></span>`).join("");
-  const plates = [...bg.children];
-  function load(i) {
-    const el = plates[i];
-    if (!el) return;
-    const img = el.firstElementChild;
-    if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
-  }
+  const byBand = new Map(ORDER.map(([k]) => [k, []]));
+  rides.forEach((r, i) => byBand.get(BAND[heat(r)]).push({ ...r, i }));
 
-  /* ── the belt: the names twice over, so the loop has no seam ── */
-  const row = (r, i) => `
-    <button class="rh-word" type="button" data-i="${i}">
-      <span>${r.name}</span>
-    </button>`;
-  belt.innerHTML = rides.map(row).join("") + rides.map(row).join("");
-  const words = [...belt.children];
+  bands.innerHTML = ORDER.map(([key, label]) => {
+    const set = byBand.get(key);
+    if (!set.length) return "";
+    return `
+      <div class="rt-band" data-band="${key}">
+        <div class="rt-key">
+          <b>${label}</b>
+          <span>${set.length} ride${set.length === 1 ? "" : "s"}</span>
+        </div>
+        <div class="rt-rail" role="list">
+          ${set.map((r) => `
+            <button class="rt-node" type="button" role="listitem" data-i="${r.i}">
+              <i class="rt-dot" aria-hidden="true"></i><span>${r.name}</span>
+            </button>`).join("")}
+        </div>
+      </div>`;
+  }).join("");
 
+  /* ── the photograph that follows the pointer ── */
+  const shot = peek && peek.querySelector("img");
+  const pName = peek && peek.querySelector(".rt-peek-name");
+  const pFare = peek && peek.querySelector(".rt-peek-fare");
   let live = -1;
+
   function show(i) {
-    if (i === live || !rides[i]) return;
+    if (!peek || i === live) return;
+    const r = rides[i];
+    if (!r) return;
     live = i;
-    load(i); load((i + 1) % rides.length);
-    plates.forEach((p, n) => p.classList.toggle("on", n === i));
-    words.forEach((w) => w.classList.toggle("on", +w.dataset.i === i));
+    // held back until first asked for, so arriving at the section doesn't pull
+    // down fourteen photographs nobody has pointed at yet
+    shot.src = "img/rides/" + r.img;
+    pName.textContent = r.name;
+    pFare.textContent = `SAR ${r.reg} · fast ${r.fast}`;
   }
 
-  /* ── the name crossing the centre is the live one ── */
-  let raf = null, held = false;
-  function follow() {
-    raf = null;
-    if (!held) {
-      const mid = reel.getBoundingClientRect().top + reel.clientHeight / 2;
-      let best = -1, bestD = Infinity;
-      for (const w of words) {
-        const b = w.getBoundingClientRect();
-        if (!b.height) continue;
-        const d = Math.abs(b.top + b.height / 2 - mid);
-        if (d < bestD) { bestD = d; best = +w.dataset.i; }
-      }
-      if (best >= 0) show(best);
+  const foot = sec.querySelector(".rt-foot");
+
+  function place(node) {
+    if (!peek) return;
+    const s = sec.getBoundingClientRect();
+    const n = node.getBoundingClientRect();
+    const w = peek.offsetWidth || 180;
+    const h = peek.offsetHeight || 176;
+    const pad = 12;
+    // it slides horizontally to sit under whatever is being pointed at
+    let x = n.left - s.left + n.width / 2 - w / 2;
+    x = Math.max(pad, Math.min(s.width - w - pad, x));
+    // and lands in one fixed band — the empty space below the CTA — so the
+    // photograph never covers the heading it is meant to illustrate
+    let y = foot ? foot.getBoundingClientRect().bottom - s.top + 14 : 0;
+    if (y + h > s.height - pad) {
+      // no room down there: fall back to floating just above the node
+      y = Math.max(pad, n.top - s.top - h - 12);
     }
-    if (running) raf = requestAnimationFrame(follow);
+    peek.style.left = "0";
+    peek.style.top = "0";
+    peek.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
   }
 
-  let running = false;
-  function start() {
-    if (STILL || running) return;
-    running = true;
-    belt.classList.add("rolling");
-    raf = requestAnimationFrame(follow);
-  }
-  function stop() {
-    running = false;
-    belt.classList.remove("rolling");
-    if (raf) { cancelAnimationFrame(raf); raf = null; }
+  function light(node) {
+    bands.querySelectorAll(".rt-node.on").forEach((n) => n.classList.remove("on"));
+    if (!node) { peek && peek.classList.remove("on"); return; }
+    node.classList.add("on");
+    show(+node.dataset.i);
+    // it needs a laid-out box before it can be positioned, so reveal first
+    // and place in the same frame
+    if (peek) { peek.classList.add("on"); place(node); }
   }
 
-  // pointing at a name holds it; leaving hands the belt back
-  belt.addEventListener("pointerover", (e) => {
-    const w = e.target.closest(".rh-word");
-    if (!w) return;
-    held = true;
-    belt.classList.add("paused");
-    show(+w.dataset.i);
+  bands.addEventListener("pointerover", (e) => {
+    const node = e.target.closest(".rt-node");
+    if (node) light(node);
   });
-  belt.addEventListener("focusin", (e) => {
-    const w = e.target.closest(".rh-word");
-    if (w) { held = true; belt.classList.add("paused"); show(+w.dataset.i); }
+  bands.addEventListener("focusin", (e) => {
+    const node = e.target.closest(".rt-node");
+    if (node) light(node);
   });
-  reel.addEventListener("pointerleave", () => { held = false; belt.classList.remove("paused"); });
+  bands.addEventListener("pointerleave", () => light(null));
+  bands.addEventListener("focusout", (e) => {
+    if (!bands.contains(e.relatedTarget)) light(null);
+  });
+  // a rail scrolling under a lit node would leave its card behind
+  bands.querySelectorAll(".rt-rail").forEach((rail) =>
+    rail.addEventListener("scroll", () => {
+      const on = bands.querySelector(".rt-node.on");
+      if (on) place(on);
+    }, { passive: true })
+  );
 
-  /* ── it only runs while the band is on screen and the tab is watched ──
-     Scroll maths rather than an observer: the page scrolls inside #view-home,
-     and an observer rooted there is unreliable about delivering — the heading
-     reveal was bitten by exactly that. */
-  const sec = document.getElementById("rides2");
-  const home = document.getElementById("view-home");
-  function check() {
-    if (!sec) return;
-    const b = sec.getBoundingClientRect();
-    const vh = (home ? home.clientHeight : innerHeight) || 1;
-    const top = home ? home.getBoundingClientRect().top : 0;
-    const onScreen = b.bottom - top > vh * 0.1 && b.top - top < vh * 0.9;
-    if (onScreen && !document.hidden) start(); else stop();
-  }
-  home && home.addEventListener("scroll", check, { passive: true });
-  addEventListener("resize", check);
-  document.addEventListener("visibilitychange", check);
-  check();
+  // a tap goes through to the rides page, where the ride is actually bookable;
+  // on touch the first tap only lights it, the second follows through
+  bands.addEventListener("click", (e) => {
+    const node = e.target.closest(".rt-node");
+    if (!node) return;
+    if (matchMedia("(hover: hover)").matches || node.classList.contains("on")) {
+      location.hash = "#/rides";
+    } else {
+      light(node);
+    }
+  });
 
-  if (STILL) words.forEach((w) => w.classList.add("in"));
-  show(0);
+  addEventListener("resize", () => {
+    const on = bands.querySelector(".rt-node.on");
+    if (on) place(on);
+  });
 })();

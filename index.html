@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=366" />
+<link rel="stylesheet" href="css/main.css?v=372" />
 </head>
 <body class="typo-body">
 
@@ -172,30 +172,34 @@
     </section>
 
     <!-- ── rides: the count set large, the names live, the backdrop following ── -->
-    <section class="ridehero" id="rides2">
-      <div class="rh-bg" id="rh-bg" aria-hidden="true"></div>
-      <div class="rh-scrim" aria-hidden="true"></div>
-
-      <div class="rh-inner">
-        <div class="rh-lead reveal">
-          <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
-          <p class="rh-count" aria-hidden="true">14</p>
-          <h2 class="sec-title rh-title">RIDE UNTIL CLOSING</h2>
-          <p class="sec-sub">Gentle swings to full-throttle drops, every one of them running until
-            the park closes. Point at a name to see what you're in for.</p>
-          <dl class="rh-split" id="rh-split"></dl>
-          <a class="pill solid big-pill rh-cta" href="#/rides">
-            EXPLORE EVERY RIDE
-            <i class="rc-arrow" aria-hidden="true"></i>
-          </a>
-        </div>
-
-        <!-- the names drift past; whichever crosses the line is the live one -->
-        <div class="rh-reel reveal" id="rh-reel">
-          <div class="rh-belt" id="rh-belt"></div>
-          <span class="rh-line" aria-hidden="true"></span>
-        </div>
+    <!-- fourteen rides strung along three intensity rails: the shape of the
+         section is the answer to "how wild does this get?" -->
+    <section class="ridetrack" id="rides2">
+      <div class="rt-head reveal">
+        <p class="eyebrow"><span class="sec-num">02</span> HOLD ON TIGHT</p>
+        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
+        <p class="sec-sub">Fourteen of them, running until the gates close. Strung out here from
+          the gentlest to the ones that take your voice — point at any name.</p>
       </div>
+
+      <!-- three rails, built from the ride sheet in js/ridehero.js -->
+      <div class="rt-bands reveal" id="rt-bands"></div>
+
+      <div class="rt-foot reveal">
+        <a class="pill solid big-pill" href="#/rides">
+          EXPLORE EVERY RIDE
+          <i class="rc-arrow" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <!-- the photograph that follows whatever is being pointed at -->
+      <figure class="rt-peek" id="rt-peek" aria-hidden="true">
+        <span class="rt-peek-shot"><img alt="" draggable="false" /></span>
+        <figcaption>
+          <b class="rt-peek-name"></b>
+          <span class="rt-peek-fare"></span>
+        </figcaption>
+      </figure>
     </section>
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
@@ -211,19 +215,41 @@
       <div class="cash-stage">
         <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
         <div class="card-stage" id="card-stage">
+          <!-- the real BLVD World card: park photograph as the field, the
+               issuer lockup across the top, rides and cash on a dark band -->
           <div class="blvd-card" id="blvd-card">
-            <i class="bc-foil" aria-hidden="true"></i>
+            <img class="bc-field" src="img/gallery/fireworks.jpg" alt="" aria-hidden="true" />
+            <i class="bc-wash" aria-hidden="true"></i>
             <i class="bc-sheen" aria-hidden="true"></i>
+
             <div class="bc-top">
-              <img class="bc-logo" src="img/blvd-world-logo.svg" alt="BLVD World" />
-              <span class="bc-tap">TAP TO PLAY</span>
+              <div class="bc-issuer">
+                <b class="bc-wordmark">BLVD WORLD</b>
+                <span class="bc-expiry">Expires: April 2027</span>
+              </div>
+              <div class="bc-marks" aria-label="Saudi Arabia · Riyadh Season · webook">
+                <span class="bc-mark">Saudi</span>
+                <span class="bc-mark">Riyadh Season</span>
+                <span class="bc-mark is-wbk">webook</span>
+              </div>
             </div>
-            <div class="bc-chip" aria-hidden="true"><i></i><i></i><i></i></div>
-            <p class="bc-num">5312 7788 0142 2026</p>
-            <div class="bc-foot">
-              <span class="bc-name">GAME &amp; RIDE CARD</span>
-              <span class="bc-bal">SAR <b id="bc-amount">250</b></span>
+
+            <img class="bc-emblem" src="img/blvd-world-logo.svg" alt="BLVD World" />
+
+            <div class="bc-band">
+              <dl class="bc-meter">
+                <div>
+                  <dt>Rides</dt>
+                  <dd id="bc-rides">10</dd>
+                </div>
+                <div>
+                  <dt>Cash</dt>
+                  <dd><span class="bc-cur">SAR</span> <b id="bc-amount">100</b></dd>
+                </div>
+              </dl>
+              <span class="bc-tap">Tap to pay <i class="bc-wave" aria-hidden="true"></i></span>
             </div>
+
             <i class="bc-glare" aria-hidden="true"></i>
           </div>
         </div>
@@ -666,23 +692,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=366"></script>
-  <script src="js/borders.js?v=366"></script>
-  <script src="js/scene.js?v=366"></script>
-  <script src="js/app.js?v=366"></script>
-  <script src="js/experiences.js?v=366"></script>
-  <script src="js/carousels.js?v=366"></script>
-  <script src="js/coverflow.js?v=366"></script>
-  <script src="js/zones.js?v=366"></script>
-  <script src="js/gallery.js?v=366"></script>
-  <script src="js/parkmap.js?v=366"></script>
-  <script src="js/sponsors.js?v=366"></script>
-  <script src="js/cashless.js?v=366"></script>
-  <script src="js/headings.js?v=366"></script>
-  <script src="js/bundles.js?v=366"></script>
-  <script src="js/ridehero.js?v=366"></script>
-  <script src="js/ridex.js?v=366"></script>
+  <script src="js/data.js?v=372"></script>
+  <script src="js/borders.js?v=372"></script>
+  <script src="js/scene.js?v=372"></script>
+  <script src="js/app.js?v=372"></script>
+  <script src="js/experiences.js?v=372"></script>
+  <script src="js/carousels.js?v=372"></script>
+  <script src="js/coverflow.js?v=372"></script>
+  <script src="js/zones.js?v=372"></script>
+  <script src="js/gallery.js?v=372"></script>
+  <script src="js/parkmap.js?v=372"></script>
+  <script src="js/sponsors.js?v=372"></script>
+  <script src="js/cashless.js?v=372"></script>
+  <script src="js/headings.js?v=372"></script>
+  <script src="js/bundles.js?v=372"></script>
+  <script src="js/ridehero.js?v=372"></script>
+  <script src="js/ridex.js?v=372"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=366"></script> -->
+  <script type="module" src="js/globe.js?v=372"></script> -->
 </body>
 </html>

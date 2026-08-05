@@ -38,7 +38,9 @@
   /* ── tapping the card spends a play ── */
   // the top-up strip is gone, so this is the only thing that moves the balance
   const amount = document.getElementById("bc-amount");
+  const ridesEl = document.getElementById("bc-rides");
   let balance = parseInt(amount.textContent, 10) || 0;
+  let rides = ridesEl ? parseInt(ridesEl.textContent, 10) || 0 : 0;
   let counting = null;
 
   function runTo(target) {
@@ -58,11 +60,19 @@
   }
 
   card.addEventListener("click", () => {
-    if (balance < 25) return;                       // nothing left to spend
+    if (balance < 25 && rides < 1) return;          // nothing left to spend
     card.classList.remove("tapped");
     void card.offsetWidth;                          // restart the ring animation
     card.classList.add("tapped");
-    runTo(balance - 25);
+    // a ride comes off the ride count first; once those run out it costs cash
+    if (rides > 0 && ridesEl) {
+      rides -= 1;
+      ridesEl.textContent = rides;
+      ridesEl.classList.add("bump");
+      setTimeout(() => ridesEl.classList.remove("bump"), 260);
+    } else {
+      runTo(balance - 25);
+    }
     setTimeout(() => card.classList.remove("tapped"), 1600);
   });
 })();
