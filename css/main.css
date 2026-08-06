@@ -471,7 +471,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   /* white, whatever the source artwork's own colours are: brightness(0) flattens
      it to black and invert(1) lifts that to white in one pass, which survives the
      logo being re-exported in another palette */
-  height: clamp(96px, 11.5vw, 164px); width: auto; margin-bottom: 2px;
+  /* Heights are for the *cropped* mark (img/blvd-world-mark.svg), whose ink fills
+     its box. The old file wrapped the same mark in 314 units of padding a side, so
+     it drew at 45% of whatever height was set — every number here used to be more
+     than double what it looked like. */
+  height: clamp(110px, 12.5vw, 190px); width: auto;
+  /* --hero-gap spaces the whole stack evenly, and the mark is not meant to be
+     spaced off the words underneath it — it belongs to them. Cancelling exactly one
+     gap puts it straight on top of the arch, and hands ~20px back to the stage. */
+  margin-bottom: calc(var(--hero-gap) * -1);
   filter: brightness(0) invert(1) drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
@@ -498,7 +506,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    than sit on a straight baseline. The tighter, higher arc carries the first
    word; the wider one below carries the second, and the pair domes over the
    rock in the hero footage. */
-.hero-title.arch { display: block; width: min(1120px, 94vw); line-height: 1; }
+/* The widths are 0.704 of what they were, because the viewBox is. The arch's box
+   used to run the full 1000 units while the words only occupied 654 of them — 174
+   units of empty space on each side — so the heading's box was half again as wide as
+   the heading. Cropping the box and scaling the width by the same factor leaves the
+   type exactly the size it was and stops the box carrying air. */
+.hero-title.arch { display: block; width: min(788px, 66vw); line-height: 1; }
 .arch-type {
   display: block; width: 100%; height: auto; overflow: visible;
   filter: drop-shadow(0 2px 10px rgba(2, 4, 14, .85)) drop-shadow(0 16px 44px rgba(2, 4, 14, .7));
@@ -3529,7 +3542,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    stage-fitting blocks live down here. */
 /* the arch is sized from width, so on a short screen it has to come in or it
    eats the clearance the hero just gained */
-@media (max-height: 820px) {
+@media (max-height: 940px) {
   /* ── where the room for a big mark comes from ──
      Measured, not guessed: at 1164x777 the hero needs 884px of stage and has 777,
      so it overflows 53px at each end — which means the top of the logo has been
@@ -3539,15 +3552,24 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
      The scroll cue is that something. It reserves about 120px between the tiles and
      the bottom of the stage to say "SCROLL" on a page that plainly scrolls, and it
      is already dropped below 660px. Losing it here buys back more than the mark
-     costs, so the logo is big *and* uncropped, and nothing informative is cut. */
-  .hero-title.arch { width: min(880px, 82vw); }
-  .hero-ui { padding-top: 24px; padding-bottom: calc(4vh + 40px); }
-  .hero-logo { height: clamp(84px, 9vw, 118px); }
+     costs, so the logo is big *and* uncropped, and nothing informative is cut.
+
+     The threshold is 940px, not 820: at 1400x900 the full-size mark cropped 46px off
+     the top and the tiles crossed the cue by 5px, so 900 belongs on this side of the
+     line. Only a genuinely tall stage keeps both. */
+  /* the arch gives up 60px of width so the mark can have the height — at 1164 that
+     is about 16px of stage back, and the block is centred so it is worth double */
+  .hero-title.arch { width: min(577px, 55vw); }
+  .hero-ui { padding-top: 18px; padding-bottom: calc(4vh + 34px); }
+  /* 23px of headroom sat above the mark and 70px under the tiles, and the block is
+     centred, so the top is the binding constraint: it can grow by twice that
+     headroom before it crops again. 105px -> 144px spends most of it. */
+  .hero-logo { height: clamp(92px, 11.2vw, 152px); }
   .scroll-cue { display: none; }
 }
 @media (max-height: 700px) {
-  .hero-title.arch { width: min(760px, 74vw); }
-  .hero-logo { height: clamp(62px, 7vw, 88px); }
+  .hero-title.arch { width: min(535px, 52vw); }
+  .hero-logo { height: clamp(76px, 9vw, 112px); }
 }
 /* Short and wide — a small laptop, or a phone on its side. Measured at
    1440x620 the block was clipping 13px off the top with only 42px left under
@@ -3560,7 +3582,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
      mark is the thing to give up: the arch says BLVD World directly underneath it,
      so the logo is the one element here that is purely decorative. */
   .hero-logo { display: none; }
-  .hero-title.arch { width: min(620px, 64vw); }
+  .hero-title.arch { width: min(436px, 45vw); }
 }
 /* A phone on its side, or anything else this short: measured at 844x390 the
    block still clipped, because 390px simply is not enough for a full-size arch
@@ -3570,7 +3592,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 @media (max-height: 520px) {
   .street { height: auto; min-height: 100vh; overflow: visible; }
   .hero-ui { padding: 16px 6vw 20px; --hero-gap: 9px; }
-  .hero-title.arch { width: min(460px, 52vw); }
+  .hero-title.arch { width: min(324px, 37vw); }
   .scroll-cue { display: none; }
   .bt { gap: 6px; padding: 10px 6px; }
   .bt-ic { width: 38px; height: 38px; }
