@@ -2369,6 +2369,11 @@ html[data-hero="real"] .zc .zc-plate {
 .mapmod {
   position: relative; z-index: 11;
   padding: var(--sec-y) var(--sec-x);
+  /* The module is shorter than a stage, so without this it sat at the top of one:
+     the divider slid under the fixed header and the next section's heading came up
+     into view underneath. It holds a full stage and centres in it, like every
+     other section on the page. */
+  min-height: 100%; align-content: center;
   display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
   gap: clamp(14px, 2.4vh, 30px);
 }
@@ -2388,7 +2393,9 @@ html[data-hero="real"] .zc .zc-plate {
 .mm-lead i:last-child { background: linear-gradient(90deg, rgba(199, 226, 255, .3), transparent); }
 
 .mm-art {
-  width: 100%; max-width: min(1080px, 88vw); line-height: 0;
+  /* smaller than the plate it used to sit in: it is a model of the park, not the
+     map itself — the button is what opens the one you can read */
+  width: 100%; max-width: min(760px, 72vw); line-height: 0;
   /* the island is a cut-out, so the shadow follows its silhouette rather than a
      box — this is what puts it above the night instead of on top of it */
   filter: drop-shadow(0 26px 46px rgba(2, 4, 16, .55));
@@ -2410,7 +2417,7 @@ html[data-hero="real"] .zc .zc-plate {
 
 @media (max-width: 700px) {
   .mapmod { gap: clamp(10px, 1.8vh, 18px); }
-  .mm-art { max-width: 96vw; filter: drop-shadow(0 14px 26px rgba(2, 4, 16, .5)); }
+  .mm-art { max-width: 92vw; filter: drop-shadow(0 14px 26px rgba(2, 4, 16, .5)); }
   .mm-count { font-size: 10px; }
   .mm-count b { font-size: 13px; }
 }
@@ -2424,41 +2431,27 @@ html[data-hero="real"] .zc .zc-plate {
 /* head above, the panel under it, the CTA below that */
 .cashless { gap: clamp(16px, 2.6vh, 32px); }
 
-/* ══ THE PANEL ══
-   A machined tray with a plate set into it — the same nested construction the
-   lightbox frame uses, so the two read as one system.
+/* ══ THE CARD, AND WHAT FOLLOWS IT ══
+   No tray and no plate. The card leads alone and the three moments follow it
+   across a rail underneath — each moment is a cell in its own right, so a
+   container around the set was a box drawn around three boxes.
 
-   The card leads, alone and centred, and the three moments follow it across a
-   rail underneath: one card, then what you do with it. Reading down beats reading
-   across for this, because the card is the subject and the steps are what happens
-   to it — set side by side they competed instead. */
-.cash-panel {
-  --tray: clamp(5px, .6vw, 9px);
-  --tray-r: clamp(20px, 2vw, 28px);
+   Reading down beats reading across here: the card is the subject and the steps
+   are what happens to it. Side by side they competed. */
+.cash-body {
   width: 100%; max-width: min(1020px, 100%); margin-inline: auto;
-  padding: var(--tray);
-  border-radius: var(--tray-r);
-  background: rgba(199, 226, 255, .05);
-  border: 1px solid rgba(199, 226, 255, .14);
-  box-shadow: 0 30px 80px rgba(2, 4, 16, .46);
-}
-.cash-inner {
-  border-radius: calc(var(--tray-r) - var(--tray));
-  background: linear-gradient(168deg, rgba(16, 24, 60, .72), rgba(6, 10, 30, .9));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
-  padding: clamp(18px, 2.4vw, 32px) clamp(16px, 2.4vw, 34px) clamp(18px, 2.2vw, 30px);
   display: grid; justify-items: center; gap: clamp(16px, 2.4vh, 30px);
-  position: relative; overflow: hidden;
+  position: relative;
 }
-/* a bloom under the card, so it sits on the plate rather than floating over it */
-.cash-inner::before {
-  content: ''; position: absolute; left: 50%; top: 0; z-index: 0;
-  width: min(560px, 80%); height: 58%; transform: translateX(-50%);
+/* a bloom behind the card, so it reads as lit rather than pasted on the night */
+.cash-body::before {
+  content: ''; position: absolute; left: 50%; top: -6%; z-index: 0;
+  width: min(560px, 80%); height: 52%; transform: translateX(-50%);
   border-radius: 50%; pointer-events: none;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(209, 0, 119, .28), transparent 72%);
-  filter: blur(30px);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(209, 0, 119, .26), transparent 72%);
+  filter: blur(34px);
 }
-.cash-inner > * { position: relative; z-index: 1; }
+.cash-body > * { position: relative; z-index: 1; }
 
 /* ══ THE THREE MOMENTS ══
    Three cells across a rail, each set into the plate the way the plate is set into
@@ -2484,21 +2477,24 @@ html[data-hero="real"] .zc .zc-plate {
   position: relative;
   padding: clamp(22px, 2.4vw, 30px) clamp(14px, 1.6vw, 20px) clamp(15px, 1.8vw, 20px);
   border-radius: clamp(14px, 1.4vw, 20px);
-  background: linear-gradient(170deg, rgba(199, 226, 255, .07), rgba(199, 226, 255, .022));
+  /* standing on the night rather than on a plate, a cell needs a little more of
+     its own body — the same glass the hero tiles are built from */
+  background: linear-gradient(170deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .04));
   box-shadow:
-    inset 0 0 0 1px rgba(199, 226, 255, .12),
-    inset 0 1px 0 rgba(255, 255, 255, .08);
+    inset 0 0 0 1px rgba(199, 226, 255, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .1),
+    0 12px 30px rgba(2, 4, 16, .3);
   display: grid; gap: 7px; align-content: start;
   transition: box-shadow .45s var(--ease), background .45s var(--ease),
               transform .45s var(--ease);
 }
 .cash-steps li:hover {
   transform: translateY(-2px);
-  background: linear-gradient(170deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .04));
+  background: linear-gradient(170deg, rgba(199, 226, 255, .14), rgba(199, 226, 255, .06));
   box-shadow:
-    inset 0 0 0 1px rgba(199, 226, 255, .2),
-    inset 0 1px 0 rgba(255, 255, 255, .12),
-    0 14px 34px rgba(2, 4, 16, .34);
+    inset 0 0 0 1px rgba(199, 226, 255, .24),
+    inset 0 1px 0 rgba(255, 255, 255, .14),
+    0 18px 40px rgba(2, 4, 16, .38);
 }
 /* the numeral sits on the rail, half in the cell and half out of it */
 .cs-num {
@@ -2507,8 +2503,8 @@ html[data-hero="real"] .zc .zc-plate {
   display: grid; place-items: center;
   min-width: 30px; height: 22px; padding: 0 9px;
   border-radius: var(--r-pill);
-  background: #0b1230;
-  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .42);
+  background: #080d24;
+  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .42), 0 2px 8px rgba(2, 4, 16, .5);
   font-family: var(--fig); font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
   color: var(--gold); font-variant-numeric: tabular-nums;
 }
@@ -2723,7 +2719,7 @@ html[data-hero="real"] .zc .zc-plate {
 @media (max-width: 700px) {
   .blvd-card { width: min(276px, 100%); }
   .cashless { gap: clamp(10px, 1.6vh, 18px); }
-  .cash-inner { padding: 14px 14px 15px; gap: 14px; }
+  .cash-body { gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
 
@@ -3498,7 +3494,6 @@ body.route-experiences
   .sch-shot { width: 66px; }
   /* the card comes in on a short stage; the statement sets its own rhythm */
   .blvd-card { transform: scale(.88); }
-  .cash-inner { padding: clamp(14px, 1.8vw, 24px); }
   .cash-steps li { padding-block: clamp(18px, 2vw, 24px) clamp(12px, 1.4vw, 16px); }
   /* the zone ring */
   .cf { --cf-card: clamp(150px, 19vw, 232px) !important; }
@@ -3794,22 +3789,18 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 }
 .lbx.on .lbx-stage { opacity: 1; transform: none; filter: none; }
 
-/* outer tray */
-.lbx-frame {
-  --tray: clamp(6px, .7vw, 11px);
-  --tray-r: clamp(20px, 2vw, 30px);
-  max-width: 100%; min-width: 0;
-  padding: var(--tray); border-radius: var(--tray-r);
-  background: rgba(199, 226, 255, .06);
-  border: 1px solid rgba(199, 226, 255, .17);
-  box-shadow: 0 40px 120px rgba(0, 0, 0, .6);
-}
-/* inner plate, its radius stepped in by the tray's own padding */
+/* No tray. The photograph is the object here — it has its own edges, and a frame
+   around it was a second edge saying the same thing. What it needs is depth
+   against the dimmed page, which is the shadow's job, and a hairline so a dark
+   photograph does not dissolve into the backdrop. */
+.lbx-frame { max-width: 100%; min-width: 0; }
 .lbx-shot {
   margin: 0; overflow: hidden; line-height: 0;
-  border-radius: calc(var(--tray-r) - var(--tray));
+  border-radius: clamp(14px, 1.4vw, 20px);
   background: #05060f;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .14);
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .14),
+    0 40px 120px rgba(0, 0, 0, .6);
 }
 .lbx-shot img {
   display: block; max-width: 100%;

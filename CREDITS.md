@@ -196,6 +196,12 @@ navy *inside* the artwork — the two KSA gate labels, the dark roofs in Korea a
 China, the signage. The alpha is feathered by a 0.9px blur so the silhouette is
 not a staircase, and the result is cropped to its own bounding box.
 
+The sponsor lockup in the top-right corner — "Saudi, Welcome to Arabia" and the
+Riyadh Season mark — is removed as well, on request. It floats in the surround
+unattached to the park, so it could be taken out precisely: everything in that
+corner that is not part of the island component, 9,116 pixels. The ring road runs
+through the same corner and is part of the island, so it is untouched.
+
 Nothing was added, moved or retouched. Both signs (blvdworld + stc, blvdcity),
-the Riyadh Season lockup, all 26 printed labels and the ring road survive
-unchanged. Same clearance question as the rest of the client's artwork.
+all 26 printed labels and the ring road survive unchanged. Same clearance
+question as the rest of the client's artwork.

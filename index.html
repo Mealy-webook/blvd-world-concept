@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=585" />
+<link rel="stylesheet" href="css/main.css?v=589" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=585" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=589" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -184,11 +184,10 @@
         </div>
       </div>
 
+      <!-- the map link went with it: the section right below is the map, and it
+           carries its own way in -->
       <div class="ride-cta reveal">
-        <a href="#/map" class="pill light big-pill">
-          Explore map
-        </a>
-        <a href="#/shows" class="pill ghost big-pill">
+        <a href="#/shows" class="pill light big-pill">
           Live shows
         </a>
       </div>
@@ -214,7 +213,7 @@
       <div class="mm-art reveal">
         <img src="img/map/park-map-cut.webp"
              srcset="img/map/park-map-cut-sm.webp 900w, img/map/park-map-cut.webp 1600w"
-             sizes="(max-width: 700px) 92vw, min(1080px, 88vw)"
+             sizes="(max-width: 700px) 92vw, min(760px, 72vw)"
              alt="The BLVD World park map: twenty-four zones around the lake, with both gates"
              width="1600" height="852" draggable="false" />
       </div>
@@ -280,40 +279,38 @@
       </div>
 
       <!-- The card leads and the three moments follow it, on a rail: one card,
-           then what you do with it. The plate is the same machined tray the
-           lightbox frame uses, and each moment is a cell set into it. -->
-      <div class="cash-panel reveal">
-        <div class="cash-inner">
-          <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
-          <div class="card-stage" id="card-stage">
-            <!-- the card artwork as supplied, used as-is: the wordmark, the
-                 issuer lockup, the field, the rides and cash figures and the tap
-                 mark are all in the image. Only the tilt and the glare are ours. -->
-            <div class="blvd-card is-art" id="blvd-card">
-              <img src="img/blvd-card.png" alt="BLVD World card &#8212; 10 rides, SAR 100"
-                   width="342" height="216" draggable="false" />
-              <i class="bc-glare" aria-hidden="true"></i>
-            </div>
+           then what you do with it. No container around the set — each moment is
+           already a cell, and a box drawn around three boxes says nothing. -->
+      <div class="cash-body reveal">
+        <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
+        <div class="card-stage" id="card-stage">
+          <!-- the card artwork as supplied, used as-is: the wordmark, the
+               issuer lockup, the field, the rides and cash figures and the tap
+               mark are all in the image. Only the tilt and the glare are ours. -->
+          <div class="blvd-card is-art" id="blvd-card">
+            <img src="img/blvd-card.png" alt="BLVD World card &#8212; 10 rides, SAR 100"
+                 width="342" height="216" draggable="false" />
+            <i class="bc-glare" aria-hidden="true"></i>
           </div>
-
-          <ol class="cash-steps">
-            <li>
-              <span class="cs-num">01</span>
-              <b class="cs-do">Book any ticket</b>
-              <span class="cs-say">Entry, entry + experience or a ride package &#8212; the card is yours at the gate</span>
-            </li>
-            <li>
-              <span class="cs-num">02</span>
-              <b class="cs-do">Top up in the app</b>
-              <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
-            </li>
-            <li>
-              <span class="cs-num">03</span>
-              <b class="cs-do">Tap and play</b>
-              <span class="cs-say">One tap at every ride and skill game &#8212; the balance follows you all night</span>
-            </li>
-          </ol>
         </div>
+
+        <ol class="cash-steps">
+          <li>
+            <span class="cs-num">01</span>
+            <b class="cs-do">Book any ticket</b>
+            <span class="cs-say">Entry, entry + experience or a ride package &#8212; the card is yours at the gate</span>
+          </li>
+          <li>
+            <span class="cs-num">02</span>
+            <b class="cs-do">Top up in the app</b>
+            <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
+          </li>
+          <li>
+            <span class="cs-num">03</span>
+            <b class="cs-do">Tap and play</b>
+            <span class="cs-say">One tap at every ride and skill game &#8212; the balance follows you all night</span>
+          </li>
+        </ol>
       </div>
 
       <div class="cash-go reveal">
@@ -808,27 +805,27 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=585"></script>
-  <script src="js/borders.js?v=585"></script>
-  <script src="js/scene.js?v=585"></script>
-  <script src="js/app.js?v=585"></script>
-  <script src="js/experiences.js?v=585"></script>
-  <script src="js/carousels.js?v=585"></script>
-  <script src="js/coverflow.js?v=585"></script>
-  <script src="js/zones.js?v=585"></script>
-  <script src="js/fan.js?v=585"></script>
-  <script src="js/gallery.js?v=585"></script>
-  <script src="js/parkmap.js?v=585"></script>
-  <script src="js/minimap.js?v=585"></script>
-  <script src="js/sponsors.js?v=585"></script>
-  <script src="js/cashless.js?v=585"></script>
-  <script src="js/headings.js?v=585"></script>
-  <script src="js/bundles.js?v=585"></script>
-  <script src="js/ridex.js?v=585"></script>
-  <script src="js/cursor.js?v=585"></script>
-  <script src="js/glass.js?v=585" defer></script>
+  <script src="js/data.js?v=589"></script>
+  <script src="js/borders.js?v=589"></script>
+  <script src="js/scene.js?v=589"></script>
+  <script src="js/app.js?v=589"></script>
+  <script src="js/experiences.js?v=589"></script>
+  <script src="js/carousels.js?v=589"></script>
+  <script src="js/coverflow.js?v=589"></script>
+  <script src="js/zones.js?v=589"></script>
+  <script src="js/fan.js?v=589"></script>
+  <script src="js/gallery.js?v=589"></script>
+  <script src="js/parkmap.js?v=589"></script>
+  <script src="js/minimap.js?v=589"></script>
+  <script src="js/sponsors.js?v=589"></script>
+  <script src="js/cashless.js?v=589"></script>
+  <script src="js/headings.js?v=589"></script>
+  <script src="js/bundles.js?v=589"></script>
+  <script src="js/ridex.js?v=589"></script>
+  <script src="js/cursor.js?v=589"></script>
+  <script src="js/glass.js?v=589" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=585" defer></script>
+  <script src="js/heroes.js?v=589" defer></script>
 </body>
 </html>
