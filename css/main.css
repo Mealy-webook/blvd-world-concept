@@ -427,9 +427,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    padding against a large bottom one lifts the whole block well clear of it, and
    because both are viewport-relative it holds at any height. */
 .hero-ui {
+  /* One measure sets every gap in the hero — heading to button, button to
+     divider, divider to tiles. Nothing in here carries a margin of its own;
+     short screens change the measure rather than adding exceptions. */
+  --hero-gap: clamp(16px, 2.6vh, 30px);
   position: relative; z-index: 5; text-align: center;
   padding: clamp(40px, 6vh, 88px) 6vw calc(4vh + 150px);
-  display: grid; justify-items: center; gap: 20px;
+  display: grid; justify-items: center; gap: var(--hero-gap);
   transform-style: preserve-3d; will-change: transform;
 }
 .hero-logo {
@@ -560,7 +564,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   position: relative; overflow: hidden;
   display: grid; grid-template-columns: minmax(0, 1fr);
   justify-items: center; text-align: center;
-  gap: 9px; padding: 16px 10px; border-radius: var(--r-lg);
+  gap: 15px; padding: 18px 10px; border-radius: var(--r-lg);
   background: transparent;
   border: 1px solid rgba(199, 226, 255, .42);
   transition: transform .45s var(--ease), border-color .35s var(--ease),
@@ -598,47 +602,31 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   color: #fff; text-transform: none;
 }
 
-/* What the tiles above it already include. It spans the whole set and sits on
-   one line where there is room — this rule was lost in an earlier rewrite of
-   this block, which left the note wrapping inside a single 105px column. */
-.bt-note {
-  grid-column: 1 / -1; justify-self: stretch; text-align: center;
-  margin-top: 6px;
-  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .05em;
-  color: #8fa0c8;
+/* ── the divider above the tiles ──
+   A rule, the line, a rule. It says what the three below have in common, and it
+   separates them from the call to action above rather than trailing underneath
+   them as a footnote. */
+.bt-lead {
+  display: flex; align-items: center; gap: clamp(10px, 1.6vw, 20px);
+  width: min(720px, 100%);
 }
-.bt-note b { font-weight: 700; color: #cfe4ff; }
+.bt-lead i { flex: 1; height: 1px; background: rgba(199, 226, 255, .2); }
+.bt-lead span {
+  flex: none;
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #8fa0c8; text-align: center;
+}
 
 /* ── the entry-ticket button ──
-   Set like the tiles rather than as a solid pill: same outline, same radius, so
-   the four read as one family with this one wider and leading. */
-.hero-cta.pill.solid {
-  display: inline-flex; align-items: baseline; justify-content: center; gap: 14px;
-  width: min(720px, 100%);
-  background: transparent; color: #fff;
-  border: 1px solid rgba(199, 226, 255, .42); border-radius: var(--r-lg);
-  box-shadow: none;
-  transition: transform .45s var(--ease), border-color .35s var(--ease),
-              background-color .35s var(--ease);
-}
-.hero-cta.pill.solid:hover {
-  transform: translateY(-4px);
-  background-color: rgba(199, 226, 255, .1);
-  border-color: rgba(215, 236, 255, .85);
-  box-shadow: none;
-}
-.hero-cta.pill.solid:active { transform: translateY(-1px); }
-.hc-from {
-  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .04em;
-  text-transform: uppercase; color: #8fa0c8;
-  font-variant-numeric: tabular-nums;
-}
-.hero-cta:hover .hc-from { color: #cfe4ff; }
+   A solid pill, the site's own call to action, sized to its words. The price is
+   not on it — the divider under it carries what the tiles include. It needs no
+   margin: --hero-gap already spaces the whole stack evenly, and the heading's
+   box now ends where its type ends, so the two sit close. */
 
 /* three across has to hold on a phone, so the tile compresses rather than
    reflowing — the grid stays one column, only the metrics come down */
 @media (max-width: 700px) {
-  .bt { gap: 7px; padding: 13px 7px; }
+  .bt { gap: 11px; padding: 14px 7px; }
   .bt-ic { width: 42px; height: 42px; border-radius: var(--r-sm); }
   .bt-ic svg { width: 20px; height: 20px; }
 }
@@ -813,6 +801,38 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transition: transform .6s cubic-bezier(.2,.8,.25,1);
 }
 .eat-card:hover .eat-shot img { transform: scale(1.05); }
+
+/* ── the brand plate ──
+   The thumbnail is the restaurant's mark, not its food: the kitchen's colour, a
+   drawn symbol, the wordmark and a descriptor under a hairline. A faint bloom
+   behind the mark keeps the square from reading as a flat swatch, and the whole
+   plate lifts a touch on hover the way the photograph used to. */
+.eat-logo {
+  position: absolute; inset: 0;
+  display: grid; align-content: center; justify-items: center; gap: 10px;
+  padding: 14px;
+  background:
+    radial-gradient(72% 58% at 50% 34%, rgba(255, 255, 255, .14), transparent 70%),
+    var(--plate, #16193a);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1);
+  transition: transform .6s cubic-bezier(.2,.8,.25,1);
+}
+.eat-card:hover .eat-logo { transform: scale(1.04); }
+.el-mark { width: clamp(38px, 22%, 56px); height: auto; fill: var(--ink, #fff); opacity: .95; }
+.el-word {
+  margin: 0; font-family: var(--disp); font-weight: 800;
+  font-size: clamp(15px, 1.9vw, 22px); line-height: 1;
+  letter-spacing: .02em; text-transform: uppercase; color: var(--ink, #fff);
+  text-align: center; max-width: 100%; overflow-wrap: anywhere;
+}
+.el-tag {
+  margin: 0; padding-top: 9px;
+  border-top: 1px solid color-mix(in srgb, var(--ink, #fff) 34%, transparent);
+  font-family: var(--mono); font-size: 8.5px; font-weight: 500; letter-spacing: .17em;
+  text-transform: uppercase; text-align: center;
+  color: color-mix(in srgb, var(--ink, #fff) 78%, transparent);
+}
+@media (prefers-reduced-motion: reduce) { .eat-logo { transition: none; } }
 
 /* the save control, top-right inside the image */
 .eat-fav {
@@ -2088,7 +2108,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transition: color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
 }
 .rx-back:hover { color: #fff; background: rgba(124, 196, 255, .16); transform: translateX(-3px); }
-.rx-back .mb-arrow { background: currentColor; }
 
 /* ── the home page's way in to that page ── */
 .ridecall {
@@ -2569,21 +2588,27 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   text-transform: uppercase; color: #dceaff;
   opacity: 0; transform: translateY(6px); transition: opacity .35s, transform .35s;
 }
+.gal-plate { cursor: pointer; }
 .gal-plate:hover {
   transform: translateY(-4px); border-color: rgba(255, 194, 77, .5);
   box-shadow: var(--sh-3);
 }
+.gal-plate:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
 .gal-plate:hover img { transform: scale(1.05); filter: saturate(1.06) brightness(1.02); }
 .gal-plate:hover figcaption { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .gal-run { animation: none; } }
 
-/* the shows schedule as its own page: it needs to fill the view and make room
-   for the back link, the way the rides and packages pages do */
-.shows.is-page {
+/* a home section standing on its own: it fills the view and makes room for the
+   back link, the way the rides and packages pages do */
+.shows.is-page,
+.eats.is-page {
   width: 100%; min-height: 100dvh;
   align-content: start; justify-items: center;
   gap: clamp(18px, 3vh, 34px);
 }
+/* four cards do not fill a page, so the restaurants centre in it instead */
+.eats.is-page { align-content: center; padding-block: clamp(72px, 11vh, 120px) var(--sec-y); }
+.eats-go { display: flex; justify-content: center; width: 100%; }
 
 /* ═══════════════ FAQs ═══════════════ */
 .faqs {
@@ -2830,7 +2855,6 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
   color: #fff; border-color: rgba(199, 226, 255, .8);
   background: rgba(14, 22, 60, .68); transform: translateX(-3px);
 }
-.page-back .mb-arrow { background: currentColor; }
 
 body.route-experiences 
 @media (max-width: 760px) {
@@ -2979,17 +3003,32 @@ body.route-experiences
   background: rgba(255, 194, 77, .16); border-color: rgba(255, 194, 77, .55);
   transform: translateX(-2px);
 }
+/* ── the back arrow ──
+   A shaft and one mitred corner. It used to be a shaft plus two separate bars,
+   each pivoted at the shaft's left end but offset 2.5px above and below it — so
+   the two arms never met at a point. That left a forked head whose arms ended in
+   square cuts, which is the notch that read as a clipped arrow. A single box with
+   two borders, rotated 45 degrees, gives a real mitre instead.
+
+   The colour follows the button's own `color`, so a host that changes colour on
+   hover carries the arrow with it. */
 .mb-arrow {
-  position: relative; width: 14px; height: 1.8px; border-radius: 2px;
-  background: #cfe4ff; transition: background .2s;
+  position: relative; width: 15px; height: 1.8px; border-radius: 1px;
+  color: inherit; background: currentColor;
+  transition: color .2s, background-color .2s;
 }
-.mb-arrow::before, .mb-arrow::after {
-  content: ''; position: absolute; left: 0; width: 7px; height: 1.8px;
-  border-radius: 2px; background: inherit;
+/* A 7x7 box rotated 45 degrees about its centre puts its bottom-left corner
+   exactly 4.95px to the left of that centre, level with it — so seating the box
+   1.45px in lands the vertex precisely on the shaft's left end. */
+.mb-arrow::before {
+  content: ''; position: absolute; left: 1.45px; top: 50%;
+  width: 7px; height: 7px; box-sizing: border-box;
+  border-left: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
 }
-.mb-arrow::before { top: -2.5px; transform: rotate(-45deg); transform-origin: left center; }
-.mb-arrow::after  { top:  2.5px; transform: rotate(45deg);  transform-origin: left center; }
-.map-back:hover .mb-arrow { background: #ffd98a; }
+.map-back { color: #cfe4ff; }
+.map-back:hover .mb-arrow { color: #ffd98a; }
 
 
 /* ═══════════════ SPONSORS ═══════════════ */
@@ -3296,7 +3335,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    the tiles, so the lift comes down with the room available and the arch comes
    in again. */
 @media (max-height: 660px) {
-  .hero-ui { padding: 26px 6vw calc(4vh + 100px); gap: 14px; }
+  .hero-ui { padding: 26px 6vw calc(4vh + 100px); --hero-gap: 14px; }
   .hero-title.arch { width: min(620px, 64vw); }
 }
 /* A phone on its side, or anything else this short: measured at 844x390 the
@@ -3306,7 +3345,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    scroll a little than to lose the top of the heading. */
 @media (max-height: 520px) {
   .street { height: auto; min-height: 100vh; overflow: visible; }
-  .hero-ui { padding: 16px 6vw 20px; gap: 8px; }
+  .hero-ui { padding: 16px 6vw 20px; --hero-gap: 9px; }
   .hero-title.arch { width: min(460px, 52vw); }
   .scroll-cue { display: none; }
   .bt { gap: 6px; padding: 10px 6px; }
@@ -3314,5 +3353,122 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   .bt-ic svg { width: 18px; height: 18px; }
   .bt-name { font-size: 14px; }
   .bt-price b { font-size: 14px; }
-  .bt-note { font-size: 10px; }
+  .bt-lead span { font-size: 9.5px; }
+}
+
+
+/* ══ THE GALLERY LIGHTBOX ══
+   At the end of the file with the other overlays. It hangs off <body>: .view
+   carries a blur filter, and a filter makes an element the containing block for
+   anything fixed inside it, so an overlay declared in the section would be
+   trapped in the page instead of covering the screen.
+
+   The photograph sits in a machined frame rather than flat on the scrim — an
+   outer tray with a hairline, an inner plate with its own top highlight, and
+   concentric radii so the two curves agree. */
+.lbx { position: fixed; inset: 0; z-index: 300; }
+.lbx[hidden] { display: none; }
+
+.lbx-scrim {
+  position: absolute; inset: 0;
+  background: rgba(3, 6, 20, .82);
+  backdrop-filter: blur(16px) saturate(.9);
+  -webkit-backdrop-filter: blur(16px) saturate(.9);
+  opacity: 0; transition: opacity .34s cubic-bezier(.32,.72,0,1);
+}
+.lbx.on .lbx-scrim { opacity: 1; }
+
+.lbx-stage {
+  position: absolute; inset: 0;
+  display: grid; align-content: center; justify-items: center;
+  gap: clamp(14px, 2vh, 22px);
+  padding: clamp(56px, 8vh, 92px) clamp(58px, 9vw, 130px);
+  opacity: 0; transform: scale(.955) translateY(14px); filter: blur(6px);
+  transition: opacity .4s cubic-bezier(.32,.72,0,1),
+              transform .52s cubic-bezier(.32,.72,0,1),
+              filter .4s cubic-bezier(.32,.72,0,1);
+}
+.lbx.on .lbx-stage { opacity: 1; transform: none; filter: none; }
+
+/* outer tray */
+.lbx-frame {
+  --tray: clamp(6px, .7vw, 11px);
+  --tray-r: clamp(20px, 2vw, 30px);
+  max-width: 100%; min-width: 0;
+  padding: var(--tray); border-radius: var(--tray-r);
+  background: rgba(199, 226, 255, .06);
+  border: 1px solid rgba(199, 226, 255, .17);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .6);
+}
+/* inner plate, its radius stepped in by the tray's own padding */
+.lbx-shot {
+  margin: 0; overflow: hidden; line-height: 0;
+  border-radius: calc(var(--tray-r) - var(--tray));
+  background: #05060f;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .14);
+}
+.lbx-shot img {
+  display: block; max-width: 100%;
+  max-height: min(70vh, 760px);
+  width: auto; height: auto; object-fit: contain;
+}
+
+/* caption and counter, one line under the frame */
+.lbx-bar {
+  display: flex; align-items: baseline; justify-content: center;
+  gap: clamp(12px, 2vw, 24px); flex-wrap: wrap; max-width: 100%;
+}
+.lbx-cap {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-size: clamp(15px, 1.9vw, 24px); letter-spacing: -.015em; color: #fff;
+}
+.lbx-count {
+  margin: 0; font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: .1em; color: #8fa0c8; font-variant-numeric: tabular-nums;
+}
+
+/* the controls: circles, flush at the stage's edges */
+.lbx-nav, .lbx-x {
+  position: absolute; display: grid; place-items: center;
+  width: clamp(40px, 3.4vw, 52px); height: clamp(40px, 3.4vw, 52px);
+  border-radius: 999px; cursor: pointer; color: #dceaff;
+  background: rgba(199, 226, 255, .08);
+  border: 1px solid rgba(199, 226, 255, .2);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: background .3s cubic-bezier(.32,.72,0,1),
+              border-color .3s cubic-bezier(.32,.72,0,1),
+              transform .4s cubic-bezier(.32,.72,0,1);
+}
+.lbx-nav svg, .lbx-x svg { width: 22px; height: 22px; }
+.lbx-nav:hover, .lbx-x:hover {
+  background: rgba(199, 226, 255, .17); border-color: rgba(215, 236, 255, .6);
+}
+.lbx-nav:active, .lbx-x:active { transform: scale(.94); }
+.lbx-nav:focus-visible, .lbx-x:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
+.lbx-prev { left: clamp(10px, 2.4vw, 34px); top: 50%; margin-top: -26px; }
+.lbx-next { right: clamp(10px, 2.4vw, 34px); top: 50%; margin-top: -26px; }
+.lbx-prev:hover { transform: translateX(-3px); }
+.lbx-next:hover { transform: translateX(3px); }
+.lbx-x { top: clamp(14px, 3vh, 34px); right: clamp(10px, 2.4vw, 34px); }
+
+/* each change slides the plate in from the side it came from */
+@keyframes lbxInR { from { opacity: .2; transform: translateX(26px); } }
+@keyframes lbxInL { from { opacity: .2; transform: translateX(-26px); } }
+.lbx.slid-r .lbx-frame { animation: lbxInR .44s cubic-bezier(.32,.72,0,1) both; }
+.lbx.slid-l .lbx-frame { animation: lbxInL .44s cubic-bezier(.32,.72,0,1) both; }
+
+/* on a phone the side arrows would sit on the photograph, so they drop under it */
+@media (max-width: 700px) {
+  .lbx-stage { padding: 62px 14px 20px; align-content: center; }
+  .lbx-prev, .lbx-next { top: auto; bottom: 18px; margin-top: 0; }
+  .lbx-prev { left: 24%; }
+  .lbx-next { right: 24%; }
+  .lbx-bar { margin-bottom: 44px; }
+  .lbx-shot img { max-height: 58vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lbx-scrim, .lbx-stage { transition: none; }
+  .lbx-stage { filter: none; }
+  .lbx.slid-r .lbx-frame, .lbx.slid-l .lbx-frame { animation: none; }
 }

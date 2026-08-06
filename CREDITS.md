@@ -107,3 +107,15 @@ What is and is not cleared, as things stand:
 - **Not cleared** — the eight campaign posters in `img/zones/posters/`, the rest
   of `img/zones/`, everything in `img/shows/`, and the nine Figma icons in
   `img/rules/`.
+
+## Restaurant brand plates (not real logos)
+
+The four restaurant cards on `#/eats` show a wordmark plate built from this
+project's own type and a plain geometric mark — not the restaurants' logos. No
+official logo for Tante, Superheroes, Sakura Lounge or EOS exists in the BLVD
+World media library (it holds venue photographs and football-club marks only),
+and the real marks are the brands' trademarks. Replace `brand` in `js/data.js`
+with the supplied artwork when it arrives.
+
+The four food photographs remain in `img/food/` and are still used by the map's
+dining rows; their licences are recorded above.

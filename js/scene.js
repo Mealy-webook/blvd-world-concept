@@ -28,12 +28,70 @@
       if (canvas.offsetWidth && canvas.width !== canvas.offsetWidth * devicePixelRatio) size();
 
     }).observe(canvas);
+    armMeteor(state);
     fields.push(state);
   }
   document.querySelectorAll("canvas.stars").forEach(initStars);
 
-  let t = 0;
-  function tick() {
+  /* ── shooting stars ──
+     One at a time per sky, on a random interval of a few seconds. It enters near
+     the top on a shallow angle, drags a streak that tapers into nothing behind a
+     bright head, and fades out mid-flight rather than reaching an edge. Most fall
+     to the right; a third of them go the other way, so the sky never looks
+     scripted. Everything is in device pixels, like the stars. */
+  const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function armMeteor(f) {
+    f.nextMeteor = performance.now() + 4200 + Math.random() * 9000;
+  }
+  function spawnMeteor(f) {
+    const c = f.canvas, dpr = devicePixelRatio;
+    if (!c.width || !c.height) return;                 // nothing to fall through yet
+    const dir = Math.random() < 0.34 ? -1 : 1;
+    const a = (17 + Math.random() * 17) * Math.PI / 180;
+    const len = (150 + Math.random() * 170) * dpr;
+    const speed = (600 + Math.random() * 430) * dpr;   // device pixels a second
+    // it starts just off the edge it travels from, in the upper part of the sky
+    const x0 = dir > 0 ? -len * 0.5 + Math.random() * c.width * 0.42
+                       : c.width + len * 0.5 - Math.random() * c.width * 0.42;
+    f.meteor = {
+      x: x0, y: c.height * (0.02 + Math.random() * 0.4),
+      vx: Math.cos(a) * speed * dir, vy: Math.sin(a) * speed,
+      len, life: 0.85 + Math.random() * 0.7, age: 0,
+      w: (1.1 + Math.random() * 1.1) * dpr,
+    };
+  }
+  function drawMeteor(f, dt) {
+    const m = f.meteor;
+    if (!m) return;
+    m.age += dt;
+    if (m.age >= m.life) { f.meteor = null; armMeteor(f); return; }
+    m.x += m.vx * dt;
+    m.y += m.vy * dt;
+    const a = Math.sin((m.age / m.life) * Math.PI);    // in and out, never a hard cut
+    const h = Math.hypot(m.vx, m.vy) || 1;
+    const tx = m.x - (m.vx / h) * m.len, ty = m.y - (m.vy / h) * m.len;
+    const ctx = f.ctx;
+    const g = ctx.createLinearGradient(m.x, m.y, tx, ty);
+    g.addColorStop(0, `rgba(230, 242, 255, ${a.toFixed(3)})`);
+    g.addColorStop(0.34, `rgba(176, 212, 255, ${(a * 0.34).toFixed(3)})`);
+    g.addColorStop(1, "rgba(156, 198, 255, 0)");
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.strokeStyle = g; ctx.lineWidth = m.w; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(m.x, m.y); ctx.stroke();
+    ctx.fillStyle = `rgba(255, 255, 255, ${(a * 0.95).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.w * 1.15, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  let t = 0, last = performance.now();
+  function tick(now) {
+    now = now || performance.now();
+    // real elapsed time for the meteors, clamped so a backgrounded tab does not
+    // teleport one across the sky on the frame it comes back
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+    last = now;
     t += 0.016;
     for (const f of fields) {
       // the page sky lives on the body, so it always draws; a view's own canvas
@@ -50,6 +108,11 @@
         ctx.fill();
       }
       ctx.globalAlpha = 1;
+
+      if (!REDUCED) {
+        if (!f.meteor && now >= (f.nextMeteor || 0)) spawnMeteor(f);
+        drawMeteor(f, dt);
+      }
     }
     requestAnimationFrame(tick);
   }

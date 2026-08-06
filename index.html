@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=470" />
+<link rel="stylesheet" href="css/main.css?v=478" />
 </head>
 <body class="typo-body">
 
@@ -54,7 +54,7 @@
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
           <span class="sr-only">Explore new worlds.</span>
-          <svg class="arch-type" viewBox="0 120 1000 292" aria-hidden="true" focusable="false">
+          <svg class="arch-type" viewBox="0 111 1000 264" aria-hidden="true" focusable="false">
             <defs>
               <!-- Genuinely concentric: both arcs share the centre (500, 1399.3),
                    so their baselines stay exactly 100 units apart the whole way
@@ -77,10 +77,14 @@
         <!-- the entry ticket is the hero's call to action, in the site's own
              button style; the three below it are the other ways in -->
         <a class="pill solid big-pill hero-cta" href="https://webook.com"
-           target="_blank" rel="noopener">
-          BOOK ENTRY TICKET
-          <span class="hc-from">from SAR 50</span>
-        </a>
+           target="_blank" rel="noopener">BOOK ENTRY TICKET</a>
+
+        <!-- a divider that says what the three below it have in common -->
+        <p class="bt-lead">
+          <i aria-hidden="true"></i>
+          <span>Or book one of these &#8212; entry is included</span>
+          <i aria-hidden="true"></i>
+        </p>
 
         <div class="book-tiles">
           <a class="bt" href="#/packages">
@@ -103,7 +107,7 @@
             </span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
-          <a class="bt" href="#/map?cat=dining">
+          <a class="bt" href="#/eats">
             <span class="bt-ic" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M6 2.5v7a3 3 0 0 0 2 2.8V21.5h2V12.3a3 3 0 0 0 2-2.8v-7h-2v6h-1v-6H8v6H7v-6zm10.5 0c-1.5 0-2.7 2-2.7 4.5 0 2 .8 3.6 1.9 4.2v10.3h2V11.2c1.1-.6 1.9-2.2 1.9-4.2 0-2.5-1.2-4.5-2.7-4.5z"/></svg>
             </span>
@@ -113,8 +117,6 @@
             </span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
-          <p class="bt-note">Ride packages, experiences and restaurant bookings all
-            include <b>entry</b></p>
         </div>
       </div>
       <div class="scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
@@ -239,21 +241,7 @@
       </div>
     </section>
 
-    <!-- ── restaurants ── -->
-    <!-- hidden from the home page: the four bookable restaurants are reachable
-         from the hero tile, which opens the map already filtered to dining -->
-    <section class="eats" id="eats" hidden>
-      <div class="eats-head reveal">
-        <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
-        <p class="sec-sub">Four kitchens take reservations — Egyptian, Japanese fusion,
-          Mediterranean and a themed room for families. Book before you go and skip the queue.</p>
-      </div>
-      <div class="rail-wrap">
-        <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">‹</button>
-        <div class="rail eat-rail" id="eat-rail"></div>
-        <button class="rail-btn next" id="eat-next" aria-label="More restaurants">›</button>
-      </div>
-    </section>
+    <!-- ── restaurants live on their own route: #/eats ── -->
 
     <!-- ── daily shows ── -->
 
@@ -443,6 +431,30 @@
   </section>
 
   <!-- ══════════ RIDES (own page) ══════════ -->
+  <!-- ══════════ RESTAURANTS (own route: #/eats) ══════════ -->
+  <!-- The four bookable kitchens. This was a home-page section; it reads better
+       as a page of its own, opened by the Restaurants tile in the hero. -->
+  <section id="view-eats" class="view">
+    <section class="eats is-page" id="eats">
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
+      <div class="eats-head reveal">
+        <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
+        <p class="sec-sub">Four kitchens take reservations &#8212; Egyptian, Japanese fusion,
+          Mediterranean and a themed room for families. Book before you go and skip the queue.</p>
+      </div>
+      <div class="rail-wrap">
+        <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">&#8249;</button>
+        <div class="rail eat-rail" id="eat-rail"></div>
+        <button class="rail-btn next" id="eat-next" aria-label="More restaurants">&#8250;</button>
+      </div>
+      <div class="eats-go">
+        <a class="pill ghost" href="#/map?cat=dining">FIND THEM ON THE MAP</a>
+      </div>
+    </section>
+  </section>
+
   <!-- ══════════ DAILY SHOWS (own route: #/shows) ══════════ -->
   <section id="view-shows" class="view">
     <section class="shows is-page" id="shows">
@@ -706,7 +718,7 @@
           <a role="menuitem" href="#/experiences">
             <b>Experiences</b><span>from SAR 150</span>
           </a>
-          <a role="menuitem" href="#/map?cat=dining">
+          <a role="menuitem" href="#/eats">
             <b>Restaurants</b><span>from SAR 100</span>
           </a>
           <p class="bm-note">All of them include entry</p>
@@ -717,23 +729,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=470"></script>
-  <script src="js/borders.js?v=470"></script>
-  <script src="js/scene.js?v=470"></script>
-  <script src="js/app.js?v=470"></script>
-  <script src="js/experiences.js?v=470"></script>
-  <script src="js/carousels.js?v=470"></script>
-  <script src="js/coverflow.js?v=470"></script>
-  <script src="js/zones.js?v=470"></script>
-  <script src="js/gallery.js?v=470"></script>
-  <script src="js/parkmap.js?v=470"></script>
-  <script src="js/sponsors.js?v=470"></script>
-  <script src="js/cashless.js?v=470"></script>
-  <script src="js/headings.js?v=470"></script>
-  <script src="js/bundles.js?v=470"></script>
-  <script src="js/ridex.js?v=470"></script>
-  <script src="js/cursor.js?v=470"></script>
+  <script src="js/data.js?v=478"></script>
+  <script src="js/borders.js?v=478"></script>
+  <script src="js/scene.js?v=478"></script>
+  <script src="js/app.js?v=478"></script>
+  <script src="js/experiences.js?v=478"></script>
+  <script src="js/carousels.js?v=478"></script>
+  <script src="js/coverflow.js?v=478"></script>
+  <script src="js/zones.js?v=478"></script>
+  <script src="js/gallery.js?v=478"></script>
+  <script src="js/parkmap.js?v=478"></script>
+  <script src="js/sponsors.js?v=478"></script>
+  <script src="js/cashless.js?v=478"></script>
+  <script src="js/headings.js?v=478"></script>
+  <script src="js/bundles.js?v=478"></script>
+  <script src="js/ridex.js?v=478"></script>
+  <script src="js/cursor.js?v=478"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=470"></script> -->
+  <script type="module" src="js/globe.js?v=478"></script> -->
 </body>
 </html>

@@ -97,10 +97,30 @@
     // its corner, then meta line, name and price set bare underneath. The meta
     // line is the kitchen's cuisine and nothing else — "Restaurant" in front of
     // it was a word every card carried and none of them needed.
+    // Four geometric marks, drawn rather than set in type, so the plate renders
+    // the same whatever the font situation.
+    const MARKS = {
+      lotus: '<path d="M24 40c-9 0-14-6-14-13 3 1 6 3 8 6 0-8 3-14 6-19 3 5 6 11 6 19 2-3 5-5 8-6 0 7-5 13-14 13z"/>',
+      bolt: '<path d="M27 6 12 27h9l-4 15 15-22h-9z"/>',
+      blossom: '<path d="M24 8c3 0 5 3 5 7s-2 6-5 6-5-2-5-6 2-7 5-7z"/><path d="M24 8c3 0 5 3 5 7s-2 6-5 6-5-2-5-6 2-7 5-7z" transform="rotate(72 24 24)"/><path d="M24 8c3 0 5 3 5 7s-2 6-5 6-5-2-5-6 2-7 5-7z" transform="rotate(144 24 24)"/><path d="M24 8c3 0 5 3 5 7s-2 6-5 6-5-2-5-6 2-7 5-7z" transform="rotate(216 24 24)"/><path d="M24 8c3 0 5 3 5 7s-2 6-5 6-5-2-5-6 2-7 5-7z" transform="rotate(288 24 24)"/>',
+      sun: '<path d="M11 30a13 13 0 0 1 26 0z"/><rect x="6" y="34" width="36" height="2.4" rx="1.2"/><rect x="23" y="4" width="2" height="7" rx="1"/><rect x="9" y="10" width="2" height="7" rx="1" transform="rotate(-40 10 13)"/><rect x="37" y="10" width="2" height="7" rx="1" transform="rotate(40 38 13)"/>',
+    };
+    // A brand plate instead of a plate of food: the mark, the wordmark and the
+    // descriptor, on the kitchen's own colour.
+    const plate = (r) => {
+      const b = r.brand;
+      if (!b) return `<img src="img/food/${r.food}" alt="${r.name}" draggable="false" loading="lazy">`;
+      return `
+          <div class="eat-logo" style="--plate:${b.plate};--ink:${b.ink}" role="img" aria-label="${r.name}">
+            <svg class="el-mark" viewBox="0 0 48 48" aria-hidden="true">${MARKS[b.mark] || ""}</svg>
+            <p class="el-word">${b.word}</p>
+            <p class="el-tag">${b.tag}</p>
+          </div>`;
+    };
+
     rail.innerHTML = data.map((r) => `
       <article class="eat-card">
-        <div class="eat-shot">
-          <img src="img/food/${r.food}" alt="${r.name}" draggable="false" loading="lazy">
+        <div class="eat-shot">${plate(r)}
           <button class="eat-fav" type="button" aria-pressed="false" aria-label="Save ${r.name}">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 4.7 13a4.6 4.6 0 0 1 6.5-6.5l.8.8.8-.8A4.6 4.6 0 0 1 19.3 13z"/></svg>
           </button>

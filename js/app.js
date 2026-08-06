@@ -12,6 +12,7 @@
     rides: $("#view-rides"),
     packages: $("#view-packages"),
     shows: $("#view-shows"),
+    eats: $("#view-eats"),
   };
 
   let booted = false;
