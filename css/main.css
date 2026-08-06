@@ -471,8 +471,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   /* white, whatever the source artwork's own colours are: brightness(0) flattens
      it to black and invert(1) lifts that to white in one pass, which survives the
      logo being re-exported in another palette */
-  height: clamp(52px, 6.4vw, 84px); width: auto; margin-bottom: 2px;
-  filter: brightness(0) invert(1) drop-shadow(0 2px 14px rgba(2, 4, 14, .7));
+  height: clamp(96px, 11.5vw, 164px); width: auto; margin-bottom: 2px;
+  filter: brightness(0) invert(1) drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
 .hero-title .line {
@@ -3529,8 +3529,26 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    stage-fitting blocks live down here. */
 /* the arch is sized from width, so on a short screen it has to come in or it
    eats the clearance the hero just gained */
-@media (max-height: 820px) { .hero-title.arch { width: min(920px, 84vw); } }
-@media (max-height: 700px) { .hero-title.arch { width: min(760px, 74vw); } }
+@media (max-height: 820px) {
+  /* ── where the room for a big mark comes from ──
+     Measured, not guessed: at 1164x777 the hero needs 884px of stage and has 777,
+     so it overflows 53px at each end — which means the top of the logo has been
+     cropped at this height all along, at 74px as well as at 100px. Padding cannot
+     fix that; something has to go.
+
+     The scroll cue is that something. It reserves about 120px between the tiles and
+     the bottom of the stage to say "SCROLL" on a page that plainly scrolls, and it
+     is already dropped below 660px. Losing it here buys back more than the mark
+     costs, so the logo is big *and* uncropped, and nothing informative is cut. */
+  .hero-title.arch { width: min(880px, 82vw); }
+  .hero-ui { padding-top: 24px; padding-bottom: calc(4vh + 40px); }
+  .hero-logo { height: clamp(84px, 9vw, 118px); }
+  .scroll-cue { display: none; }
+}
+@media (max-height: 700px) {
+  .hero-title.arch { width: min(760px, 74vw); }
+  .hero-logo { height: clamp(62px, 7vw, 88px); }
+}
 /* Short and wide — a small laptop, or a phone on its side. Measured at
    1440x620 the block was clipping 13px off the top with only 42px left under
    the tiles, so the lift comes down with the room available and the arch comes
