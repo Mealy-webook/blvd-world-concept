@@ -475,7 +475,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
      its box. The old file wrapped the same mark in 314 units of padding a side, so
      it drew at 45% of whatever height was set — every number here used to be more
      than double what it looked like. */
-  height: clamp(96px, 11vw, 166px); width: auto;
+  height: clamp(76px, 8.6vw, 130px); width: auto;
   filter: brightness(0) invert(1) drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
@@ -3565,12 +3565,12 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   /* 23px of headroom sat above the mark and 70px under the tiles, and the block is
      centred, so the top is the binding constraint: it can grow by twice that
      headroom before it crops again. 105px -> 144px spends most of it. */
-  .hero-logo { height: clamp(80px, 9.8vw, 132px); }
+  .hero-logo { height: clamp(64px, 7.6vw, 104px); }
   .scroll-cue { display: none; }
 }
 @media (max-height: 700px) {
   .hero-title.arch { width: min(535px, 52vw); }
-  .hero-logo { height: clamp(66px, 7.8vw, 98px); }
+  .hero-logo { height: clamp(54px, 6.2vw, 80px); }
 }
 /* Short and wide — a small laptop, or a phone on its side. Measured at
    1440x620 the block was clipping 13px off the top with only 42px left under
