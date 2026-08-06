@@ -109,6 +109,14 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+/* [hidden] means hidden, whatever a component's own display says.
+   Said once, here, because this stylesheet had eleven copies of it. An author
+   `display` declaration beats the user agent's [hidden] rule regardless of
+   specificity, so every section that grew a display of its own quietly stopped
+   being hideable — and the bug only showed up the day someone tried to hide it.
+   Most recently that was the WebGL fallback photograph painting straight over the
+   canvas it was meant to replace. */
+[hidden] { display: none !important; }
 html, body {
   height: 100%; overflow: hidden; background: var(--bg); color: var(--ink);
   font-family: var(--body);
@@ -1129,7 +1137,6 @@ html[data-hero="globe"] .hero-rule {
   box-shadow: var(--sh-3);
   backdrop-filter: blur(10px);
 }
-.poi-card[hidden] { display: none; }
 .poi-card:not([hidden]) { animation: poiPop .32s var(--ease) both; }
 @keyframes poiPop { from { opacity: 0; transform: translateY(8px); } }
 
@@ -1196,7 +1203,6 @@ html[data-hero="globe"] .hero-rule {
 }
 .pp-chip.is-zone .ch-ic { opacity: 1; }
 .pp-chip.is-zone .ch-x { display: block; }
-.pp-chip.is-zone[hidden] { display: none; }
 /* a chosen zone shows its own chip beside whatever category is active */
 .pm-panel.in-zone.has-cat .pp-chip.is-zone { display: inline-flex; }
 /* the count sits under the zone name rather than replacing it */
@@ -1254,7 +1260,6 @@ html[data-hero="globe"] .hero-rule {
 }
 .pb-count { display: flex; align-items: baseline; gap: 7px; }
 .pb-count b { font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
-.pb-title[hidden], .pb-count[hidden] { display: none; }
 
 /* map | list as one segmented control, search on its own — top-right of the card */
 .pb-views { display: flex; align-items: center; gap: 8px; flex: none; }
@@ -1317,7 +1322,6 @@ html[data-hero="globe"] .hero-rule {
 .pp-sort svg { width: 12px; height: 12px; fill: currentColor; }
 .pp-sort:hover { color: #fff; border-color: rgba(199, 226, 255, .6); }
 .pp-sort.on { color: var(--gold); border-color: rgba(255, 194, 77, .5); }
-.pp-sort[hidden] { display: none; }
 
 /* ── the zone the list is narrowed to ── */
 .pp-zone {
@@ -1325,7 +1329,6 @@ html[data-hero="globe"] .hero-rule {
   margin: 0 20px 12px; padding: 9px 10px 9px 12px; border-radius: var(--r-sm);
   background: rgba(255, 194, 77, .12); border: var(--b-gold);
 }
-.pp-zone[hidden] { display: none; }
 .pz-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex: none; }
 .pz-text { flex: 1; min-width: 0; display: grid; }
 .pz-name {
@@ -2181,9 +2184,6 @@ html[data-hero="real"] .zc .zc-plate {
    ticket stubs, a typographic index. They were different forms of the same
    thing: a directory. The rides already have a directory at #/rides. So this is
    a poster — one photograph, one number, one way through, and nothing else. */
-/* the section rule sets display: grid at 0,2,0, which outranks the user agent's
-   [hidden] { display: none } at 0,1,0 — so hiding it needs saying explicitly */
-.ridetrack[hidden], .ridetrack.is-poster[hidden] { display: none; }
 .ridetrack.is-poster {
   position: relative; overflow: hidden;
   display: grid; align-content: end; justify-items: start;
@@ -2385,9 +2385,6 @@ html[data-hero="real"] .zc .zc-plate {
 .rec-seal-type, .rec-seal-mark {
   width: clamp(84px, 11vh, 116px); height: auto; display: block;
 }
-/* .rec-seal-mark would otherwise inherit nothing to hide it, and this codebase has
-   been bitten three times by an author display beating [hidden] */
-.rec-seal-mark[hidden], .rec-seal-type[hidden] { display: none; }
 
 .sl-ring {
   fill: none; stroke: rgba(255, 194, 77, .85); stroke-width: 1.6;
@@ -2466,9 +2463,6 @@ html[data-hero="real"] .zc .zc-plate {
   pointer-events: none;
 }
 .rec-panel.is-on { opacity: 1; transform: none; pointer-events: auto; }
-/* [hidden] has to be said explicitly: the rule above sets display: grid at 0,1,0,
-   which ties with the user agent's [hidden] and wins on document order */
-.rec-panel[hidden] { display: none; }
 
 .rec-title {
   font-family: var(--disp); font-weight: 800;
@@ -2562,10 +2556,6 @@ html[data-hero="real"] .zc .zc-plate {
 }
 /* the canvas is square and stands the same height as everything else on the floor */
 .rec-thing.is-globe { aspect-ratio: 1; height: 94%; width: auto; }
-/* .rec-thing sets display: block, and an author declaration beats the user agent's
-   [hidden] rule whatever the specificity — so the WebGL fallback photograph was
-   painting straight over the canvas it was supposed to replace */
-.rec-thing[hidden] { display: none; }
 /* the note that keeps the drawn show honest */
 .rec-note {
   font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .06em;
@@ -3192,9 +3182,6 @@ html[data-hero="real"] .zc .zc-plate {
 @media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
 
 /* ═══════════════ RESTAURANTS ═══════════════ */
-/* the section rule sets display: grid, which outranks the user agent's
-   [hidden] { display: none } — so hiding it needs saying explicitly */
-.eats[hidden] { display: none; }
 .eats {
   position: relative; z-index: 11;
   padding: var(--sec-y) var(--sec-x);
@@ -3532,7 +3519,6 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
   background-image: var(--s-card);
   border: var(--b-2); box-shadow: var(--sh-3);
 }
-.bm-list[hidden] { display: none; }
 .bookmenu.open .bm-list { animation: bmIn .24s var(--ease) both; }
 @keyframes bmIn { from { opacity: 0; transform: translateY(-6px); } }
 
@@ -4230,7 +4216,6 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    outer tray with a hairline, an inner plate with its own top highlight, and
    concentric radii so the two curves agree. */
 .lbx { position: fixed; inset: 0; z-index: 300; }
-.lbx[hidden] { display: none; }
 
 .lbx-scrim {
   position: absolute; inset: 0;
