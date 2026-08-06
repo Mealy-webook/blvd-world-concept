@@ -643,15 +643,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   letter-spacing: -.015em; color: #fff; line-height: 1.1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
+/* the same treatment as .hero-price under the button: 11px label, and the figure in
+   mono at 14px. It used to scale to 19px, which made a secondary tile's price larger
+   than the entry ticket's own. */
 .bt-price {
-  font-family: var(--ui); font-size: clamp(9px, 1vw, 11px); font-weight: 600; letter-spacing: .08em;
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
   text-transform: uppercase; color: #8fa0c8;
   display: flex; align-items: baseline; justify-content: center; gap: 6px;
   white-space: nowrap; max-width: 100%;
 }
 .bt-price b {
-  font-size: clamp(13px, 1.6vw, 19px); font-weight: 700; letter-spacing: -.02em;
+  font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: .01em;
   color: #fff; text-transform: none;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── the divider above the tiles ──
