@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=560" />
+<link rel="stylesheet" href="css/main.css?v=562" />
 </head>
 <body class="typo-body">
 
@@ -57,12 +57,18 @@
            is the file itself. Three defects were patched out of it with ffmpeg:
            the generator's sparkle in the water, and the garbled Riyadh Season
            lockup in the sky. See CREDITS.md. -->
+      <!-- The landmark layers, back for the globe version: the Taj, the Eiffel Tower,
+           Chichen Itza, Grendizer, the Galata tower, Plaza de Toros and Giza, cut out
+           of the Figma hero artwork. Built for every version and shown only for the
+           globe one, so switching costs nothing. -->
+      <div class="landmarks" id="landmarks" aria-hidden="true"></div>
+      <div class="lm-scrim" aria-hidden="true"></div>
       <video id="hero-vid" class="hero-vid" data-hero-src="cartoon"
              autoplay muted loop playsinline preload="auto"
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=560" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=562" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -772,26 +778,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=560"></script>
-  <script src="js/borders.js?v=560"></script>
-  <script src="js/scene.js?v=560"></script>
-  <script src="js/app.js?v=560"></script>
-  <script src="js/experiences.js?v=560"></script>
-  <script src="js/carousels.js?v=560"></script>
-  <script src="js/coverflow.js?v=560"></script>
-  <script src="js/zones.js?v=560"></script>
-  <script src="js/fan.js?v=560"></script>
-  <script src="js/gallery.js?v=560"></script>
-  <script src="js/parkmap.js?v=560"></script>
-  <script src="js/sponsors.js?v=560"></script>
-  <script src="js/cashless.js?v=560"></script>
-  <script src="js/headings.js?v=560"></script>
-  <script src="js/bundles.js?v=560"></script>
-  <script src="js/ridex.js?v=560"></script>
-  <script src="js/cursor.js?v=560"></script>
-  <script src="js/glass.js?v=560" defer></script>
+  <script src="js/data.js?v=562"></script>
+  <script src="js/borders.js?v=562"></script>
+  <script src="js/scene.js?v=562"></script>
+  <script src="js/app.js?v=562"></script>
+  <script src="js/experiences.js?v=562"></script>
+  <script src="js/carousels.js?v=562"></script>
+  <script src="js/coverflow.js?v=562"></script>
+  <script src="js/zones.js?v=562"></script>
+  <script src="js/fan.js?v=562"></script>
+  <script src="js/gallery.js?v=562"></script>
+  <script src="js/parkmap.js?v=562"></script>
+  <script src="js/sponsors.js?v=562"></script>
+  <script src="js/cashless.js?v=562"></script>
+  <script src="js/headings.js?v=562"></script>
+  <script src="js/bundles.js?v=562"></script>
+  <script src="js/ridex.js?v=562"></script>
+  <script src="js/cursor.js?v=562"></script>
+  <script src="js/glass.js?v=562" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=560" defer></script>
+  <script src="js/heroes.js?v=562" defer></script>
 </body>
 </html>

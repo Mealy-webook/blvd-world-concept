@@ -3946,9 +3946,13 @@ html[data-hero="real"] .street::after {
     radial-gradient(120% 78% at 50% 40%, transparent 30%, rgba(0, 0, 0, .55) 100%);
 }
 
-/* the globe version has no footage at all: the planet rises out of the fold */
+/* the globe version has no footage at all: the planet rises out of the fold, and the
+   landmark layers stand along the bottom of the hero the way they did originally */
 html[data-hero="globe"] .hero-vid { display: none; }
 html[data-hero="globe"] .globe-sec { display: block; }
+.landmarks, .lm-scrim { display: none; }
+html[data-hero="globe"] .landmarks,
+html[data-hero="globe"] .lm-scrim { display: block; }
 /* With nothing playing behind it the hero sits on the page's own night sky, so
    the type needs none of the shadows the footage versions do — and the tiles need
    none of the dark tint either. That tint exists to keep a label readable when a
