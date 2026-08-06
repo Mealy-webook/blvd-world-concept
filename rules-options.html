@@ -15,6 +15,11 @@
      name, and a line on what it is actually for. Everything inside a bay is
      built from the site's tokens and the real nine icons and five rules, so the
      comparison is between designs rather than between mock-ups. */
+  /* main.css locks the page: `html, body { height: 100%; overflow: hidden }`, because
+     the site scrolls inside #view-home rather than in the document. This page has no
+     #view-home, so it has to hand scrolling back to the document or nothing below the
+     first screen can be reached. */
+  html, body { height: auto; overflow: visible; }
   body { background: var(--page-bg); min-height: 100vh; }
   /* #stars-page is fixed with z-index: 0 and an opaque background, and a positioned
      element paints above static in-flow content whatever the source order — which is

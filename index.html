@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=527" />
+<link rel="stylesheet" href="css/main.css?v=530" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-logo.svg?v=527" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-logo.svg?v=530" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -309,53 +309,58 @@
         <h2 class="sec-title">VENUE RULES</h2>
       </div>
 
-      <ul class="vr-tiles reveal">
-          <li class="vr-tile">
-            <img src="img/rules/music-note.svg" alt="" aria-hidden="true" />
-            <span>Music performance</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/forest.svg" alt="" aria-hidden="true" />
-            <span>Outdoors experience</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/no-food.svg" alt="" aria-hidden="true" />
-            <span>No outside food</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/pets.svg" alt="" aria-hidden="true" />
-            <span>No pets allowed</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/garage.svg" alt="" aria-hidden="true" />
-            <span>Parking available</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/no-reentry.svg" alt="" aria-hidden="true" />
-            <span>Re-entry prohibited</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/no-photography.svg" alt="" aria-hidden="true" />
-            <span>No photography</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/smoke-free.svg" alt="" aria-hidden="true" />
-            <span>No smoking</span>
-          </li>
-          <li class="vr-tile">
-            <img src="img/rules/non-refundable.svg" alt="" aria-hidden="true" />
-            <span>Non refundable</span>
-          </li>
-      </ul>
-
-      <ol class="vr-list reveal">
-          <li>Food and beverages from outside are not allowed. Food trucks will be available.</li>
-          <li>Animals are not allowed.</li>
-          <li>No professional cameras and video recorders are permitted at the venue.</li>
-          <li>The ticket holder consents to photographs, video and audio recordings of the ticket holder being captured and used in printed and electronic media, including the internet, as an attendee at the venue.</li>
-          <li>Smoking is strictly prohibited on the premises, including e-cigarettes. The use of lighters and matches is also prohibited inside the site, except in areas designated for smoking.</li>
-      </ol>
-
+      <!-- Option 2 of rules-options.html: each rule as a stub torn off a ticket,
+           in one sideways strip. It replaces the nine-icon row and the numbered
+           list both — the strip carries the rule in plain words, and the full legal
+           wording stays behind Read more. -->
+      <div class="vr-strip reveal" role="list">
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/no-food.svg" alt="" aria-hidden="true" />
+          <b>No outside food</b>
+          <p>Food trucks and kitchens are inside the venue.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/pets.svg" alt="" aria-hidden="true" />
+          <b>No pets</b>
+          <p>Animals are not allowed on the premises.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/no-photography.svg" alt="" aria-hidden="true" />
+          <b>No pro cameras</b>
+          <p>No professional cameras or video recorders.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/smoke-free.svg" alt="" aria-hidden="true" />
+          <b>Smoke free</b>
+          <p>Including e&#8209;cigarettes. Designated areas only.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/no-reentry.svg" alt="" aria-hidden="true" />
+          <b>No re&#8209;entry</b>
+          <p>Leaving the venue ends your visit.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/non-refundable.svg" alt="" aria-hidden="true" />
+          <b>Non refundable</b>
+          <p>Tickets cannot be refunded once bought.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/garage.svg" alt="" aria-hidden="true" />
+          <b>Parking</b>
+          <p>Parking is available at the gates.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/forest.svg" alt="" aria-hidden="true" />
+          <b>Open air</b>
+          <p>The venue is outdoors from end to end.</p>
+        </div>
+        <div class="vr-stub" role="listitem">
+          <img src="img/rules/music-note.svg" alt="" aria-hidden="true" />
+          <b>Live music</b>
+          <p>Performances run nightly in every zone.</p>
+        </div>
+      </div>
+      <p class="vr-hint reveal">Drag or scroll &#183; nine rules</p>
       <a class="vr-more reveal" href="https://webook.com" target="_blank" rel="noopener">Read more</a>
     </section>
 
@@ -768,26 +773,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=527"></script>
-  <script src="js/borders.js?v=527"></script>
-  <script src="js/scene.js?v=527"></script>
-  <script src="js/app.js?v=527"></script>
-  <script src="js/experiences.js?v=527"></script>
-  <script src="js/carousels.js?v=527"></script>
-  <script src="js/coverflow.js?v=527"></script>
-  <script src="js/zones.js?v=527"></script>
-  <script src="js/fan.js?v=527"></script>
-  <script src="js/gallery.js?v=527"></script>
-  <script src="js/parkmap.js?v=527"></script>
-  <script src="js/sponsors.js?v=527"></script>
-  <script src="js/cashless.js?v=527"></script>
-  <script src="js/headings.js?v=527"></script>
-  <script src="js/bundles.js?v=527"></script>
-  <script src="js/ridex.js?v=527"></script>
-  <script src="js/cursor.js?v=527"></script>
-  <script src="js/glass.js?v=527" defer></script>
+  <script src="js/data.js?v=530"></script>
+  <script src="js/borders.js?v=530"></script>
+  <script src="js/scene.js?v=530"></script>
+  <script src="js/app.js?v=530"></script>
+  <script src="js/experiences.js?v=530"></script>
+  <script src="js/carousels.js?v=530"></script>
+  <script src="js/coverflow.js?v=530"></script>
+  <script src="js/zones.js?v=530"></script>
+  <script src="js/fan.js?v=530"></script>
+  <script src="js/gallery.js?v=530"></script>
+  <script src="js/parkmap.js?v=530"></script>
+  <script src="js/sponsors.js?v=530"></script>
+  <script src="js/cashless.js?v=530"></script>
+  <script src="js/headings.js?v=530"></script>
+  <script src="js/bundles.js?v=530"></script>
+  <script src="js/ridex.js?v=530"></script>
+  <script src="js/cursor.js?v=530"></script>
+  <script src="js/glass.js?v=530" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=527" defer></script>
+  <script src="js/heroes.js?v=530" defer></script>
 </body>
 </html>

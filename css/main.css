@@ -3335,42 +3335,64 @@ body.route-experiences
 }
 .venuerules > * { width: 100%; max-width: min(1180px, 100%); }
 
-/* the icon row */
-/* one line, all nine. They shrink to fit rather than wrapping, and below the
-   point where that stops being readable the row scrolls sideways instead. */
-.vr-tiles {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: nowrap; justify-content: center;
-  gap: clamp(2px, .8vw, 14px);
+/* ── the rules as ticket stubs ──
+   Option 2 of rules-options.html. One sideways strip; each rule is a stub torn off
+   a ticket, so the section stays the same height whatever the rule count.
+
+   The notch is cut with a mask, not painted. Two circles filled with the page
+   colour would only work over a flat background, and these sections are
+   transparent — the starfield and, in the footage versions, the video both show
+   through them. A mask removes the pixels instead, so the notch is a real hole
+   whatever is behind it. */
+.vr-strip {
+  display: flex; gap: clamp(10px, 1.2vw, 16px);
+  overflow-x: auto; overflow-y: visible;
+  padding: 10px 2px 14px;
+  scrollbar-width: thin; scroll-snap-type: x proximity;
+  scroll-padding-inline: 2px;
 }
-.vr-tile {
-  flex: 1 1 0; min-width: 0; max-width: 124px;
-  display: grid; justify-items: center; gap: 9px;
-  padding: 14px 6px; border-radius: var(--r-md);
-  transition: background-color .3s var(--ease);
+.vr-strip::-webkit-scrollbar { height: 7px; }
+.vr-strip::-webkit-scrollbar-thumb { background: rgba(124, 196, 255, .22); border-radius: var(--r-pill); }
+
+.vr-stub {
+  --notch: 9px;
+  flex: 0 0 auto; width: clamp(158px, 15vw, 196px); scroll-snap-align: start;
+  display: grid; gap: 11px; align-content: start;
+  padding: 20px 16px 22px; border-radius: var(--r-md);
+  background: linear-gradient(178deg, rgba(255, 255, 255, .085), rgba(255, 255, 255, .03));
+  box-shadow: inset 0 0 0 1px rgba(124, 196, 255, .16);
+  -webkit-mask-image:
+    radial-gradient(circle var(--notch) at 50% 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 50% 100%, transparent 98%, #000 100%);
+          mask-image:
+    radial-gradient(circle var(--notch) at 50% 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 50% 100%, transparent 98%, #000 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+  transition: transform .4s var(--ease), background .35s var(--ease);
 }
-.vr-tile:hover { background-color: rgba(124, 196, 255, .07); }
-.vr-tile img {
-  width: 32px; height: 32px; display: block;
+.vr-stub:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(178deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .055));
+}
+.vr-stub img {
+  width: 26px; height: 26px; display: block;
   /* the exported glyphs are dark; the page is not */
   filter: brightness(0) invert(1); opacity: .92;
 }
-.vr-tile span {
-  font-family: var(--body); font-size: 12px; font-weight: 400; line-height: 1.35;
-  color: #c8d7f2; text-align: center;
+.vr-stub b {
+  font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .13em;
+  text-transform: uppercase; color: #fff;
 }
-
-/* the rules themselves */
-.vr-list {
-  margin: 0; padding-left: 1.4em;
-  display: grid; gap: var(--sp-2);
-  max-width: min(920px, 100%);
+.vr-stub p {
+  margin: 0; font-family: var(--body); font-size: 12.5px; font-weight: 400;
+  line-height: 1.5; color: var(--dim);
 }
-.vr-list li {
-  font-family: var(--body); font-size: clamp(14px, 1.4vw, 16px); font-weight: 400;
-  line-height: 1.55; color: #c8d7f2;
+/* the strip scrolls, so say so once rather than leaving it to be discovered */
+.vr-hint {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: #8fa0c8;
 }
-.vr-list li::marker { color: var(--pick); font-family: var(--mono); font-size: .85em; }
 
 .vr-more {
   justify-self: center; width: auto;
@@ -3382,19 +3404,15 @@ body.route-experiences
 .vr-more:hover { text-decoration-color: var(--pick); }
 
 @media (max-width: 680px) {
-  /* nine across is unreadable on a phone, so the row becomes a scroller */
-  .vr-tiles {
-    justify-content: flex-start; overflow-x: auto; scrollbar-width: none;
-    margin-inline: calc(var(--sec-x) * -1); padding-inline: var(--sec-x);
-    scroll-snap-type: x proximity;
+  /* the strip already scrolls, so on a phone it only needs to run to the section's
+     edges — that is what makes it obvious it carries on past the fold */
+  .vr-strip {
+    margin-inline: calc(var(--sec-x) * -1);
+    padding-inline: var(--sec-x); scroll-padding-inline: var(--sec-x);
   }
-  .vr-tiles::-webkit-scrollbar { display: none; }
-  .vr-tile { flex: 0 0 auto; width: 92px; padding: 10px 4px; scroll-snap-align: start; }
-  .vr-tile img { width: 28px; height: 28px; }
 }
 @media (max-height: 960px) {
-  .vr-tile { padding: 9px 6px; }
-  .vr-list { gap: 6px; }
+  .vr-stub { padding: 16px 14px 18px; gap: 9px; }
 }
 
 /* ── back to top ──
