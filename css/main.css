@@ -651,6 +651,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   text-transform: uppercase; color: #8fa0c8; text-align: center;
 }
 
+/* ── the price under the button ──
+   It belongs to the call to action, not to the stack, so it is pulled back out of
+   --hero-gap and sits close under the pill — a full gap would read as another row
+   of the hero rather than as the button's own price. Figures in mono, like every
+   other price on the site. */
+.hero-price {
+  margin: calc(var(--hero-gap) * -1 + 9px) 0 0;
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #b9c9e8;
+  text-shadow: 0 1px 7px rgba(3, 6, 22, .85);
+}
+.hero-price b {
+  font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: .01em;
+  color: #fff; text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── the entry-ticket button ──
    A solid pill, the site's own call to action, sized to its words. The price is
    not on it — the divider under it carries what the tiles include. It needs no
@@ -1539,14 +1556,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   filter: saturate(.96) brightness(.7);
   transition: filter .6s var(--ease);
 }
-/* the poster by default; the real-video hero swaps in the photograph instead */
-.zc-photo, .zc-plate { display: none; }
-html[data-hero="real"] .zc-poster { display: none; }
-html[data-hero="real"] .zc-photo { display: block; }
+/* ── the poster by default; the real-video hero swaps in the photograph ──
+   Every selector here carries `.zc img`, and that is the whole point. `.zc img`
+   sets display: block at specificity 0,1,1, which beat a plain `.zc-photo` hide at
+   0,1,0 — so both images were block, and the photo, being second in the DOM and
+   absolutely positioned, painted over the poster in all four versions. The posters
+   were in the page the entire time, underneath. */
+.zc img.zc-photo { display: none; }
+.zc .zc-plate { display: none; }
+html[data-hero="real"] .zc img.zc-poster { display: none; }
+html[data-hero="real"] .zc img.zc-photo { display: block; }
 /* the poster paints the country's name into the artwork. A photograph does not,
    so it gets a plate — set in the display face, over a gradient that only exists
    where the words are. */
-html[data-hero="real"] .zc-plate {
+html[data-hero="real"] .zc .zc-plate {
   display: block; position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
   padding: 34px 14px 14px;
   font-family: var(--disp); font-weight: 700; font-size: clamp(13px, 1.5vw, 19px);
@@ -3467,7 +3490,12 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    the tiles, so the lift comes down with the room available and the arch comes
    in again. */
 @media (max-height: 660px) {
-  .hero-ui { padding: 26px 6vw calc(4vh + 100px); --hero-gap: 14px; }
+  .hero-ui { padding: 26px 6vw calc(4vh + 100px); --hero-gap: 12px; }
+  /* The price line under the button costs a row, and on a short stage that row
+     came out of the gap above the scroll cue — 5px of clearance at 1400x620. The
+     mark is the thing to give up: the arch says BLVD World directly underneath it,
+     so the logo is the one element here that is purely decorative. */
+  .hero-logo { display: none; }
   .hero-title.arch { width: min(620px, 64vw); }
 }
 /* A phone on its side, or anything else this short: measured at 844x390 the
@@ -3856,6 +3884,7 @@ html[data-hero="globe"] .globe-sec { display: block; }
    firework goes off behind it; over flat navy it only makes the panes look like
    grey slabs, so here the glass goes back to a clean, mostly-clear pane. */
 html[data-hero="globe"] .bt-lead span { text-shadow: 0 1px 6px rgba(2, 5, 20, .8); }
+html[data-hero="globe"] .hero-price { text-shadow: 0 1px 6px rgba(2, 5, 20, .8); }
 html[data-hero="globe"] .hero-title.arch { filter: none; }
 html[data-hero="globe"] .bt {
   background: linear-gradient(168deg, rgba(255, 255, 255, .13) 0%,
@@ -3977,3 +4006,77 @@ html[data-hero="globe"] .zone-fan {
 @media (prefers-reduced-motion: reduce) {
   .fan-card { transition: none; }
 }
+
+/* ══ VERSION 4: THE ORIGINAL ══
+   The site as it stood at 93d80dd, before any footage went into the hero. Values
+   lifted from that commit rather than guessed at, so this is the old design and
+   not an impression of it:
+
+     the button    --btn was #cfe4ff with navy ink; there was no secondary face at
+                   all, so .pill.light renders as the same pale key here and the
+                   split simply is not visible
+     the tiles     transparent, one hairline border, no blur, no rim, no sheen,
+                   no grain — .bt exactly as it was
+     the hero      no video, no logo above the arch, no fade: the arched heading
+                   and the tiles on the page's own navy
+     the type      the tight shadows the arch used to carry, which the entry
+                   animation was silently discarding anyway, so: none */
+html[data-hero="original"] {
+  --btn: #cfe4ff;
+  --btn-ink: #08101f;
+  --btn-hi: #ffffff;
+  --btn2: #cfe4ff;          /* the same pale key — there was no second face */
+  --btn2-ink: #08101f;
+  --btn2-hi: #ffffff;
+}
+html[data-hero="original"] .hero-vid { display: none; }
+html[data-hero="original"] .globe-sec { display: none; }
+html[data-hero="original"] .hero-logo { display: none; }
+html[data-hero="original"] .hero-title.arch { filter: none; }
+html[data-hero="original"] .bt-lead span { text-shadow: none; color: #8fa0c8; }
+html[data-hero="original"] .hero-price { text-shadow: none; color: #8fa0c8; }
+html[data-hero="original"] .bt-lead i { background: rgba(199, 226, 255, .2); box-shadow: none; }
+
+/* the tiles, back to an outline */
+html[data-hero="original"] .bt {
+  border: 1px solid rgba(199, 226, 255, .42);
+  border-radius: var(--r-lg);
+  background: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+html[data-hero="original"] .bt:hover {
+  transform: translateY(-6px);
+  background: rgba(199, 226, 255, .1);
+  border-color: rgba(215, 236, 255, .85);
+  box-shadow: none;
+}
+html[data-hero="original"] .bt::before,
+html[data-hero="original"] .bt::after,
+html[data-hero="original"] .bt > .bt-sheen { display: none; }
+html[data-hero="original"] .bt-ic {
+  border-radius: var(--r-md);
+  background: rgba(199, 226, 255, .12);
+  border: 1px solid rgba(199, 226, 255, .24);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+html[data-hero="original"] .bt:hover .bt-ic { background: rgba(199, 226, 255, .2); }
+html[data-hero="original"] .bt-ic svg { filter: none; }
+html[data-hero="original"] .bt-name { text-shadow: none; }
+html[data-hero="original"] .bt-price { color: #8fa0c8; text-shadow: none; }
+html[data-hero="original"] .bt-price b { color: #fff; text-shadow: none; }
+html[data-hero="original"] .scroll-cue span { text-shadow: none; }
+
+/* the pale key needs its old edge back, not the dark magenta one */
+html[data-hero="original"] .pill.solid,
+html[data-hero="original"] .pill.light {
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(8, 16, 31, .28);
+}
+html[data-hero="original"] .pill.solid:hover,
+html[data-hero="original"] .pill.light:hover {
+  background: #fff; box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .28);
+}
+html[data-hero="original"] #to-top:hover,
+html[data-hero="original"] .skip-btn:hover { background: #fff; }
+/* gold chips took navy ink then, which is what --pick-ink already is */

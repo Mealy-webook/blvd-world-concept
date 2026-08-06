@@ -1,11 +1,15 @@
-// ── the three hero versions ────────────────────────────────────────────────
-// One page, three openings, so they can be compared side by side rather than
+// ── the hero versions ──────────────────────────────────────────────────────
+// One page, four openings, so they can be compared side by side rather than
 // described:
 //
 //   cartoon     the generated landmark panorama — Grendizer, the Taj, the lake
 //   real video  the park's own banner footage, from blvdworld.sa
 //   globe       no footage at all: the planet swells up out of the fold as the
-//               hero scrolls away (js/globe.js, driven by scene.js)
+//               hero scrolls away (js/globe.js, driven by scene.js), and the
+//               zones lay out as a fan instead of a ring
+//   original    the site as it stood before any of the above: no footage, the
+//               heading and tiles on the page's own navy, outlined tiles rather
+//               than glass, and the pale-blue button the site used before magenta
 //
 // The choice lives in the URL so a version can be sent to someone as a link:
 // ?hero=real, or #/?hero=real once you are past the landing route. The switcher
@@ -16,6 +20,7 @@
     { key: "cartoon", name: "Cartoon hero", note: "Generated panorama" },
     { key: "real",    name: "Real video hero", note: "blvdworld.sa footage" },
     { key: "globe",   name: "Globe hero", note: "The planet, no footage" },
+    { key: "original", name: "Original", note: "Before the footage" },
   ];
   const KEYS = VERSIONS.map((v) => v.key);
   const SRC = { cartoon: "video/hero.mp4", real: "video/hero-real.mp4" };
@@ -53,7 +58,7 @@
     document.documentElement.dataset.hero = v;
 
     if (video) {
-      if (v === "globe") {
+      if (v === "globe" || v === "original") {
         video.pause();
         video.removeAttribute("src");
         video.load();                       // stop it fetching what we won't show
