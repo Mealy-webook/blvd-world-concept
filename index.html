@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=618" />
+<link rel="stylesheet" href="css/main.css?v=621" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=618" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=621" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -286,11 +286,41 @@
          CREDITS.md. js/records.js drives the chips, the sphere's rings and the
          count-up. -->
     <section class="rec" id="records">
-      <p class="rec-eyebrow reveal">
-        <i aria-hidden="true"></i>
-        <span>Guinness World Records</span>
-        <i aria-hidden="true"></i>
-      </p>
+      <!-- THE MARK.
+           Guinness World Records' own logo is not in this repository, and it is a
+           trademark: drawing an imitation of it would be manufacturing a
+           certification. What follows is a seal of our own, in the site's type, as
+           the slot for the real one.
+
+           To use the official mark, put the file GWR issues to record holders at
+           img/records/gwr-logo.svg and swap it in here:
+               <img class="rec-seal-mark" src="img/records/gwr-logo.svg"
+                    alt="Guinness World Records" width="150" height="150" />
+           delete the .rec-seal-type span, and check the usage terms that come with
+           the kit — the mark carries conditions about size, clear space and what
+           may be claimed alongside it. See CREDITS.md. -->
+      <div class="rec-seal reveal">
+        <svg class="rec-seal-type" viewBox="0 0 100 100" role="img"
+             aria-label="Guinness World Records holder">
+          <defs>
+            <path id="seal-top" d="M 50 50 m -37 0 a 37 37 0 0 1 74 0" fill="none" />
+            <path id="seal-bot" d="M 50 50 m -31 0 a 31 31 0 0 0 62 0" fill="none" />
+          </defs>
+          <circle class="sl-ring" cx="50" cy="50" r="47.5" />
+          <circle class="sl-ring thin" cx="50" cy="50" r="43" />
+          <!-- laurels, one each side -->
+          <path class="sl-leaf" d="M 22 68 C 13 58, 13 44, 21 34" />
+          <path class="sl-leaf" d="M 78 68 C 87 58, 87 44, 79 34" />
+          <path class="sl-leaf sm" d="M 20 62 C 16 60, 15 56, 16 53" />
+          <path class="sl-leaf sm" d="M 80 62 C 84 60, 85 56, 84 53" />
+          <text class="sl-arc"><textPath href="#seal-top" startOffset="50%">GUINNESS WORLD RECORDS</textPath></text>
+          <text class="sl-arc sl-arc-b"><textPath href="#seal-bot" startOffset="50%">RECORD HOLDER</textPath></text>
+          <path class="sl-star" d="M 50 36 L 53.2 45.2 L 62.8 45.4 L 55.2 51.2
+                                   L 57.9 60.6 L 50 55 L 42.1 60.6 L 44.8 51.2
+                                   L 37.2 45.4 L 46.8 45.2 Z" />
+          <text class="sl-n" x="50" y="72">3</text>
+        </svg>
+      </div>
 
       <div class="rec-tabs reveal" role="tablist" aria-label="World records">
         <button class="rec-tab is-on" type="button" role="tab" aria-selected="true"
@@ -938,30 +968,30 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=618"></script>
-  <script src="js/borders.js?v=618"></script>
-  <script src="js/scene.js?v=618"></script>
-  <script src="js/app.js?v=618"></script>
-  <script src="js/experiences.js?v=618"></script>
-  <script src="js/carousels.js?v=618"></script>
-  <script src="js/coverflow.js?v=618"></script>
-  <script src="js/zones.js?v=618"></script>
-  <script src="js/fan.js?v=618"></script>
-  <script src="js/zonevid.js?v=618"></script>
-  <script src="js/records.js?v=618"></script>
-  <script src="js/sphere.js?v=618" defer></script>
-  <script src="js/gallery.js?v=618"></script>
-  <script src="js/parkmap.js?v=618"></script>
-  <script src="js/minimap.js?v=618"></script>
-  <script src="js/sponsors.js?v=618"></script>
-  <script src="js/cashless.js?v=618"></script>
-  <script src="js/headings.js?v=618"></script>
-  <script src="js/bundles.js?v=618"></script>
-  <script src="js/ridex.js?v=618"></script>
-  <script src="js/cursor.js?v=618"></script>
-  <script src="js/glass.js?v=618" defer></script>
+  <script src="js/data.js?v=621"></script>
+  <script src="js/borders.js?v=621"></script>
+  <script src="js/scene.js?v=621"></script>
+  <script src="js/app.js?v=621"></script>
+  <script src="js/experiences.js?v=621"></script>
+  <script src="js/carousels.js?v=621"></script>
+  <script src="js/coverflow.js?v=621"></script>
+  <script src="js/zones.js?v=621"></script>
+  <script src="js/fan.js?v=621"></script>
+  <script src="js/zonevid.js?v=621"></script>
+  <script src="js/records.js?v=621"></script>
+  <script src="js/sphere.js?v=621" defer></script>
+  <script src="js/gallery.js?v=621"></script>
+  <script src="js/parkmap.js?v=621"></script>
+  <script src="js/minimap.js?v=621"></script>
+  <script src="js/sponsors.js?v=621"></script>
+  <script src="js/cashless.js?v=621"></script>
+  <script src="js/headings.js?v=621"></script>
+  <script src="js/bundles.js?v=621"></script>
+  <script src="js/ridex.js?v=621"></script>
+  <script src="js/cursor.js?v=621"></script>
+  <script src="js/glass.js?v=621" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=618" defer></script>
+  <script src="js/heroes.js?v=621" defer></script>
 </body>
 </html>

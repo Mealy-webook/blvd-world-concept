@@ -278,7 +278,23 @@ Imagery:
 The idle and the wave are CSS on those two layers. Both are animation, not
 evidence: the statue does not move in real life.
 
-### The sphere's globe, and the character on it
+### The seal
+
+**Guinness World Records' logo is not in this repository and is not reproduced.** It
+is a trademark, and drawing an imitation of it would be manufacturing a
+certification. The seal above the chips is ours: a ring, laurels, a star and the
+words, set in the site's own type, standing in the slot where the real mark goes.
+The number in the middle is the count of panels on the page rather than a figure
+typed into the artwork, so it cannot drift from what is shown.
+
+To use the official mark: put the file GWR issues to record holders at
+`img/records/gwr-logo.svg` and swap it for the `.rec-seal-type` SVG — the markup
+carries the exact snippet in a comment. Two things to settle first, neither of them
+ours to decide: that the records are certified and current, and that the usage terms
+in the holder's kit are met (they cover minimum size, clear space, and what may be
+claimed next to the mark).
+
+### The sphere's globe
 
 The sphere panel renders a real sphere rather than showing a picture of one: a
 fragment shader intersects a ray with a unit ball per pixel (`js/sphere.js`, no

@@ -2376,6 +2376,44 @@ html[data-hero="real"] .zc .zc-plate {
   text-align: center;
 }
 
+/* ── the seal ──
+   Guinness World Records' own mark is a trademark and is not in this repository, so
+   this is a seal of ours standing in its place: a ring, laurels, a star and the
+   words, set in the site's own type. It is deliberately not an imitation of theirs —
+   the point of the slot is that the real file replaces it. */
+.rec-seal { display: grid; place-items: center; }
+.rec-seal-type, .rec-seal-mark {
+  width: clamp(84px, 11vh, 116px); height: auto; display: block;
+}
+/* .rec-seal-mark would otherwise inherit nothing to hide it, and this codebase has
+   been bitten three times by an author display beating [hidden] */
+.rec-seal-mark[hidden], .rec-seal-type[hidden] { display: none; }
+
+.sl-ring {
+  fill: none; stroke: rgba(255, 194, 77, .85); stroke-width: 1.6;
+}
+.sl-ring.thin { stroke: rgba(255, 194, 77, .35); stroke-width: .7; }
+.sl-leaf {
+  fill: none; stroke: rgba(255, 194, 77, .7); stroke-width: 2.2;
+  stroke-linecap: round;
+}
+.sl-leaf.sm { stroke-width: 1.4; opacity: .8; }
+.sl-star { fill: var(--gold); }
+/* The arc is 116 units long (pi times the 37 radius) and the words are 22
+   characters: at 8.4px with .13em of tracking they measured about 134 and the ends
+   were being cut off. 6.8px and .05em fits with room to spare. */
+.sl-arc {
+  fill: #ffe6b0; font-family: var(--ui); font-size: 6.8px; font-weight: 700;
+  letter-spacing: .05em; text-anchor: middle;
+}
+.sl-arc-b { font-size: 6.2px; letter-spacing: .12em; fill: rgba(255, 230, 176, .78); }
+/* the count of records on the page, so the seal says something true rather than
+   only looking official */
+.sl-n {
+  fill: #fff; font-family: var(--fig); font-size: 15px; font-weight: 800;
+  text-anchor: middle; font-variant-numeric: tabular-nums;
+}
+
 /* the label above it all */
 .rec-eyebrow {
   display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);

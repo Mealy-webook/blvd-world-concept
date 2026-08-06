@@ -92,6 +92,12 @@
     });
   }
 
+  /* The seal's number is the count of records on the page, not a figure typed into
+     the artwork: three panels, three records. Typed it would be wrong the first time
+     one is added or taken away. */
+  const sealN = document.querySelector(".sl-n");
+  if (sealN && panels.length) sealN.textContent = String(panels.length);
+
   /* the first panel is on in the markup, so its figure counts when the section is
      seen rather than on load, five screens above it */
   const section = document.getElementById("records");
