@@ -32,7 +32,7 @@
   // of if-statements so adding a surface is one line.
   // The map is left alone entirely — see the route watch below — so its stage is
   // not listed here.
-  const GRAB = ".cf-frame, .rail, #eat-rail, #show-rail, .rs-strip";
+  const GRAB = ".cf-frame, .fan-deck, .rail, #eat-rail, #show-rail, .rs-strip";
   // What each draggable surface calls itself. A rail is a rail and you drag it.
   // A surface can also name itself per-position through data-cursor-word — the
   // zone ring does, because its centred card leads somewhere and the rest only

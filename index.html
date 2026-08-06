@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=519" />
+<link rel="stylesheet" href="css/main.css?v=527" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-logo.svg?v=519" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-logo.svg?v=527" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -89,8 +89,21 @@
         <!-- four ways in, as tiles rather than buttons -->
         <!-- the entry ticket is the hero's call to action, in the site's own
              button style; the three below it are the other ways in -->
+        <!-- The call to action carries an icon and its own price as well as its
+             label, because the cartoon version lays it out as a tile — the fourth
+             and largest of the four. Every other version hides the icon and the
+             inner price and renders it as a pill, with the price on the line
+             underneath. One element, two shapes; see data-hero in the CSS. -->
         <a class="pill solid big-pill hero-cta" href="https://webook.com"
-           target="_blank" rel="noopener">BOOK ENTRY TICKET</a>
+           target="_blank" rel="noopener">
+          <span class="hc-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 8.4A2.4 2.4 0 0 0 3 13.6v2.6a1.8 1.8 0 0 0 1.8 1.8h14.4a1.8 1.8 0 0 0 1.8-1.8v-2.6a2.4 2.4 0 0 1 0-5.2V5.8A1.8 1.8 0 0 0 19.2 4H4.8A1.8 1.8 0 0 0 3 5.8zm6.6-1.6h1.5v10.4H9.6z"/></svg>
+          </span>
+          <span class="hc-text">
+            <b class="hc-name">Book entry ticket</b>
+            <span class="hc-price">from <b>SAR 50</b></span>
+          </span>
+        </a>
         <p class="hero-price">Entry from <b>SAR 50</b></p>
 
         <!-- a divider that says what the three below it have in common -->
@@ -110,6 +123,7 @@
               <b class="bt-name">Rides</b>
               <span class="bt-price">from <b>SAR 89</b></span>
             </span>
+            <span class="bt-tag">Entry ticket included</span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
           <a class="bt" href="#/experiences">
@@ -121,6 +135,7 @@
               <b class="bt-name">Experiences</b>
               <span class="bt-price">from <b>SAR 150</b></span>
             </span>
+            <span class="bt-tag">Entry ticket included</span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
           <a class="bt" href="#/eats">
@@ -132,6 +147,7 @@
               <b class="bt-name">Restaurants</b>
               <span class="bt-price">from <b>SAR 100</b></span>
             </span>
+            <span class="bt-tag">Entry ticket included</span>
             <i class="bt-go" aria-hidden="true"></i>
           </a>
         </div>
@@ -156,7 +172,16 @@
       <!-- two layouts for the same zones: the ring, and the fan the globe version
            uses instead. CSS shows one and hides the other; see data-hero. -->
       <div class="zone-flow" id="zone-flow"></div>
-      <div class="zone-fan" id="zone-fan"></div>
+      <div class="zone-fan" id="zone-fan">
+        <div class="fan-stage">
+          <div class="fan-deck" id="zone-deck"></div>
+        </div>
+        <div class="fan-nav">
+          <button class="cf-nav prev" type="button" id="zone-prev" aria-label="Previous zone">&#8249;</button>
+          <div class="fan-dots" id="zone-dots" role="tablist" aria-label="Zones"></div>
+          <button class="cf-nav next" type="button" id="zone-next" aria-label="Next zone">&#8250;</button>
+        </div>
+      </div>
 
       <div class="ride-cta reveal">
         <a href="#/map" class="pill light big-pill">
@@ -743,26 +768,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=519"></script>
-  <script src="js/borders.js?v=519"></script>
-  <script src="js/scene.js?v=519"></script>
-  <script src="js/app.js?v=519"></script>
-  <script src="js/experiences.js?v=519"></script>
-  <script src="js/carousels.js?v=519"></script>
-  <script src="js/coverflow.js?v=519"></script>
-  <script src="js/zones.js?v=519"></script>
-  <script src="js/fan.js?v=519"></script>
-  <script src="js/gallery.js?v=519"></script>
-  <script src="js/parkmap.js?v=519"></script>
-  <script src="js/sponsors.js?v=519"></script>
-  <script src="js/cashless.js?v=519"></script>
-  <script src="js/headings.js?v=519"></script>
-  <script src="js/bundles.js?v=519"></script>
-  <script src="js/ridex.js?v=519"></script>
-  <script src="js/cursor.js?v=519"></script>
-  <script src="js/glass.js?v=519" defer></script>
+  <script src="js/data.js?v=527"></script>
+  <script src="js/borders.js?v=527"></script>
+  <script src="js/scene.js?v=527"></script>
+  <script src="js/app.js?v=527"></script>
+  <script src="js/experiences.js?v=527"></script>
+  <script src="js/carousels.js?v=527"></script>
+  <script src="js/coverflow.js?v=527"></script>
+  <script src="js/zones.js?v=527"></script>
+  <script src="js/fan.js?v=527"></script>
+  <script src="js/gallery.js?v=527"></script>
+  <script src="js/parkmap.js?v=527"></script>
+  <script src="js/sponsors.js?v=527"></script>
+  <script src="js/cashless.js?v=527"></script>
+  <script src="js/headings.js?v=527"></script>
+  <script src="js/bundles.js?v=527"></script>
+  <script src="js/ridex.js?v=527"></script>
+  <script src="js/cursor.js?v=527"></script>
+  <script src="js/glass.js?v=527" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=519" defer></script>
+  <script src="js/heroes.js?v=527" defer></script>
 </body>
 </html>

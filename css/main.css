@@ -610,6 +610,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   border-color: rgba(215, 236, 255, .85);
 }
 .bt-go { display: none; }          /* the chevron went with the tile's fill */
+/* The tag each tile carries. Hidden by default, because in most versions the
+   divider above the row says it once for all three; the cartoon version drops that
+   divider and lets each tile say it for itself instead. */
+.bt-tag { display: none; }
 
 .bt-ic {
   display: grid; place-items: center; width: 52px; height: 52px; border-radius: var(--r-md);
@@ -650,6 +654,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
   text-transform: uppercase; color: #8fa0c8; text-align: center;
 }
+
+/* ── the call to action's two shapes ──
+   It carries an icon, a label and its own price in the markup. As a pill only the
+   label shows and the price sits on the line beneath; as a tile (the cartoon
+   version) all three show and that separate line goes away. This is the pill case. */
+.hc-ic, .hc-price { display: none; }
+.hc-name { font: inherit; text-transform: uppercase; }
 
 /* ── the price under the button ──
    It belongs to the call to action, not to the stack, so it is pulled back out of
@@ -3949,62 +3960,75 @@ body:not(.route-home) .hv { display: none; }
 }
 
 /* ══ THE ZONES AS A FAN ══
-   The globe version's layout for the same posters. One of the two is always
-   hidden, so the section's height comes from whichever is showing. */
+   The globe version's layout for the same posters — the deck restored from
+   aaad543, geometry and all. One of the two layouts is always hidden, so the
+   section's height comes from whichever is showing.
+
+   Everything the deck does to a card is a transform written by js/fan.js in rem
+   units, so the card must not be sized in a way that fights it: the stage owns the
+   height, and each card is absolutely centred in it. */
 .zone-fan { display: none; }
 html[data-hero="globe"] .zone-flow { display: none; }
 html[data-hero="globe"] .zone-fan {
-  display: grid; justify-items: center; gap: clamp(14px, 2.4vh, 28px);
-  width: 100%;
+  display: grid; justify-items: center; gap: clamp(12px, 2vh, 22px); width: 100%;
 }
+/* the arrows are .cf-nav, which is absolutely positioned — without this they hunt
+   for the nearest positioned ancestor and land wherever the section happens to put
+   them. Anchored here they sit against the deck, on purpose. */
+.zone-fan { position: relative; }
+.zone-fan .cf-nav { top: calc(50% - clamp(12px, 2vh, 22px)); }
 
-.fan {
-  --fan-card: clamp(132px, 15vw, 196px);
-  position: relative;
-  width: 100%; height: calc(var(--fan-card) * 4 / 3 + 96px);
-  display: grid; place-items: center;
-  /* the whole deck pivots from one point below itself, which is what makes it a
-     fan rather than a row of tilted cards */
-  perspective: none;
+.fan-stage {
+  position: relative; width: 100%; max-width: min(80rem, 100%);
+  height: min(30rem, 52vh);
+  display: flex; align-items: center; justify-content: center;
 }
-.fan:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 6px; border-radius: var(--r-md); }
-
+.fan-deck { position: absolute; inset: 0; }
 .fan-card {
-  position: absolute; top: 50%; left: 50%;
-  width: var(--fan-card); aspect-ratio: 3 / 4;
-  margin: calc(var(--fan-card) * -4 / 6) 0 0 calc(var(--fan-card) / -2);
+  position: absolute; left: 50%; top: 50%;
+  /* sized from the stage, so the deck always fits the space it is given. The
+     posters are 3:4, where the old ride cards were 4:7. */
+  height: 92%; width: auto; aspect-ratio: 3 / 4;
   border-radius: var(--r-lg); overflow: hidden;
-  /* every card leans about the same point, low and central, so the deck opens the
-     way a held hand of cards does */
-  transform-origin: 50% 145%;
+  transform-origin: 50% 50%; will-change: transform, opacity; cursor: pointer;
   background: var(--s-well);
-  box-shadow: 0 14px 34px rgba(2, 4, 16, .5);
-  cursor: pointer;
-  transition: transform .52s cubic-bezier(.32,.72,0,1),
-              box-shadow .4s cubic-bezier(.32,.72,0,1);
+  border: 1px solid rgba(124, 196, 255, .2);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .62), inset 0 0 0 1px rgba(255, 255, 255, .03);
 }
 .fan-card img {
-  width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
-  filter: saturate(.94) brightness(.66);
-  transition: filter .5s var(--ease);
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  user-select: none; -webkit-user-drag: none;
+  filter: saturate(.96) brightness(.78);
+  transition: filter .45s var(--ease);
 }
-.fan-card:hover img { filter: saturate(1.02) brightness(.88); }
-.fan-card.is-chosen {
-  box-shadow: 0 30px 66px rgba(2, 4, 16, .66), 0 0 0 2px rgba(255, 255, 255, .3);
+/* the poster carries its own name and lockup, so there is no caption plate and no
+   veil over it — only the front card is brought fully up to strength */
+.fan-card.is-front img { filter: none; }
+.fan-card:hover img { filter: saturate(1.02) brightness(.92); }
+.fan-card.is-front:hover img { filter: saturate(1.04) brightness(1.03); }
+.fan-card.is-front {
+  border-color: rgba(255, 255, 255, .34);
+  box-shadow: 0 34px 74px rgba(2, 4, 14, .7), inset 0 0 0 1px rgba(255, 255, 255, .06);
 }
-.fan-card.is-chosen img { filter: none; }
-.fan-card.is-chosen:hover img { filter: saturate(1.04) brightness(1.04); }
 
-/* the name, under the deck — the poster carries it too, but the chosen card is
-   the one being named and a line of type says which without hunting for it */
-.fan-name {
-  margin: 0; font-family: var(--disp); font-weight: 700;
-  font-size: clamp(15px, 1.9vw, 24px); letter-spacing: -.015em; color: #fff;
-  text-align: center;
+/* arrows and dots below the deck */
+.fan-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.fan-dots { display: flex; align-items: center; gap: 7px; }
+.fan-dots button {
+  position: relative;
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(124, 196, 255, .22);
+  transition: background .3s, transform .3s;
 }
+/* a 7px dot is not a touch target; this gives it one without changing the look */
+.fan-dots button::after {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: 44px; height: 44px; transform: translate(-50%, -50%);
+}
+.fan-dots button:hover { background: rgba(124, 196, 255, .5); }
+.fan-dots button.on { background: var(--pick); transform: scale(1.45); }
 
 @media (prefers-reduced-motion: reduce) {
-  .fan-card { transition: none; }
+  .fan-card img { transition: none; }
 }
 
 /* ══ VERSION 4: THE ORIGINAL ══
@@ -4080,3 +4104,121 @@ html[data-hero="original"] .pill.light:hover {
 html[data-hero="original"] #to-top:hover,
 html[data-hero="original"] .skip-btn:hover { background: #fff; }
 /* gold chips took navy ink then, which is what --pick-ink already is */
+
+/* ══ THE CARTOON VERSION'S CALL TO ACTION, AS A TILE ══
+   The same glass as the three below it, in the same shape, holding an icon, its
+   name and its price — and bigger than them in every dimension, which is what
+   makes it the primary rather than a fourth equal. The separate price line goes
+   away because the price is inside it now. */
+html[data-hero="cartoon"] .hero-price { display: none; }
+/* the divider goes, and each tile says it for itself */
+html[data-hero="cartoon"] .bt-lead { display: none; }
+html[data-hero="cartoon"] .bt-tag {
+  display: block;
+  margin-top: 2px; padding: 4px 10px; border-radius: var(--r-pill);
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; white-space: nowrap;
+  color: #ffe6b0;
+  background: rgba(255, 194, 77, .13);
+  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .3);
+  text-shadow: 0 1px 5px rgba(3, 6, 22, .8);
+}
+html[data-hero="cartoon"] .hero-cta .hc-ic,
+html[data-hero="cartoon"] .hero-cta .hc-price { display: grid; }
+html[data-hero="cartoon"] .hero-cta.pill {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  justify-items: center; text-align: center; gap: 10px;
+  width: min(286px, 100%);
+  font-size: 15px; letter-spacing: -.01em;
+}
+/* A tile is 105px taller than the pill it replaced, and that came out of the gap
+   above the scroll cue. The stack gives some of it back: the tile does not need
+   the same air around it as the heading does. */
+html[data-hero="cartoon"] .hero-ui { --hero-gap: clamp(12px, 1.9vh, 22px); }
+html[data-hero="cartoon"] .hero-cta .hc-ic {
+  place-items: center; width: 52px; height: 52px; border-radius: 15px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, .16));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .6),
+    inset 0 -1px 0 rgba(104, 0, 60, .3),
+    0 4px 12px rgba(2, 4, 16, .3);
+}
+html[data-hero="cartoon"] .hero-cta .hc-ic svg {
+  width: 24px; height: 24px; fill: #fff;
+  filter: drop-shadow(0 1px 2px rgba(2, 4, 16, .5));
+}
+html[data-hero="cartoon"] .hero-cta .hc-text { display: grid; gap: 4px; justify-items: center; }
+html[data-hero="cartoon"] .hero-cta .hc-name {
+  font-family: var(--disp); font-weight: 700; font-size: 19px;
+  letter-spacing: -.015em; line-height: 1.1; text-transform: none;
+  text-shadow: 0 1px 8px rgba(3, 6, 22, .75);
+}
+html[data-hero="cartoon"] .hero-cta .hc-price {
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: rgba(255, 255, 255, .82);
+  display: flex; align-items: baseline; gap: 6px;
+  text-shadow: 0 1px 7px rgba(3, 6, 22, .8);
+}
+html[data-hero="cartoon"] .hero-cta .hc-price b {
+  font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+  color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
+}
+
+/* ══ AND THE GLASS IT IS BUILT FROM ══
+   Built from the same glass as the tiles below it rather than as a solid pill, so
+   the hero reads as one material — but it has to win, and matching them exactly
+   would leave four equal panes and no primary. So it is the same construction at a
+   higher setting: a brighter fill, a hotter specular rim, more air around the
+   words, and a magenta bloom under it that nothing else in the hero has. The
+   magenta stays the primary's colour; it just stops being a flat fill. */
+html[data-hero="cartoon"] .hero-cta.pill.solid {
+  position: relative; isolation: isolate;
+  padding: 17px 18px 16px; border-radius: 24px; border: 0;
+  color: #fff;
+  /* The first pass matched the tiles too closely and came out *quieter* than the
+     solid pill it replaced — a pale pane on bright water. The magenta has to carry
+     most of the face for this to read as the primary; the glass is the top third,
+     the highlight and the rim. */
+  background:
+    linear-gradient(168deg, rgba(255, 255, 255, .46) 0%, rgba(255, 160, 210, .42) 22%,
+                    rgba(209, 0, 119, .88) 58%, rgba(180, 0, 102, .95) 100%);
+  backdrop-filter: blur(48px) saturate(190%) brightness(1.05);
+  -webkit-backdrop-filter: blur(48px) saturate(190%) brightness(1.05);
+  box-shadow:
+    0 22px 54px rgba(2, 4, 16, .5),
+    0 14px 46px rgba(209, 0, 119, .62),
+    inset 0 1px 0 rgba(255, 255, 255, .4),
+    inset 0 -1px 1px rgba(104, 0, 60, .5);
+  text-shadow: 0 1px 8px rgba(3, 6, 22, .7);
+  transition: transform .5s cubic-bezier(.32,.72,0,1),
+              background .4s cubic-bezier(.32,.72,0,1),
+              box-shadow .4s cubic-bezier(.32,.72,0,1);
+}
+/* the rim, the same trick the tiles use: a ring that refracts harder than the pane */
+html[data-hero="cartoon"] .hero-cta.pill.solid::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit; pointer-events: none; padding: 1.5px;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .4) 24%,
+    rgba(255, 255, 255, .08) 46%, rgba(255, 255, 255, 0) 62%,
+    rgba(255, 190, 230, .7) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+html[data-hero="cartoon"] .hero-cta.pill.solid:hover {
+  transform: translateY(-4px);
+  background:
+    linear-gradient(168deg, rgba(255, 255, 255, .58) 0%, rgba(255, 175, 220, .5) 22%,
+                    rgba(229, 19, 139, .92) 58%, rgba(200, 10, 120, .97) 100%);
+  box-shadow:
+    0 32px 68px rgba(2, 4, 16, .56),
+    0 18px 58px rgba(229, 19, 139, .72),
+    inset 0 1px 0 rgba(255, 255, 255, .5),
+    inset 0 -1px 1px rgba(104, 0, 60, .5);
+}
+html[data-hero="cartoon"] .hero-cta.pill.solid:active { transform: translateY(-1px) scale(.985); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html[data-hero="cartoon"] .hero-cta.pill.solid { background: var(--btn); }
+}

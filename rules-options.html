@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Venue rules — four options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<!-- the site's own tokens, so what is on this page is what would land -->
+<link rel="stylesheet" href="css/main.css?v=525" />
+<style>
+  /* ── the page this comparison sits on ─────────────────────────────────────
+     Not a design, just a rig: each option gets a full-width bay, a number, a
+     name, and a line on what it is actually for. Everything inside a bay is
+     built from the site's tokens and the real nine icons and five rules, so the
+     comparison is between designs rather than between mock-ups. */
+  body { background: var(--page-bg); min-height: 100vh; }
+  .rig { max-width: 1180px; margin: 0 auto; padding: 48px 5vw 96px; display: grid; gap: 74px; }
+  .rig-head { display: grid; gap: 10px; }
+  .rig-head h1 {
+    font-family: var(--disp); font-weight: 800; font-size: clamp(30px, 5vw, 54px);
+    letter-spacing: -.03em; line-height: 1; color: #fff;
+  }
+  .rig-head p { max-width: 62ch; color: var(--dim); font-size: 15px; line-height: 1.6; }
+  .bay { display: grid; gap: 22px; }
+  .bay-top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .bay-no {
+    font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .18em;
+    color: var(--logo-gold);
+  }
+  .bay-name {
+    font-family: var(--disp); font-weight: 700; font-size: clamp(19px, 2.4vw, 27px);
+    letter-spacing: -.02em; color: #fff;
+  }
+  .bay-why { flex: 1 1 24ch; min-width: 22ch; font-size: 13px; line-height: 1.55; color: var(--dim); }
+  .bay-body {
+    padding: clamp(22px, 3.4vw, 44px);
+    border-radius: var(--r-lg); border: var(--b-1); background: rgba(255, 255, 255, .022);
+  }
+
+  /* ══ 1 · SPLIT: WHAT YOU CAN, WHAT YOU CANNOT ══ */
+  .sp { display: grid; gap: clamp(18px, 2.6vw, 34px); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .sp-col { display: grid; gap: 14px; align-content: start; }
+  .sp-cap {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  .sp-cap i {
+    display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%;
+    font-size: 12px; font-weight: 700;
+  }
+  .sp-yes .sp-cap { color: #6ee7a8; }
+  .sp-yes .sp-cap i { background: rgba(110, 231, 168, .16); color: #6ee7a8; }
+  .sp-no .sp-cap { color: #ff8fa8; }
+  .sp-no .sp-cap i { background: rgba(255, 143, 168, .16); color: #ff8fa8; }
+  .sp-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .sp-items li {
+    display: flex; align-items: center; gap: 13px;
+    padding: 12px 14px; border-radius: var(--r-md);
+    background: var(--s-well); border: var(--b-1);
+  }
+  .sp-yes .sp-items li { border-color: rgba(110, 231, 168, .2); }
+  .sp-no .sp-items li { border-color: rgba(255, 143, 168, .16); }
+  .sp-items img { width: 22px; height: 22px; filter: brightness(0) invert(1); opacity: .9; flex: none; }
+  .sp-items b { font-family: var(--body); font-weight: 600; font-size: 14px; color: #eaf2ff; }
+  .sp-items span { font-size: 12.5px; line-height: 1.45; color: var(--dim); }
+  .sp-items div { display: grid; gap: 2px; min-width: 0; }
+
+  /* ══ 2 · THE BACK OF THE TICKET ══ */
+  .tk { display: grid; gap: 16px; }
+  .tk-strip {
+    display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
+    scrollbar-width: thin; scroll-snap-type: x proximity;
+  }
+  .tk-stub {
+    flex: 0 0 auto; width: 178px; scroll-snap-align: start;
+    display: grid; gap: 12px; align-content: start;
+    padding: 18px 16px 20px; border-radius: var(--r-md);
+    background: linear-gradient(178deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .028));
+    border: var(--b-1);
+    /* the notch, so it reads as a stub torn off a ticket */
+    position: relative; overflow: hidden;
+  }
+  .tk-stub::before, .tk-stub::after {
+    content: ''; position: absolute; left: 50%; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--logo-1); transform: translateX(-50%);
+  }
+  .tk-stub::before { top: -9px; }
+  .tk-stub::after { bottom: -9px; }
+  .tk-stub img { width: 26px; height: 26px; filter: brightness(0) invert(1); opacity: .9; }
+  .tk-stub b {
+    font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .13em;
+    text-transform: uppercase; color: #fff;
+  }
+  .tk-stub p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--dim); }
+  .tk-note {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: #8fa0c8;
+  }
+
+  /* ══ 3 · ICON GRID BESIDE AN ACCORDION ══ */
+  .ac { display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: minmax(220px, .82fr) minmax(300px, 1.18fr); }
+  @media (max-width: 780px) { .ac { grid-template-columns: minmax(0, 1fr); } }
+  .ac-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+    align-content: start;
+  }
+  .ac-grid li {
+    display: grid; justify-items: center; gap: 8px; text-align: center;
+    padding: 14px 7px; border-radius: var(--r-md);
+    background: var(--s-well); border: var(--b-1);
+  }
+  .ac-grid img { width: 26px; height: 26px; filter: brightness(0) invert(1); opacity: .9; }
+  .ac-grid span { font-size: 10.5px; line-height: 1.3; color: #c8d7f2; }
+  .ac-rules { display: grid; gap: 8px; align-content: start; }
+  .ac-item { border-radius: var(--r-md); background: var(--s-well); border: var(--b-1); overflow: hidden; }
+  .ac-item summary {
+    display: flex; align-items: center; gap: 13px; cursor: pointer; list-style: none;
+    padding: 15px 17px;
+    font-family: var(--body); font-weight: 600; font-size: 14px; color: #fff;
+  }
+  .ac-item summary::-webkit-details-marker { display: none; }
+  .ac-item summary i {
+    flex: none; font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--logo-gold);
+  }
+  .ac-item summary b { flex: 1; font-weight: 600; }
+  .ac-item summary em {
+    flex: none; width: 13px; height: 13px; position: relative;
+  }
+  .ac-item summary em::before, .ac-item summary em::after {
+    content: ''; position: absolute; inset: 0; margin: auto;
+    background: var(--cyan); border-radius: 1px;
+  }
+  .ac-item summary em::before { width: 100%; height: 1.6px; }
+  .ac-item summary em::after { width: 1.6px; height: 100%; transition: opacity .25s; }
+  .ac-item[open] summary em::after { opacity: 0; }
+  .ac-item p { margin: 0; padding: 0 44px 16px 17px; font-size: 13.5px; line-height: 1.65; color: var(--dim); }
+
+  /* ══ 4 · THE RULES SET AS TYPE ══ */
+  .ed { display: grid; gap: 4px; }
+  .ed-row {
+    position: relative; display: grid; gap: 10px;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    padding: 22px 0; border-top: var(--b-1);
+  }
+  .ed-row:last-child { border-bottom: var(--b-1); }
+  .ed-no {
+    font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .12em;
+    color: var(--logo-gold); padding-top: 5px; min-width: 3.2em;
+  }
+  .ed-txt { display: grid; gap: 7px; }
+  .ed-txt b {
+    font-family: var(--disp); font-weight: 700; font-size: clamp(19px, 2.5vw, 30px);
+    letter-spacing: -.025em; line-height: 1.12; color: #fff;
+  }
+  .ed-txt span { font-size: 13.5px; line-height: 1.6; color: var(--dim); max-width: 64ch; }
+  /* the icon sits behind the words, large and quiet, so it reads as a mark on the
+     page rather than a bullet beside it */
+  .ed-row img {
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    width: clamp(54px, 8vw, 96px); height: auto;
+    filter: brightness(0) invert(1); opacity: .07; pointer-events: none;
+  }
+</style>
+</head>
+<body class="typo-body">
+<canvas id="stars-page" class="stars page-sky" aria-hidden="true"></canvas>
+
+<div class="rig">
+  <header class="rig-head">
+    <h1>Venue rules — four options</h1>
+    <p>All four use the nine Figma icons and the five real rules, on the site's own
+      tokens. What changes is the structure. Today's section stacks a nine-icon row
+      on top of a numbered list, which shows everything at once and asks the reader
+      to work out which parts matter to them.</p>
+  </header>
+
+  <!-- ─────────────────────────── 1 ─────────────────────────── -->
+  <section class="bay">
+    <div class="bay-top">
+      <span class="bay-no">01</span>
+      <h2 class="bay-name">Can / cannot</h2>
+      <p class="bay-why">The one option that answers the question people actually
+        arrive with. The nine icons already split cleanly into three things the venue
+        offers and six it forbids — this stops hiding that split and leads with it.
+        My pick.</p>
+    </div>
+    <div class="bay-body">
+      <div class="sp">
+        <div class="sp-col sp-yes">
+          <p class="sp-cap"><i>✓</i>What's here</p>
+          <ul class="sp-items">
+            <li><img src="img/rules/music-note.svg" alt="" /><div><b>Live music</b><span>Performances across every zone, nightly</span></div></li>
+            <li><img src="img/rules/forest.svg" alt="" /><div><b>Outdoors throughout</b><span>The whole venue is open air — dress for the evening</span></div></li>
+            <li><img src="img/rules/garage.svg" alt="" /><div><b>Parking on site</b><span>Available at the gates</span></div></li>
+          </ul>
+        </div>
+        <div class="sp-col sp-no">
+          <p class="sp-cap"><i>✕</i>Leave at home</p>
+          <ul class="sp-items">
+            <li><img src="img/rules/no-food.svg" alt="" /><div><b>Outside food and drink</b><span>Food trucks and kitchens are inside</span></div></li>
+            <li><img src="img/rules/pets.svg" alt="" /><div><b>Pets</b><span>Animals are not allowed</span></div></li>
+            <li><img src="img/rules/no-photography.svg" alt="" /><div><b>Professional cameras</b><span>No pro cameras or video recorders</span></div></li>
+            <li><img src="img/rules/smoke-free.svg" alt="" /><div><b>Smoking and vapes</b><span>Only in the designated areas — no lighters or matches inside</span></div></li>
+            <li><img src="img/rules/no-reentry.svg" alt="" /><div><b>Re-entry</b><span>Once you leave, the ticket is spent</span></div></li>
+            <li><img src="img/rules/non-refundable.svg" alt="" /><div><b>Refunds</b><span>Tickets are non-refundable</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── 2 ─────────────────────────── -->
+  <section class="bay">
+    <div class="bay-top">
+      <span class="bay-no">02</span>
+      <h2 class="bay-name">The back of the ticket</h2>
+      <p class="bay-why">Each rule as a stub torn off a ticket, in one sideways
+        strip. Keeps the section short whatever the rule count, and the ticket
+        metaphor is already the campaign's. Costs you the at-a-glance overview.</p>
+    </div>
+    <div class="bay-body">
+      <div class="tk">
+        <div class="tk-strip">
+          <div class="tk-stub"><img src="img/rules/no-food.svg" alt="" /><b>No outside food</b><p>Food trucks and kitchens are inside the venue.</p></div>
+          <div class="tk-stub"><img src="img/rules/pets.svg" alt="" /><b>No pets</b><p>Animals are not allowed on the premises.</p></div>
+          <div class="tk-stub"><img src="img/rules/no-photography.svg" alt="" /><b>No pro cameras</b><p>No professional cameras or video recorders.</p></div>
+          <div class="tk-stub"><img src="img/rules/smoke-free.svg" alt="" /><b>Smoke free</b><p>Including e-cigarettes. Designated areas only.</p></div>
+          <div class="tk-stub"><img src="img/rules/no-reentry.svg" alt="" /><b>No re-entry</b><p>Leaving the venue ends your visit.</p></div>
+          <div class="tk-stub"><img src="img/rules/non-refundable.svg" alt="" /><b>Non refundable</b><p>Tickets cannot be refunded once bought.</p></div>
+          <div class="tk-stub"><img src="img/rules/garage.svg" alt="" /><b>Parking</b><p>Parking is available at the gates.</p></div>
+          <div class="tk-stub"><img src="img/rules/forest.svg" alt="" /><b>Open air</b><p>The venue is outdoors from end to end.</p></div>
+          <div class="tk-stub"><img src="img/rules/music-note.svg" alt="" /><b>Live music</b><p>Performances run nightly in every zone.</p></div>
+        </div>
+        <p class="tk-note">Drag or scroll · nine stubs</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── 3 ─────────────────────────── -->
+  <section class="bay">
+    <div class="bay-top">
+      <span class="bay-no">03</span>
+      <h2 class="bay-name">Icons beside an accordion</h2>
+      <p class="bay-why">Closest to what is there now, and the least disruptive: the
+        nine icons become a 3&#215;3 block instead of a nine-wide row that squeezes on
+        a phone, and the five rules collapse so the section stops being a wall of
+        legal text. Shortest section of the four.</p>
+    </div>
+    <div class="bay-body">
+      <div class="ac">
+        <ul class="ac-grid">
+          <li><img src="img/rules/music-note.svg" alt="" /><span>Music</span></li>
+          <li><img src="img/rules/forest.svg" alt="" /><span>Outdoors</span></li>
+          <li><img src="img/rules/garage.svg" alt="" /><span>Parking</span></li>
+          <li><img src="img/rules/no-food.svg" alt="" /><span>No outside food</span></li>
+          <li><img src="img/rules/pets.svg" alt="" /><span>No pets</span></li>
+          <li><img src="img/rules/no-photography.svg" alt="" /><span>No pro cameras</span></li>
+          <li><img src="img/rules/smoke-free.svg" alt="" /><span>No smoking</span></li>
+          <li><img src="img/rules/no-reentry.svg" alt="" /><span>No re-entry</span></li>
+          <li><img src="img/rules/non-refundable.svg" alt="" /><span>Non refundable</span></li>
+        </ul>
+        <div class="ac-rules">
+          <details class="ac-item" open>
+            <summary><i>01</i><b>Food and drink</b><em></em></summary>
+            <p>Food and beverages from outside are not allowed. Food trucks will be available.</p>
+          </details>
+          <details class="ac-item">
+            <summary><i>02</i><b>Animals</b><em></em></summary>
+            <p>Animals are not allowed.</p>
+          </details>
+          <details class="ac-item">
+            <summary><i>03</i><b>Cameras</b><em></em></summary>
+            <p>No professional cameras and video recorders are permitted at the venue.</p>
+          </details>
+          <details class="ac-item">
+            <summary><i>04</i><b>Photography of guests</b><em></em></summary>
+            <p>The ticket holder consents to photographs, video and audio recordings of the
+              ticket holder being captured and used in printed and electronic media,
+              including the internet, as an attendee at the venue.</p>
+          </details>
+          <details class="ac-item">
+            <summary><i>05</i><b>Smoking</b><em></em></summary>
+            <p>Smoking is strictly prohibited on the premises, including e-cigarettes. The
+              use of lighters and matches is also prohibited inside the site, except in
+              areas designated for smoking.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── 4 ─────────────────────────── -->
+  <section class="bay">
+    <div class="bay-top">
+      <span class="bay-no">04</span>
+      <h2 class="bay-name">Set as type</h2>
+      <p class="bay-why">No icon row at all. Each rule gets a display-type headline
+        with the plain wording underneath and its icon dropped behind as a watermark.
+        The most confident of the four and the most on-voice — but it is the tallest,
+        and it throws away nine icons you have already paid for.</p>
+    </div>
+    <div class="bay-body">
+      <div class="ed">
+        <div class="ed-row">
+          <span class="ed-no">01</span>
+          <div class="ed-txt"><b>Eat inside.</b><span>Food and beverages from outside are not allowed. Food trucks will be available.</span></div>
+          <img src="img/rules/no-food.svg" alt="" />
+        </div>
+        <div class="ed-row">
+          <span class="ed-no">02</span>
+          <div class="ed-txt"><b>No animals.</b><span>Pets are not allowed anywhere on the premises.</span></div>
+          <img src="img/rules/pets.svg" alt="" />
+        </div>
+        <div class="ed-row">
+          <span class="ed-no">03</span>
+          <div class="ed-txt"><b>Phones yes, rigs no.</b><span>No professional cameras and video recorders are permitted at the venue.</span></div>
+          <img src="img/rules/no-photography.svg" alt="" />
+        </div>
+        <div class="ed-row">
+          <span class="ed-no">04</span>
+          <div class="ed-txt"><b>You may end up on camera.</b><span>The ticket holder consents to photographs, video and audio recordings of the ticket holder being captured and used in printed and electronic media, including the internet, as an attendee at the venue.</span></div>
+          <img src="img/rules/no-photography.svg" alt="" />
+        </div>
+        <div class="ed-row">
+          <span class="ed-no">05</span>
+          <div class="ed-txt"><b>Smoke only where it says so.</b><span>Smoking is strictly prohibited on the premises, including e-cigarettes. The use of lighters and matches is also prohibited inside the site, except in areas designated for smoking.</span></div>
+          <img src="img/rules/smoke-free.svg" alt="" />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="js/scene.js?v=525"></script>
+</body>
+</html>
