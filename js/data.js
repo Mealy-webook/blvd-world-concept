@@ -109,9 +109,8 @@ window.WBK = {
       blurb: "Five rides, used however you like.",
       includes: [
         "Any 5 rides",
-        "Ride the same attraction five times, or",
-        "Ride two a few times and spend the rest on three others",
-      ],
+      ,
+        "One card"],
       cta: "BOOK VALUE DEAL",
       href: "https://webook.com",
     },
@@ -125,9 +124,8 @@ window.WBK = {
       blurb: "Ten rides, on one attraction or mixed.",
       includes: [
         "Any 10 rides",
-        "All ten on the same attraction, if you choose",
-        "Or ride two several times and spend the rest elsewhere",
-      ],
+      ,
+        "One card"],
       cta: "BOOK VALUE DEAL PLUS",
       href: "https://webook.com",
     },
@@ -144,7 +142,6 @@ window.WBK = {
       includes: [
         "Any 30 rides, in any combination",
         "Three cards — ten games on each",
-        "Ride one attraction repeatedly, or split them any way you prefer",
       ],
       cta: "BOOK FAMILY PACKAGE",
       href: "https://webook.com",

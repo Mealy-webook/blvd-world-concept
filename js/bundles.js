@@ -43,7 +43,6 @@
         <p class="tk-rate">${perRide(b)} &#183; per person</p>
         <a class="pill ${b.featured ? "solid" : "ghost"} tk-cta" href="${b.href}"
            target="_blank" rel="noopener">${b.cta}</a>
-        <p class="tk-fine"><span class="tk-media">${b.media}</span>Expires end of day</p>
       </div>
     </article>`;
 
