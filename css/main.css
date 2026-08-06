@@ -28,18 +28,20 @@
      the primary button was pale blue — the moment the primary went magenta and its
      ink went white, every gold chip on the site turned white-on-gold at 1.7:1. */
   --pick-ink: #1c1403;     /* 12.6:1 on that gold */
-  /* This is a listings publication — twenty countries, a nightly schedule, a
-     rate card — so it is set like a printed programme.
-     Bricolage Grotesque carries the display voice: variable on optical size and
-     width, with letterforms odd enough (that g, that R) to be recognisable
-     rather than the same wide grotesque every dark site reaches for.
-     Instrument Sans reads: warm, neutral, unworn.
-     JetBrains Mono is for FIGURES ONLY — times, prices, counts, durations, the
-     numbers hanging beside each section. Never for prose, never for decoration.
-     That is what makes a programme look set rather than styled. */
+  /* One family across the site: Bricolage Grotesque sets the display voice, the
+     reading text and every label. It is variable on optical size and width, so a
+     14px chip and a 120px headline take different cuts of the same face rather
+     than the same outline scaled — which is what lets one family carry all three
+     roles without going flat. Instrument Sans stays as the fallback for anything
+     that loads before the webfont does.
+
+     JetBrains Mono is still here, and only for FIGURES — times, prices, counts,
+     durations. That is not a style choice: it is what makes a column of prices or
+     a night's showtimes line up, because the digits are the same width. Prose
+     never takes it. */
   --disp: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
-  --body: 'Instrument Sans', system-ui, -apple-system, sans-serif;
-  --ui: 'Instrument Sans', system-ui, -apple-system, sans-serif;   /* labels, chips, buttons */
+  --body: 'Bricolage Grotesque', 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --ui:   'Bricolage Grotesque', 'Instrument Sans', system-ui, -apple-system, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --ease: cubic-bezier(.32,.72,0,1);
   --hand: 'Caveat', cursive;
@@ -3946,13 +3948,9 @@ html[data-hero="real"] .street::after {
     radial-gradient(120% 78% at 50% 40%, transparent 30%, rgba(0, 0, 0, .55) 100%);
 }
 
-/* the globe version has no footage at all: the planet rises out of the fold, and the
-   landmark layers stand along the bottom of the hero the way they did originally */
+/* the globe version has no footage at all: the planet rises out of the fold */
 html[data-hero="globe"] .hero-vid { display: none; }
 html[data-hero="globe"] .globe-sec { display: block; }
-.landmarks, .lm-scrim { display: none; }
-html[data-hero="globe"] .landmarks,
-html[data-hero="globe"] .lm-scrim { display: block; }
 /* With nothing playing behind it the hero sits on the page's own night sky, so
    the type needs none of the shadows the footage versions do — and the tiles need
    none of the dark tint either. That tint exists to keep a label readable when a

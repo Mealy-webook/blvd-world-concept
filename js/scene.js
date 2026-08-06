@@ -137,40 +137,6 @@
     addEventListener("pointerdown", nudge, { once: true, passive: true });
   })();
 
-  /* ── the landmark layers ──
-     Restored from 8a58de5^ with the original geometry: positions and widths as
-     percentages of the hero, cut out of the Figma hero artwork. They are built for
-     every version and CSS shows them only for the globe one, so switching version
-     costs nothing. */
-  const LANDMARKS = [
-    { file: "layer-4733.png", left: -3.5, bottom: -2.5, w: 24.7, z: 1 },  // Taj Mahal
-    { file: "layer-4734.png", left: 2.4,  bottom: -2.5, w: 39.2, z: 2 },  // Eiffel
-    { file: "layer-4735.png", left: -4,   bottom: -2.5, w: 27.3, z: 3 },  // Chichen Itza
-    { file: "layer-4741.png", left: 55.9, bottom: -2.5, w: 34.5, z: 1 },  // Grendizer
-    { file: "layer-4731.png", left: 75.8, bottom: 13,   w: 27.4, z: 2 },  // Galata tower
-    { file: "layer-4737.png", left: 64.4, bottom: -2.5, w: 27.1, z: 3 },  // Plaza de Toros
-    { file: "layer-4736.png", left: 76,   bottom: -2.5, w: 28.2, z: 4 },  // Giza
-  ];
-  const lmHolder = document.getElementById("landmarks");
-  if (lmHolder) {
-    LANDMARKS.forEach((l, i) => {
-      const el = document.createElement("div");
-      el.className = "lm";
-      el.style.left = l.left + "%";
-      el.style.bottom = l.bottom + "%";
-      el.style.width = l.w + "%";
-      el.style.zIndex = String(l.z);
-      el.style.animationDelay = (0.12 * i).toFixed(2) + "s";
-      const img = document.createElement("img");
-      img.src = "img/hero-layers/" + l.file;
-      img.alt = "";
-      img.loading = "lazy";
-      img.draggable = false;
-      el.appendChild(img);
-      lmHolder.appendChild(el);
-    });
-  }
-
   // hero landmark layers from Figma (positions as % of the 1512x982 frame)
   // clipped edges of the source art are anchored past the viewport so cuts never show
   // floating props (assets go in img/props/ — hidden until real PNGs exist)
