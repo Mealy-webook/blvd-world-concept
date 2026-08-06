@@ -234,33 +234,49 @@ zone in `WBK.zones` first and plays it unlabelled, so dropping in per-zone films
 and adding one line each retires the samples. Do that before this is shown
 outside webook.
 
-## The three world-record sections
+## The world records
 
-The three records, and the 33.7 m figure, were supplied by the client in the brief
-for this section. **Nothing here was verified against Guinness World Records' own
+The three records and every figure in them were supplied by the client in the brief
+for this section: 35 m wide, a 360-degree wraparound exterior display and a
+220-seat interior theatre for the sphere; 33.7 m for the statue; no dimension at
+all for the lake. **Nothing here was verified against Guinness World Records' own
 register**, and no record number, award date or category wording was checked. If
 this goes in front of anyone outside webook, confirm all three claims and the
 exact category names first — "the largest LED sphere", "the largest artificial
 lake" and "the tallest metal replica of a fictional character" are paraphrases of
 what we were given, not quotations of a citation.
 
-Only one figure is stated anywhere in the three sections: **33.7 m**, as given.
+The sphere's record was given to us as "the largest literal spherical object at 35
+metres wide"; the page says "the largest spherical object", which is a paraphrase.
+
+Only figures we were given appear on the page: **35**, **360**, **220**, **33.7**.
 The comparison beside it — "about nineteen people, head to toe" — is arithmetic on
 that number against the 1.75 m reference figure drawn at the statue's foot
 (33.7 / 1.75 = 19.3), not a second claim. No diameter is given for the sphere and
 no area for the lake, because we were not given either and inventing them would
 have been the easiest thing on the page to get wrong.
 
-Imagery, all cut from what was already in the repo:
+Imagery:
 
-- `img/records/led-sphere.webp` — the sphere, cropped from `img/gallery/lake-aerial.jpg`
-- `img/records/lagoon.webp` — the same aerial, wide, for the tilted plane
-- `img/records/grendizer.webp` — the statue, cropped from the Figma board's own
-  cut-out layer `img/hero-layers/layer-4741.png`
+- `img/records/sphere-cut.webp` — the sphere, from a photograph the client sent in
+  chat (1280x782, dusk, the exterior display lit red and white). A sphere's outline
+  is a circle, so the cut is a circle: centre (658, 289) and radius 194 in that
+  frame, measured off the display's own red pixels rather than eyeballed. The last
+  15% of the alpha is faded out because the sphere's base is hidden behind the
+  terrace in the photograph — that fade is what lets it sit into the floor instead
+  of ending in a slice of railing.
+- `img/records/lagoon.webp` — `img/gallery/lake-aerial.jpg`, wide, for the tilted plane
+- `img/records/grendizer-body.webp` and `-arm.webp` — the statue, split so it can
+  move. Source is the Figma board's own cut-out layer
+  `img/hero-layers/layer-4741.png`. The arm is traced off the render with a
+  seven-point polygon and a 0.6px feathered edge, and its left edge sits at x=236
+  rather than at the chest, so a sliver of the inner shoulder stays behind on the
+  body and the arm swings out from under it rather than tearing a notch in the
+  chest. The pivot is the shoulder ball at (268, 112). Nothing was painted in or
+  retouched: the two layers are the render's own pixels, partitioned.
 
-The sphere in the first section is drawn, not photographed: fifteen rings of
-latitude in a CSS 3D box, over a shaded core. The real thing is shown small beside
-it so the drawing is not mistaken for the article.
+The idle and the wave are CSS on those two layers. Both are animation, not
+evidence: the statue does not move in real life.
 
 Grendizer is Go Nagai / Toei Animation's character. The statue is BLVD World's,
 and the image is the client's own cut-out of it — the same standing as the rest of

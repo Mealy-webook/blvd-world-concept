@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=603" />
+<link rel="stylesheet" href="css/main.css?v=612" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=603" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=612" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -213,7 +213,7 @@
       <div class="mm-art reveal">
         <img src="img/map/park-map-cut.webp"
              srcset="img/map/park-map-cut-sm.webp 900w, img/map/park-map-cut.webp 1600w"
-             sizes="(max-width: 700px) 92vw, min(760px, 72vw)"
+             sizes="(max-width: 700px) 96vw, min(860px, 84vw)"
              alt="The BLVD World park map: twenty-four zones around the lake, with both gates"
              width="1600" height="852" draggable="false" />
       </div>
@@ -251,11 +251,10 @@
          go there, so it is one photograph, one number and one way through. -->
     <!-- hidden for now: the design of this section is still unsettled. The rides
          themselves remain reachable from the nav and the hero tile. -->
-    <!-- back on the page, between the map and the card, on request. It was held
-         back while its design was unsettled; the [hidden] guard in the CSS stays,
-         because the section rule's display: grid at 0,2,0 outranks the user
-         agent's [hidden] at 0,1,0 and hiding it again would need it. -->
-    <section class="ridetrack is-poster" id="rides2">
+    <!-- held back again, on request. The [hidden] guard in the CSS is what makes
+         this work: the section rule's display: grid at 0,2,0 outranks the user
+         agent's [hidden] at 0,1,0, so the attribute alone would not hide it. -->
+    <section class="ridetrack is-poster" id="rides2" hidden>
       <figure class="rp-shot">
         <img src="img/rides/sky-loop.jpg" alt="" draggable="false" />
       </figure>
@@ -275,99 +274,119 @@
 
     <!-- ── cashless: the BLVD card, in 3D ── -->
     <!-- ── the card: one object, and the three moments around it ── -->
-    <!-- ══════════ THREE WORLD RECORDS ══════════
-         One record per screen, each one drawn rather than photographed: the
-         sphere is built in CSS 3D, the lagoon is the park's own aerial laid down
-         on a tilted plane, and the statue stands on a floor that recedes. The
-         only figure claimed anywhere is the one we were given — 33.7 m — and the
-         comparison beside it is arithmetic on it, not a second claim.
-         See js/records.js and CREDITS.md. -->
+    <!-- ══════════ WORLD RECORDS ══════════
+         Three records, one frame, chips to move between them. They were three
+         sections; one is better — the frame is the same every time (a floor that
+         recedes, the thing standing on it, a rule reading its height, a 1.75 m
+         figure at its foot), so what changes between chips is the record rather
+         than the layout, and the comparison is the point.
 
-    <!-- ── the sphere ── -->
-    <section class="rec rec-orb" id="rec-orb">
+         Every figure on the page is one we were given: 35 m, 220 seats, 33.7 m.
+         The lake panel carries no dimension because we were not given one — see
+         CREDITS.md. js/records.js drives the chips, the sphere's rings and the
+         count-up. -->
+    <section class="rec" id="records">
       <p class="rec-eyebrow reveal">
         <i aria-hidden="true"></i>
-        <span>Guinness World Record</span>
+        <span>Guinness World Records</span>
         <i aria-hidden="true"></i>
       </p>
-      <h2 class="sec-title reveal">THE LARGEST<br/>LED SPHERE</h2>
 
-      <div class="orb-stage reveal">
-        <!-- built from dotted meridians in a preserve-3d box: real depth, so the
-             dots on the far side pass behind the near ones as it turns.
-             js/records.js writes the rings and the pointer tilt. -->
-        <div class="orb" id="orb" aria-hidden="true">
-          <span class="orb-core"></span>
-          <span class="orb-grid"></span>
-          <span class="orb-rings" id="orb-rings"></span>
-          <span class="orb-sweep"></span>
-        </div>
-        <figure class="orb-real">
-          <img src="img/records/led-sphere.webp"
-               alt="The LED sphere in BLVD World, lit in magenta, orange and cyan"
-               width="360" height="360" draggable="false" />
-          <figcaption>The sphere itself</figcaption>
-        </figure>
+      <div class="rec-tabs reveal" role="tablist" aria-label="World records">
+        <button class="rec-tab is-on" type="button" role="tab" aria-selected="true"
+                aria-controls="rec-sphere" data-rec="sphere">The sphere</button>
+        <button class="rec-tab" type="button" role="tab" aria-selected="false"
+                aria-controls="rec-lake" data-rec="lake">The lake</button>
+        <button class="rec-tab" type="button" role="tab" aria-selected="false"
+                aria-controls="rec-giant" data-rec="giant">Grendizer</button>
       </div>
 
-      <p class="rec-line reveal">A ball of light in the middle of the lagoon.</p>
-    </section>
+      <div class="rec-deck reveal">
+        <!-- ── the sphere ── -->
+        <article class="rec-panel is-on" id="rec-sphere" role="tabpanel" data-rec="sphere">
+          <h2 class="rec-title">The largest spherical object</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <div class="rec-rule" aria-hidden="true">
+              <i></i>
+              <b class="rec-num" data-to="35">0</b><span class="rec-unit">m</span>
+            </div>
+            <img class="rec-thing is-sphere" src="img/records/sphere-cut.webp"
+                 alt="The sphere at BLVD World, its exterior display lit red and white"
+                 width="404" height="404" draggable="false" />
+            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
 
-    <!-- ── the lake ── -->
-    <section class="rec rec-lake" id="rec-lake">
-      <p class="rec-eyebrow reveal">
-        <i aria-hidden="true"></i>
-        <span>Guinness World Record</span>
-        <i aria-hidden="true"></i>
-      </p>
-      <h2 class="sec-title reveal">THE LARGEST<br/>ARTIFICIAL LAKE</h2>
+          </div>
+          <ul class="rec-facts">
+            <li><b>35</b><span>metres wide</span></li>
+            <li><b>360&#176;</b><span>exterior display</span></li>
+            <li><b>220</b><span>seats inside</span></li>
+          </ul>
+          <p class="rec-line">
+            A ball of light in the middle of the lagoon, with an immersive theatre inside it.
+          </p>
+        </article>
 
-      <div class="lake-stage reveal">
-        <!-- the park's own aerial, laid down flat and seen from a low angle. The
-             boat and the submarine run the same loop; the submarine goes under at
-             the far side, which is what the water sheet over it is for. -->
-        <div class="lake-plane">
-          <img src="img/records/lagoon.webp"
-               alt="The central lagoon at BLVD World from the air"
-               width="1080" height="648" draggable="false" />
-          <span class="lake-sheet" aria-hidden="true"></span>
-          <i class="lake-wake" aria-hidden="true"></i>
-          <i class="lake-boat" aria-hidden="true"></i>
-          <i class="lake-sub" aria-hidden="true"></i>
-        </div>
+        <!-- ── the lake ── -->
+        <article class="rec-panel" id="rec-lake" role="tabpanel" data-rec="lake" hidden>
+          <h2 class="rec-title">The largest artificial lake</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <!-- water does not stand on a floor, so here the floor is the water:
+                 the park's own aerial laid down on it, with the boat and the
+                 submarine running the same loop half a lap apart -->
+            <div class="rec-thing is-lake">
+              <div class="lake-plane">
+                <img src="img/records/lagoon.webp"
+                     alt="The central lagoon at BLVD World from the air"
+                     width="1080" height="648" draggable="false" />
+                <span class="lake-sheet" aria-hidden="true"></span>
+                <i class="lake-wake" aria-hidden="true"></i>
+                <i class="lake-boat" aria-hidden="true"></i>
+                <i class="lake-sub" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+          <!-- no figure on this one: we were given no dimension for the lake, and
+               a number invented to balance the row is the worst kind of tidy -->
+          <ul class="rec-facts">
+            <li><span>Boat rides</span></li>
+            <li><span>Submarine rides</span></li>
+          </ul>
+          <p class="rec-line">
+            The central lagoon &#8212; crossed by boat, and by submarine.
+          </p>
+        </article>
+
+        <!-- ── the statue ── -->
+        <article class="rec-panel" id="rec-giant" role="tabpanel" data-rec="giant" hidden>
+          <h2 class="rec-title">The tallest metal replica of a fictional character</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <div class="rec-rule" aria-hidden="true">
+              <i></i>
+              <b class="rec-num" data-to="33.7">0.0</b><span class="rec-unit">m</span>
+            </div>
+            <!-- Two layers, so it can move: the arm is cut out of the render along
+                 the shoulder and given back on top of the body at exactly its own
+                 offset, pivoting on the shoulder ball. It breathes, and every nine
+                 seconds it waves. See CREDITS.md for how the cut was made. -->
+            <div class="rec-thing is-giant" role="img"
+                 aria-label="The Grendizer statue at BLVD World, 33.7 metres tall">
+              <img class="gz-body" src="img/records/grendizer-body.webp" alt=""
+                   width="341" height="668" draggable="false" />
+              <img class="gz-arm" src="img/records/grendizer-arm.webp" alt=""
+                   width="104" height="229" draggable="false" />
+            </div>
+            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
+          </div>
+          <ul class="rec-facts">
+            <li><b>33.7</b><span>metres tall</span></li>
+            <li><b>19</b><span>people, head to toe</span></li>
+          </ul>
+          <p class="rec-line">Grendizer, in steel.</p>
+        </article>
       </div>
-
-      <p class="rec-line reveal">
-        The central lagoon &#8212; crossed by boat, and by submarine.
-      </p>
-    </section>
-
-    <!-- ── the statue ── -->
-    <section class="rec rec-giant" id="rec-giant">
-      <p class="rec-eyebrow reveal">
-        <i aria-hidden="true"></i>
-        <span>Guinness World Record</span>
-        <i aria-hidden="true"></i>
-      </p>
-      <h2 class="sec-title reveal">THE TALLEST METAL REPLICA<br/>OF A FICTIONAL CHARACTER</h2>
-
-      <div class="giant-stage reveal" id="giant-stage">
-        <div class="giant-floor" aria-hidden="true"></div>
-        <!-- the rule reads up to the figure's own height, and the number counts to
-             it as the section arrives (js/records.js) -->
-        <div class="giant-rule" aria-hidden="true">
-          <i></i>
-          <b class="giant-num" id="giant-num">0.0</b><span class="giant-unit">m</span>
-        </div>
-        <img class="giant-img" src="img/records/grendizer.webp"
-             alt="The Grendizer statue at BLVD World, 33.7 metres tall"
-             width="341" height="668" draggable="false" />
-        <span class="giant-person" aria-hidden="true"><i></i><em>1.75 m</em></span>
-      </div>
-
-      <p class="rec-line reveal">
-        Grendizer, in steel. <b>33.7 metres</b> &#8212; about nineteen people, head to toe.
-      </p>
     </section>
 
     <section class="cashless" id="cashless">
@@ -904,29 +923,29 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=603"></script>
-  <script src="js/borders.js?v=603"></script>
-  <script src="js/scene.js?v=603"></script>
-  <script src="js/app.js?v=603"></script>
-  <script src="js/experiences.js?v=603"></script>
-  <script src="js/carousels.js?v=603"></script>
-  <script src="js/coverflow.js?v=603"></script>
-  <script src="js/zones.js?v=603"></script>
-  <script src="js/fan.js?v=603"></script>
-  <script src="js/zonevid.js?v=603"></script>
-  <script src="js/records.js?v=603"></script>
-  <script src="js/gallery.js?v=603"></script>
-  <script src="js/parkmap.js?v=603"></script>
-  <script src="js/minimap.js?v=603"></script>
-  <script src="js/sponsors.js?v=603"></script>
-  <script src="js/cashless.js?v=603"></script>
-  <script src="js/headings.js?v=603"></script>
-  <script src="js/bundles.js?v=603"></script>
-  <script src="js/ridex.js?v=603"></script>
-  <script src="js/cursor.js?v=603"></script>
-  <script src="js/glass.js?v=603" defer></script>
+  <script src="js/data.js?v=612"></script>
+  <script src="js/borders.js?v=612"></script>
+  <script src="js/scene.js?v=612"></script>
+  <script src="js/app.js?v=612"></script>
+  <script src="js/experiences.js?v=612"></script>
+  <script src="js/carousels.js?v=612"></script>
+  <script src="js/coverflow.js?v=612"></script>
+  <script src="js/zones.js?v=612"></script>
+  <script src="js/fan.js?v=612"></script>
+  <script src="js/zonevid.js?v=612"></script>
+  <script src="js/records.js?v=612"></script>
+  <script src="js/gallery.js?v=612"></script>
+  <script src="js/parkmap.js?v=612"></script>
+  <script src="js/minimap.js?v=612"></script>
+  <script src="js/sponsors.js?v=612"></script>
+  <script src="js/cashless.js?v=612"></script>
+  <script src="js/headings.js?v=612"></script>
+  <script src="js/bundles.js?v=612"></script>
+  <script src="js/ridex.js?v=612"></script>
+  <script src="js/cursor.js?v=612"></script>
+  <script src="js/glass.js?v=612" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=603" defer></script>
+  <script src="js/heroes.js?v=612" defer></script>
 </body>
 </html>

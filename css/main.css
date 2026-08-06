@@ -755,7 +755,6 @@ html[data-hero="globe"] .hero-rule {
   .bt:hover { transform: none; }
 }
 
-
 /* pills */
 .pill {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
@@ -2358,25 +2357,26 @@ html[data-hero="real"] .zc .zc-plate {
   .rc-strip .rc-cell:nth-child(n+7) { display: none; }
 }
 
-/* ═══════════════ THREE WORLD RECORDS ═══════════════
-   One record per screen. Each is drawn in 3D rather than photographed flat: a
-   sphere built from dotted meridians in a preserve-3d box, the park's own aerial
-   laid down on a tilted plane, and a statue standing on a floor that recedes. The
-   perspective is real in all three — the depth is not a gradient pretending. */
+/* ═══════════════ WORLD RECORDS ═══════════════
+   One frame, three records, chips to move between them. The frame is the same
+   every time — a floor that recedes, the thing standing on it, a rule reading its
+   height, a 1.75 m figure at its foot — so what changes between chips is the
+   record and not the layout. That is what makes them comparable, and it is why
+   this is one section rather than three.
+
+   The depth is real perspective in all of it. */
 .rec {
   position: relative; z-index: 11;
-  /* the header is fixed and about 130px deep here, and these sections fill their
-     stage — centring in the whole stage put the record's own label underneath it.
-     The extra top padding is the header's room, so the centre falls below it. */
-  padding: calc(var(--sec-y) + clamp(38px, 8vh, 76px)) var(--sec-x) var(--sec-y);
+  /* the header is fixed and about 130px deep, and this section fills its stage:
+     centring in the whole stage put the label underneath it */
+  padding: calc(var(--sec-y) + clamp(30px, 6vh, 60px)) var(--sec-x) var(--sec-y);
   min-height: 100%; align-content: center;
   display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
-  gap: clamp(12px, 1.8vh, 22px);
+  gap: clamp(10px, 1.6vh, 20px);
   text-align: center;
 }
-.rec .sec-title { text-wrap: balance; }
 
-/* the record's own label, in the site's divider form */
+/* the label above it all */
 .rec-eyebrow {
   display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);
   width: 100%; max-width: 480px;
@@ -2390,150 +2390,238 @@ html[data-hero="real"] .zc .zc-plate {
 .rec-eyebrow i:last-child {
   background: linear-gradient(90deg, rgba(255, 194, 77, .5), transparent);
 }
+
+/* ── the chips ── */
+.rec-tabs {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  padding: 5px; border-radius: var(--r-pill);
+  background: rgba(199, 226, 255, .06);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .12);
+}
+.rec-tab {
+  border: 0; cursor: pointer;
+  padding: 9px 18px; border-radius: var(--r-pill);
+  background: transparent; color: #b8c8ea;
+  font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
+  transition: background .35s var(--ease), color .35s var(--ease), box-shadow .35s var(--ease);
+}
+.rec-tab:hover { color: #fff; background: rgba(199, 226, 255, .08); }
+.rec-tab.is-on {
+  color: var(--pick-ink); background: var(--pick);
+  box-shadow: 0 6px 18px rgba(255, 194, 77, .28);
+}
+
+/* ── the deck ──
+   The panels are stacked in one grid cell so the section does not resize as the
+   chips change: the tallest panel sets the height once and the rest sit inside it.
+   Without that, switching from the lake to the statue moved the chips. */
+.rec-deck {
+  display: grid; width: 100%; max-width: min(880px, 92vw);
+  grid-template-areas: "panel";
+}
+.rec-panel {
+  grid-area: panel;
+  display: grid; justify-items: center; align-content: start;
+  gap: clamp(8px, 1.4vh, 16px);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .4s var(--ease), transform .5s var(--ease);
+  pointer-events: none;
+}
+.rec-panel.is-on { opacity: 1; transform: none; pointer-events: auto; }
+/* [hidden] has to be said explicitly: the rule above sets display: grid at 0,1,0,
+   which ties with the user agent's [hidden] and wins on document order */
+.rec-panel[hidden] { display: none; }
+
+.rec-title {
+  font-family: var(--disp); font-weight: 800;
+  font-size: clamp(20px, 3.2vw, 40px); line-height: 1.02; letter-spacing: -.025em;
+  color: #fff; text-wrap: balance; max-width: 22ch;
+}
+
+/* ── the stage: floor, thing, rule, scale ── */
+.rec-stage {
+  position: relative;
+  width: 100%; height: clamp(210px, 36vh, 360px);
+  perspective: 900px; perspective-origin: 50% 100%;
+}
+/* the ground, in perspective */
+.rec-floor {
+  position: absolute; left: -12%; right: -12%; bottom: 0; height: 46%;
+  transform: rotateX(74deg); transform-origin: 50% 100%;
+  background:
+    linear-gradient(180deg, rgba(120, 170, 255, .16), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(160, 200, 255, .16) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(160, 200, 255, .13) 0 1px, transparent 1px 42px);
+  mask: linear-gradient(180deg, transparent, #000 40%, #000);
+}
+/* whatever the record is, it stands in the middle of the floor at the same
+   height, so the three read against each other rather than each finding its own
+   scale */
+.rec-thing {
+  position: absolute; left: 50%; bottom: 6%; z-index: 2;
+  transform: translateX(-50%);
+  height: 94%; width: auto; display: block;
+}
+.rec-thing.is-giant {
+  filter: drop-shadow(0 24px 30px rgba(2, 4, 16, .7));
+  /* the figure keeps the render's own proportions, so both layers can be placed by
+     percentage and stay registered at any size */
+  aspect-ratio: 341 / 668;
+}
+.gz-body, .gz-arm { position: absolute; display: block; }
+.gz-body { inset: 0; width: 100%; height: 100%; }
+/* the arm, back exactly where it was cut from: 234/341 across, 84/668 down, and
+   104x229 of the 341x668 figure. The origin is the shoulder ball at (268, 112),
+   which is 32.69% across the arm layer and 12.23% down it. */
+.gz-arm {
+  left: 68.622%; top: 12.575%; width: 30.499%; height: 34.281%;
+  transform-origin: 32.69% 12.23%;
+  animation: gzWave 9s cubic-bezier(.36,.66,.34,1) infinite;
+  z-index: 2;
+}
+/* Standing still is not standing dead: the whole figure breathes, and leans by a
+   third of a degree. Both are small enough that you notice them only by their
+   absence — which is the point of an idle. */
+.rec-panel.is-on .rec-thing.is-giant {
+  animation: gzBreathe 5.2s ease-in-out infinite, gzSway 11s ease-in-out infinite;
+}
+@keyframes gzBreathe {
+  0%, 100% { translate: 0 0; scale: 1; }
+  50%      { translate: 0 -0.5%; scale: 1.004; }
+}
+@keyframes gzSway {
+  0%, 100% { rotate: -0.35deg; }
+  50%      { rotate: 0.35deg; }
+}
+/* The wave: down and idle for most of the loop, then up, two beats, and back.
+   The rotation is negative because an arm hanging below its pivot travels the way a
+   clock hand does — clockwise from six o'clock is seven, then eight, so a positive
+   angle swings this arm across the chest instead of out from the body. Anticlockwise
+   is what lifts it away and up. */
+@keyframes gzWave {
+  0%, 58%  { rotate: -1.5deg; }
+  62%      { rotate: -8deg; }                   /* the wind-up */
+  68%      { rotate: -57deg; }
+  73%      { rotate: -43deg; }
+  78%      { rotate: -57deg; }
+  83%      { rotate: -44deg; }
+  88%      { rotate: -56deg; }
+  96%      { rotate: -2.5deg; }
+  100%     { rotate: -1.5deg; }
+}
+.rec-thing.is-sphere {
+  filter: drop-shadow(0 22px 40px rgba(2, 4, 16, .6))
+          drop-shadow(0 0 60px rgba(255, 90, 90, .22));
+}
+/* the contact shadow, on the floor rather than under the picture */
+.rec-stage::after {
+  content: ''; position: absolute; left: 50%; bottom: 4%; z-index: 1;
+  width: 32%; height: 24px; transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(2, 4, 16, .75), transparent 70%);
+  filter: blur(5px);
+}
+
+/* the rule: a hairline the height of the thing, with its figure at the top. Only
+   the records we were given a dimension for have one. */
+.rec-rule {
+  position: absolute; right: clamp(4%, 8vw, 14%); bottom: 6%; z-index: 3;
+  height: 94%;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.rec-rule i {
+  position: relative; display: block; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(255, 194, 77, .85), rgba(255, 194, 77, .12));
+  transform-origin: 50% 100%; transform: scaleY(0);
+  transition: transform 1.4s cubic-bezier(.32,.72,0,1);
+}
+.rec-rule i::before, .rec-rule i::after {
+  content: ''; position: absolute; left: -4px; width: 9px; height: 1px;
+  background: rgba(255, 194, 77, .85);
+}
+.rec-rule i::before { top: 0; }
+.rec-rule i::after  { bottom: 0; }
+.rec-panel.is-on .rec-rule i { transform: scaleY(1); }
+.rec-num {
+  font-family: var(--fig); font-size: clamp(20px, 3vw, 36px); font-weight: 800;
+  letter-spacing: -.02em; color: #fff; line-height: .9;
+  font-variant-numeric: tabular-nums;
+}
+.rec-unit {
+  font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold); margin-top: 3px;
+}
+
+/* the person, for scale. Both dimensioned records are within a metre of each
+   other in height, so the same 1.75 m figure works for both: 1.75 against 34-odd
+   metres is 5.2% of the thing, and the thing is 94% of the stage.
+
+   The height is set on this box rather than on the bar inside it, because this is
+   the box whose containing block is the stage — a percentage against an
+   auto-height parent resolves to nothing. */
+.rec-scale {
+  position: absolute; left: 50%; bottom: 6%; z-index: 3;
+  margin-left: clamp(52px, 9vw, 104px);
+  height: calc(94% * 0.0519);
+  display: flex; align-items: flex-end; gap: 7px;
+}
+.rec-scale i {
+  display: block; width: 3px; height: 100%; min-height: 7px;
+  border-radius: 2px 2px 0 0;
+  background: rgba(234, 242, 255, .9);
+  box-shadow: 0 0 8px rgba(180, 215, 255, .5);
+}
+.rec-scale em {
+  font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
+  letter-spacing: .04em; color: #8fa0c8; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── the figures under the stage ── */
+.rec-facts {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px clamp(16px, 2.6vw, 36px);
+}
+.rec-facts li {
+  display: flex; align-items: baseline; gap: 7px;
+  /* some records have no figure — the lake was given to us without a dimension,
+     and a row that demands a number is how invented numbers get written */
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.rec-facts b {
+  font-family: var(--fig); font-size: clamp(17px, 2.2vw, 25px); font-weight: 800;
+  letter-spacing: -.02em; color: #fff; text-transform: none; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.rec-facts li + li::before {
+  content: ''; align-self: center; flex: none;
+  width: 1px; height: 18px; margin-right: clamp(16px, 2.6vw, 36px);
+  background: linear-gradient(180deg, transparent, rgba(199, 226, 255, .3), transparent);
+}
 .rec-line {
-  font-family: var(--body); font-size: clamp(13px, 1.5vw, 17px); font-weight: 400;
+  font-family: var(--body); font-size: clamp(12.5px, 1.4vw, 16px); font-weight: 400;
   line-height: 1.5; color: #b8c8ea; max-width: 46ch; text-wrap: balance;
 }
-.rec-line b { color: #fff; font-family: var(--fig); font-weight: 700; }
 
-/* ══ 1. THE SPHERE ══
-   Twenty meridians, each a circle with a dotted border, each turned a little
-   further around the vertical axis. In a preserve-3d box that is a real sphere of
-   dots: the ones on the far side pass behind the near ones as it turns, which is
-   the whole reason not to fake this with one flat gradient. */
-.orb-stage {
-  display: grid; justify-items: center; align-items: center; gap: clamp(14px, 2.4vw, 40px);
-  grid-template-columns: auto auto;
-  perspective: 900px;
-  margin-block: clamp(4px, 1.4vh, 16px);
+/* ══ THE LAKE ══
+   Water does not stand on a floor, so on this panel the floor is the water: the
+   park's own aerial laid down on it and seen from the same low angle. */
+/* On this panel the water IS the ground, so the grid floor comes off and the plane
+   is centred in the stage rather than stood on it. Sitting it on the floor left it
+   floating above the grid — a lake hovering over a lake. */
+#rec-lake .rec-floor { display: none; }
+/* The wrapper fills the stage and centres the plane inside it. Positioning the
+   wrapper itself and translating by -50% does not work here: a transform does not
+   change layout, so the box being centred is the image's full upright height while
+   the thing you see is the rotated version of it — the two centres are not the
+   same, and the plane hung 60px below the stage. */
+.rec-thing.is-lake {
+  position: absolute; inset: 0; z-index: 2; transform: none;
+  display: flex; align-items: center; justify-content: center;
 }
-/* The ball itself does not rotate. That was the second thing wrong with this: the
-   core, the panel colour and the sweep are flat layers, so putting them in the
-   spinning box turned them edge-on and the whole thing tumbled like a coin. Only
-   the rings turn, inside the ball, which is what a sphere of latitude rings
-   actually does. */
-.orb {
-  position: relative;
-  width: clamp(180px, 30vh, 300px); aspect-ratio: 1;
-  transform-style: preserve-3d;
-}
-.orb-core, .orb-grid, .orb-sweep {
-  position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-}
-/* the body of the ball: lit from the upper left, so the rings have something to
-   sit on and the silhouette reads as a sphere rather than a cage */
-.orb-core {
-  background:
-    radial-gradient(115% 115% at 30% 24%,
-      #2a3468 0%, #161d46 26%, #0b0f2c 58%, #05071a 100%);
-  box-shadow:
-    inset -14px -18px 44px rgba(0, 0, 0, .75),
-    inset 10px 12px 30px rgba(126, 160, 255, .16),
-    0 0 60px rgba(209, 0, 119, .3),
-    0 0 130px rgba(90, 60, 255, .22);
-}
-/* the panel grid, in the real sphere's palette — magenta, orange, cyan, violet */
-.orb-grid {
-  background-image:
-    radial-gradient(circle at 50% 50%, rgba(255, 60, 160, .9) 38%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255, 150, 40, .85) 38%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(60, 220, 255, .8) 38%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(150, 90, 255, .8) 38%, transparent 40%);
-  background-size: 13px 13px, 17px 17px, 19px 19px, 23px 23px;
-  background-position: 0 0, 6px 8px, 11px 3px, 3px 12px;
-  mix-blend-mode: screen;
-  opacity: .38;
-  /* held well inside the silhouette: a flat plane of dots does not foreshorten at
-     the edge, and at full strength that is what made the first pass read as a
-     disc. It is panel colour; the rings carry the shape. */
-  mask: radial-gradient(circle at 40% 34%, #000 22%, rgba(0,0,0,.45) 56%, transparent 78%);
-  animation: orbPanels 9s steps(9) infinite;
-}
-@keyframes orbPanels { to { background-position: 13px 13px, -11px 25px, 30px -16px, -20px -11px; } }
-
-/* the tilt, and inside it the turn. Two elements, because one element cannot hold
-   both: a spin written on `rotate` and a tilt written on `transform` compose in
-   the property order the spec fixes — rotate first — which tips the sphere's axis
-   as it goes round and makes it precess instead of spin. Nested, the tilt is the
-   outer frame and the turn happens inside it, which is the way up a planet does
-   it. js/records.js writes --tx / --ty from the pointer. */
-.orb-rings {
-  position: absolute; inset: 0;
-  transform-style: preserve-3d;
-  transform: rotateX(var(--tx, -20deg)) rotateY(var(--ty, 0deg));
-  transition: transform .6s cubic-bezier(.32,.72,0,1);
-}
-.orb-spin {
-  position: absolute; inset: 0;
-  transform-style: preserve-3d;
-  animation: orbSpin 30s linear infinite;
-}
-@keyframes orbSpin { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
-
-/* Rings of latitude, not meridians. Meridians all pass through both poles, so
-   twenty of them read as an onion seen edge-on — a flat rosette, which is what the
-   first pass looked like. Stacked horizontal rings are what a sphere looks like in
-   section: widest at the equator, tightening towards the poles. Every ring is a
-   dotted circle, so each row of dots follows the surface. */
-.orb-ring {
-  position: absolute; left: 50%; top: 50%;
-  width: var(--d); height: var(--d);
-  margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
-  border-radius: 50%;
-  border: 2px dotted rgba(190, 225, 255, .55);
-  transform: translateY(var(--y)) rotateX(90deg);
-  filter: drop-shadow(0 0 4px rgba(120, 190, 255, .5));
-}
-/* every fourth ring burns hot, the way the real panels do */
-.orb-ring:nth-child(4n) {
-  border-color: rgba(255, 90, 170, .62);
-  filter: drop-shadow(0 0 6px rgba(255, 60, 150, .65));
-}
-.orb-ring:nth-child(6n) {
-  border-color: rgba(255, 175, 80, .6);
-  filter: drop-shadow(0 0 6px rgba(255, 150, 40, .6));
-}
-
-/* a band of light running across it, once every few seconds */
-.orb-sweep {
-  overflow: hidden;
-  background: linear-gradient(105deg,
-    transparent 34%, rgba(255, 255, 255, .18) 47%, rgba(160, 220, 255, .1) 53%, transparent 66%);
-  background-size: 220% 100%;
-  mix-blend-mode: screen;
-  animation: orbSweep 5.5s cubic-bezier(.6,0,.4,1) infinite;
-}
-@keyframes orbSweep {
-  0%, 62%  { background-position: -120% 0; opacity: 0; }
-  70%      { opacity: 1; }
-  100%     { background-position: 220% 0; opacity: 0; }
-}
-
-/* the real thing, small, beside the drawing of it */
-.orb-real { display: grid; justify-items: center; align-content: center; gap: 8px; margin: 0; }
-.orb-real img {
-  /* place-self, because a grid item stretches by default and the stretched height
-     outranked aspect-ratio — the round inset came out as a tall ellipse */
-  display: block; place-self: center;
-  width: clamp(84px, 12vh, 132px); height: auto; aspect-ratio: 1;
-  object-fit: cover; border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2), 0 14px 34px rgba(2, 4, 16, .5);
-}
-.orb-real figcaption {
-  font-family: var(--ui); font-size: 8.5px; font-weight: 600; letter-spacing: .13em;
-  text-transform: uppercase; color: #8fa0c8;
-}
-
-/* ══ 2. THE LAKE ══
-   The park's own aerial, laid flat and seen from a low angle, so the lagoon reads
-   as water you are standing beside rather than a photograph you are looking at. */
-.lake-stage {
-  /* smaller than it was: laid down at 58 degrees the plane is over 500px deep, and
-     with the head above it the section ran past its stage */
-  width: 100%; max-width: min(720px, 80vw);
-  perspective: 1100px; perspective-origin: 50% 20%;
-  margin-block: clamp(4px, 1.2vh, 14px);
-}
+.rec-thing.is-lake .lake-plane { width: min(620px, 94%); }
 .lake-plane {
   position: relative;
   transform: rotateX(58deg) rotateZ(-4deg) scale(1.02);
@@ -2545,7 +2633,7 @@ html[data-hero="real"] .zc .zc-plate {
   display: block; width: 100%; height: auto;
   filter: saturate(1.06) brightness(.9) contrast(1.04);
 }
-/* a sheet of water over the whole plane: it is what the submarine goes under */
+/* a sheet of water over the plane: it is what the submarine goes under */
 .lake-sheet {
   position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background:
@@ -2555,12 +2643,11 @@ html[data-hero="real"] .zc .zc-plate {
   animation: lakeShimmer 7s linear infinite;
 }
 @keyframes lakeShimmer { to { background-position: 0 0, 60px 0; } }
-
 /* the boat and the submarine run the same loop, half a lap apart. offset-path is
-   what keeps them on the water: a translate would have run them off the shore. */
+   what keeps them on the water — a translate would have run them onto the shore. */
 .lake-boat, .lake-sub {
   position: absolute; z-index: 4; left: 0; top: 0;
-  width: 14px; height: 14px; border-radius: 50%;
+  width: 13px; height: 13px; border-radius: 50%;
   offset-path: path("M 120 300 C 220 150, 470 120, 620 210 S 800 380, 640 470 S 260 500, 120 300");
   offset-rotate: 0deg;
 }
@@ -2570,20 +2657,17 @@ html[data-hero="real"] .zc .zc-plate {
   animation: lakeRun 19s linear infinite;
 }
 .lake-sub {
-  width: 12px; height: 12px;
+  width: 11px; height: 11px;
   background: #b9f0ff;
   box-shadow: 0 0 0 3px rgba(110, 220, 255, .3), 0 0 16px rgba(80, 210, 255, .85);
   animation: lakeRun 19s linear infinite -9.5s, lakeDive 19s ease-in-out infinite -9.5s;
 }
 @keyframes lakeRun { to { offset-distance: 100%; } }
-/* under at the far side, up again on the way back — the sheet above it does the
-   rest, so the dot dims and softens rather than simply fading out */
 @keyframes lakeDive {
   0%, 14%   { opacity: 1; filter: none; }
   30%, 62%  { opacity: .4; filter: blur(2.5px); }
   78%, 100% { opacity: 1; filter: none; }
 }
-/* the boat's wake: a ring that opens and dies where the boat set out */
 .lake-wake {
   position: absolute; z-index: 2; left: 120px; top: 300px;
   width: 26px; height: 26px; margin: -13px 0 0 -13px;
@@ -2594,112 +2678,26 @@ html[data-hero="real"] .zc .zc-plate {
   from { transform: scale(.3); opacity: .8; }
   to   { transform: scale(3.4); opacity: 0; }
 }
-
-/* ══ 3. THE STATUE ══
-   Standing on a floor that recedes, with the rule beside it reading up to its own
-   height. The person at its foot is 1.75 m, which is what makes 33.7 mean
-   something without a second claim being made. */
-.giant-stage {
-  position: relative;
-  width: 100%; max-width: min(760px, 92vw);
-  height: clamp(240px, 42vh, 420px);
-  perspective: 900px; perspective-origin: 50% 100%;
-  margin-block: clamp(4px, 1.2vh, 14px);
-}
-/* the ground, in perspective */
-.giant-floor {
-  position: absolute; left: -10%; right: -10%; bottom: 0; height: 46%;
-  transform: rotateX(74deg); transform-origin: 50% 100%;
-  background:
-    linear-gradient(180deg, rgba(120, 170, 255, .16), transparent 72%),
-    repeating-linear-gradient(90deg, rgba(160, 200, 255, .16) 0 1px, transparent 1px 42px),
-    repeating-linear-gradient(0deg, rgba(160, 200, 255, .13) 0 1px, transparent 1px 42px);
-  mask: linear-gradient(180deg, transparent, #000 40%, #000);
-}
-.giant-img {
-  position: absolute; left: 50%; bottom: 6%;
-  transform: translateX(-50%);
-  height: 94%; width: auto; display: block;
-  filter: drop-shadow(0 24px 30px rgba(2, 4, 16, .7));
-}
-/* the statue's own contact shadow, on the floor rather than under the image */
-.giant-stage::after {
-  content: ''; position: absolute; left: 50%; bottom: 4%; z-index: 0;
-  width: 34%; height: 26px; transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(2, 4, 16, .75), transparent 70%);
-  filter: blur(5px);
-}
-/* the rule: a hairline the height of the figure, with the number at the top */
-.giant-rule {
-  position: absolute; right: clamp(6%, 9vw, 16%); bottom: 6%; z-index: 3;
-  height: 94%;
-  display: flex; align-items: flex-start; gap: 8px;
-}
-.giant-rule i {
-  display: block; width: 1px; height: 100%;
-  background: linear-gradient(180deg, rgba(255, 194, 77, .85), rgba(255, 194, 77, .12));
-  transform-origin: 50% 100%;
-  transform: scaleY(0);
-  transition: transform 1.5s cubic-bezier(.32,.72,0,1);
-}
-.giant-rule i::before, .giant-rule i::after {
-  content: ''; position: absolute; left: -4px; width: 9px; height: 1px;
-  background: rgba(255, 194, 77, .85);
-}
-.giant-rule i::before { top: 0; }
-.giant-rule i::after  { bottom: 0; }
-.reveal.in .giant-rule i { transform: scaleY(1); }
-.giant-num {
-  font-family: var(--fig); font-size: clamp(22px, 3.4vw, 40px); font-weight: 800;
-  letter-spacing: -.02em; color: #fff; line-height: .9;
-  font-variant-numeric: tabular-nums;
-}
-.giant-unit {
-  font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--gold); margin-top: 3px;
-}
-/* The person, for scale. 1.75 against 33.7 is 5.19% of the statue, and the statue
-   is 94% of the stage — so the figure is 4.88% of the stage, and the height has to
-   be set here rather than on the bar inside: this box is the one whose containing
-   block is the stage, and a percentage on an auto-height parent resolves to
-   nothing. That is what made the first pass 9px tall, which read as 0.85 m. */
-.giant-person {
-  position: absolute; left: 50%; bottom: 6%; z-index: 3;
-  margin-left: clamp(52px, 9vw, 96px);
-  height: calc(94% * 0.0519);
-  display: flex; align-items: flex-end; gap: 7px;
-}
-.giant-person i {
-  display: block; width: 3px; height: 100%;
-  min-height: 7px;
-  border-radius: 2px 2px 0 0;
-  background: rgba(234, 242, 255, .9);
-  box-shadow: 0 0 8px rgba(180, 215, 255, .5);
-}
-.giant-person em {
-  font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
-  letter-spacing: .04em; color: #8fa0c8; white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
+/* the lake panel has no thing standing on the floor, so it has no contact shadow */
+#rec-lake .rec-stage::after { display: none; }
 
 @media (max-width: 760px) {
-  .orb-stage { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .orb { width: clamp(150px, 34vw, 220px); }
-  .orb-real img { width: 74px; }
-  .lake-plane { transform: rotateX(52deg) rotateZ(-3deg); }
-  .giant-stage { height: clamp(200px, 34vh, 300px); }
-  .giant-rule { right: 2%; }
-  /* the statue is wide relative to a phone's stage, so the scale figure moves to
+  .rec-tab { padding: 8px 13px; font-size: 11px; }
+  .rec-stage { height: clamp(180px, 30vh, 280px); }
+  .rec-rule { right: 1%; }
+  /* the thing is wide relative to a phone's stage, so the scale figure moves to
      its other side rather than standing inside its silhouette */
-  /* far enough left that the label clears the silhouette too, not just the bar */
-  .giant-person { margin-left: calc(-1 * clamp(100px, 34vw, 150px)); }
+  .rec-scale { margin-left: calc(-1 * clamp(100px, 34vw, 150px)); }
+  .rec-facts { gap: 6px 14px; }
+  .rec-facts li + li::before { margin-right: 14px; height: 15px; }
+  .lake-plane { transform: rotateX(52deg) rotateZ(-3deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .orb { animation: none; }
-  .orb-grid, .orb-sweep, .lake-sheet, .lake-wake { animation: none; }
+  .rec-panel { transition: none; }
+  .gz-arm, .rec-panel.is-on .rec-thing.is-giant { animation: none; }
+  .rec-panel.is-on .rec-rule i { transition: none; }
+  .lake-sheet, .lake-wake { animation: none; }
   .lake-boat, .lake-sub { animation: none; offset-distance: 30%; }
-  .reveal.in .giant-rule i { transition: none; }
 }
 
 /* ═══════════════ HOLD A ZONE CARD TO WATCH IT ═══════════════
@@ -2792,15 +2790,24 @@ html[data-hero="real"] .zc .zc-plate {
 }
 .mm-lead i:last-child { background: linear-gradient(90deg, rgba(199, 226, 255, .3), transparent); }
 
+/* Laid down the way the lake panel lays its aerial down: a map of a place reads
+   better as the place, seen from where you would stand, than as a picture hung
+   flat on the page. Same angle as the records' lake, so the two agree. */
 .mm-art {
-  /* smaller than the plate it used to sit in: it is a model of the park, not the
-     map itself — the button is what opens the one you can read */
-  width: 100%; max-width: min(760px, 72vw); line-height: 0;
+  width: 100%; max-width: min(860px, 84vw); line-height: 0;
+  perspective: 1200px; perspective-origin: 50% 20%;
+}
+.mm-art img {
+  display: block; width: 100%; height: auto;
+  transform: rotateX(52deg) rotateZ(-4deg) scale(1.04);
   /* the island is a cut-out, so the shadow follows its silhouette rather than a
      box — this is what puts it above the night instead of on top of it */
-  filter: drop-shadow(0 26px 46px rgba(2, 4, 16, .55));
+  filter: drop-shadow(0 30px 44px rgba(2, 4, 16, .6));
+  transition: transform .9s cubic-bezier(.32,.72,0,1);
 }
-.mm-art img { display: block; width: 100%; height: auto; }
+/* it lifts towards flat when you look at it, which is the difference between a
+   decorative angle and one you can read through */
+.mm-art:hover img { transform: rotateX(34deg) rotateZ(-2deg) scale(1.05); }
 
 /* the count, then the way through — one under the other, both centred */
 .mm-foot { display: grid; justify-items: center; gap: clamp(10px, 1.6vh, 16px); }
@@ -2817,7 +2824,11 @@ html[data-hero="real"] .zc .zc-plate {
 
 @media (max-width: 700px) {
   .mapmod { gap: clamp(10px, 1.8vh, 18px); }
-  .mm-art { max-width: 92vw; filter: drop-shadow(0 14px 26px rgba(2, 4, 16, .5)); }
+  .mm-art { max-width: 96vw; }
+  .mm-art img {
+    transform: rotateX(44deg) rotateZ(-3deg) scale(1.06);
+    filter: drop-shadow(0 16px 26px rgba(2, 4, 16, .5));
+  }
   .mm-count { font-size: 10px; }
   .mm-count b { font-size: 13px; }
 }
@@ -3111,7 +3122,6 @@ html[data-hero="real"] .zc .zc-plate {
   transition: transform .12s linear, opacity .3s;
   opacity: .75;
 }
-
 
 /* The card is on its own row now, so it only has to come down as the stage
    narrows — the steps handle their own collapse. */
@@ -3507,7 +3517,6 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 /* ═══════════════ SOUND TOGGLE ═══════════════ */
 
-
 /* ═══════════════ EXPERIENCES (light editorial stage) ═══════════════ */
 #view-experiences { background: var(--page-bg); }
 .xp-stage {
@@ -3794,7 +3803,6 @@ body.route-experiences
 .map-back { color: #cfe4ff; }
 .map-back:hover .mb-arrow { color: #ffd98a; }
 
-
 /* ═══════════════ SPONSORS ═══════════════ */
 .sponsors {
   position: relative; z-index: 11;
@@ -3992,7 +4000,6 @@ body.route-experiences
 /* nothing scrolls any more, so the "drag or scroll" line has nothing to say */
 .vr-hint { display: none; }
 
-
 @media (max-height: 960px) {
   .vr-stub { padding: 13px 12px 15px; gap: 7px; }
   .vr-stub p { font-size: 12px; }
@@ -4154,7 +4161,6 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   .bt-price b { font-size: 14px; }
   .bt-lead span { font-size: 9.5px; }
 }
-
 
 /* ══ THE GALLERY LIGHTBOX ══
    At the end of the file with the other overlays. It hangs off <body>: .view
