@@ -1528,7 +1528,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    overlay and no NEW badge — the artwork carries all three. The poster shows at
    full strength; only the cards either side of centre are held back, so the one
    you are looking at is the one that is lit. */
-.zc { position: absolute; inset: 0; display: block; }
+/* the poster is an <a> to that zone on the map; it still fills its card */
+.zc { position: absolute; inset: 0; display: block; text-decoration: none; }
 .zc img {
   width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
   filter: saturate(.96) brightness(.7);
@@ -3033,8 +3034,7 @@ body.route-experiences
 /* same curtain arrival as the zones section: a gradient that rises over the
    pinned hero, with a soft light spill at the seam */
 .globe-sec {
-  /* hidden for now — delete this one line (and un-comment the globe.js script
-     tag in index.html) to bring the planet back */
+  /* only the globe version shows it — js/heroes.js sets data-hero on the root */
   display: none;
   position: relative; z-index: 9; height: 100vh; overflow: hidden;
   /* no background of its own: the hero folds away underneath (see scene.js),
@@ -3382,6 +3382,8 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 
 .cur { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0; }
 .cur.on { opacity: 1; }
+/* on the map it is not merely hidden, it is out of the way — see routeWatch() */
+.cur.stood-down { display: none; }
 /* difference blending is what keeps one colour legible over a lit poster, a dark
    photograph and the night sky alike */
 .cur-dot, .cur-ring {
@@ -3756,3 +3758,80 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 }
 
 .scroll-cue span { text-shadow: 0 1px 8px rgba(3, 6, 22, .9); }
+
+/* ══ THE THREE HERO VERSIONS ══
+   js/heroes.js puts the chosen one on the root as data-hero, and the URL carries
+   it so a version can be sent as a link. At the end of the file because these
+   have to beat the hero's own rules, declared several hundred lines above. */
+
+/* the globe version has no footage at all: the planet rises out of the fold */
+html[data-hero="globe"] .hero-vid { display: none; }
+html[data-hero="globe"] .globe-sec { display: block; }
+/* With nothing playing behind it the hero sits on the page's own night sky, so
+   the type needs none of the shadows the footage versions do — and the tiles need
+   none of the dark tint either. That tint exists to keep a label readable when a
+   firework goes off behind it; over flat navy it only makes the panes look like
+   grey slabs, so here the glass goes back to a clean, mostly-clear pane. */
+html[data-hero="globe"] .bt-lead span { text-shadow: 0 1px 6px rgba(2, 5, 20, .8); }
+html[data-hero="globe"] .hero-title.arch { filter: none; }
+html[data-hero="globe"] .bt {
+  background: linear-gradient(168deg, rgba(255, 255, 255, .13) 0%,
+                              rgba(255, 255, 255, .06) 50%, rgba(255, 255, 255, .03) 100%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+html[data-hero="globe"] .bt:hover {
+  background: linear-gradient(168deg, rgba(255, 255, 255, .2) 0%,
+                              rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .06) 100%);
+}
+html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
+.globe-fail {
+  position: absolute; inset: 0; display: grid; place-content: center; padding: 0 8vw;
+  text-align: center; font-family: var(--ui); font-size: 13px; color: var(--dim);
+}
+
+/* ── the switcher ──
+   A review control, not part of the campaign: it names each version and stays out
+   of the way, bottom-left, on the one corner nothing else uses. */
+.hv {
+  position: fixed; left: clamp(12px, 2vw, 24px); bottom: clamp(12px, 2vh, 24px);
+  z-index: 140; display: grid; gap: 7px;
+  padding: 11px 12px 12px; border-radius: var(--r-md);
+  background: rgba(6, 10, 30, .74);
+  border: 1px solid rgba(199, 226, 255, .18);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 14px 40px rgba(2, 4, 16, .5);
+  opacity: .42; transform: translateY(0);
+  transition: opacity .3s var(--ease);
+}
+.hv:hover, .hv:focus-within { opacity: 1; }
+.hv-label {
+  margin: 0; font-family: var(--mono); font-size: 9px; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase; color: #8fa0c8;
+}
+.hv-opts { display: grid; gap: 4px; }
+.hv-opt {
+  display: grid; gap: 1px; justify-items: start; text-align: left;
+  padding: 7px 10px; border-radius: var(--r-sm); cursor: pointer;
+  background: transparent; border: 1px solid transparent; color: #cfe4ff;
+  transition: background .22s var(--ease), border-color .22s var(--ease);
+}
+.hv-opt b {
+  font-family: var(--ui); font-size: 11.5px; font-weight: 600; letter-spacing: .04em;
+}
+.hv-opt span { font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: #8fa0c8; }
+.hv-opt:hover { background: rgba(199, 226, 255, .1); border-color: rgba(199, 226, 255, .22); }
+.hv-opt.on {
+  background: var(--btn); border-color: transparent; color: var(--btn-ink);
+}
+.hv-opt.on span { color: rgba(255, 255, 255, .78); }
+.hv-opt:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 2px; }
+
+/* it belongs to the landing page; the sub-pages have their own openings */
+body:not(.route-home) .hv { display: none; }
+
+@media (max-width: 700px) {
+  .hv { left: 8px; bottom: 8px; padding: 8px 9px 9px; }
+  .hv-opt span { display: none; }
+}

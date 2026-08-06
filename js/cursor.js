@@ -30,7 +30,12 @@
 
   // what the pointer is over decides the state. Kept as data rather than a pile
   // of if-statements so adding a surface is one line.
-  const GRAB = ".cf-frame, .rail, #eat-rail, #show-rail, #pm-stage, #pm-frame, .rs-strip";
+  // The map is left alone entirely — see the route watch below — so its stage is
+  // not listed here.
+  const GRAB = ".cf-frame, .rail, #eat-rail, #show-rail, .rs-strip";
+  // What each draggable surface calls itself. A rail is a rail and you drag it;
+  // the zone ring is a way into the park, so it says where a click leads instead.
+  const WORDS = [[".cf-frame", "Explore zone"]];
   const HIT = 'a, button, [role="button"], summary, label, .cf-card, .cf-dot, .bt, .pill, .eat-card, .vr-tile, .faq-q';
   const TEXT = "input, textarea, [contenteditable]";
 
@@ -57,6 +62,7 @@
     if (e.pointerType !== "mouse") return;
     tx = e.clientX; ty = e.clientY;
     dot.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
+    if (root.classList.contains("stood-down")) return;
     if (!shown) { shown = true; root.classList.add("on"); }
     tick();
 
@@ -67,13 +73,32 @@
     root.classList.toggle("is-text", !!text);
     root.classList.toggle("is-grab", !!grab && !text);
     root.classList.toggle("is-hit", !text && !grab && !!el.closest(HIT));
-    if (grab && !text) word.textContent = "Drag";
+    if (grab && !text) {
+      const named = WORDS.find(([sel]) => grab.matches(sel));
+      word.textContent = named ? named[1] : "Drag";
+    }
   }, { passive: true });
 
   // pressing pulls the ring in, the way a button does under a finger
   addEventListener("pointerdown", () => root.classList.add("is-down"));
   addEventListener("pointerup", () => root.classList.remove("is-down"));
   addEventListener("pointercancel", () => root.classList.remove("is-down"));
+
+  /* ── the map keeps the system cursor ──
+     Panning and pinching a map is a job the native cursor already describes, and
+     a trailing ring over artwork you are dragging is noise. So on #/map this
+     stands down completely: the ring hides and .has-cursor comes off the root,
+     which is the class that hides the native cursor in the first place. */
+  function routeWatch() {
+    const onMap = document.body.classList.contains("route-map");
+    document.documentElement.classList.toggle("has-cursor", !onMap);
+    root.classList.toggle("stood-down", onMap);
+    if (onMap) { shown = false; root.classList.remove("on"); }
+  }
+  addEventListener("hashchange", () => requestAnimationFrame(routeWatch));
+  // app.js sets the route class on the body, so watch that rather than guess
+  new MutationObserver(routeWatch).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+  routeWatch();
 
   // leaving the window takes it with you, rather than leaving a ring stranded
   addEventListener("pointerout", (e) => {

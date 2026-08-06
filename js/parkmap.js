@@ -144,8 +144,17 @@
   const pinOf = new Map(pins.map((p, i) => [keyOf(p), i]));
   const toneOf = new Map(pins.map((p) => [keyOf(p), p.tone]));
 
-  // the shows sheet names two zones its own way; alias them so those rows still
-  // get a thumbnail and still fly the map to the right zone
+  /* ── one name per zone ──
+     The shows sheet files South Korea as "Korea" and the United States as "USA",
+     while the map's pins use the full names. Aliasing the *lookups* was enough to
+     give those rows a thumbnail and fly the map to the right pin, but not enough
+     for the list: filtering asks `it.zone === zone`, so picking South Korea from
+     a poster found its pin, printed its name, and then listed nothing — every
+     show it has is filed under the other spelling. canonZone() settles it once,
+     and every row and count below is built through it. */
+  const ALIAS = new Map([["Korea", "South Korea"], ["USA", "United States"]]);
+  const canonZone = (z) => (z && ALIAS.get(z)) || z;
+
   for (const [alias, canon] of [["Korea", "South Korea"], ["USA", "United States"]]) {
     if (!zoneImg.has(alias) && zoneImg.has(canon)) zoneImg.set(alias, zoneImg.get(canon));
     if (!pinOf.has(alias) && pinOf.has(canon)) pinOf.set(alias, pinOf.get(canon));
@@ -160,31 +169,31 @@
     meta: [["bolt", r.kind], ["heat", ["Gentle", "Lively", "Full throttle"][(HEAT[r.kind] || 2) - 1]]],
   }));
   (WBK.parkExperiences || []).forEach((p) => p.items.forEach((n) => items.push({
-    cat: "rides", group: "ATTRACTIONS & EXPERIENCES", name: n, zone: p.zone,
-    img: zoneImg.get(p.zone), meta: [["pin", p.zone]],
+    cat: "rides", group: "ATTRACTIONS & EXPERIENCES", name: n, zone: canonZone(p.zone),
+    img: zoneImg.get(p.zone), meta: [["pin", canonZone(p.zone)]],
   })));
   // the row shows the food and the booking condition; a restaurant with no
   // pavilion recorded gets no location line rather than an empty one, and none
   // of the four has a price, so nothing prints "from SAR undefined"
   (WBK.restaurants || []).forEach((r) => items.push({
-    cat: "dining", group: "PLACES TO EAT", name: r.name, zone: r.zone,
+    cat: "dining", group: "PLACES TO EAT", name: r.name, zone: canonZone(r.zone),
     img: r.food ? "img/food/" + r.food : "img/zones/" + r.img, desc: r.desc,
     meta: [
-      ...(r.zone ? [["pin", r.zone]] : []),
+      ...(r.zone ? [["pin", canonZone(r.zone)]] : []),
       ["fork", r.cuisine],
       ...(r.from ? [["price", "from SAR " + r.from]] : []),
     ],
   }));
   (WBK.showsByZone || []).forEach((s) => s.items.forEach((it) => items.push({
-    cat: "shows", group: "TONIGHT'S SHOWS", name: it.n, zone: s.zone,
+    cat: "shows", group: "TONIGHT'S SHOWS", name: it.n, zone: canonZone(s.zone),
     img: zoneImg.get(s.zone),
-    meta: [["pin", s.zone], ["time", `${it.t} ${it.ap}`], ["bolt", it.ty]],
+    meta: [["pin", canonZone(s.zone)], ["time", `${it.t} ${it.ap}`], ["bolt", it.ty]],
   })));
   pins.forEach((p, i) => {
     const key = keyOf(p);
     const nExp = (expByZone.get(key) || []).length;
-    const nEat = (WBK.restaurants || []).filter((r) => r.zone === key).length;
-    const nShow = (WBK.showsByZone || []).filter((s) => s.zone === key)
+    const nEat = (WBK.restaurants || []).filter((r) => canonZone(r.zone) === key).length;
+    const nShow = (WBK.showsByZone || []).filter((s) => canonZone(s.zone) === key)
       .reduce((n, s) => n + s.items.length, 0);
     const bits = [];
     if (nExp) bits.push(`${nExp} experience${nExp > 1 ? "s" : ""}`);
@@ -208,8 +217,8 @@
   // page shows at rest.
   function countIn(key, which) {
     const nExp = (expByZone.get(key) || []).length;
-    const nEat = (WBK.restaurants || []).filter((r) => r.zone === key).length;
-    const nShow = (WBK.showsByZone || []).filter((s) => s.zone === key)
+    const nEat = (WBK.restaurants || []).filter((r) => canonZone(r.zone) === key).length;
+    const nShow = (WBK.showsByZone || []).filter((s) => canonZone(s.zone) === key)
       .reduce((n, s) => n + s.items.length, 0);
     if (which === "rides") return nExp;
     if (which === "dining") return nEat;

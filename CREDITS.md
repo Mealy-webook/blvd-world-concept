@@ -166,3 +166,18 @@ The earlier version carried the real booking condition instead — "Reservations
 webook", "Book ahead, queues after 7 PM" — because no price for any of these
 kitchens exists in what we have. Those lines were replaced with start prices on
 request. Replace the numbers before this goes anywhere public.
+
+## The real-video hero
+
+`video/hero-real.mp4` is BLVD World's own banner film, taken from the hero of
+https://blvdworld.sa/ — `/sites/default/files/2026-02/Boulevard world Banner- 30
+FPS 1.mp4`. Real footage of the park: the Saudi zone at dusk, Amazonia, the
+Chichen Itza projection, folk performers, the lantern walk, and an aerial of the
+lit park at night.
+
+The source is 1920x1080 at 38 Mbps — 147 MB, which is past GitHub's 100 MB
+per-file limit and absurd for a web hero. Re-encoded to 1280x720, 25 fps, crf 29,
+no audio: **5.4 MB**, same 32 seconds, nothing cropped.
+
+It is the client's own material, used in a concept for the client. Confirm it is
+cleared before this is shown outside webook.

@@ -168,9 +168,12 @@ window.WBK_COVERFLOW = (function () {
     frame.addEventListener("click", (e) => {
       if (lastMoved > 6) return;                       // the capture handler below stops it
       const at = cardIndexAtPoint(e.clientX, e.clientY);
-      if (at < 0 || at === selected) return;           // the centre card keeps its own behaviour
+      if (at < 0) return;
       e.preventDefault();
-      goTo(at);
+      // a card off centre comes in; the one already centred follows its own link
+      if (at !== selected) { goTo(at); return; }
+      const link = cards[at].querySelector("a[href]");
+      if (link) location.hash = link.getAttribute("href").replace(/^#/, "");
     });
 
     function settle(to) {
@@ -227,6 +230,12 @@ window.WBK_COVERFLOW = (function () {
       const d = drag;
       drag = null;
       lastMoved = d.moved;
+      // The capture has to go before the click is dispatched. While the frame
+      // holds it, the browser retargets the click to the frame, so a link inside
+      // a card never sees it — which is why the centred poster's href did nothing.
+      // The click handler navigates explicitly too, but a captured pointer should
+      // not be left holding events either way.
+      try { frame.releasePointerCapture(d.id); } catch (err) { /* already gone */ }
       frame.classList.remove("grabbing");
       // let a flick carry, but never more than two cards
       settle(clamp(Math.round(pos + Math.max(-2, Math.min(2, d.v * 0.18)))));
