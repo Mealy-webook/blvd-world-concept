@@ -2358,6 +2358,62 @@ html[data-hero="real"] .zc .zc-plate {
   .rc-strip .rc-cell:nth-child(n+7) { display: none; }
 }
 
+/* ═══════════════ HOLD A ZONE CARD TO WATCH IT ═══════════════
+   The clip plays in the poster's own frame — same rectangle, same corners, no
+   overlay and no modal. Held down, the card is a window; let go and it is a
+   poster again. See js/zonevid.js. */
+.zc-vid {
+  position: absolute; inset: 0; z-index: 3;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  opacity: 0; pointer-events: none;
+  transition: opacity .34s cubic-bezier(.32,.72,0,1);
+}
+.is-previewing .zc-vid { opacity: 1; }
+
+/* The hold has to be legible as a hold, or the first press reads as a dead click.
+   A ring closes around the card over the same 420ms the script waits, so the
+   gesture explains itself while it is happening. */
+.is-holding::after,
+.is-previewing::after {
+  content: ''; position: absolute; inset: 0; z-index: 4;
+  border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 0 rgba(255, 210, 120, .9);
+  animation: zcHold .42s linear forwards;
+}
+@keyframes zcHold {
+  from { box-shadow: inset 0 0 0 0 rgba(255, 210, 120, 0); }
+  to   { box-shadow: inset 0 0 0 3px rgba(255, 210, 120, .9); }
+}
+/* the ring stays while it plays, so the card reads as live */
+.is-previewing::after { animation-duration: .18s; }
+
+/* what the clip actually is. Every sample is BLVD World park footage rather than
+   footage of that zone, and it says so for as long as it is on screen — the label
+   is written by js/zonevid.js only when it falls back to a sample. */
+.zc-sample {
+  position: absolute; z-index: 5; left: 50%; bottom: 10px;
+  transform: translate(-50%, 6px);
+  padding: 4px 9px; border-radius: var(--r-pill);
+  background: rgba(6, 10, 30, .82);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .22);
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: #dbe6ff; white-space: nowrap; line-height: 1;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.is-previewing .zc-sample { opacity: 1; transform: translate(-50%, 0); }
+
+/* the poster is dimmed in the ring; a clip playing in the same frame should not
+   be, or the preview looks like it is behind glass */
+.cf-card.is-previewing .zc img { filter: none; }
+/* and a long press on a touch screen must not raise the OS callout over it */
+.cf-card, .fan-card, .zc { -webkit-touch-callout: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .zc-vid, .zc-sample { transition: none; }
+  .is-holding::after, .is-previewing::after { animation: none; }
+}
+
 /* ═══════════════ THE PARK, IN ONE SMALL MODEL ═══════════════
    A standing picture of the site, under the zones. No tray, no plate, no frame:
    the artwork has its navy surround keyed out, so the island sits on the page's
@@ -4114,7 +4170,12 @@ html[data-hero="real"] .street::after {
 
 /* the globe version has no footage at all: the planet rises out of the fold */
 html[data-hero="globe"] .hero-vid { display: none; }
-html[data-hero="globe"] .globe-sec { display: block; }
+/* Held back for now. The globe version's hero still shows the planet swelling out
+   of the fold; what is hidden is the standalone globe *section* below it — the
+   full-screen planet with "drag to explore". Turn it back on by restoring
+   display: block here; nothing else was removed, and js/globe.js is simply not
+   fetched while this is off (see js/heroes.js). */
+html[data-hero="globe"] .globe-sec { display: none; }
 /* With nothing playing behind it the hero sits on the page's own night sky, so
    the type needs none of the shadows the footage versions do — and the tiles need
    none of the dark tint either. That tint exists to keep a label readable when a

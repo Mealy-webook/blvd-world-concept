@@ -205,3 +205,31 @@ through the same corner and is part of the island, so it is untouched.
 Nothing was added, moved or retouched. Both signs (blvdworld + stc, blvdcity),
 all 26 printed labels and the ring road survive unchanged. Same clearance
 question as the rest of the client's artwork.
+
+## Hold-to-watch on the zone cards
+
+Holding the front zone card plays a short clip inside it (js/zonevid.js). **None
+of the four clips is footage of the zone whose card it plays in.** They are cut
+from `video/hero-real.mp4` — BLVD World's own 32-second park banner, the only
+moving footage of the park we have — so they are park footage, not zone films:
+
+| file | what it actually shows | from |
+|---|---|---|
+| `video/zones/sample-amazonia.mp4` | the Amazonia canyon at dusk, its sign in shot | 3.6s |
+| `video/zones/sample-lanterns.mp4` | the lantern walk at night | 15.2s |
+| `video/zones/sample-lake.mp4` | a boat on the lake, the Eiffel replica behind | 23.0s |
+| `video/zones/sample-aerial.mp4` | the lit park from the air | 28.0s |
+
+Each is 3.6s, centre-cropped from 1280x720 to 540x720 and scaled to 360x480 to
+match the card's 3:4 frame, no audio, crf 30 — 97 to 143KB each, 482KB for the
+set.
+
+Because a sample is not that zone's footage, the card labels it "PARK FOOTAGE"
+for as long as it plays. That label is not decoration and should not be removed
+while these files are in use: without it the interaction asserts that this is
+what that zone looks like, and for nineteen of the twenty zones that is false.
+
+The fix is real clips, not better labelling. `js/zonevid.js` reads `clip` off the
+zone in `WBK.zones` first and plays it unlabelled, so dropping in per-zone films
+and adding one line each retires the samples. Do that before this is shown
+outside webook.

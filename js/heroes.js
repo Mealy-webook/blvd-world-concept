@@ -70,12 +70,17 @@
       }
     }
 
-    // the globe is a module and three.js is a real download, so it is only
-    // fetched if someone actually asks for that version
-    if (v === "globe" && !globeLoaded) {
+    // The globe is a module and three.js is a real download, so it is only fetched
+    // if someone actually asks for that version — and while the globe section is
+    // held back in the CSS there is nothing on screen for it to draw into, so it
+    // is not fetched at all. Restore the section's display: block and drop the
+    // getComputedStyle guard together.
+    const holder = document.getElementById("globe-holder");
+    const holderShown =
+      holder && getComputedStyle(holder.parentElement).display !== "none";
+    if (v === "globe" && holderShown && !globeLoaded) {
       globeLoaded = true;
       import("./globe.js").catch(() => {
-        const holder = document.getElementById("globe-holder");
         if (holder) holder.innerHTML =
           '<p class="globe-fail">The globe needs three.js, which could not be loaded.</p>';
       });

@@ -235,7 +235,13 @@ window.WBK = {
       a: "Changes and refunds follow the policy shown at checkout on webook.com, which varies by ticket type. Check the terms on your confirmation email." },
   ],
 
-  // park zones, pinned to their real countries on the globe
+  // park zones, pinned to their real countries on the globe.
+  //
+  // `clip` is the hook for the hold-to-watch preview on the zone cards
+  // (js/zonevid.js): give a zone a path to a short muted clip of *that zone* and
+  // holding its card plays it, unlabelled. Without one the card falls back to a
+  // sample of general park footage and says so on screen. No zone has a real clip
+  // yet — see CREDITS.md.
   zones: [
     { name: "Saudi Arabia",  lat: 24.7,  lon: 46.7,   blurb: "Najdi streets, kabsa on the grill, ardah at volume." , imgs: ["saudi-arabia.webp", "saudi.jpg", "park2.jpg"], poster: "saudi-arabia.webp", attractions: ["Najdi Heritage Village", "Falcon Show Arena", "Traditional Ardah Stage"], food: ["Najd Grill House", "Qahwa & Dates Lounge", "Kabsa Kitchen"], rides: ["Desert Rover Coaster", "Camel Carousel"] },
     { name: "Egypt",         lat: 26.8,  lon: 30.8,   blurb: "The Sphinx by night, then a live PUBG arena." , imgs: ["egypt.webp", "egypt.jpg", "park4.jpg"], poster: "egypt.webp", attractions: ["Pyramid Light Show", "PUBG Experience Zone", "Sphinx Plaza"], food: ["Nile Terrace", "Koshari Corner"], rides: ["Pharaoh's Drop Tower", "Scarab Spinner"] },

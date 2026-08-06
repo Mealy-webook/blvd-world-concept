@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=589" />
+<link rel="stylesheet" href="css/main.css?v=593" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=589" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=593" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -251,7 +251,11 @@
          go there, so it is one photograph, one number and one way through. -->
     <!-- hidden for now: the design of this section is still unsettled. The rides
          themselves remain reachable from the nav and the hero tile. -->
-    <section class="ridetrack is-poster" id="rides2" hidden>
+    <!-- back on the page, between the map and the card, on request. It was held
+         back while its design was unsettled; the [hidden] guard in the CSS stays,
+         because the section rule's display: grid at 0,2,0 outranks the user
+         agent's [hidden] at 0,1,0 and hiding it again would need it. -->
+    <section class="ridetrack is-poster" id="rides2">
       <figure class="rp-shot">
         <img src="img/rides/sky-loop.jpg" alt="" draggable="false" />
       </figure>
@@ -805,27 +809,28 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=589"></script>
-  <script src="js/borders.js?v=589"></script>
-  <script src="js/scene.js?v=589"></script>
-  <script src="js/app.js?v=589"></script>
-  <script src="js/experiences.js?v=589"></script>
-  <script src="js/carousels.js?v=589"></script>
-  <script src="js/coverflow.js?v=589"></script>
-  <script src="js/zones.js?v=589"></script>
-  <script src="js/fan.js?v=589"></script>
-  <script src="js/gallery.js?v=589"></script>
-  <script src="js/parkmap.js?v=589"></script>
-  <script src="js/minimap.js?v=589"></script>
-  <script src="js/sponsors.js?v=589"></script>
-  <script src="js/cashless.js?v=589"></script>
-  <script src="js/headings.js?v=589"></script>
-  <script src="js/bundles.js?v=589"></script>
-  <script src="js/ridex.js?v=589"></script>
-  <script src="js/cursor.js?v=589"></script>
-  <script src="js/glass.js?v=589" defer></script>
+  <script src="js/data.js?v=593"></script>
+  <script src="js/borders.js?v=593"></script>
+  <script src="js/scene.js?v=593"></script>
+  <script src="js/app.js?v=593"></script>
+  <script src="js/experiences.js?v=593"></script>
+  <script src="js/carousels.js?v=593"></script>
+  <script src="js/coverflow.js?v=593"></script>
+  <script src="js/zones.js?v=593"></script>
+  <script src="js/fan.js?v=593"></script>
+  <script src="js/zonevid.js?v=593"></script>
+  <script src="js/gallery.js?v=593"></script>
+  <script src="js/parkmap.js?v=593"></script>
+  <script src="js/minimap.js?v=593"></script>
+  <script src="js/sponsors.js?v=593"></script>
+  <script src="js/cashless.js?v=593"></script>
+  <script src="js/headings.js?v=593"></script>
+  <script src="js/bundles.js?v=593"></script>
+  <script src="js/ridex.js?v=593"></script>
+  <script src="js/cursor.js?v=593"></script>
+  <script src="js/glass.js?v=593" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=589" defer></script>
+  <script src="js/heroes.js?v=593" defer></script>
 </body>
 </html>
