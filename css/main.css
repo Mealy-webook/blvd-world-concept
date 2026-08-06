@@ -544,148 +544,81 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* booking CTAs with starting prices */
 /* ── the hero's three ways in, as tiles ── */
 .book-tiles {
-  /* Entry ticket sits on its own row above the other three, at the same size as
-     them rather than stretched across — it leads by position, not by bulk. */
-  --bt-gap: clamp(6px, .7vw, 10px);
+  /* Three across at every width. They are small enough to stay a row on a phone,
+     and stacking them made the hero taller than the screen. */
+  --bt-gap: clamp(8px, 1.6vw, 26px);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--bt-gap); width: min(1000px, 100%);
+  gap: var(--bt-gap);
+  width: min(720px, 100%);
 }
-.bt.is-lead {
-  grid-column: 1 / -1; justify-self: center;
-  width: 100%; max-width: calc((100% - 2 * var(--bt-gap)) / 3);
-}
-/* One solid, two outlined. On a dark plate a dark glass tile has no figure to
-   its ground and simply disappears — which is what these did once the video
-   behind them went. The site already has a primary-action style in .pill.solid
-   (light fill, dark ink), so the lead tile takes it and the other two step back
-   to outlines. The hierarchy then reads before a word is read. */
+
+/* ── the three ways in, under the entry-ticket button ──
+   A centred stack each: icon on its own line, then the title, then the price.
+   Outlined, no fill, no chevron — they sit beside the one thing that is a button
+   rather than competing with it. */
 .bt {
   position: relative; overflow: hidden;
-  display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px;
-  align-items: center; gap: 17px; text-align: left;
-  padding: 22px 22px 22px 19px; border-radius: var(--r-lg);
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  justify-items: center; text-align: center;
+  gap: 9px; padding: 16px 10px; border-radius: var(--r-lg);
   background: transparent;
   border: 1px solid rgba(199, 226, 255, .42);
   transition: transform .45s var(--ease), border-color .35s var(--ease),
-              background-color .35s var(--ease), box-shadow .35s var(--ease);
+              background-color .35s var(--ease);
 }
 .bt:hover {
   transform: translateY(-6px);
   background-color: rgba(199, 226, 255, .1);
   border-color: rgba(215, 236, 255, .85);
 }
-
-/* the lead: the cheapest way in, and the brightest object on the screen */
-.bt.is-lead {
-  background: var(--btn);
-  border-color: var(--btn);
-  box-shadow: var(--sh-3), inset 0 -2px 0 rgba(8, 16, 31, .22);
-}
-.bt.is-lead:hover {
-  background: #fff; border-color: #fff;
-  box-shadow: var(--sh-3), inset 0 -2px 0 rgba(8, 16, 31, .22);
-}
+.bt-go { display: none; }          /* the chevron went with the tile's fill */
 
 .bt-ic {
-  display: grid; place-items: center; width: 56px; height: 56px; border-radius: var(--r-md);
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: var(--r-md);
   background: rgba(199, 226, 255, .12); border: 1px solid rgba(199, 226, 255, .24);
   transition: background .35s var(--ease);
 }
-.bt-ic svg { width: 26px; height: 26px; fill: #cfe4ff; }
+.bt-ic svg { width: 24px; height: 24px; fill: #cfe4ff; }
 .bt:hover .bt-ic { background: rgba(199, 226, 255, .2); }
-/* on the solid tile everything inverts to the dark ink */
-.bt.is-lead .bt-ic {
-  background: rgba(8, 16, 31, .1); border-color: rgba(8, 16, 31, .16);
-}
-.bt.is-lead .bt-ic svg { fill: var(--btn-ink); }
-.bt.is-lead:hover .bt-ic { background: rgba(8, 16, 31, .14); }
 
-.bt-text { display: grid; gap: 4px; min-width: 0; }
+.bt-text { display: grid; gap: 3px; min-width: 0; justify-items: center; text-align: center; }
 .bt-name {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(17px, 1.9vw, 23px);
+  font-family: var(--disp); font-weight: 700; font-size: clamp(13px, 1.5vw, 18px);
   letter-spacing: -.015em; color: #fff; line-height: 1.1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
-.bt.is-lead .bt-name { color: var(--btn-ink); }
-
-/* the price is the thing being decided on, so it is set at display scale
-   rather than as a caption under the name */
 .bt-price {
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  font-family: var(--ui); font-size: clamp(9px, 1vw, 11px); font-weight: 600; letter-spacing: .08em;
   text-transform: uppercase; color: #8fa0c8;
-  /* "FROM SAR 89" broke over two lines in the narrow four-across tile */
-  display: flex; align-items: baseline; gap: 7px; white-space: nowrap;
+  display: flex; align-items: baseline; justify-content: center; gap: 6px;
+  white-space: nowrap; max-width: 100%;
 }
 .bt-price b {
-  font-size: clamp(17px, 1.8vw, 21px); font-weight: 700; letter-spacing: -.02em;
+  font-size: clamp(13px, 1.6vw, 19px); font-weight: 700; letter-spacing: -.02em;
   color: #fff; text-transform: none;
 }
-.bt.is-lead .bt-price { color: rgba(8, 16, 31, .62); }
-.bt.is-lead .bt-price b { color: var(--btn-ink); }
 
-.bt-go {
-  justify-self: end; position: relative; width: 10px; height: 10px;
-  border-right: 2px solid rgba(207, 228, 255, .7); border-top: 2px solid rgba(207, 228, 255, .7);
-  transform: rotate(45deg);
-  transition: border-color .3s var(--ease), transform .4s var(--ease);
+/* the entry-ticket button, carrying its price quietly alongside */
+.hero-cta { display: inline-flex; align-items: baseline; gap: 14px; }
+.hc-from {
+  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .04em;
+  text-transform: uppercase; color: rgba(8, 16, 31, .6);
+  font-variant-numeric: tabular-nums;
 }
-.bt.is-lead .bt-go { border-color: rgba(8, 16, 31, .55); }
-.bt:hover .bt-go { border-color: #fff; transform: rotate(45deg) translate(2px, -2px); }
-.bt.is-lead:hover .bt-go { border-color: var(--btn-ink); }
+.hero-cta:hover .hc-from { color: rgba(8, 16, 31, .78); }
 
-/* ── the three secondary tiles ──
-   The lead keeps its solid horizontal shape. These three become a centred
-   stack — icon, then title, then price, each on its own line — with no border,
-   no fill and no chevron. Nothing but the three things themselves, sitting on
-   the page beside the one tile that is a button. */
-.bt:not(.is-lead) {
-  grid-template-columns: minmax(0, 1fr);
-  justify-items: center; text-align: center;
-  gap: 9px; padding: 16px 12px;
-  background: transparent;
-  /* the outline stays; it is the fill and the chevron that went */
+/* three across has to hold on a phone, so the tile compresses rather than
+   reflowing — the grid stays one column, only the metrics come down */
+@media (max-width: 700px) {
+  .bt { gap: 7px; padding: 13px 7px; }
+  .bt-ic { width: 42px; height: 42px; border-radius: var(--r-sm); }
+  .bt-ic svg { width: 20px; height: 20px; }
 }
-.bt:not(.is-lead) .bt-go { display: none; }
-.bt:not(.is-lead) .bt-text { justify-items: center; text-align: center; gap: 3px; }
-.bt:not(.is-lead) .bt-price { justify-content: center; }
-/* the icon sits on its own line, so it no longer needs to hold a column width */
-.bt:not(.is-lead) .bt-ic { width: 52px; height: 52px; }
-
-/* light travels across an outlined tile as the pointer arrives; the solid one
-   is already lit, so it gets nothing */
-/* what every tile above the entry ticket already includes */
-.bt-note {
-  grid-column: 1 / -1; justify-self: center; text-align: center;
-  margin-top: 4px;
-  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .05em;
-  color: #8fa0c8;
-}
-.bt-note b { font-weight: 700; color: #cfe4ff; }
-
-.bt::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
-  background: linear-gradient(100deg, transparent 20%, rgba(199, 226, 255, .14) 50%, transparent 80%);
-  transform: translateX(-60%);
-  transition: opacity .4s var(--ease), transform .8s var(--ease);
-}
-.bt:hover::after { opacity: 1; transform: translateX(60%); }
-.bt.is-lead::after { display: none; }
-
-/* four across gets tight before the layout breaks, so the tile trims first */
-@media (max-width: 1180px) {
-  .bt { grid-template-columns: 46px minmax(0, 1fr) 22px; gap: 12px; padding: 16px 15px 16px 13px; }
-  .bt-ic { width: 46px; height: 46px; }
-  .bt-ic svg { width: 22px; height: 22px; }
-  .bt-name { font-size: clamp(15px, 1.5vw, 18px); }
-  .bt-price b { font-size: clamp(15px, 1.5vw, 18px); }
-}
-@media (max-width: 900px) {
-  .book-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(600px, 100%); }
-  .bt.is-lead { max-width: calc((100% - var(--bt-gap)) / 2); }
-}
-@media (max-width: 520px) {
-  .book-tiles { grid-template-columns: minmax(0, 1fr); width: min(420px, 100%); }
-  .bt.is-lead { max-width: 100%; }
+@media (max-width: 420px) {
+  .bt { gap: 6px; padding: 11px 5px; }
+  .bt-ic { width: 36px; height: 36px; }
+  .bt-ic svg { width: 17px; height: 17px; }
+  .bt-price { letter-spacing: .04em; gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bt, .bt::after { transition: none; }
@@ -3348,9 +3281,9 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   .hero-ui { padding: 16px 6vw 20px; gap: 8px; }
   .hero-title.arch { width: min(460px, 52vw); }
   .scroll-cue { display: none; }
-  .bt { grid-template-columns: 40px minmax(0, 1fr) 20px; gap: 11px; padding: 11px 13px; }
-  .bt-ic { width: 40px; height: 40px; }
-  .bt-ic svg { width: 19px; height: 19px; }
+  .bt { gap: 6px; padding: 10px 6px; }
+  .bt-ic { width: 38px; height: 38px; }
+  .bt-ic svg { width: 18px; height: 18px; }
   .bt-name { font-size: 14px; }
   .bt-price b { font-size: 14px; }
   .bt-note { font-size: 10px; }
