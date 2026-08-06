@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=568" />
+<link rel="stylesheet" href="css/main.css?v=575" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=568" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=575" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -248,35 +248,64 @@
           No tills. No cash. No queue.</p>
       </div>
 
-      <div class="cash-stage">
-        <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
-        <div class="card-stage" id="card-stage">
-          <!-- the card artwork as supplied, used as-is: the wordmark, the
-               issuer lockup, the field, the rides and cash figures and the tap
-               mark are all in the image. Only the tilt and the glare are ours. -->
-          <div class="blvd-card is-art" id="blvd-card">
-            <img src="img/blvd-card.png" alt="BLVD World card — 10 rides, SAR 100" draggable="false" />
-            <i class="bc-glare" aria-hidden="true"></i>
+      <!-- ── one card, one night ──
+           The old version put three numbered instructions beside the card, which
+           restated the standfirst. This shows the mechanic instead: a night's taps as
+           a statement, the balance stepping down on the right, and a total that
+           delivers the promise as a figure — cash handled, SAR 0. Figures are
+           tabular, so the amounts and the running balance both line up. -->
+      <div class="cash-panel reveal">
+        <div class="cash-inner">
+
+          <div class="cash-card">
+            <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
+            <div class="card-stage" id="card-stage">
+              <div class="blvd-card is-art" id="blvd-card">
+                <img src="img/blvd-card.png" alt="BLVD World card — 10 rides, SAR 100"
+                     width="342" height="216" draggable="false" />
+                <i class="bc-glare" aria-hidden="true"></i>
+              </div>
+            </div>
+            <p class="cash-caption">Yours at the gate with any ticket</p>
+          </div>
+
+          <div class="cash-log">
+            <div class="clog-head">
+              <p class="clog-cap">One night, one card</p>
+              <p class="clog-start">Loaded <b>SAR 100</b></p>
+            </div>
+
+            <ol class="clog">
+              <li><span class="clog-t">8:40<small>PM</small></span>
+                  <b class="clog-what"><span>Sky Loop</span></b>
+                  <span class="clog-amt">&#8722;25</span><span class="clog-bal">75</span></li>
+              <li><span class="clog-t">9:15<small>PM</small></span>
+                  <b class="clog-what"><span>Amazonia Awakens</span></b>
+                  <span class="clog-amt">&#8722;20</span><span class="clog-bal">55</span></li>
+              <li><span class="clog-t">9:50<small>PM</small></span>
+                  <b class="clog-what"><span>Arcade &#183; 6 credits</span></b>
+                  <span class="clog-amt">&#8722;18</span><span class="clog-bal">37</span></li>
+              <li><span class="clog-t">10:25<small>PM</small></span>
+                  <b class="clog-what"><span>Skill games</span></b>
+                  <span class="clog-amt">&#8722;12</span><span class="clog-bal">25</span></li>
+              <li><span class="clog-t">11:00<small>PM</small></span>
+                  <b class="clog-what"><span>Churros &#183; Egypt</span></b>
+                  <span class="clog-amt">&#8722;15</span><span class="clog-bal">10</span></li>
+            </ol>
+
+            <p class="clog-total">
+              <span>Cash handled <b>SAR 0</b></span>
+              <span>Tills visited <b>0</b></span>
+              <span>Queues <b>0</b></span>
+            </p>
           </div>
         </div>
 
-        <!-- the three moments, set like a printed receipt beside it -->
-        <ol class="cash-steps reveal">
-          <li>
-            <span class="cs-num">01</span>
-            <b class="cs-do">Book any ticket</b>
-            <span class="cs-say">Entry, entry + experience or a ride package — the card is yours at the gate</span>
-          </li>
-          <li>
-            <span class="cs-num">02</span>
-            <b class="cs-do">Top up in the app</b>
-            <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
-          </li>
-          <li>
-            <span class="cs-num">03</span>
-            <b class="cs-do">Tap and play</b>
-            <span class="cs-say">One tap at every ride and skill game — the balance follows you all night</span>
-          </li>
+        <!-- the three steps survive as one line rather than a column of instructions -->
+        <ol class="cash-flow">
+          <li><span>01</span>Book any ticket</li>
+          <li><span>02</span>Top up in the app</li>
+          <li><span>03</span>Tap and play</li>
         </ol>
       </div>
 
@@ -772,26 +801,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=568"></script>
-  <script src="js/borders.js?v=568"></script>
-  <script src="js/scene.js?v=568"></script>
-  <script src="js/app.js?v=568"></script>
-  <script src="js/experiences.js?v=568"></script>
-  <script src="js/carousels.js?v=568"></script>
-  <script src="js/coverflow.js?v=568"></script>
-  <script src="js/zones.js?v=568"></script>
-  <script src="js/fan.js?v=568"></script>
-  <script src="js/gallery.js?v=568"></script>
-  <script src="js/parkmap.js?v=568"></script>
-  <script src="js/sponsors.js?v=568"></script>
-  <script src="js/cashless.js?v=568"></script>
-  <script src="js/headings.js?v=568"></script>
-  <script src="js/bundles.js?v=568"></script>
-  <script src="js/ridex.js?v=568"></script>
-  <script src="js/cursor.js?v=568"></script>
-  <script src="js/glass.js?v=568" defer></script>
+  <script src="js/data.js?v=575"></script>
+  <script src="js/borders.js?v=575"></script>
+  <script src="js/scene.js?v=575"></script>
+  <script src="js/app.js?v=575"></script>
+  <script src="js/experiences.js?v=575"></script>
+  <script src="js/carousels.js?v=575"></script>
+  <script src="js/coverflow.js?v=575"></script>
+  <script src="js/zones.js?v=575"></script>
+  <script src="js/fan.js?v=575"></script>
+  <script src="js/gallery.js?v=575"></script>
+  <script src="js/parkmap.js?v=575"></script>
+  <script src="js/sponsors.js?v=575"></script>
+  <script src="js/cashless.js?v=575"></script>
+  <script src="js/headings.js?v=575"></script>
+  <script src="js/bundles.js?v=575"></script>
+  <script src="js/ridex.js?v=575"></script>
+  <script src="js/cursor.js?v=575"></script>
+  <script src="js/glass.js?v=575" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=568" defer></script>
+  <script src="js/heroes.js?v=575" defer></script>
 </body>
 </html>

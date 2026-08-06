@@ -2357,14 +2357,162 @@ html[data-hero="real"] .zc .zc-plate {
   padding: var(--sec-y) var(--sec-x);
   display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
 }
-/* head above, card and receipt side by side, the app CTA under them — sized so
-   the whole thing sits in one stage */
-.cashless { gap: clamp(18px, 3vh, 38px); }
-.cash-stage {
-  width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
-  padding: 0 var(--sec-x);
-  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 64px); align-items: center;
+/* head above, the panel under it, the CTA below that */
+.cashless { gap: clamp(16px, 2.6vh, 32px); }
+
+/* ══ THE PANEL ══
+   A machined tray with a plate inside it — the same nested construction the
+   lightbox frame uses, so the two read as one system. The card sits on the left of
+   the plate and the night's statement on the right. */
+.cash-panel {
+  --tray: clamp(5px, .6vw, 9px);
+  --tray-r: clamp(20px, 2vw, 28px);
+  width: 100%; max-width: min(1060px, 100%); margin-inline: auto;
+  padding: var(--tray);
+  border-radius: var(--tray-r);
+  background: rgba(199, 226, 255, .05);
+  border: 1px solid rgba(199, 226, 255, .14);
+  box-shadow: 0 30px 80px rgba(2, 4, 16, .46);
+}
+.cash-inner {
+  border-radius: calc(var(--tray-r) - var(--tray));
+  background: linear-gradient(168deg, rgba(16, 24, 60, .72), rgba(6, 10, 30, .9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+  padding: clamp(18px, 2.4vw, 34px);
+  display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: clamp(20px, 3vw, 46px); align-items: center;
+}
+@media (max-width: 860px) {
+  .cash-inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* the card, with a bloom under it so it sits on the plate rather than floating */
+.cash-card { display: grid; justify-items: center; gap: 14px; position: relative; }
+.cash-card::before {
+  content: ''; position: absolute; left: 50%; top: 52%; z-index: 0;
+  width: 84%; height: 58%; transform: translate(-50%, -50%);
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(209, 0, 119, .3), transparent 70%);
+  filter: blur(22px);
+}
+.cash-caption {
+  position: relative; z-index: 1;
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #8fa0c8; text-align: center;
+}
+
+/* ══ THE STATEMENT ══
+   Set like a printed statement, because that is what makes the point: a column of
+   taps, a column of amounts, and the balance walking down beside them. The figures
+   are tabular so the three columns hold their own edges. */
+.cash-log { display: grid; gap: 12px; align-content: center; min-width: 0; }
+.clog-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(199, 226, 255, .16);
+}
+.clog-cap {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.7vw, 20px);
+  letter-spacing: -.015em; color: #fff;
+}
+.clog-start {
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.clog-start b {
+  font-family: var(--fig); font-size: 13px; font-weight: 700; color: #fff;
+  text-transform: none; font-variant-numeric: tabular-nums;
+}
+
+.clog { list-style: none; margin: 0; padding: 0; display: grid; }
+.clog li {
+  display: grid; align-items: baseline;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 0 clamp(10px, 1.4vw, 20px);
+  padding: 9px 0;
+  border-bottom: 1px dashed rgba(199, 226, 255, .12);
+}
+.clog li:last-child { border-bottom: 0; }
+/* each row arrives in turn once the section is seen — the balance reads as a
+   sequence rather than a table that was always there */
+.reveal.in .clog li { animation: clogIn .5s cubic-bezier(.32,.72,0,1) both; }
+.reveal.in .clog li:nth-child(1) { animation-delay: .05s; }
+.reveal.in .clog li:nth-child(2) { animation-delay: .13s; }
+.reveal.in .clog li:nth-child(3) { animation-delay: .21s; }
+.reveal.in .clog li:nth-child(4) { animation-delay: .29s; }
+.reveal.in .clog li:nth-child(5) { animation-delay: .37s; }
+@keyframes clogIn { from { opacity: 0; transform: translateY(7px); } }
+
+.clog-t {
+  font-family: var(--fig); font-size: 12px; font-weight: 700; color: var(--gold);
+  font-variant-numeric: tabular-nums; letter-spacing: .02em; white-space: nowrap;
+}
+.clog-t small { font-size: 8.5px; font-weight: 500; opacity: .75; margin-left: 2px; }
+/* The name, with a leader running from it to the amount. The plate is wide enough
+   that name and figure would otherwise sit at opposite ends of an empty gap; the
+   leader is what a printed statement uses to carry the eye across it. */
+.clog-what {
+  min-width: 0; display: flex; align-items: baseline; gap: clamp(8px, 1vw, 14px);
+  font-family: var(--body); font-weight: 600; font-size: clamp(13px, 1.35vw, 15px);
+  color: #eaf2ff;
+}
+.clog-what > span {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.clog-what::after {
+  content: ''; flex: 1 1 auto; min-width: 0; height: 0;
+  border-bottom: 1px dotted rgba(199, 226, 255, .26);
+  transform: translateY(-.3em);
+}
+.clog-amt, .clog-bal {
+  font-family: var(--fig); font-weight: 700; font-variant-numeric: tabular-nums;
+  text-align: right; white-space: nowrap;
+}
+.clog-amt { font-size: 13px; color: #ff8fa8; min-width: 3.4em; }
+/* the running balance, set apart by a rule so it reads as its own column */
+.clog-bal {
+  font-size: 14px; color: #fff; min-width: 3.2em;
+  padding-left: clamp(10px, 1.4vw, 18px);
+  border-left: 1px solid rgba(199, 226, 255, .12);
+}
+
+/* the punchline, as three figures rather than a sentence */
+.clog-total {
+  display: flex; flex-wrap: wrap; gap: 6px clamp(14px, 2vw, 26px);
+  margin-top: 2px; padding-top: 11px;
+  border-top: 1px solid rgba(199, 226, 255, .16);
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+.clog-total b {
+  font-family: var(--fig); font-size: 14px; font-weight: 700; margin-left: 6px;
+  color: #6ee7a8; text-transform: none; font-variant-numeric: tabular-nums;
+}
+
+/* ── the three steps, as one line under the plate ── */
+.cash-flow {
+  list-style: none; margin: 0; padding: clamp(12px, 1.6vh, 18px) clamp(8px, 1.6vw, 20px) 2px;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px clamp(14px, 2.4vw, 34px);
+}
+.cash-flow li {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  color: #c8d7f2;
+}
+.cash-flow li span {
+  font-family: var(--fig); font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+/* an arrow between the steps, drawn rather than typed so it never wraps alone */
+.cash-flow li + li::before {
+  content: ''; flex: none; width: 16px; height: 1px; margin-right: 9px;
+  background: linear-gradient(90deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .4));
+}
+@media (max-width: 620px) {
+  .cash-flow li + li::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal.in .clog li { animation: none; }
 }
 
 /* ── the card ── */
@@ -2526,43 +2674,38 @@ html[data-hero="real"] .zc .zc-plate {
   transition: transform .12s linear, opacity .3s;
   opacity: .75;
 }
-/* ── the three moments, set like a printed receipt ──
-   No cards, no numbered circles: mono figures in the margin, a hairline between
-   each, the way a till receipt lists what happened. */
-.cash-steps { list-style: none; display: grid; align-content: center; }
-.cash-steps li {
-  display: grid; grid-template-columns: 30px minmax(0, 1fr);
-  gap: 2px 14px; padding: 14px 2px;
-  border-top: var(--b-1);
-  transition: border-color .3s var(--ease);
-}
-.cash-steps li:last-child { border-bottom: var(--b-1); }
-.cash-steps li:hover { border-color: rgba(255, 194, 77, .45); }
-.cs-num {
-  grid-row: 1 / span 2; align-self: start; padding-top: 2px;
-  font-family: var(--fig); font-weight: 700; font-size: 12px;
-  color: var(--gold); font-variant-numeric: tabular-nums; letter-spacing: .04em;
-}
-.cs-do {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(16px, 1.6vw, 20px);
-  letter-spacing: -.015em; color: #fff; line-height: 1.15;
-}
-.cs-say { font-size: 13px; font-weight: 400; color: var(--dim); line-height: 1.5; max-width: 40ch; }
 
 
-/* side by side for as long as there is room: stacking is what made this section
-   taller than its stage */
-@media (max-width: 1040px) {
-  .cash-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 34px); }
-  .blvd-card { width: min(360px, 100%); }
-  .cs-do { font-size: 16px; }
-  .cs-say { font-size: 12px; }
-  .cash-steps li { padding: 10px 2px; }
-}
-@media (max-width: 700px) {
-  .cash-stage { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+/* The plate keeps the card and the statement side by side for as long as there is
+   room; .cash-inner stacks them below 860px. Only the card's own width comes down
+   here — stacking is what used to make this section taller than its stage. */
+@media (max-width: 1040px) { .blvd-card { width: min(340px, 100%); } }
+@media (max-width: 860px) {
   .card-stage { order: -1; padding: 0; }
-  .blvd-card { width: min(320px, 100%); }
+  /* stacked, the statement has the plate's full width and the leader has nothing
+     left to bridge — it only steals room the ride names need */
+  .clog-what::after { display: none; }
+  .clog-what { gap: 0; }
+}
+/* One column in a phone's stage: the section has to give back about 90px, and the
+   card is where most of it is. Everything else comes off the paddings, so the
+   statement keeps its five rows rather than losing the point of the section. */
+@media (max-width: 700px) {
+  .blvd-card { width: min(240px, 100%); }
+  .cashless { gap: clamp(10px, 1.6vh, 18px); }
+  .cash-inner { padding: 12px 14px; gap: 12px; }
+  .cash-card { gap: 9px; }
+  .cash-caption { font-size: 9.5px; letter-spacing: .1em; }
+  .cash-log { gap: 8px; }
+  .clog-head { padding-bottom: 7px; }
+  .clog li { padding: 5px 0; }
+  .clog-what { font-size: 13.5px; }
+  .clog-total {
+    gap: 4px 14px; padding-top: 9px; font-size: 9px; letter-spacing: .1em;
+  }
+  .clog-total b { font-size: 12.5px; margin-left: 5px; }
+  .cash-flow { padding: 7px 4px 0; gap: 5px 15px; }
+  .cash-flow li { font-size: 10px; gap: 7px; }
 }
 @media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
 
@@ -3335,11 +3478,10 @@ body.route-experiences
   /* the schedule's rows */
   .sch-row { padding: 10px 8px; }
   .sch-shot { width: 66px; }
-  /* the card and its steps */
-  .cash-stage { gap: clamp(18px, 2.6vw, 40px); }
+  /* the card comes in on a short stage; the statement sets its own rhythm */
   .blvd-card { transform: scale(.88); }
-  .cash-steps { gap: 10px; }
-  .cash-steps li { padding: 9px 0; }
+  .cash-inner { padding: clamp(14px, 1.8vw, 24px); }
+  .clog li { padding: 7px 0; }
   /* the zone ring */
   .cf { --cf-card: clamp(150px, 19vw, 232px) !important; }
   .cf-frame { padding: clamp(16px, 2.4vh, 30px) 0; }
