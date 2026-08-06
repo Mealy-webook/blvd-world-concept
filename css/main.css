@@ -546,7 +546,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .book-tiles {
   /* Entry ticket sits on its own row above the other three, at the same size as
      them rather than stretched across — it leads by position, not by bulk. */
-  --bt-gap: clamp(10px, 1.2vw, 16px);
+  --bt-gap: clamp(6px, .7vw, 10px);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--bt-gap); width: min(1000px, 100%);
 }
@@ -632,6 +632,24 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .bt.is-lead .bt-go { border-color: rgba(8, 16, 31, .55); }
 .bt:hover .bt-go { border-color: #fff; transform: rotate(45deg) translate(2px, -2px); }
 .bt.is-lead:hover .bt-go { border-color: var(--btn-ink); }
+
+/* ── the three secondary tiles ──
+   The lead keeps its solid horizontal shape. These three become a centred
+   stack — icon, then title, then price, each on its own line — with no border,
+   no fill and no chevron. Nothing but the three things themselves, sitting on
+   the page beside the one tile that is a button. */
+.bt:not(.is-lead) {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center; text-align: center;
+  gap: 9px; padding: 16px 12px;
+  background: transparent;
+  /* the outline stays; it is the fill and the chevron that went */
+}
+.bt:not(.is-lead) .bt-go { display: none; }
+.bt:not(.is-lead) .bt-text { justify-items: center; text-align: center; gap: 3px; }
+.bt:not(.is-lead) .bt-price { justify-content: center; }
+/* the icon sits on its own line, so it no longer needs to hold a column width */
+.bt:not(.is-lead) .bt-ic { width: 52px; height: 52px; }
 
 /* light travels across an outlined tile as the pointer arrives; the solid one
    is already lit, so it gets nothing */
