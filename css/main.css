@@ -35,16 +35,21 @@
      roles without going flat. Instrument Sans stays as the fallback for anything
      that loads before the webfont does.
 
-     JetBrains Mono is still here, and only for FIGURES — times, prices, counts,
-     durations. That is not a style choice: it is what makes a column of prices or
-     a night's showtimes line up, because the digits are the same width. Prose
-     never takes it. */
+     Figures are the same family too — see --fig. They keep their own identity
+     through tabular-nums rather than through a second typeface. */
   --disp: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
   --body: 'Bricolage Grotesque', 'Instrument Sans', system-ui, -apple-system, sans-serif;
   --ui:   'Bricolage Grotesque', 'Instrument Sans', system-ui, -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  /* Figures. Bricolage, like everything else — and the alignment survives, because
+     Bricolage carries real tabular figures: with font-variant-numeric: tabular-nums
+     on, "1111" and "0000" both measure 97.16px at 40px/700, where proportionally
+     they are 52.8 and 102.97. Every figure rule below sets tabular-nums, so a column
+     of prices or a night's showtimes still lines up.
+     Named --fig, not --mono: it is no longer a monospaced face, and a token called
+     --mono holding a proportional one would mislead whoever reads this next. */
+  --fig: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
   --ease: cubic-bezier(.32,.72,0,1);
-  --hand: 'Caveat', cursive;
+  --hand: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
   /* the park map's own backdrop, sampled from the artwork's edges, so the map
      page and the plan on it are one continuous surface */
   --map-bg: #223a76;
@@ -470,15 +475,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transform-style: preserve-3d; will-change: transform;
 }
 .hero-logo {
-  /* white, whatever the source artwork's own colours are: brightness(0) flattens
-     it to black and invert(1) lifts that to white in one pass, which survives the
-     logo being re-exported in another palette */
+  /* No colour filter. It used to be brightness(0) invert(1), which flattened the
+     whole mark to white — burst and wordmark alike. The burst now shows the
+     artwork's own palette and the wordmark is set white inside the SVG itself, so
+     only the shadow is applied here. */
   /* Heights are for the *cropped* mark (img/blvd-world-mark.svg), whose ink fills
      its box. The old file wrapped the same mark in 314 units of padding a side, so
      it drew at 45% of whatever height was set — every number here used to be more
      than double what it looked like. */
   height: clamp(76px, 8.6vw, 130px); width: auto;
-  filter: brightness(0) invert(1) drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
+  filter: drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
 .hero-title .line {
@@ -546,15 +552,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .view.active .hero-sub   { animation: heroIn .9s .98s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-ctas  { animation: heroIn .9s 1.1s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-ui .hero-logo { animation: heroLogoIn .9s .74s cubic-bezier(.2,.8,.25,1) both; }
+/* The keyframes carry the filter, and an animation with `both` owns that property
+   for good — which is why dropping brightness(0) invert(1) from .hero-logo alone left
+   the mark still flattened to white. Both stops had to lose it too. */
 @keyframes heroLogoIn {
   from {
     opacity: 0; transform: translateY(34px) scale(.96);
-    filter: brightness(0) invert(1) blur(10px);
+    filter: blur(10px);
   }
   to {
     opacity: 1; transform: none;
-    filter: brightness(0) invert(1)
-            drop-shadow(var(--sh-1));
+    filter: drop-shadow(0 3px 20px rgba(2, 4, 14, .72));
   }
 }
 .view.active .hero-ui .linkish { animation: heroIn .9s 1.22s cubic-bezier(.2,.8,.25,1) both; }
@@ -655,7 +663,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   white-space: nowrap; max-width: 100%;
 }
 .bt-price b {
-  font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: .01em;
+  font-family: var(--fig); font-size: 14px; font-weight: 700; letter-spacing: .01em;
   color: #fff; text-transform: none;
   font-variant-numeric: tabular-nums;
 }
@@ -708,7 +716,7 @@ html[data-hero="globe"] .hero-rule {
   text-shadow: 0 1px 7px rgba(3, 6, 22, .85);
 }
 .hero-price b {
-  font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: .01em;
+  font-family: var(--fig); font-size: 14px; font-weight: 700; letter-spacing: .01em;
   color: #fff; text-transform: none;
   font-variant-numeric: tabular-nums;
 }
@@ -948,7 +956,7 @@ html[data-hero="globe"] .hero-rule {
 .el-tag {
   margin: 0; padding-top: 9px;
   border-top: 1px solid color-mix(in srgb, var(--ink, #fff) 34%, transparent);
-  font-family: var(--mono); font-size: 8.5px; font-weight: 500; letter-spacing: .17em;
+  font-family: var(--fig); font-size: 8.5px; font-weight: 500; letter-spacing: .17em;
   text-transform: uppercase; text-align: center;
   color: color-mix(in srgb, var(--ink, #fff) 78%, transparent);
 }
@@ -2203,7 +2211,7 @@ html[data-hero="real"] .zc .zc-plate {
   justify-content: center; margin-top: 2px;
 }
 .rp-count {
-  font-family: var(--mono); font-weight: 700; font-size: clamp(34px, 4.4vw, 54px);
+  font-family: var(--fig); font-weight: 700; font-size: clamp(34px, 4.4vw, 54px);
   letter-spacing: -.04em; color: var(--pick); line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -2473,7 +2481,7 @@ html[data-hero="real"] .zc .zc-plate {
   display: flex; align-items: baseline; gap: 4px;
 }
 .bc-cur {
-  font-family: var(--mono); font-weight: 500; font-size: 10px; letter-spacing: .04em;
+  font-family: var(--fig); font-weight: 500; font-size: 10px; letter-spacing: .04em;
   color: rgba(226, 236, 255, .66);
 }
 /* a figure that just changed gives a small kick, so a tap is felt */
@@ -2532,7 +2540,7 @@ html[data-hero="real"] .zc .zc-plate {
 .cash-steps li:hover { border-color: rgba(255, 194, 77, .45); }
 .cs-num {
   grid-row: 1 / span 2; align-self: start; padding-top: 2px;
-  font-family: var(--mono); font-weight: 700; font-size: 12px;
+  font-family: var(--fig); font-weight: 700; font-size: 12px;
   color: var(--gold); font-variant-numeric: tabular-nums; letter-spacing: .04em;
 }
 .cs-do {
@@ -2656,14 +2664,14 @@ html[data-hero="real"] .zc .zc-plate {
 .sch-gap {
   position: absolute; left: 0; right: 0; top: -1px;
   display: flex; align-items: center; gap: 10px;
-  font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .1em;
+  font-family: var(--fig); font-size: 9.5px; font-weight: 500; letter-spacing: .1em;
   text-transform: uppercase; color: #6d7ba4;
   pointer-events: none;
 }
 .sch-gap i { flex: 1; height: 1px; background: rgba(124, 196, 255, .13); }
 
 .sch-time {
-  font-family: var(--mono); font-weight: 700; font-size: clamp(15px, 1.6vw, 19px);
+  font-family: var(--fig); font-weight: 700; font-size: clamp(15px, 1.6vw, 19px);
   letter-spacing: -.02em; color: #fff; font-variant-numeric: tabular-nums;
   display: flex; align-items: baseline; gap: 4px;
 }
@@ -2699,7 +2707,7 @@ html[data-hero="real"] .zc .zc-plate {
 .sm-kind.t-dance { color: #ff9fdf; }
 .sm-dur {
   position: relative; padding-left: 9px;
-  font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .06em;
+  font-family: var(--fig); font-size: 9.5px; font-weight: 500; letter-spacing: .06em;
   color: var(--ink-faint); font-variant-numeric: tabular-nums;
 }
 .sm-dur::before {
@@ -2916,7 +2924,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
   color: #fff;
 }
 .bm-list a span {
-  font-family: var(--mono); font-size: 11px; font-weight: 500; color: #9fb0d8;
+  font-family: var(--fig); font-size: 11px; font-weight: 500; color: #9fb0d8;
   white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 .bm-note {
@@ -3283,16 +3291,18 @@ body.route-experiences
 }
 
 /* ═══════════════ FIGURES ═══════════════ */
-/* mono has no weight above 700, so anything asking for 800+ is capped here
-   rather than left to the browser to synthesise */
+/* the figure faces were capped at 700 while this was JetBrains Mono, which has no
+   weight above it. Bricolage goes to 800, but the cap stays: a price should not
+   out-weigh the heading above it. */
 .bt-price b, .eat-price b, .rc-note b, .tk-price b, .pk-price,
 .tk-count, .cf-one b, .bc-meter dd,
 .rx-reg b, .rx-fast b, .rx-count b, .pb-count b, .pb-n { font-weight: 700; }
 
-/* ── figures are set in mono, and only figures ──
-   Every price, time, duration, count and hanging section number. Not labels,
-   not prose, not headings — a programme sets its schedule in mono because the
-   columns have to line up, and that discipline is the whole effect. */
+/* ── figures, and only figures ──
+   Every price, time, duration, count and hanging section number. What separates
+   them from the prose around them is no longer the family — it is all one family
+   now — but tabular-nums: the digits take equal widths here and proportional ones
+   everywhere else, so the columns line up and the prose still reads naturally. */
 .sec-num,
 .tk-price b, .tk-count, .tk-rate, .pk-price, .pk-count,
 .rx-reg b, .rx-fast b, .rx-no, .rx-count, .rx-count b, .cf-one b,
@@ -3301,11 +3311,12 @@ body.route-experiences
 .rp-count, .pb-count b, .pb-n,
 .bc-meter dd, .bc-cur, .bd-note,
 .rx-chip b, .pp-chip b, .show-tabs button b {
-  font-family: var(--mono);
+  font-family: var(--fig);
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "ss01", "zero" 0;
+  font-feature-settings: "tnum" 1;
 }
-/* mono runs wide, so the figures pull their tracking in a little */
+/* tabular digits run wider than the proportional ones, so the figures pull their
+   tracking in a little to compensate */
 .tk-price b, .pk-price, .tk-count, .sch-time, .rx-count b, .cf-one b,
 .bc-meter dd { letter-spacing: -.03em; }
 /* and the small uppercase mono bits open out instead */
@@ -3656,7 +3667,7 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   font-size: clamp(15px, 1.9vw, 24px); letter-spacing: -.015em; color: #fff;
 }
 .lbx-count {
-  margin: 0; font-family: var(--mono); font-size: 12px; font-weight: 500;
+  margin: 0; font-family: var(--fig); font-size: 12px; font-weight: 500;
   letter-spacing: .1em; color: #8fa0c8; font-variant-numeric: tabular-nums;
 }
 
@@ -3992,7 +4003,7 @@ html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
 }
 .hv:hover, .hv:focus-within { opacity: 1; }
 .hv-label {
-  margin: 0; font-family: var(--mono); font-size: 9px; font-weight: 500;
+  margin: 0; font-family: var(--fig); font-size: 9px; font-weight: 500;
   letter-spacing: .18em; text-transform: uppercase; color: #8fa0c8;
 }
 .hv-opts { display: grid; gap: 4px; }
@@ -4005,7 +4016,7 @@ html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
 .hv-opt b {
   font-family: var(--ui); font-size: 11.5px; font-weight: 600; letter-spacing: .04em;
 }
-.hv-opt span { font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: #8fa0c8; }
+.hv-opt span { font-family: var(--fig); font-size: 8.5px; letter-spacing: .08em; color: #8fa0c8; }
 .hv-opt:hover { background: rgba(199, 226, 255, .1); border-color: rgba(199, 226, 255, .22); }
 .hv-opt.on {
   background: var(--btn); border-color: transparent; color: var(--btn-ink);
@@ -4245,7 +4256,7 @@ html[data-hero="cartoon"] .hero-cta .hc-price {
   text-shadow: 0 1px 7px rgba(3, 6, 22, .8);
 }
 html[data-hero="cartoon"] .hero-cta .hc-price b {
-  font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+  font-family: var(--fig); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
   color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
 }
 

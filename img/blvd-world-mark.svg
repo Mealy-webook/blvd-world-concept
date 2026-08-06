@@ -5,7 +5,13 @@
      At any given CSS height the mark therefore rendered at 45% of that height, which
      is why it read as small however large the box was set. The nav still uses the
      original: .sc-logo compensates for that padding with negative margins, and
-     tightening the shared file would break them. -->
+     tightening the shared file would break them.
+
+     The burst keeps the artwork's own colours; the wordmark under it is forced white.
+     The two are cleanly separable without editing a single path: every one of the 14
+     shapes in the burst carries a style class (st27..st33), and all 9 shapes of the
+     "blvdworld" wordmark carry none, so :not([class]) selects exactly the wordmark
+     and nothing else. -->
 <!-- Generator: Adobe Illustrator 28.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="308.4 271.3 383 463.7" xml:space="preserve">
@@ -1233,6 +1239,8 @@
 	.st1199{clip-path:url(#SVGID_00000119108205371787291810000008896285810964975249_);}
 	.st1200{clip-path:url(#SVGID_00000177453456349081427460000005721146676974005903_);}
 	.st1201{clip-path:url(#SVGID_00000040547619753768593940000002417571679445487763_);}
+
+	.st_wordmark, path:not([class]), rect:not([class]), polygon:not([class]) { fill: #FFFFFF; }
 </style>
 <g>
 	<path d="M662.8,713.6c-4.9,0-8.9-4-8.9-8.9c0-4.9,4-8.9,8.9-8.9c4.9,0,8.9,4,8.9,8.9C671.7,709.6,667.7,713.6,662.8,713.6
