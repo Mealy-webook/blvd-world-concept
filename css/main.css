@@ -13,8 +13,9 @@
   /* Solid buttons are one flat colour. A gradient on a button reads as a stock
      component rather than a decision, and it fought the mono figures sitting
      next to it. */
-  --btn: #cfe4ff;          /* the solid button's face */
-  --btn-ink: #08101f;      /* and the ink on it */
+  --btn: #d10077;          /* the solid button's face */
+  --btn-ink: #ffffff;      /* and the ink on it — 5.3:1 on that magenta */
+  --btn-hi: #e5138b;       /* the face on hover, a step brighter */
   --pick: #ffc24d;         /* a chosen chip */
   /* This is a listings publication — twenty countries, a nightly schedule, a
      rate card — so it is set like a printed programme.
@@ -268,7 +269,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 #view-loader { background: radial-gradient(120% 90% at 30% 20%, #0d1330 0%, #05060f 55%, #140a20 100%); }
 .loader-inner { text-align: center; display: grid; gap: 42px; justify-items: center; }
 .loader-bar { width: 240px; height: 6px; border-radius: var(--r-pill); background: rgba(159,176,216,.18); overflow: hidden; }
-.loader-bar i { display: block; height: 100%; width: 0%; border-radius: var(--r-pill); background: var(--btn); transition: width .25s ease; }
+.loader-bar i { display: block; height: 100%; width: 0%; border-radius: var(--r-pill); background: #cfe4ff; transition: width .25s ease; }
 
 /* ═══════════════ INTRO ═══════════════ */
 /* transparent: the page sky behind it is the backdrop now */
@@ -296,7 +297,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   text-transform: uppercase;
   color: var(--btn-ink); background: var(--btn);
   border: 0; cursor: pointer;
-  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .28);
+  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(104, 0, 60, .5);
   transform: translateX(-50%);
   transition: background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
 }
@@ -307,9 +308,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transition: transform .3s var(--ease);
 }
 .skip-btn:hover {
-  background: #fff;
+  background: var(--btn-hi);
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: var(--sh-3), inset 0 -2px 0 rgba(8, 16, 31, .28);
+  box-shadow: var(--sh-3), inset 0 -2px 0 rgba(104, 0, 60, .5);
 }
 .skip-btn:hover::after { transform: rotate(45deg) translate(2px, -2px); }
 .skip-btn:active { transform: translateX(-50%) translateY(0); box-shadow: var(--sh-1); }
@@ -352,30 +353,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
   pointer-events: none;
 }
-/* ── the scrim, and the band at the top of it ──
-   The scrim proper goes darker at the crown where the arched heading lands and
-   along the bottom under the tiles, lighter across the middle so the lake stays
-   readable.
-
-   The first stop is fully opaque, and that is not a taste decision. The source
-   (1280x720) has a garbled Riyadh Season lockup rendered into the top-right sky
-   — it reads "RITAON SEASON" — and misrendered text on the cable car top-left.
-   Its type ends by y=75, which is 10.4% of the frame. Cropping the top off (what
-   the 1280x530 Figma frame does) removes them, but it also loses the fireworks
-   and the tops of the landmarks and fills half the stage with water. So the band
-   holds full opacity to 13% and does not reach zero until 27%: the lockup is
-   buried with margin, the whole panorama is kept, and the arched heading gets a
-   cleaner ground to sit on than it had before.
-
-   Replace this with a `--hero-top-band: 0%` override the moment the footage comes
-   back without the misspelling. */
+/* ── the scrim ──
+   Darker at the crown where the arched heading lands and along the bottom under
+   the tiles, lighter across the middle so the lake and the landmarks stay
+   readable. It is translucent the whole way down again: the opaque band that
+   used to sit across the top was there to bury the source's misspelled Riyadh
+   Season lockup, and that has been patched out of the file itself. */
 .street::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     linear-gradient(180deg,
-      var(--page-bg) 0%, var(--page-bg) 13%,
-      rgba(5, 8, 30, .52) 27%,
-      rgba(5, 8, 30, .34) 54%, rgba(5, 8, 30, .74) 100%),
+      rgba(5, 8, 30, .72) 0%, rgba(5, 8, 30, .46) 24%,
+      rgba(5, 8, 30, .32) 54%, rgba(5, 8, 30, .74) 100%),
     radial-gradient(118% 76% at 50% 42%, transparent 34%, rgba(4, 7, 24, .5) 100%);
 }
 /* stills, not a loop, when motion is not wanted — scene.js pauses it on the
@@ -692,12 +681,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .pill:hover { transform: translateY(-2px); }
 .pill.solid {
   color: var(--btn-ink); background: var(--btn);
-  /* a hard bottom edge instead of a gradient: it reads as a printed key */
-  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(8, 16, 31, .28);
+  /* a hard bottom edge instead of a gradient: it reads as a printed key. On a
+     magenta face the edge has to be a darker magenta rather than navy, or the
+     button looks like it has a bruise along the bottom. */
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
   transition: background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
 }
-.pill.solid:hover { background: #fff; box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .28); }
-.pill.solid:active { transform: translateY(0); box-shadow: inset 0 2px 0 rgba(8, 16, 31, .22); }
+.pill.solid:hover {
+  background: var(--btn-hi);
+  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(104, 0, 60, .5);
+}
+.pill.solid:active { transform: translateY(0); box-shadow: inset 0 2px 0 rgba(104, 0, 60, .45); }
 .pill.ghost {
   color: #eaf2ff; border: var(--b-3);
   background: rgba(10, 16, 48, .4); backdrop-filter: blur(6px);
@@ -2865,11 +2859,14 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .xp-per { font-size: 11px; color: var(--dim); font-weight: 700; letter-spacing: .04em; }
 .xp-cta {
   font-family: var(--ui); font-weight: 600; font-size: 15px; letter-spacing: .16em;
-  padding: 16px 46px; border-radius: var(--r-pill); color: #0b1030; background: var(--btn);
-  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(10, 20, 60, .35);
-  transition: transform .2s, box-shadow .2s;
+  padding: 16px 46px; border-radius: var(--r-pill); color: var(--btn-ink); background: var(--btn);
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
+  transition: transform .2s, box-shadow .2s, background .25s var(--ease);
 }
-.xp-cta:hover { transform: translateY(-2px); box-shadow: var(--sh-1), inset 0 -2px 0 rgba(10, 20, 60, .35); }
+.xp-cta:hover {
+  transform: translateY(-2px); background: var(--btn-hi);
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
+}
 
 .xp-dots { display: flex; gap: 8px; align-items: center; justify-content: center;
   position: relative; z-index: 3; padding: 4px 0 14px; }
@@ -3292,12 +3289,12 @@ body.route-experiences
   text-transform: uppercase; color: var(--btn-ink);
   padding: 12px 18px 12px 15px; border-radius: var(--r-pill);
   background: var(--btn); border: 0; cursor: pointer;
-  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(8, 16, 31, .24);
+  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(104, 0, 60, .45);
   opacity: 0; transform: translateY(14px) scale(.96); pointer-events: none;
   transition: opacity .4s var(--ease), transform .4s var(--ease), background .25s var(--ease);
 }
 #to-top.on { opacity: 1; transform: none; pointer-events: auto; }
-#to-top:hover { background: #fff; }
+#to-top:hover { background: var(--btn-hi); }
 #to-top .tt-arrow {
   width: 9px; height: 9px; flex: none;
   border-left: 2px solid currentColor; border-top: 2px solid currentColor;
@@ -3527,19 +3524,57 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 }
 .bt-lead i { background: rgba(216, 234, 255, .34); }
 
+/* ── the tiles as glass ──
+   Real glass, not a grey box: the panorama behind them is blurred and lifted in
+   saturation, a hairline catches the light along the top inside edge, and a
+   darker line sits along the bottom so the pane has thickness. The blur is safe
+   here — .street is sticky, only three panes carry it, and they never sit over
+   scrolling content. */
 .bt {
-  background-color: rgba(5, 9, 30, .34);
-  border-color: rgba(216, 234, 255, .5);
-  box-shadow: 0 10px 34px rgba(2, 4, 16, .3);
+  background-color: rgba(12, 22, 58, .3);
+  border-color: rgba(216, 234, 255, .34);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow:
+    0 14px 40px rgba(2, 4, 16, .38),
+    inset 0 1px 0 rgba(255, 255, 255, .3),
+    inset 0 -1px 0 rgba(4, 8, 26, .35);
 }
-.bt:hover { background-color: rgba(10, 18, 52, .5); }
+.bt:hover {
+  background-color: rgba(24, 40, 92, .42);
+  border-color: rgba(228, 242, 255, .6);
+  box-shadow:
+    0 20px 52px rgba(2, 4, 16, .46),
+    inset 0 1px 0 rgba(255, 255, 255, .42),
+    inset 0 -1px 0 rgba(4, 8, 26, .35);
+}
+/* the icon well is a smaller pane of the same glass */
 .bt-ic {
-  background: rgba(9, 15, 40, .5);
-  border-color: rgba(216, 234, 255, .32);
+  background: rgba(255, 255, 255, .11);
+  border-color: rgba(216, 234, 255, .26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .26);
 }
-.bt:hover .bt-ic { background: rgba(18, 30, 74, .62); }
+.bt:hover .bt-ic { background: rgba(255, 255, 255, .18); }
 .bt-name { text-shadow: 0 1px 7px rgba(3, 6, 22, .85); }
-.bt-price { color: #b9c9e8; text-shadow: 0 1px 7px rgba(3, 6, 22, .85); }
+.bt-price { color: #c6d5f0; text-shadow: 0 1px 7px rgba(3, 6, 22, .85); }
 .bt-price b { text-shadow: 0 1px 8px rgba(3, 6, 22, .9); }
+
+/* ── the arched title's shadow ──
+   The panorama moves under it — fireworks, a lit Eiffel Tower — so one tight
+   halo holds the letter edges and two wider ones seat the words on whatever is
+   behind them at that moment.
+
+   It goes on the <h1>, not on the .arch-type SVG, and that is the whole trick.
+   `.view.active .hero-title.arch .arch-type` runs heroIn with `both`, and heroIn
+   animates `filter` — so an animation with a fill mode owns that property on the
+   SVG for good and silently discarded every drop-shadow declared on it. The
+   title has been running with no shadow at all for that reason. A filter on the
+   parent is not in the animation's way, and it still applies to the SVG. */
+.hero-title.arch {
+  filter:
+    drop-shadow(0 1px 3px rgba(2, 4, 14, .95))
+    drop-shadow(0 4px 16px rgba(2, 4, 14, .8))
+    drop-shadow(0 18px 52px rgba(2, 4, 14, .68));
+}
 
 .scroll-cue span { text-shadow: 0 1px 8px rgba(3, 6, 22, .9); }
