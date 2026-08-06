@@ -118,6 +118,25 @@
   }
   requestAnimationFrame(tick);
 
+  /* ── the hero footage ──
+     autoplay on a muted, inline video is allowed everywhere, but a browser can
+     still refuse it, so play() is nudged again once metadata is in and on the
+     first interaction. Under prefers-reduced-motion the clip holds on its first
+     frame instead of looping. */
+  (function heroVideo() {
+    const v = document.getElementById("hero-vid");
+    if (!v) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      v.removeAttribute("autoplay");
+      v.addEventListener("loadeddata", () => v.pause(), { once: true });
+      return;
+    }
+    const nudge = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+    v.addEventListener("loadedmetadata", nudge, { once: true });
+    nudge();
+    addEventListener("pointerdown", nudge, { once: true, passive: true });
+  })();
+
   // hero landmark layers from Figma (positions as % of the 1512x982 frame)
   // clipped edges of the source art are anchored past the viewport so cuts never show
   // floating props (assets go in img/props/ — hidden until real PNGs exist)

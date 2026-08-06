@@ -119,3 +119,13 @@ with the supplied artwork when it arrives.
 
 The four food photographs remain in `img/food/` and are still used by the map's
 dining rows; their licences are recorded above.
+
+## Hero footage
+
+`video/hero.mp4` (1280x720, 10s, 2.4 MB) is the BLVD World landmark panorama —
+Taj Mahal, Grendizer, the Eiffel Tower, the Kuwait Towers, Plaza de Toros, the
+pyramid, the pagoda, the lake with its gondola and dolphins, fireworks overhead.
+Supplied by the user, generated from a still. Checked frame by frame at 0.1s,
+2.5s, 5s, 7.5s and 9.9s in all four corners: no generator watermark, which is
+why the earlier clip was pulled. It plays muted, inline and looped, and holds on
+its first frame under `prefers-reduced-motion`.
