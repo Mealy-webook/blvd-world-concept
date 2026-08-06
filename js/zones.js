@@ -28,6 +28,11 @@
   const items = [...rest.slice(0, before), ...fresh, ...rest.slice(before)];
   const start = before + Math.floor(fresh.length / 2);
 
+  // The globe version lays the same zones out as a fan instead of a ring, so the
+  // order and the opening card are published rather than worked out twice — two
+  // copies of this would drift the moment a zone is added.
+  window.WBK_ZONES = { items, start, isNew: (name) => NEW.has(name) };
+
   WBK_COVERFLOW.make({
     root,
     items,

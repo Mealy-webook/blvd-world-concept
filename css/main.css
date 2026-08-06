@@ -3918,3 +3918,62 @@ body:not(.route-home) .hv { display: none; }
   .hv { left: 8px; bottom: 8px; padding: 8px 9px 9px; }
   .hv-opt span { display: none; }
 }
+
+/* ══ THE ZONES AS A FAN ══
+   The globe version's layout for the same posters. One of the two is always
+   hidden, so the section's height comes from whichever is showing. */
+.zone-fan { display: none; }
+html[data-hero="globe"] .zone-flow { display: none; }
+html[data-hero="globe"] .zone-fan {
+  display: grid; justify-items: center; gap: clamp(14px, 2.4vh, 28px);
+  width: 100%;
+}
+
+.fan {
+  --fan-card: clamp(132px, 15vw, 196px);
+  position: relative;
+  width: 100%; height: calc(var(--fan-card) * 4 / 3 + 96px);
+  display: grid; place-items: center;
+  /* the whole deck pivots from one point below itself, which is what makes it a
+     fan rather than a row of tilted cards */
+  perspective: none;
+}
+.fan:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 6px; border-radius: var(--r-md); }
+
+.fan-card {
+  position: absolute; top: 50%; left: 50%;
+  width: var(--fan-card); aspect-ratio: 3 / 4;
+  margin: calc(var(--fan-card) * -4 / 6) 0 0 calc(var(--fan-card) / -2);
+  border-radius: var(--r-lg); overflow: hidden;
+  /* every card leans about the same point, low and central, so the deck opens the
+     way a held hand of cards does */
+  transform-origin: 50% 145%;
+  background: var(--s-well);
+  box-shadow: 0 14px 34px rgba(2, 4, 16, .5);
+  cursor: pointer;
+  transition: transform .52s cubic-bezier(.32,.72,0,1),
+              box-shadow .4s cubic-bezier(.32,.72,0,1);
+}
+.fan-card img {
+  width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
+  filter: saturate(.94) brightness(.66);
+  transition: filter .5s var(--ease);
+}
+.fan-card:hover img { filter: saturate(1.02) brightness(.88); }
+.fan-card.is-chosen {
+  box-shadow: 0 30px 66px rgba(2, 4, 16, .66), 0 0 0 2px rgba(255, 255, 255, .3);
+}
+.fan-card.is-chosen img { filter: none; }
+.fan-card.is-chosen:hover img { filter: saturate(1.04) brightness(1.04); }
+
+/* the name, under the deck — the poster carries it too, but the chosen card is
+   the one being named and a line of type says which without hunting for it */
+.fan-name {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-size: clamp(15px, 1.9vw, 24px); letter-spacing: -.015em; color: #fff;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-card { transition: none; }
+}

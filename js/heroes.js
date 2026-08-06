@@ -20,13 +20,27 @@
   const KEYS = VERSIONS.map((v) => v.key);
   const SRC = { cartoon: "video/hero.mp4", real: "video/hero-real.mp4" };
 
-  // ?hero= may sit in the query string or inside the hash — the router puts its
-  // own routes in the hash, so a shared link can carry either shape
+  /* ?hero= may sit in the query string or inside the hash — the router puts its
+     own routes in the hash, so a shared link can carry either shape.
+
+     It is also remembered for the session, and that is not a nicety. Every other
+     link on the site writes its own hash — a zone poster goes to #/map?zone=…, a
+     nav tab to #/shows — and none of them carry the version. Without the memory,
+     picking the globe hero and then clicking a zone dropped you back to the
+     cartoon one, because the new hash had no hero= in it to read. A URL that
+     names a version still wins, so a shared link always shows what was sent. */
+  const REMEMBER = "wbk-hero";
   function wanted() {
     const fromSearch = new URLSearchParams(location.search).get("hero");
     const m = location.hash.match(/[?&]hero=([^&]+)/);
-    const v = (fromSearch || (m && decodeURIComponent(m[1])) || "").toLowerCase();
-    return KEYS.includes(v) ? v : "cartoon";
+    const fromUrl = (fromSearch || (m && decodeURIComponent(m[1])) || "").toLowerCase();
+    if (KEYS.includes(fromUrl)) {
+      try { sessionStorage.setItem(REMEMBER, fromUrl); } catch (err) { /* private mode */ }
+      return fromUrl;
+    }
+    let kept = null;
+    try { kept = sessionStorage.getItem(REMEMBER); } catch (err) { /* private mode */ }
+    return KEYS.includes(kept) ? kept : "cartoon";
   }
 
   const video = document.getElementById("hero-vid");
