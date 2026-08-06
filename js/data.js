@@ -115,7 +115,7 @@ window.WBK = {
         "Any 5 rides",
       ,
         "One card"],
-      cta: "BOOK VALUE DEAL",
+      cta: "Book Value Deal",
       href: "https://webook.com",
     },
     {
@@ -130,7 +130,7 @@ window.WBK = {
         "Any 10 rides",
       ,
         "One card"],
-      cta: "BOOK VALUE DEAL PLUS",
+      cta: "Book Value Deal Plus",
       href: "https://webook.com",
     },
     {
@@ -147,7 +147,7 @@ window.WBK = {
         "Any 30 rides, in any combination",
         "Three cards — ten games on each",
       ],
-      cta: "BOOK FAMILY PACKAGE",
+      cta: "Book Family Package",
       href: "https://webook.com",
     },
     {
@@ -163,7 +163,7 @@ window.WBK = {
         "Regular queue line",
         "Worn all night as an NFC bracelet",
       ],
-      cta: "BOOK UNLIMITED",
+      cta: "Book Unlimited",
       href: "https://webook.com",
     },
     {
@@ -181,7 +181,7 @@ window.WBK = {
         "Fast queue line at every gate",
         "Worn all night as an NFC bracelet",
       ],
-      cta: "BOOK UNLIMITED FAST",
+      cta: "Book Unlimited Fast",
       href: "https://webook.com",
     },
   ],

@@ -99,6 +99,13 @@
   --sp-3: clamp(15px, 2.1vh, 24px);
   --sp-4: clamp(24px, 3.4vh, 42px);
   --sp-5: clamp(34px, 5vh, 60px);
+  /* the primary call to action's label size. The secondary tiles' titles take the
+     same value, so the row under the button is set at the button's size rather
+     than at its own guess — the tiles used to run larger than the CTA they sit
+     under. Two values, because the CTA has two forms: a pill in most versions and
+     a tile of its own in the cartoon one. */
+  --cta-type: 16px;
+  --cta-tile-type: 19px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -311,8 +318,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   position: absolute; bottom: 8vh; left: 50%;
   display: inline-flex; align-items: center; gap: 12px;
   padding: 15px 26px; border-radius: var(--r-pill);
-  font-family: var(--ui); font-weight: 700; letter-spacing: .12em; font-size: 14px;
-  text-transform: uppercase;
+  font-family: var(--ui); font-weight: 700; letter-spacing: -.005em; font-size: 14px;
+
   color: var(--btn2-ink); background: var(--btn2);
   border: 0; cursor: pointer;
   box-shadow: var(--sh-2), inset 0 -2px 0 rgba(24, 40, 86, .22);
@@ -649,7 +656,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .bt-text { display: grid; gap: 3px; min-width: 0; justify-items: center; text-align: center; }
 .bt-name {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(13px, 1.5vw, 18px);
+  font-family: var(--disp); font-weight: 700; font-size: var(--cta-type);
   letter-spacing: -.015em; color: #fff; line-height: 1.1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
@@ -702,7 +709,7 @@ html[data-hero="globe"] .hero-rule {
    label shows and the price sits on the line beneath; as a tile (the cartoon
    version) all three show and that separate line goes away. This is the pill case. */
 .hc-ic, .hc-price { display: none; }
-.hc-name { font: inherit; text-transform: uppercase; }
+.hc-name { font: inherit; }
 
 /* ── the price under the button ──
    It belongs to the call to action, not to the stack, so it is pulled back out of
@@ -752,7 +759,7 @@ html[data-hero="globe"] .hero-rule {
 /* pills */
 .pill {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--ui); font-weight: 600; letter-spacing: .06em; font-size: 15px;
+  font-family: var(--ui); font-weight: 600; letter-spacing: -.005em; font-size: 15px;
   padding: 14px 30px; border-radius: var(--r-pill); transition: transform .18s ease, box-shadow .18s ease;
 }
 .pill:hover { transform: translateY(-2px); }
@@ -787,7 +794,7 @@ html[data-hero="globe"] .hero-rule {
   background: rgba(10, 16, 48, .4); backdrop-filter: blur(6px);
 }
 .pill.ghost:hover { border-color: rgba(199, 226, 255, .9); background: rgba(16, 24, 64, .55); }
-.pill.big-pill { font-size: 16px; padding: 16px 34px; }
+.pill.big-pill { font-size: var(--cta-type); padding: 16px 34px; }
 .linkish { font-weight: 700; color: #cfe4ff; text-decoration: underline; text-underline-offset: 4px; font-size: 15px; }
 .linkish.small { font-size: 13px; color: var(--dim); }
 .floaty { animation: bob 3.4s ease-in-out infinite; }
@@ -2361,13 +2368,17 @@ html[data-hero="real"] .zc .zc-plate {
 .cashless { gap: clamp(16px, 2.6vh, 32px); }
 
 /* ══ THE PANEL ══
-   A machined tray with a plate inside it — the same nested construction the
-   lightbox frame uses, so the two read as one system. The card sits on the left of
-   the plate and the night's statement on the right. */
+   A machined tray with a plate set into it — the same nested construction the
+   lightbox frame uses, so the two read as one system.
+
+   The card leads, alone and centred, and the three moments follow it across a
+   rail underneath: one card, then what you do with it. Reading down beats reading
+   across for this, because the card is the subject and the steps are what happens
+   to it — set side by side they competed instead. */
 .cash-panel {
   --tray: clamp(5px, .6vw, 9px);
   --tray-r: clamp(20px, 2vw, 28px);
-  width: 100%; max-width: min(1060px, 100%); margin-inline: auto;
+  width: 100%; max-width: min(1020px, 100%); margin-inline: auto;
   padding: var(--tray);
   border-radius: var(--tray-r);
   background: rgba(199, 226, 255, .05);
@@ -2378,141 +2389,114 @@ html[data-hero="real"] .zc .zc-plate {
   border-radius: calc(var(--tray-r) - var(--tray));
   background: linear-gradient(168deg, rgba(16, 24, 60, .72), rgba(6, 10, 30, .9));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
-  padding: clamp(18px, 2.4vw, 34px);
-  display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
-  gap: clamp(20px, 3vw, 46px); align-items: center;
+  padding: clamp(18px, 2.4vw, 32px) clamp(16px, 2.4vw, 34px) clamp(18px, 2.2vw, 30px);
+  display: grid; justify-items: center; gap: clamp(16px, 2.4vh, 30px);
+  position: relative; overflow: hidden;
 }
-@media (max-width: 860px) {
-  .cash-inner { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* the card, with a bloom under it so it sits on the plate rather than floating */
-.cash-card { display: grid; justify-items: center; gap: 14px; position: relative; }
-.cash-card::before {
-  content: ''; position: absolute; left: 50%; top: 52%; z-index: 0;
-  width: 84%; height: 58%; transform: translate(-50%, -50%);
+/* a bloom under the card, so it sits on the plate rather than floating over it */
+.cash-inner::before {
+  content: ''; position: absolute; left: 50%; top: 0; z-index: 0;
+  width: min(560px, 80%); height: 58%; transform: translateX(-50%);
   border-radius: 50%; pointer-events: none;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(209, 0, 119, .3), transparent 70%);
-  filter: blur(22px);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(209, 0, 119, .28), transparent 72%);
+  filter: blur(30px);
 }
-.cash-caption {
-  position: relative; z-index: 1;
-  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
-  text-transform: uppercase; color: #8fa0c8; text-align: center;
-}
+.cash-inner > * { position: relative; z-index: 1; }
 
-/* ══ THE STATEMENT ══
-   Set like a printed statement, because that is what makes the point: a column of
-   taps, a column of amounts, and the balance walking down beside them. The figures
-   are tabular so the three columns hold their own edges. */
-.cash-log { display: grid; gap: 12px; align-content: center; min-width: 0; }
-.clog-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-  padding-bottom: 10px; border-bottom: 1px solid rgba(199, 226, 255, .16);
+/* ══ THE THREE MOMENTS ══
+   Three cells across a rail, each set into the plate the way the plate is set into
+   the tray. The rail carries the eye from the card down and across; the numeral is
+   a plate on the rail rather than a figure in the copy, so the sequence is legible
+   before a word is read. */
+.cash-steps {
+  list-style: none; margin: 0; padding: 0;
+  width: 100%;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  position: relative;
+  padding-top: clamp(20px, 2.4vh, 30px);
 }
-.clog-cap {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.7vw, 20px);
-  letter-spacing: -.015em; color: #fff;
+/* the rail itself — drawn across the three cells, fading out at both ends so it
+   reads as a run rather than a boxed row */
+.cash-steps::before {
+  content: ''; position: absolute; left: 8%; right: 8%; top: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(199, 226, 255, .34) 22%, rgba(199, 226, 255, .34) 78%, transparent);
 }
-.clog-start {
-  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+.cash-steps li {
+  position: relative;
+  padding: clamp(22px, 2.4vw, 30px) clamp(14px, 1.6vw, 20px) clamp(15px, 1.8vw, 20px);
+  border-radius: clamp(14px, 1.4vw, 20px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .07), rgba(199, 226, 255, .022));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .08);
+  display: grid; gap: 7px; align-content: start;
+  transition: box-shadow .45s var(--ease), background .45s var(--ease),
+              transform .45s var(--ease);
 }
-.clog-start b {
-  font-family: var(--fig); font-size: 13px; font-weight: 700; color: #fff;
-  text-transform: none; font-variant-numeric: tabular-nums;
+.cash-steps li:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .04));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .12),
+    0 14px 34px rgba(2, 4, 16, .34);
 }
-
-.clog { list-style: none; margin: 0; padding: 0; display: grid; }
-.clog li {
-  display: grid; align-items: baseline;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
-  gap: 0 clamp(10px, 1.4vw, 20px);
-  padding: 9px 0;
-  border-bottom: 1px dashed rgba(199, 226, 255, .12);
-}
-.clog li:last-child { border-bottom: 0; }
-/* each row arrives in turn once the section is seen — the balance reads as a
-   sequence rather than a table that was always there */
-.reveal.in .clog li { animation: clogIn .5s cubic-bezier(.32,.72,0,1) both; }
-.reveal.in .clog li:nth-child(1) { animation-delay: .05s; }
-.reveal.in .clog li:nth-child(2) { animation-delay: .13s; }
-.reveal.in .clog li:nth-child(3) { animation-delay: .21s; }
-.reveal.in .clog li:nth-child(4) { animation-delay: .29s; }
-.reveal.in .clog li:nth-child(5) { animation-delay: .37s; }
-@keyframes clogIn { from { opacity: 0; transform: translateY(7px); } }
-
-.clog-t {
-  font-family: var(--fig); font-size: 12px; font-weight: 700; color: var(--gold);
-  font-variant-numeric: tabular-nums; letter-spacing: .02em; white-space: nowrap;
-}
-.clog-t small { font-size: 8.5px; font-weight: 500; opacity: .75; margin-left: 2px; }
-/* The name, with a leader running from it to the amount. The plate is wide enough
-   that name and figure would otherwise sit at opposite ends of an empty gap; the
-   leader is what a printed statement uses to carry the eye across it. */
-.clog-what {
-  min-width: 0; display: flex; align-items: baseline; gap: clamp(8px, 1vw, 14px);
-  font-family: var(--body); font-weight: 600; font-size: clamp(13px, 1.35vw, 15px);
-  color: #eaf2ff;
-}
-.clog-what > span {
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.clog-what::after {
-  content: ''; flex: 1 1 auto; min-width: 0; height: 0;
-  border-bottom: 1px dotted rgba(199, 226, 255, .26);
-  transform: translateY(-.3em);
-}
-.clog-amt, .clog-bal {
-  font-family: var(--fig); font-weight: 700; font-variant-numeric: tabular-nums;
-  text-align: right; white-space: nowrap;
-}
-.clog-amt { font-size: 13px; color: #ff8fa8; min-width: 3.4em; }
-/* the running balance, set apart by a rule so it reads as its own column */
-.clog-bal {
-  font-size: 14px; color: #fff; min-width: 3.2em;
-  padding-left: clamp(10px, 1.4vw, 18px);
-  border-left: 1px solid rgba(199, 226, 255, .12);
-}
-
-/* the punchline, as three figures rather than a sentence */
-.clog-total {
-  display: flex; flex-wrap: wrap; gap: 6px clamp(14px, 2vw, 26px);
-  margin-top: 2px; padding-top: 11px;
-  border-top: 1px solid rgba(199, 226, 255, .16);
-  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
-  text-transform: uppercase; color: #8fa0c8;
-}
-.clog-total b {
-  font-family: var(--fig); font-size: 14px; font-weight: 700; margin-left: 6px;
-  color: #6ee7a8; text-transform: none; font-variant-numeric: tabular-nums;
-}
-
-/* ── the three steps, as one line under the plate ── */
-.cash-flow {
-  list-style: none; margin: 0; padding: clamp(12px, 1.6vh, 18px) clamp(8px, 1.6vw, 20px) 2px;
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 8px clamp(14px, 2.4vw, 34px);
-}
-.cash-flow li {
-  display: flex; align-items: center; gap: 9px;
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .06em;
-  color: #c8d7f2;
-}
-.cash-flow li span {
-  font-family: var(--fig); font-size: 10px; font-weight: 700; letter-spacing: .06em;
+/* the numeral sits on the rail, half in the cell and half out of it */
+.cs-num {
+  position: absolute; top: 0; left: clamp(14px, 1.6vw, 20px);
+  transform: translateY(-50%);
+  display: grid; place-items: center;
+  min-width: 30px; height: 22px; padding: 0 9px;
+  border-radius: var(--r-pill);
+  background: #0b1230;
+  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .42);
+  font-family: var(--fig); font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
   color: var(--gold); font-variant-numeric: tabular-nums;
 }
-/* an arrow between the steps, drawn rather than typed so it never wraps alone */
-.cash-flow li + li::before {
-  content: ''; flex: none; width: 16px; height: 1px; margin-right: 9px;
-  background: linear-gradient(90deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .4));
+.cs-do {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.6vw, 19px);
+  letter-spacing: -.015em; line-height: 1.15; color: #fff;
 }
-@media (max-width: 620px) {
-  .cash-flow li + li::before { display: none; }
+.cs-say {
+  font-family: var(--body); font-size: clamp(12px, 1.15vw, 13.5px); font-weight: 400;
+  line-height: 1.5; color: #a9bbdd;
+}
+
+/* each cell arrives in turn once the section is seen, left to right, so the three
+   moments read as an order rather than a row */
+.reveal.in .cash-steps li { animation: csIn .55s cubic-bezier(.32,.72,0,1) both; }
+.reveal.in .cash-steps li:nth-child(1) { animation-delay: .06s; }
+.reveal.in .cash-steps li:nth-child(2) { animation-delay: .16s; }
+.reveal.in .cash-steps li:nth-child(3) { animation-delay: .26s; }
+@keyframes csIn { from { opacity: 0; transform: translateY(10px); } }
+
+@media (max-width: 700px) {
+  /* stacked, the rail runs down the left of the column instead of across the top,
+     and the numerals sit on it */
+  .cash-steps {
+    grid-template-columns: minmax(0, 1fr); gap: 9px;
+    padding: 0 0 0 clamp(16px, 5vw, 22px);
+  }
+  .cash-steps::before {
+    left: 0; right: auto; top: 10%; bottom: 10%; width: 1px; height: auto;
+    background: linear-gradient(180deg,
+      transparent, rgba(199, 226, 255, .34) 18%, rgba(199, 226, 255, .34) 82%, transparent);
+  }
+  .cash-steps li {
+    padding: 11px 13px 12px clamp(16px, 4.4vw, 22px);
+    gap: 4px; border-radius: 14px;
+  }
+  .cs-num {
+    top: 50%; left: 0; transform: translate(-50%, -50%);
+    min-width: 26px; height: 20px; padding: 0 7px; font-size: 9.5px;
+  }
+  .cs-do { font-size: 14.5px; }
+  .cs-say { font-size: 11.5px; line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal.in .clog li { animation: none; }
+  .reveal.in .cash-steps li { animation: none; }
 }
 
 /* ── the card ── */
@@ -2676,36 +2660,13 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 
-/* The plate keeps the card and the statement side by side for as long as there is
-   room; .cash-inner stacks them below 860px. Only the card's own width comes down
-   here — stacking is what used to make this section taller than its stage. */
-@media (max-width: 1040px) { .blvd-card { width: min(340px, 100%); } }
-@media (max-width: 860px) {
-  .card-stage { order: -1; padding: 0; }
-  /* stacked, the statement has the plate's full width and the leader has nothing
-     left to bridge — it only steals room the ride names need */
-  .clog-what::after { display: none; }
-  .clog-what { gap: 0; }
-}
-/* One column in a phone's stage: the section has to give back about 90px, and the
-   card is where most of it is. Everything else comes off the paddings, so the
-   statement keeps its five rows rather than losing the point of the section. */
+/* The card is on its own row now, so it only has to come down as the stage
+   narrows — the steps handle their own collapse. */
+@media (max-width: 1040px) { .blvd-card { width: min(330px, 100%); } }
 @media (max-width: 700px) {
-  .blvd-card { width: min(240px, 100%); }
+  .blvd-card { width: min(276px, 100%); }
   .cashless { gap: clamp(10px, 1.6vh, 18px); }
-  .cash-inner { padding: 12px 14px; gap: 12px; }
-  .cash-card { gap: 9px; }
-  .cash-caption { font-size: 9.5px; letter-spacing: .1em; }
-  .cash-log { gap: 8px; }
-  .clog-head { padding-bottom: 7px; }
-  .clog li { padding: 5px 0; }
-  .clog-what { font-size: 13.5px; }
-  .clog-total {
-    gap: 4px 14px; padding-top: 9px; font-size: 9px; letter-spacing: .1em;
-  }
-  .clog-total b { font-size: 12.5px; margin-left: 5px; }
-  .cash-flow { padding: 7px 4px 0; gap: 5px 15px; }
-  .cash-flow li { font-size: 10px; gap: 7px; }
+  .cash-inner { padding: 14px 14px 15px; gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .blvd-card { animation: none; } }
 
@@ -3167,7 +3128,7 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 }
 .xp-per { font-size: 11px; color: var(--dim); font-weight: 700; letter-spacing: .04em; }
 .xp-cta {
-  font-family: var(--ui); font-weight: 600; font-size: 15px; letter-spacing: .16em;
+  font-family: var(--ui); font-weight: 600; font-size: 15px; letter-spacing: -.005em;
   padding: 16px 46px; border-radius: var(--r-pill); color: var(--btn-ink); background: var(--btn);
   box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
   transition: transform .2s, box-shadow .2s, background .25s var(--ease);
@@ -3194,8 +3155,8 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .page-back {
   position: absolute; left: var(--sec-x); top: clamp(16px, 3vh, 34px); z-index: 20;
   display: inline-flex; align-items: center; gap: 11px;
-  font-family: var(--ui); font-weight: 600; font-size: 12px; letter-spacing: .18em;
-  text-transform: uppercase; color: #cfe4ff;
+  font-family: var(--ui); font-weight: 600; font-size: 12px; letter-spacing: -.005em;
+   color: #cfe4ff;
   padding: 10px 18px 10px 15px; border-radius: var(--r-pill);
   border: 2px solid rgba(199, 226, 255, .5);
   background: rgba(10, 16, 48, .5); backdrop-filter: blur(6px);
@@ -3481,7 +3442,7 @@ body.route-experiences
   /* the card comes in on a short stage; the statement sets its own rhythm */
   .blvd-card { transform: scale(.88); }
   .cash-inner { padding: clamp(14px, 1.8vw, 24px); }
-  .clog li { padding: 7px 0; }
+  .cash-steps li { padding-block: clamp(18px, 2vw, 24px) clamp(12px, 1.4vw, 16px); }
   /* the zone ring */
   .cf { --cf-card: clamp(150px, 19vw, 232px) !important; }
   .cf-frame { padding: clamp(16px, 2.4vh, 30px) 0; }
@@ -3592,8 +3553,8 @@ body.route-experiences
   position: fixed; right: clamp(16px, 3vw, 34px); bottom: clamp(16px, 3vh, 30px);
   z-index: 130;
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--ui); font-weight: 600; font-size: 11px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--btn2-ink);
+  font-family: var(--ui); font-weight: 600; font-size: 11px; letter-spacing: -.005em;
+   color: var(--btn2-ink);
   padding: 12px 18px 12px 15px; border-radius: var(--r-pill);
   background: var(--btn2); border: 0; cursor: pointer;
   box-shadow: var(--sh-2), inset 0 -2px 0 rgba(24, 40, 86, .22);
@@ -4000,9 +3961,11 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 .bt:hover .bt-ic { background: linear-gradient(160deg, rgba(255,255,255,.42), rgba(255,255,255,.16)); }
 .bt-ic svg { filter: drop-shadow(0 1px 2px rgba(2, 4, 16, .6)); }
 
-.bt-name { text-shadow: 0 1px 7px rgba(3, 6, 22, .9); }
-.bt-price { color: #d6e3f8; text-shadow: 0 1px 7px rgba(3, 6, 22, .9); }
-.bt-price b { color: #fff; text-shadow: 0 1px 8px rgba(3, 6, 22, .95); }
+/* No shadow behind a tile's type. The glass pane is doing that job already — it
+   darkens and blurs whatever the footage puts behind it — so the shadow only
+   thickened the letterforms. The lifted price colour stays: that is what carries
+   the contrast now. */
+.bt-price { color: #d6e3f8; }
 
 /* glass without a blur is a milky box, so where backdrop-filter is unsupported
    the pane falls back to a solid dark fill that the type still reads on */
@@ -4302,9 +4265,7 @@ html[data-hero="original"] .bt-ic {
 }
 html[data-hero="original"] .bt:hover .bt-ic { background: rgba(199, 226, 255, .2); }
 html[data-hero="original"] .bt-ic svg { filter: none; }
-html[data-hero="original"] .bt-name { text-shadow: none; }
-html[data-hero="original"] .bt-price { color: #8fa0c8; text-shadow: none; }
-html[data-hero="original"] .bt-price b { color: #fff; text-shadow: none; }
+html[data-hero="original"] .bt-price { color: #8fa0c8; }
 html[data-hero="original"] .scroll-cue span { text-shadow: none; }
 
 /* the pale key needs its old edge back, not the dark magenta one */
@@ -4343,10 +4304,7 @@ html[data-hero="globe"] .bt-tag {
   color: #ffe6b0;
   background: rgba(255, 194, 77, .13);
   box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .3);
-  text-shadow: 0 1px 5px rgba(3, 6, 22, .8);
 }
-/* with no footage behind it the tag needs no shadow to hold its edges */
-html[data-hero="globe"] .bt-tag { text-shadow: none; }
 
 /* On a phone a tile is 105px and the tag is nowrap, so it ran past both edges and
    the tile's overflow: hidden clipped it to "TRY TICKET INCLUD". It wraps to two
@@ -4387,7 +4345,7 @@ html[data-hero="cartoon"] .hero-cta .hc-ic svg {
 }
 html[data-hero="cartoon"] .hero-cta .hc-text { display: grid; gap: 4px; justify-items: center; }
 html[data-hero="cartoon"] .hero-cta .hc-name {
-  font-family: var(--disp); font-weight: 700; font-size: 19px;
+  font-family: var(--disp); font-weight: 700; font-size: var(--cta-tile-type);
   letter-spacing: -.015em; line-height: 1.1; text-transform: none;
   text-shadow: 0 1px 8px rgba(3, 6, 22, .75);
 }
@@ -4401,6 +4359,9 @@ html[data-hero="cartoon"] .hero-cta .hc-price b {
   font-family: var(--fig); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
   color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
 }
+/* the CTA is a tile in this version, so the three tiles beside it are set at its
+   name's size rather than at the pill's */
+html[data-hero="cartoon"] .bt-name { font-size: var(--cta-tile-type); }
 
 /* ══ AND THE GLASS IT IS BUILT FROM ══
    Built from the same glass as the tiles below it rather than as a solid pill, so

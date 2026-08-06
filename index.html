@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=575" />
+<link rel="stylesheet" href="css/main.css?v=581" />
 </head>
 <body class="typo-body">
 
@@ -41,7 +41,7 @@
       <p class="type-line" data-line="BLVD WORLD THIS SEASON TAKES YOU ON A MAGICAL EXPERIENCE"></p>
       <p class="type-line" data-line="FROM THE HEART OF RIYADH."></p>
     </div>
-    <button id="skip-intro" class="skip-btn">SKIP INTRO</button>
+    <button id="skip-intro" class="skip-btn">Skip intro</button>
   </section>
 
   <!-- ══════════ HOME / HERO ══════════ -->
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=575" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=581" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -186,10 +186,10 @@
 
       <div class="ride-cta reveal">
         <a href="#/map" class="pill light big-pill">
-          EXPLORE MAP
+          Explore map
         </a>
         <a href="#/shows" class="pill ghost big-pill">
-          LIVE SHOWS
+          Live shows
         </a>
       </div>
     </section>
@@ -207,7 +207,7 @@
 
       <div class="pk-go reveal">
         <a class="pill light big-pill" href="#/packages">
-          COMPARE ALL FIVE PACKAGES
+          Compare all five packages
         </a>
         <p class="rc-note">All prices per person &#183; every package expires at the end of the day</p>
       </div>
@@ -234,7 +234,7 @@
           <span>rides, running until the gates close</span>
         </p>
         <a class="pill light big-pill" href="#/rides">
-          EXPLORE EVERY RIDE
+          Explore every ride
         </a>
       </div>
     </section>
@@ -248,70 +248,46 @@
           No tills. No cash. No queue.</p>
       </div>
 
-      <!-- ── one card, one night ──
-           The old version put three numbered instructions beside the card, which
-           restated the standfirst. This shows the mechanic instead: a night's taps as
-           a statement, the balance stepping down on the right, and a total that
-           delivers the promise as a figure — cash handled, SAR 0. Figures are
-           tabular, so the amounts and the running balance both line up. -->
+      <!-- The card leads and the three moments follow it, on a rail: one card,
+           then what you do with it. The plate is the same machined tray the
+           lightbox frame uses, and each moment is a cell set into it. -->
       <div class="cash-panel reveal">
         <div class="cash-inner">
-
-          <div class="cash-card">
-            <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
-            <div class="card-stage" id="card-stage">
-              <div class="blvd-card is-art" id="blvd-card">
-                <img src="img/blvd-card.png" alt="BLVD World card — 10 rides, SAR 100"
-                     width="342" height="216" draggable="false" />
-                <i class="bc-glare" aria-hidden="true"></i>
-              </div>
+          <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
+          <div class="card-stage" id="card-stage">
+            <!-- the card artwork as supplied, used as-is: the wordmark, the
+                 issuer lockup, the field, the rides and cash figures and the tap
+                 mark are all in the image. Only the tilt and the glare are ours. -->
+            <div class="blvd-card is-art" id="blvd-card">
+              <img src="img/blvd-card.png" alt="BLVD World card &#8212; 10 rides, SAR 100"
+                   width="342" height="216" draggable="false" />
+              <i class="bc-glare" aria-hidden="true"></i>
             </div>
-            <p class="cash-caption">Yours at the gate with any ticket</p>
           </div>
 
-          <div class="cash-log">
-            <div class="clog-head">
-              <p class="clog-cap">One night, one card</p>
-              <p class="clog-start">Loaded <b>SAR 100</b></p>
-            </div>
-
-            <ol class="clog">
-              <li><span class="clog-t">8:40<small>PM</small></span>
-                  <b class="clog-what"><span>Sky Loop</span></b>
-                  <span class="clog-amt">&#8722;25</span><span class="clog-bal">75</span></li>
-              <li><span class="clog-t">9:15<small>PM</small></span>
-                  <b class="clog-what"><span>Amazonia Awakens</span></b>
-                  <span class="clog-amt">&#8722;20</span><span class="clog-bal">55</span></li>
-              <li><span class="clog-t">9:50<small>PM</small></span>
-                  <b class="clog-what"><span>Arcade &#183; 6 credits</span></b>
-                  <span class="clog-amt">&#8722;18</span><span class="clog-bal">37</span></li>
-              <li><span class="clog-t">10:25<small>PM</small></span>
-                  <b class="clog-what"><span>Skill games</span></b>
-                  <span class="clog-amt">&#8722;12</span><span class="clog-bal">25</span></li>
-              <li><span class="clog-t">11:00<small>PM</small></span>
-                  <b class="clog-what"><span>Churros &#183; Egypt</span></b>
-                  <span class="clog-amt">&#8722;15</span><span class="clog-bal">10</span></li>
-            </ol>
-
-            <p class="clog-total">
-              <span>Cash handled <b>SAR 0</b></span>
-              <span>Tills visited <b>0</b></span>
-              <span>Queues <b>0</b></span>
-            </p>
-          </div>
+          <ol class="cash-steps">
+            <li>
+              <span class="cs-num">01</span>
+              <b class="cs-do">Book any ticket</b>
+              <span class="cs-say">Entry, entry + experience or a ride package &#8212; the card is yours at the gate</span>
+            </li>
+            <li>
+              <span class="cs-num">02</span>
+              <b class="cs-do">Top up in the app</b>
+              <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
+            </li>
+            <li>
+              <span class="cs-num">03</span>
+              <b class="cs-do">Tap and play</b>
+              <span class="cs-say">One tap at every ride and skill game &#8212; the balance follows you all night</span>
+            </li>
+          </ol>
         </div>
-
-        <!-- the three steps survive as one line rather than a column of instructions -->
-        <ol class="cash-flow">
-          <li><span>01</span>Book any ticket</li>
-          <li><span>02</span>Top up in the app</li>
-          <li><span>03</span>Tap and play</li>
-        </ol>
       </div>
 
       <div class="cash-go reveal">
         <a class="pill light big-pill" href="#/rides">
-          SEE RIDE PRICES
+          See ride prices
         </a>
       </div>
     </section>
@@ -526,7 +502,7 @@
         <button class="rail-btn next" id="eat-next" aria-label="More restaurants">&#8250;</button>
       </div>
       <div class="eats-go">
-        <a class="pill ghost" href="#/map?cat=dining">FIND THEM ON THE MAP</a>
+        <a class="pill ghost" href="#/map?cat=dining">Find them on the map</a>
       </div>
     </section>
   </section>
@@ -546,7 +522,7 @@
         <a class="pill light" id="dl-schedule"
            href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
            target="_blank" rel="noopener" download>
-          <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
+          <span class="dl-ic" aria-hidden="true">↓</span> Download full schedule
         </a>
       </div>
     </section>
@@ -577,7 +553,7 @@
 
       <div class="ride-cta reveal">
         <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
-        <a href="#/packages" class="pill light big-pill">EXPLORE THE RIDE PACKAGES</a>
+        <a href="#/packages" class="pill light big-pill">Explore the ride packages</a>
       </div>
     </section>
   </section>
@@ -622,7 +598,7 @@
             <b id="xp-price">SAR 150</b>
             <span class="xp-per">per person · entry included</span>
           </div>
-          <a href="https://webook.com" target="_blank" rel="noopener" class="xp-cta">BOOK</a>
+          <a href="https://webook.com" target="_blank" rel="noopener" class="xp-cta">Book</a>
         </div>
       </footer>
 
@@ -647,7 +623,7 @@
         <button class="car-nav next" id="card-next">›</button>
       </div>
       <div class="step-actions">
-        <button class="pill light" id="pick-continue">CUSTOMIZE THIS LETTER</button>
+        <button class="pill light" id="pick-continue">Customize this letter</button>
       </div>
     </div>
 
@@ -669,8 +645,8 @@
         </div>
       </div>
       <div class="step-actions">
-        <button class="pill ghost" id="back-pick">BACK</button>
-        <button class="pill light" id="custom-continue">SIGN &amp; SEND</button>
+        <button class="pill ghost" id="back-pick">Back</button>
+        <button class="pill light" id="custom-continue">Sign &amp; send</button>
       </div>
     </div>
 
@@ -688,8 +664,8 @@
           </select>
         </label>
         <div class="step-actions">
-          <button type="button" class="pill ghost" id="back-custom">BACK</button>
-          <button type="submit" class="pill light">SEND MY LETTER ✦</button>
+          <button type="button" class="pill ghost" id="back-custom">Back</button>
+          <button type="submit" class="pill light">Send my letter ✦</button>
         </div>
       </form>
     </div>
@@ -701,8 +677,8 @@
       <p class="hero-sub">It just joined the world's largest fan letter to BLVD World.<br/>
         You're officially entered for today's exclusive prizes.</p>
       <div class="step-actions">
-        <a href="#/" class="pill ghost js-to-globe">SEE IT IN THE GALLERY</a>
-        <a href="#/prizes" class="pill light">SEE THE PRIZES</a>
+        <a href="#/" class="pill ghost js-to-globe">See it in the gallery</a>
+        <a href="#/prizes" class="pill light">See the prizes</a>
       </div>
     </div>
   </section>
@@ -743,7 +719,7 @@
         <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
         <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
       </div>
-      <a href="#/letter" class="pill light big-pill floaty">SEND LETTER FOR A CHANCE TO WIN</a>
+      <a href="#/letter" class="pill light big-pill floaty">Send letter for a chance to win</a>
     </div>
   </section>
 
@@ -777,7 +753,7 @@
       <div class="bookmenu" id="bookmenu">
         <button class="pill solid sc-pill bm-btn" id="bm-btn" type="button"
                 aria-expanded="false" aria-haspopup="true" aria-controls="bm-list">
-          BOOK
+          Book
           <i class="bm-caret" aria-hidden="true"></i>
         </button>
         <div class="bm-list" id="bm-list" role="menu" aria-labelledby="bm-btn" hidden>
@@ -801,26 +777,26 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=575"></script>
-  <script src="js/borders.js?v=575"></script>
-  <script src="js/scene.js?v=575"></script>
-  <script src="js/app.js?v=575"></script>
-  <script src="js/experiences.js?v=575"></script>
-  <script src="js/carousels.js?v=575"></script>
-  <script src="js/coverflow.js?v=575"></script>
-  <script src="js/zones.js?v=575"></script>
-  <script src="js/fan.js?v=575"></script>
-  <script src="js/gallery.js?v=575"></script>
-  <script src="js/parkmap.js?v=575"></script>
-  <script src="js/sponsors.js?v=575"></script>
-  <script src="js/cashless.js?v=575"></script>
-  <script src="js/headings.js?v=575"></script>
-  <script src="js/bundles.js?v=575"></script>
-  <script src="js/ridex.js?v=575"></script>
-  <script src="js/cursor.js?v=575"></script>
-  <script src="js/glass.js?v=575" defer></script>
+  <script src="js/data.js?v=581"></script>
+  <script src="js/borders.js?v=581"></script>
+  <script src="js/scene.js?v=581"></script>
+  <script src="js/app.js?v=581"></script>
+  <script src="js/experiences.js?v=581"></script>
+  <script src="js/carousels.js?v=581"></script>
+  <script src="js/coverflow.js?v=581"></script>
+  <script src="js/zones.js?v=581"></script>
+  <script src="js/fan.js?v=581"></script>
+  <script src="js/gallery.js?v=581"></script>
+  <script src="js/parkmap.js?v=581"></script>
+  <script src="js/sponsors.js?v=581"></script>
+  <script src="js/cashless.js?v=581"></script>
+  <script src="js/headings.js?v=581"></script>
+  <script src="js/bundles.js?v=581"></script>
+  <script src="js/ridex.js?v=581"></script>
+  <script src="js/cursor.js?v=581"></script>
+  <script src="js/glass.js?v=581" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=575" defer></script>
+  <script src="js/heroes.js?v=581" defer></script>
 </body>
 </html>
