@@ -349,15 +349,33 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    for footage. */
 .hero-vid {
   position: absolute; inset: 0; z-index: 0;
-  width: 100%; height: 100%; object-fit: cover; object-position: 50% 46%;
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
   pointer-events: none;
 }
+/* ── the scrim, and the band at the top of it ──
+   The scrim proper goes darker at the crown where the arched heading lands and
+   along the bottom under the tiles, lighter across the middle so the lake stays
+   readable.
+
+   The first stop is fully opaque, and that is not a taste decision. The source
+   (1280x720) has a garbled Riyadh Season lockup rendered into the top-right sky
+   — it reads "RITAON SEASON" — and misrendered text on the cable car top-left.
+   Its type ends by y=75, which is 10.4% of the frame. Cropping the top off (what
+   the 1280x530 Figma frame does) removes them, but it also loses the fireworks
+   and the tops of the landmarks and fills half the stage with water. So the band
+   holds full opacity to 13% and does not reach zero until 27%: the lockup is
+   buried with margin, the whole panorama is kept, and the arched heading gets a
+   cleaner ground to sit on than it had before.
+
+   Replace this with a `--hero-top-band: 0%` override the moment the footage comes
+   back without the misspelling. */
 .street::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     linear-gradient(180deg,
-      rgba(5, 8, 30, .78) 0%, rgba(5, 8, 30, .46) 26%,
-      rgba(5, 8, 30, .34) 52%, rgba(5, 8, 30, .74) 100%),
+      var(--page-bg) 0%, var(--page-bg) 13%,
+      rgba(5, 8, 30, .52) 27%,
+      rgba(5, 8, 30, .34) 54%, rgba(5, 8, 30, .74) 100%),
     radial-gradient(118% 76% at 50% 42%, transparent 34%, rgba(4, 7, 24, .5) 100%);
 }
 /* stills, not a loop, when motion is not wanted — scene.js pauses it on the

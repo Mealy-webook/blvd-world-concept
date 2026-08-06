@@ -122,10 +122,23 @@ dining rows; their licences are recorded above.
 
 ## Hero footage
 
-`video/hero.mp4` (1280x720, 10s, 2.4 MB) is the BLVD World landmark panorama —
-Taj Mahal, Grendizer, the Eiffel Tower, the Kuwait Towers, Plaza de Toros, the
-pyramid, the pagoda, the lake with its gondola and dolphins, fireworks overhead.
-Supplied by the user, generated from a still. Checked frame by frame at 0.1s,
-2.5s, 5s, 7.5s and 9.9s in all four corners: no generator watermark, which is
-why the earlier clip was pulled. It plays muted, inline and looped, and holds on
-its first frame under `prefers-reduced-motion`.
+`video/hero.mp4` (1280x720, 10s, 2.3 MB) is the BLVD World landmark panorama from
+the Figma board, node 16043:3589 — Chichen Itza, the Taj Mahal, Grendizer, the
+Eiffel Tower, the Kuwait Towers, the Moroccan gate, Giza, the pagoda, the lake
+with its gondola and dolphins, and fireworks. Generated from a still and supplied
+by the user. It plays muted, inline and looped, and holds on its first frame
+under `prefers-reduced-motion`.
+
+**Known defect in the source.** The top band has a garbled Riyadh Season lockup
+rendered into the sky — it reads "RITAON SEASON" — and misrendered text on the
+cable car top-left. That is a corrupted version of the client's own brand mark,
+so it must not be shown. `.street::after` holds full opacity across the top 13%
+of the stage to bury it; the lockup's type ends at source y=75 (10.4% of frame
+height), which leaves a margin of 2.58% of stage height at every viewport shape
+by construction. Verified hidden at 889x777, 1400x620 and 700x1000.
+
+The clip should be regenerated without the lockup. When it is, drop the opaque
+stops from `.street::after` and let the scrim start translucent again.
+
+Figma's `export_video` cannot supply this file: it renders a frame's *timeline*,
+and a video *fill* is not a timeline, so it returns a 2s still.

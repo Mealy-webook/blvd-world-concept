@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=484" />
+<link rel="stylesheet" href="css/main.css?v=486" />
 </head>
 <body class="typo-body">
 
@@ -47,12 +47,16 @@
   <!-- ══════════ HOME / HERO ══════════ -->
   <section id="view-home" class="view">
     <div id="street" class="street">
-      <!-- The landmark panorama plays behind the heading and the tiles: the Taj,
-           Grendizer, the Eiffel Tower, the Kuwait Towers, Plaza de Toros, the
-           pyramid and the pagoda around the lake. Checked corner by corner across
-           the clip for a generator watermark — the reason the last one came out —
-           and it is clean. Muted and inert, so it needs no controls. -->
-      <video id="hero-vid" class="hero-vid" src="video/hero.mp4?v=484"
+      <!-- The landmark panorama from the Figma board (node 16043:3589): the Taj,
+           Chichen Itza, Grendizer, the Eiffel Tower, the Kuwait Towers, the
+           Moroccan gate, Giza, the pagoda, the lake with its gondola and
+           dolphins, fireworks overhead.
+
+           Figma's export_video returns a still for this frame — it renders a
+           frame's timeline, and a video *fill* is not a timeline — so the source
+           is the file itself. Its top band carries a misspelled Riyadh Season
+           lockup; .hero-vid crops that off. See the CSS. -->
+      <video id="hero-vid" class="hero-vid" src="video/hero.mp4?v=486"
              autoplay muted loop playsinline preload="auto"
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
@@ -731,23 +735,23 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=484"></script>
-  <script src="js/borders.js?v=484"></script>
-  <script src="js/scene.js?v=484"></script>
-  <script src="js/app.js?v=484"></script>
-  <script src="js/experiences.js?v=484"></script>
-  <script src="js/carousels.js?v=484"></script>
-  <script src="js/coverflow.js?v=484"></script>
-  <script src="js/zones.js?v=484"></script>
-  <script src="js/gallery.js?v=484"></script>
-  <script src="js/parkmap.js?v=484"></script>
-  <script src="js/sponsors.js?v=484"></script>
-  <script src="js/cashless.js?v=484"></script>
-  <script src="js/headings.js?v=484"></script>
-  <script src="js/bundles.js?v=484"></script>
-  <script src="js/ridex.js?v=484"></script>
-  <script src="js/cursor.js?v=484"></script>
+  <script src="js/data.js?v=486"></script>
+  <script src="js/borders.js?v=486"></script>
+  <script src="js/scene.js?v=486"></script>
+  <script src="js/app.js?v=486"></script>
+  <script src="js/experiences.js?v=486"></script>
+  <script src="js/carousels.js?v=486"></script>
+  <script src="js/coverflow.js?v=486"></script>
+  <script src="js/zones.js?v=486"></script>
+  <script src="js/gallery.js?v=486"></script>
+  <script src="js/parkmap.js?v=486"></script>
+  <script src="js/sponsors.js?v=486"></script>
+  <script src="js/cashless.js?v=486"></script>
+  <script src="js/headings.js?v=486"></script>
+  <script src="js/bundles.js?v=486"></script>
+  <script src="js/ridex.js?v=486"></script>
+  <script src="js/cursor.js?v=486"></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=484"></script> -->
+  <script type="module" src="js/globe.js?v=486"></script> -->
 </body>
 </html>
