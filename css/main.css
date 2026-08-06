@@ -2402,8 +2402,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
      clips every chip to a hairline. */
   display: flex; flex-wrap: nowrap; gap: 8px; justify-content: flex-start;
   align-items: center; min-height: 38px;
-  width: 100%; max-width: min(1180px, 100%);
-  margin-inline: auto; padding: 0 var(--sec-x) 4px;
+  /* the same measure as the schedule below it, so the first chip starts on the
+     schedule's left edge and the strip ends where the last row ends. It used to
+     run to 1180px and carry --sec-x of its own inside the scroller, which put it
+     on a different axis to the table at every width past 880px. */
+  width: 100%; max-width: min(880px, 100%);
+  margin-inline: auto; padding: 0 0 4px;
   overflow-x: auto; scrollbar-width: none;
   scroll-snap-type: x proximity;
 }
@@ -3118,11 +3122,8 @@ body.route-experiences
    spilled, and this is what each gives back. Anything still taller than the
    stage scrolls inside it rather than being cut. */
 @media (max-width: 700px) {
-  /* run the row to the section's edges so it is obvious it carries on */
-  .show-tabs {
-    margin-inline: calc(var(--sec-x) * -1); padding-inline: var(--sec-x);
-    max-width: none; width: auto;
-  }
+  /* the strip stays on the schedule's axis on a phone too — "always aligned with
+     the table" means at every width, so it no longer bleeds to the section edges */
 }
 @media (max-height: 960px) {
   /* the schedule's rows */
