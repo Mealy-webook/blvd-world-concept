@@ -3366,15 +3366,9 @@ body.route-experiences
 }
 .venuerules > * { width: 100%; max-width: min(1180px, 100%); }
 
-/* ── the rules as ticket stubs ──
-   Option 2 of rules-options.html. One sideways strip; each rule is a stub torn off
-   a ticket, so the section stays the same height whatever the rule count.
-
-   The notch is cut with a mask, not painted. Two circles filled with the page
-   colour would only work over a flat background, and these sections are
-   transparent — the starfield and, in the footage versions, the video both show
-   through them. A mask removes the pixels instead, so the notch is a real hole
-   whatever is behind it. */
+/* ── the rules, as plain cards ──
+   Nine of them, all on screen. They were ticket stubs with notches masked out of
+   their edges; the notches are gone and each card is centred on its own icon. */
 /* All nine at once, so nothing is behind a scroll. Five and four on a wide screen,
    three rows of three in the middle, two columns on a phone — the last row is short
    in each case, which reads as a torn sheet rather than as a broken grid. */
@@ -3387,20 +3381,12 @@ body.route-experiences
 @media (max-width: 620px)  { .vr-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .vr-stub {
-  --notch: 8px;
   min-width: 0;
   display: grid; gap: 9px; align-content: start;
-  padding: 16px 14px 18px; border-radius: var(--r-md);
+  justify-items: center; text-align: center;
+  padding: 18px 14px; border-radius: var(--r-md);
   background: linear-gradient(178deg, rgba(255, 255, 255, .085), rgba(255, 255, 255, .03));
   box-shadow: inset 0 0 0 1px rgba(124, 196, 255, .16);
-  -webkit-mask-image:
-    radial-gradient(circle var(--notch) at 50% 0, transparent 98%, #000 100%),
-    radial-gradient(circle var(--notch) at 50% 100%, transparent 98%, #000 100%);
-          mask-image:
-    radial-gradient(circle var(--notch) at 50% 0, transparent 98%, #000 100%),
-    radial-gradient(circle var(--notch) at 50% 100%, transparent 98%, #000 100%);
-  -webkit-mask-composite: source-in;
-          mask-composite: intersect;
   transition: transform .4s var(--ease), background .35s var(--ease);
 }
 .vr-stub:hover {
