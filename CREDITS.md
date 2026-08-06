@@ -286,19 +286,21 @@ library — three.js would have been ~600KB for a scene graph this needs none of
 The photograph stays in the markup, hidden, and takes over if WebGL is missing or
 the shader will not compile.
 
-**The character on the ball is ours, not the park's.** We have no capture of the
-sphere's own show, so the display's content is generated in the shader: a generic
-yellow smiling face that blinks and bobs, on a grid of LED cells whose palette —
-red, white, teal, orange — was taken off the client's photograph. It is deliberately
-generic and deliberately unnamed: we were not given the name of the character the
-real sphere shows, and drawing a specific one from a description would have been an
-invention dressed as a record.
+**What runs on the ball is ours, not the park's.** We have no capture of the
+sphere's own show, so the display's content is generated in the shader: a grid of LED
+cells drifting and flickering, in the palette taken off the client's photograph —
+red, white, teal, orange.
 
-The panel says this in plain words under the figures: the size and the display are
-the park's, the smiling character is a stand-in. Do not remove that line while the
-shader is drawing the face. To make it real, replace `surface()` with a sample from
-a video texture of the actual show — the geometry, the turn and the lighting all
-stay as they are.
+A drawn smiling character was on it for one revision and was removed on request.
+Nothing figurative is drawn there now, which also settles the question the brief
+left open: we were never given the name of the character the real sphere shows, and
+drawing a specific one from a description would have been an invention dressed as a
+record.
+
+The panel still says in plain words under the figures that the size and the display
+are the park's and the pattern is a stand-in. Keep that line while the shader is
+drawing the surface. To make it real, sample a video texture of the actual show in
+`display()` — the geometry, the turn and the lighting all stay as they are.
 
 Grendizer is Go Nagai / Toei Animation's character. The statue is BLVD World's,
 and the image is the client's own cut-out of it — the same standing as the rest of

@@ -2476,7 +2476,7 @@ html[data-hero="real"] .zc .zc-plate {
 .gz-arm {
   left: 68.622%; top: 12.575%; width: 30.499%; height: 34.281%;
   transform-origin: 32.69% 12.23%;
-  animation: gzWave 9s cubic-bezier(.36,.66,.34,1) infinite;
+  animation: gzWave 7s cubic-bezier(.36,.66,.34,1) infinite;
   z-index: 2;
 }
 /* Standing still is not standing dead: the whole figure breathes, and leans by a
@@ -2487,26 +2487,34 @@ html[data-hero="real"] .zc .zc-plate {
 }
 @keyframes gzBreathe {
   0%, 100% { translate: 0 0; scale: 1; }
-  50%      { translate: 0 -0.5%; scale: 1.004; }
+  50%      { translate: 0 -1.1%; scale: 1.008; }
 }
 @keyframes gzSway {
-  0%, 100% { rotate: -0.35deg; }
-  50%      { rotate: 0.35deg; }
+  0%, 100% { rotate: -0.7deg; }
+  50%      { rotate: 0.7deg; }
 }
 /* The wave: down and idle for most of the loop, then up, two beats, and back.
    The rotation is negative because an arm hanging below its pivot travels the way a
    clock hand does — clockwise from six o'clock is seven, then eight, so a positive
    angle swings this arm across the chest instead of out from the body. Anticlockwise
    is what lifts it away and up. */
+/* The timing matters as much as the movement. Displaying a hidden panel restarts
+   its animations from zero, so a wave placed late in the cycle meant pressing the
+   chip and watching an apparently dead statue for five seconds — which is exactly
+   how it was reported. It now waves within a second of arriving, and again every
+   seven. */
 @keyframes gzWave {
-  0%, 58%  { rotate: -1.5deg; }
-  62%      { rotate: -8deg; }                   /* the wind-up */
-  68%      { rotate: -57deg; }
-  73%      { rotate: -43deg; }
-  78%      { rotate: -57deg; }
-  83%      { rotate: -44deg; }
-  88%      { rotate: -56deg; }
-  96%      { rotate: -2.5deg; }
+  0%, 9%   { rotate: -1.5deg; }
+  13%      { rotate: -9deg; }                   /* the wind-up */
+  20%      { rotate: -58deg; }
+  26%      { rotate: -43deg; }
+  32%      { rotate: -58deg; }
+  38%      { rotate: -44deg; }
+  44%      { rotate: -57deg; }
+  53%      { rotate: -2.5deg; }
+  /* and it does not stand perfectly still afterwards either */
+  70%      { rotate: -4deg; }
+  86%      { rotate: -0.5deg; }
   100%     { rotate: -1.5deg; }
 }
 .rec-thing.is-sphere,
