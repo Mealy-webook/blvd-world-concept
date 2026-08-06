@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=612" />
+<link rel="stylesheet" href="css/main.css?v=616" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=612" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=616" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -311,7 +311,16 @@
               <i></i>
               <b class="rec-num" data-to="35">0</b><span class="rec-unit">m</span>
             </div>
-            <img class="rec-thing is-sphere" src="img/records/sphere-cut.webp"
+            <!-- A real sphere, not a picture of one: a fragment shader intersects a
+                 ray with a unit ball, so the surface is sampled rather than drawn
+                 flat, and it turns. The show on it is generated per pixel and is a
+                 stand-in — we have no capture of the sphere's own — which the note
+                 under the panel says out loud. js/sphere.js. -->
+            <canvas class="rec-thing is-globe" id="sphere-globe"
+                    width="640" height="640" aria-hidden="true"></canvas>
+            <!-- and the photograph, for anything that cannot run the shader -->
+            <img class="rec-thing is-sphere" id="sphere-still" hidden
+                 src="img/records/sphere-cut.webp"
                  alt="The sphere at BLVD World, its exterior display lit red and white"
                  width="404" height="404" draggable="false" />
             <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
@@ -324,6 +333,12 @@
           </ul>
           <p class="rec-line">
             A ball of light in the middle of the lagoon, with an immersive theatre inside it.
+          </p>
+          <!-- said plainly, because the ball above is the record and the show on it
+               is ours: the figures are the client's, the character is not -->
+          <p class="rec-note">
+            The size and the display are the park's. The smiling character turning
+            with it is a drawn stand-in for the show itself.
           </p>
         </article>
 
@@ -923,29 +938,30 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=612"></script>
-  <script src="js/borders.js?v=612"></script>
-  <script src="js/scene.js?v=612"></script>
-  <script src="js/app.js?v=612"></script>
-  <script src="js/experiences.js?v=612"></script>
-  <script src="js/carousels.js?v=612"></script>
-  <script src="js/coverflow.js?v=612"></script>
-  <script src="js/zones.js?v=612"></script>
-  <script src="js/fan.js?v=612"></script>
-  <script src="js/zonevid.js?v=612"></script>
-  <script src="js/records.js?v=612"></script>
-  <script src="js/gallery.js?v=612"></script>
-  <script src="js/parkmap.js?v=612"></script>
-  <script src="js/minimap.js?v=612"></script>
-  <script src="js/sponsors.js?v=612"></script>
-  <script src="js/cashless.js?v=612"></script>
-  <script src="js/headings.js?v=612"></script>
-  <script src="js/bundles.js?v=612"></script>
-  <script src="js/ridex.js?v=612"></script>
-  <script src="js/cursor.js?v=612"></script>
-  <script src="js/glass.js?v=612" defer></script>
+  <script src="js/data.js?v=616"></script>
+  <script src="js/borders.js?v=616"></script>
+  <script src="js/scene.js?v=616"></script>
+  <script src="js/app.js?v=616"></script>
+  <script src="js/experiences.js?v=616"></script>
+  <script src="js/carousels.js?v=616"></script>
+  <script src="js/coverflow.js?v=616"></script>
+  <script src="js/zones.js?v=616"></script>
+  <script src="js/fan.js?v=616"></script>
+  <script src="js/zonevid.js?v=616"></script>
+  <script src="js/records.js?v=616"></script>
+  <script src="js/sphere.js?v=616" defer></script>
+  <script src="js/gallery.js?v=616"></script>
+  <script src="js/parkmap.js?v=616"></script>
+  <script src="js/minimap.js?v=616"></script>
+  <script src="js/sponsors.js?v=616"></script>
+  <script src="js/cashless.js?v=616"></script>
+  <script src="js/headings.js?v=616"></script>
+  <script src="js/bundles.js?v=616"></script>
+  <script src="js/ridex.js?v=616"></script>
+  <script src="js/cursor.js?v=616"></script>
+  <script src="js/glass.js?v=616" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=612" defer></script>
+  <script src="js/heroes.js?v=616" defer></script>
 </body>
 </html>

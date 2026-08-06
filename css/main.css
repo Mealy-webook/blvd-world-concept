@@ -2509,9 +2509,21 @@ html[data-hero="real"] .zc .zc-plate {
   96%      { rotate: -2.5deg; }
   100%     { rotate: -1.5deg; }
 }
-.rec-thing.is-sphere {
+.rec-thing.is-sphere,
+.rec-thing.is-globe {
   filter: drop-shadow(0 22px 40px rgba(2, 4, 16, .6))
           drop-shadow(0 0 60px rgba(255, 90, 90, .22));
+}
+/* the canvas is square and stands the same height as everything else on the floor */
+.rec-thing.is-globe { aspect-ratio: 1; height: 94%; width: auto; }
+/* .rec-thing sets display: block, and an author declaration beats the user agent's
+   [hidden] rule whatever the specificity — so the WebGL fallback photograph was
+   painting straight over the canvas it was supposed to replace */
+.rec-thing[hidden] { display: none; }
+/* the note that keeps the drawn show honest */
+.rec-note {
+  font-family: var(--ui); font-size: 9.5px; font-weight: 600; letter-spacing: .06em;
+  color: #7b8bb0; max-width: 44ch; text-wrap: balance; line-height: 1.5;
 }
 /* the contact shadow, on the floor rather than under the picture */
 .rec-stage::after {

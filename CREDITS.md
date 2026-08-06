@@ -278,6 +278,28 @@ Imagery:
 The idle and the wave are CSS on those two layers. Both are animation, not
 evidence: the statue does not move in real life.
 
+### The sphere's globe, and the character on it
+
+The sphere panel renders a real sphere rather than showing a picture of one: a
+fragment shader intersects a ray with a unit ball per pixel (`js/sphere.js`, no
+library — three.js would have been ~600KB for a scene graph this needs none of).
+The photograph stays in the markup, hidden, and takes over if WebGL is missing or
+the shader will not compile.
+
+**The character on the ball is ours, not the park's.** We have no capture of the
+sphere's own show, so the display's content is generated in the shader: a generic
+yellow smiling face that blinks and bobs, on a grid of LED cells whose palette —
+red, white, teal, orange — was taken off the client's photograph. It is deliberately
+generic and deliberately unnamed: we were not given the name of the character the
+real sphere shows, and drawing a specific one from a description would have been an
+invention dressed as a record.
+
+The panel says this in plain words under the figures: the size and the display are
+the park's, the smiling character is a stand-in. Do not remove that line while the
+shader is drawing the face. To make it real, replace `surface()` with a sample from
+a video texture of the actual show — the geometry, the turn and the lighting all
+stay as they are.
+
 Grendizer is Go Nagai / Toei Animation's character. The statue is BLVD World's,
 and the image is the client's own cut-out of it — the same standing as the rest of
 the artwork here.
