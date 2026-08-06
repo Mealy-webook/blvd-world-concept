@@ -420,11 +420,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 /* hero UI ── the hero is the arched heading and the four tiles, on the page's
    own colour. No footage, no built scene, so nothing needs a veil over it. */
-/* The bottom padding is what keeps the tiles and the note clear of the scroll
-   indicator pinned at 4vh — without it the note sat on top of it. */
+/* .street centres this block, so the difference between the two vertical
+   paddings is what lifts the content off centre — half of it, since centring
+   splits the remainder. The old 11vh / 4vh+74px was only about 9px of lift on a
+   laptop, which left the tiles crowding the scroll indicator. A small top
+   padding against a large bottom one lifts the whole block well clear of it, and
+   because both are viewport-relative it holds at any height. */
 .hero-ui {
   position: relative; z-index: 5; text-align: center;
-  padding: 11vh 6vw calc(4vh + 74px);
+  padding: clamp(40px, 6vh, 88px) 6vw calc(4vh + 150px);
   display: grid; justify-items: center; gap: 20px;
   transform-style: preserve-3d; will-change: transform;
 }
@@ -3315,3 +3319,38 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 
 /* over a field, hand the caret back */
 .cur.is-text .cur-dot, .cur.is-text .cur-ring { opacity: 0; }
+
+/* ═══════════════ FITTING THE HERO TO SHORT SCREENS ═══════════════ */
+/* At the end of the file on purpose: .scroll-cue sets display: grid and the
+   tiles set their own metrics further down, so a media query placed where the
+   hero is defined loses to both. This is the same reason the FIGURES and
+   stage-fitting blocks live down here. */
+/* the arch is sized from width, so on a short screen it has to come in or it
+   eats the clearance the hero just gained */
+@media (max-height: 820px) { .hero-title.arch { width: min(920px, 84vw); } }
+@media (max-height: 700px) { .hero-title.arch { width: min(760px, 74vw); } }
+/* Short and wide — a small laptop, or a phone on its side. Measured at
+   1440x620 the block was clipping 13px off the top with only 42px left under
+   the tiles, so the lift comes down with the room available and the arch comes
+   in again. */
+@media (max-height: 660px) {
+  .hero-ui { padding: 26px 6vw calc(4vh + 100px); gap: 14px; }
+  .hero-title.arch { width: min(620px, 64vw); }
+}
+/* A phone on its side, or anything else this short: measured at 844x390 the
+   block still clipped, because 390px simply is not enough for a full-size arch
+   and four tiles. The cue goes, the type and the tiles come right in, and the
+   hero is allowed to grow past the viewport rather than crop itself — better to
+   scroll a little than to lose the top of the heading. */
+@media (max-height: 520px) {
+  .street { height: auto; min-height: 100vh; overflow: visible; }
+  .hero-ui { padding: 16px 6vw 20px; gap: 8px; }
+  .hero-title.arch { width: min(460px, 52vw); }
+  .scroll-cue { display: none; }
+  .bt { grid-template-columns: 40px minmax(0, 1fr) 20px; gap: 11px; padding: 11px 13px; }
+  .bt-ic { width: 40px; height: 40px; }
+  .bt-ic svg { width: 19px; height: 19px; }
+  .bt-name { font-size: 14px; }
+  .bt-price b { font-size: 14px; }
+  .bt-note { font-size: 10px; }
+}
