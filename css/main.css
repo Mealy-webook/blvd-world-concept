@@ -4129,9 +4129,16 @@ html[data-hero="original"] .skip-btn:hover { background: #fff; }
    makes it the primary rather than a fourth equal. The separate price line goes
    away because the price is inside it now. */
 html[data-hero="cartoon"] .hero-price { display: none; }
-/* the divider goes, and each tile says it for itself */
-html[data-hero="cartoon"] .bt-lead { display: none; }
-html[data-hero="cartoon"] .bt-tag {
+
+/* ── the tag, on the versions that use it ──
+   Cartoon and globe both put the wording on each tile rather than once above the
+   row. The divider goes with it in both: two things on one screen saying entry is
+   included reads as a mistake, not as emphasis. The real-video and original
+   versions keep the divider and carry no tag. */
+html[data-hero="cartoon"] .bt-lead,
+html[data-hero="globe"] .bt-lead { display: none; }
+html[data-hero="cartoon"] .bt-tag,
+html[data-hero="globe"] .bt-tag {
   display: block;
   margin-top: 2px; padding: 4px 10px; border-radius: var(--r-pill);
   font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
@@ -4141,6 +4148,8 @@ html[data-hero="cartoon"] .bt-tag {
   box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .3);
   text-shadow: 0 1px 5px rgba(3, 6, 22, .8);
 }
+/* with no footage behind it the tag needs no shadow to hold its edges */
+html[data-hero="globe"] .bt-tag { text-shadow: none; }
 html[data-hero="cartoon"] .hero-cta .hc-ic,
 html[data-hero="cartoon"] .hero-cta .hc-price { display: grid; }
 html[data-hero="cartoon"] .hero-cta.pill {
