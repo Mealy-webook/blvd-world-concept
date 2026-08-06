@@ -87,8 +87,14 @@ window.WBK_COVERFLOW = (function () {
       });
       if (capEl && caption) capEl.innerHTML = caption(items[i], i);
       cards.forEach((c, n) => c.classList.toggle("is-centre", n === i));
+      // the ring can settle under a pointer that has not moved, so the cursor's
+      // word has to be recomputed here as well as on pointermove
+      refreshHover();
       onSelect && onSelect(items[i], i);
     }
+    // replaced below once the hover resolver exists; a no-op until then, because
+    // select() runs during the first paint
+    let refreshHover = () => {};
 
     // Paint straight to the DOM — sixty passes a second is no place for
     // rebuilding markup.
@@ -147,11 +153,22 @@ window.WBK_COVERFLOW = (function () {
 
     // hover, via a class the CSS keys off instead of :hover
     if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      let hoverRaf = null, lastX = 0, lastY = 0;
+      let hoverRaf = null, lastX = -1, lastY = -1;
       const resolveHover = () => {
         hoverRaf = null;
+        if (lastX < 0) return;
         const at = cardIndexAtPoint(lastX, lastY);
         for (let i = 0; i < cards.length; i++) cards[i].classList.toggle("is-hovered", i === at);
+        /* What the cursor calls this card, which is not the same for all of them:
+           the centred one is a way into the park, the rest are a way to change
+           which card is centred. js/cursor.js reads this attribute if it finds
+           one, so the wording lives with the behaviour rather than in a table on
+           the other side of the codebase. */
+        frame.dataset.cursorWord =
+          at < 0 ? "Drag" : at === selected ? "Explore zone" : "Select";
+      };
+      refreshHover = () => {
+        if (lastX >= 0 && hoverRaf === null) hoverRaf = requestAnimationFrame(resolveHover);
       };
       frame.addEventListener("pointermove", (e) => {
         lastX = e.clientX; lastY = e.clientY;
@@ -159,7 +176,9 @@ window.WBK_COVERFLOW = (function () {
       });
       frame.addEventListener("pointerleave", () => {
         if (hoverRaf !== null) { cancelAnimationFrame(hoverRaf); hoverRaf = null; }
+        lastX = lastY = -1;
         for (const c of cards) c.classList.remove("is-hovered");
+        delete frame.dataset.cursorWord;
       });
     }
 

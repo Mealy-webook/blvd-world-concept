@@ -40,15 +40,25 @@
     // The poster carries the country name, the Riyadh Season lockup and the
     // BLVD World mark, so there is no veil and no second name — only a New tag
     // on the three zones that opened this season.
-    // Each poster is a link to that zone on the map. Clicking a card off centre
-    // brings it in (coverflow.js cancels the navigation for those); clicking the
-    // one already centred follows the link, and the map opens flown to the zone —
-    // js/parkmap.js reads ?zone= out of the hash and selects the matching pin.
+    /* Each card is a link to that zone on the map. Clicking a card off centre
+       brings it in (coverflow.js cancels the navigation for those); clicking the
+       one already centred follows the link, and the map opens flown to the zone —
+       js/parkmap.js reads ?zone= out of the hash and selects the matching pin.
+
+       Both images are in the markup and CSS picks between them by version, rather
+       than the card being rebuilt on a switch: the poster for the cartoon and
+       globe heroes, the real photograph for the real-video hero, which is running
+       actual footage and should not be surrounded by illustration. The poster has
+       the country name painted into the artwork; the photograph does not, so the
+       photo variant carries a name plate of its own. */
     card: (z) => `
       <a class="zc is-poster" href="#/map?zone=${encodeURIComponent(z.name)}"
          aria-label="${z.name} — open on the park map">
-        <img src="img/zones/posters/${z.poster}" alt="${z.name}"
+        <img class="zc-poster" src="img/zones/posters/${z.poster}" alt="${z.name}"
              draggable="false" loading="lazy">
+        <img class="zc-photo" src="img/zones/${(z.imgs && z.imgs[0]) || z.poster}" alt=""
+             draggable="false" loading="lazy">
+        <span class="zc-plate" aria-hidden="true">${z.name}</span>
         ${NEW.has(z.name) ? '<b class="zc-new">New</b>' : ""}
       </a>`,
     // no caption under the ring: the poster is the caption

@@ -468,8 +468,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transform-style: preserve-3d; will-change: transform;
 }
 .hero-logo {
-  height: clamp(66px, 8.5vw, 116px); width: auto; margin-bottom: -6px;
-  filter: brightness(0) invert(1) drop-shadow(var(--sh-1));
+  /* white, whatever the source artwork's own colours are: brightness(0) flattens
+     it to black and invert(1) lifts that to white in one pass, which survives the
+     logo being re-exported in another palette */
+  height: clamp(52px, 6.4vw, 84px); width: auto; margin-bottom: 2px;
+  filter: brightness(0) invert(1) drop-shadow(0 2px 14px rgba(2, 4, 14, .7));
 }
 .hero-title { font-family: var(--disp); line-height: .96; display: grid; }
 .hero-title .line {
@@ -1531,9 +1534,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* the poster is an <a> to that zone on the map; it still fills its card */
 .zc { position: absolute; inset: 0; display: block; text-decoration: none; }
 .zc img {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
   filter: saturate(.96) brightness(.7);
   transition: filter .6s var(--ease);
+}
+/* the poster by default; the real-video hero swaps in the photograph instead */
+.zc-photo, .zc-plate { display: none; }
+html[data-hero="real"] .zc-poster { display: none; }
+html[data-hero="real"] .zc-photo { display: block; }
+/* the poster paints the country's name into the artwork. A photograph does not,
+   so it gets a plate — set in the display face, over a gradient that only exists
+   where the words are. */
+html[data-hero="real"] .zc-plate {
+  display: block; position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
+  padding: 34px 14px 14px;
+  font-family: var(--disp); font-weight: 700; font-size: clamp(13px, 1.5vw, 19px);
+  letter-spacing: -.01em; line-height: 1.1; color: #fff; text-align: center;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .9);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .82) 62%);
 }
 .cf-card.is-centre .zc img { filter: none; }
 /* the New tag, top-left — the only corner free of poster artwork on all eight
@@ -3405,6 +3424,12 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
 .cur-word {
   font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #fff;
+  /* Two words wrap inside the ring, and text-align was `start` — so the box was
+     centred but the shorter second line hugged its left edge, which is what read
+     as an off-centre label. Centre the lines, and pull back the tracking that
+     hangs off the last letter of each so they centre optically too. */
+  max-width: 60px; text-align: center; line-height: 1.15;
+  margin-right: -.14em;
   opacity: 0; transform: scale(.8);
   transition: opacity .25s var(--ease), transform .25s var(--ease);
 }
@@ -3763,6 +3788,64 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    js/heroes.js puts the chosen one on the root as data-hero, and the URL carries
    it so a version can be sent as a link. At the end of the file because these
    have to beat the hero's own rules, declared several hundred lines above. */
+
+/* ── the real-video version runs on black ──
+   The footage is real night photography of the park, and the campaign navy behind
+   it read as a colour cast that was not in the film. --page-bg is the single token
+   painted behind #stars-page and every view, so black is one override rather than
+   a sweep — and the starfield's pale blue reads better on it than it did on navy.
+   Not quite flat: a shade of lift through the middle keeps a 100vh scroll from
+   looking like a dead area. */
+html[data-hero="real"] {
+  /* Every surface, edge and shadow on this site comes from a token, so a whole
+     theme is a token block rather than a sweep through the stylesheet. The blue
+     cast is what goes: the navy palette is drawn from the logo artwork and it
+     fought real night photography, reading as a colour grade nobody applied. What
+     replaces it is neutral — white at low alpha over black — so the only colour
+     on screen is the colour in the film, plus the two brand accents (the magenta
+     button, the gold chip), which stay exactly as they are. */
+  --page-bg: linear-gradient(180deg, #000 0%, #05060d 46%, #030308 78%, #000 100%);
+  --bg: #000;
+  --bg-2: #06070c;
+  --dim: #a3a8b8;                                    /* grey, not blue-grey */
+  --s-well: rgba(255, 255, 255, .05);
+  --s-card: linear-gradient(180deg, rgba(30, 32, 40, .6), rgba(8, 9, 14, .88));
+  --s-float: rgba(6, 7, 12, .84);
+  --s-gold: rgba(255, 194, 77, .09);
+  --b-1: 1px solid rgba(255, 255, 255, .1);
+  --b-2: 1px solid rgba(255, 255, 255, .17);
+  --b-3: 1px solid rgba(255, 255, 255, .42);
+  --btn2: #f4f6fa;                                   /* the white button, off the blue */
+  --btn2-ink: #0a0a0c;
+  --map-bg: #14161d;
+}
+/* the accents that were tuned against navy and need a nudge on black */
+html[data-hero="real"] .faq-item.open { border-color: rgba(255, 255, 255, .34); background: rgba(255, 255, 255, .07); }
+html[data-hero="real"] .faq-item:hover { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .2); }
+html[data-hero="real"] .faq-ic { color: #e8ecf5; }
+html[data-hero="real"] .cf-card.is-hovered { box-shadow: 0 26px 60px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 194, 77, .3); }
+html[data-hero="real"] .gal-plate { border-color: rgba(255, 255, 255, .12); }
+html[data-hero="real"] .sch-row::after,
+html[data-hero="real"] .sch-gap i { background: rgba(255, 255, 255, .12); }
+
+/* ── and the footage fades out rather than stopping ──
+   A hard edge where the video meets the next section reads as a seam. This carries
+   the film down into that black: barely there across the middle where the lake and
+   the landmarks are, heavier at the crown so the arched heading has a ground, and
+   fully black by the bottom edge, so the hero ends without a line across it.
+   Declared per version because the other two do not want it — the cartoon hero
+   plays at full strength on purpose, and the globe hero has no footage at all. */
+html[data-hero="real"] .street::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(0, 0, 0, .72) 0%,
+      rgba(0, 0, 0, .34) 22%,
+      rgba(0, 0, 0, .22) 48%,
+      rgba(0, 0, 0, .62) 82%,
+      #000 100%),
+    radial-gradient(120% 78% at 50% 40%, transparent 30%, rgba(0, 0, 0, .55) 100%);
+}
 
 /* the globe version has no footage at all: the planet rises out of the fold */
 html[data-hero="globe"] .hero-vid { display: none; }

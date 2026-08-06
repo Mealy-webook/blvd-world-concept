@@ -33,9 +33,12 @@
   // The map is left alone entirely — see the route watch below — so its stage is
   // not listed here.
   const GRAB = ".cf-frame, .rail, #eat-rail, #show-rail, .rs-strip";
-  // What each draggable surface calls itself. A rail is a rail and you drag it;
-  // the zone ring is a way into the park, so it says where a click leads instead.
-  const WORDS = [[".cf-frame", "Explore zone"]];
+  // What each draggable surface calls itself. A rail is a rail and you drag it.
+  // A surface can also name itself per-position through data-cursor-word — the
+  // zone ring does, because its centred card leads somewhere and the rest only
+  // change which card is centred, so one label for the whole ring would be wrong
+  // on six cards out of seven.
+  const WORDS = [];
   const HIT = 'a, button, [role="button"], summary, label, .cf-card, .cf-dot, .bt, .pill, .eat-card, .vr-tile, .faq-q';
   const TEXT = "input, textarea, [contenteditable]";
 
@@ -75,7 +78,7 @@
     root.classList.toggle("is-hit", !text && !grab && !!el.closest(HIT));
     if (grab && !text) {
       const named = WORDS.find(([sel]) => grab.matches(sel));
-      word.textContent = named ? named[1] : "Drag";
+      word.textContent = grab.dataset.cursorWord || (named ? named[1] : "Drag");
     }
   }, { passive: true });
 
