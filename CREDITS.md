@@ -233,3 +233,35 @@ The fix is real clips, not better labelling. `js/zonevid.js` reads `clip` off th
 zone in `WBK.zones` first and plays it unlabelled, so dropping in per-zone films
 and adding one line each retires the samples. Do that before this is shown
 outside webook.
+
+## The three world-record sections
+
+The three records, and the 33.7 m figure, were supplied by the client in the brief
+for this section. **Nothing here was verified against Guinness World Records' own
+register**, and no record number, award date or category wording was checked. If
+this goes in front of anyone outside webook, confirm all three claims and the
+exact category names first — "the largest LED sphere", "the largest artificial
+lake" and "the tallest metal replica of a fictional character" are paraphrases of
+what we were given, not quotations of a citation.
+
+Only one figure is stated anywhere in the three sections: **33.7 m**, as given.
+The comparison beside it — "about nineteen people, head to toe" — is arithmetic on
+that number against the 1.75 m reference figure drawn at the statue's foot
+(33.7 / 1.75 = 19.3), not a second claim. No diameter is given for the sphere and
+no area for the lake, because we were not given either and inventing them would
+have been the easiest thing on the page to get wrong.
+
+Imagery, all cut from what was already in the repo:
+
+- `img/records/led-sphere.webp` — the sphere, cropped from `img/gallery/lake-aerial.jpg`
+- `img/records/lagoon.webp` — the same aerial, wide, for the tilted plane
+- `img/records/grendizer.webp` — the statue, cropped from the Figma board's own
+  cut-out layer `img/hero-layers/layer-4741.png`
+
+The sphere in the first section is drawn, not photographed: fifteen rings of
+latitude in a CSS 3D box, over a shaded core. The real thing is shown small beside
+it so the drawing is not mistaken for the article.
+
+Grendizer is Go Nagai / Toei Animation's character. The statue is BLVD World's,
+and the image is the client's own cut-out of it — the same standing as the rest of
+the artwork here.

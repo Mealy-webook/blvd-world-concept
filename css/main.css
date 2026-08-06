@@ -2358,6 +2358,350 @@ html[data-hero="real"] .zc .zc-plate {
   .rc-strip .rc-cell:nth-child(n+7) { display: none; }
 }
 
+/* ═══════════════ THREE WORLD RECORDS ═══════════════
+   One record per screen. Each is drawn in 3D rather than photographed flat: a
+   sphere built from dotted meridians in a preserve-3d box, the park's own aerial
+   laid down on a tilted plane, and a statue standing on a floor that recedes. The
+   perspective is real in all three — the depth is not a gradient pretending. */
+.rec {
+  position: relative; z-index: 11;
+  /* the header is fixed and about 130px deep here, and these sections fill their
+     stage — centring in the whole stage put the record's own label underneath it.
+     The extra top padding is the header's room, so the centre falls below it. */
+  padding: calc(var(--sec-y) + clamp(38px, 8vh, 76px)) var(--sec-x) var(--sec-y);
+  min-height: 100%; align-content: center;
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 1.8vh, 22px);
+  text-align: center;
+}
+.rec .sec-title { text-wrap: balance; }
+
+/* the record's own label, in the site's divider form */
+.rec-eyebrow {
+  display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);
+  width: 100%; max-width: 480px;
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); white-space: nowrap;
+}
+.rec-eyebrow i {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 194, 77, .5));
+}
+.rec-eyebrow i:last-child {
+  background: linear-gradient(90deg, rgba(255, 194, 77, .5), transparent);
+}
+.rec-line {
+  font-family: var(--body); font-size: clamp(13px, 1.5vw, 17px); font-weight: 400;
+  line-height: 1.5; color: #b8c8ea; max-width: 46ch; text-wrap: balance;
+}
+.rec-line b { color: #fff; font-family: var(--fig); font-weight: 700; }
+
+/* ══ 1. THE SPHERE ══
+   Twenty meridians, each a circle with a dotted border, each turned a little
+   further around the vertical axis. In a preserve-3d box that is a real sphere of
+   dots: the ones on the far side pass behind the near ones as it turns, which is
+   the whole reason not to fake this with one flat gradient. */
+.orb-stage {
+  display: grid; justify-items: center; align-items: center; gap: clamp(14px, 2.4vw, 40px);
+  grid-template-columns: auto auto;
+  perspective: 900px;
+  margin-block: clamp(4px, 1.4vh, 16px);
+}
+/* The ball itself does not rotate. That was the second thing wrong with this: the
+   core, the panel colour and the sweep are flat layers, so putting them in the
+   spinning box turned them edge-on and the whole thing tumbled like a coin. Only
+   the rings turn, inside the ball, which is what a sphere of latitude rings
+   actually does. */
+.orb {
+  position: relative;
+  width: clamp(180px, 30vh, 300px); aspect-ratio: 1;
+  transform-style: preserve-3d;
+}
+.orb-core, .orb-grid, .orb-sweep {
+  position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+}
+/* the body of the ball: lit from the upper left, so the rings have something to
+   sit on and the silhouette reads as a sphere rather than a cage */
+.orb-core {
+  background:
+    radial-gradient(115% 115% at 30% 24%,
+      #2a3468 0%, #161d46 26%, #0b0f2c 58%, #05071a 100%);
+  box-shadow:
+    inset -14px -18px 44px rgba(0, 0, 0, .75),
+    inset 10px 12px 30px rgba(126, 160, 255, .16),
+    0 0 60px rgba(209, 0, 119, .3),
+    0 0 130px rgba(90, 60, 255, .22);
+}
+/* the panel grid, in the real sphere's palette — magenta, orange, cyan, violet */
+.orb-grid {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 60, 160, .9) 38%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 150, 40, .85) 38%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(60, 220, 255, .8) 38%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(150, 90, 255, .8) 38%, transparent 40%);
+  background-size: 13px 13px, 17px 17px, 19px 19px, 23px 23px;
+  background-position: 0 0, 6px 8px, 11px 3px, 3px 12px;
+  mix-blend-mode: screen;
+  opacity: .38;
+  /* held well inside the silhouette: a flat plane of dots does not foreshorten at
+     the edge, and at full strength that is what made the first pass read as a
+     disc. It is panel colour; the rings carry the shape. */
+  mask: radial-gradient(circle at 40% 34%, #000 22%, rgba(0,0,0,.45) 56%, transparent 78%);
+  animation: orbPanels 9s steps(9) infinite;
+}
+@keyframes orbPanels { to { background-position: 13px 13px, -11px 25px, 30px -16px, -20px -11px; } }
+
+/* the tilt, and inside it the turn. Two elements, because one element cannot hold
+   both: a spin written on `rotate` and a tilt written on `transform` compose in
+   the property order the spec fixes — rotate first — which tips the sphere's axis
+   as it goes round and makes it precess instead of spin. Nested, the tilt is the
+   outer frame and the turn happens inside it, which is the way up a planet does
+   it. js/records.js writes --tx / --ty from the pointer. */
+.orb-rings {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tx, -20deg)) rotateY(var(--ty, 0deg));
+  transition: transform .6s cubic-bezier(.32,.72,0,1);
+}
+.orb-spin {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  animation: orbSpin 30s linear infinite;
+}
+@keyframes orbSpin { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+
+/* Rings of latitude, not meridians. Meridians all pass through both poles, so
+   twenty of them read as an onion seen edge-on — a flat rosette, which is what the
+   first pass looked like. Stacked horizontal rings are what a sphere looks like in
+   section: widest at the equator, tightening towards the poles. Every ring is a
+   dotted circle, so each row of dots follows the surface. */
+.orb-ring {
+  position: absolute; left: 50%; top: 50%;
+  width: var(--d); height: var(--d);
+  margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  border-radius: 50%;
+  border: 2px dotted rgba(190, 225, 255, .55);
+  transform: translateY(var(--y)) rotateX(90deg);
+  filter: drop-shadow(0 0 4px rgba(120, 190, 255, .5));
+}
+/* every fourth ring burns hot, the way the real panels do */
+.orb-ring:nth-child(4n) {
+  border-color: rgba(255, 90, 170, .62);
+  filter: drop-shadow(0 0 6px rgba(255, 60, 150, .65));
+}
+.orb-ring:nth-child(6n) {
+  border-color: rgba(255, 175, 80, .6);
+  filter: drop-shadow(0 0 6px rgba(255, 150, 40, .6));
+}
+
+/* a band of light running across it, once every few seconds */
+.orb-sweep {
+  overflow: hidden;
+  background: linear-gradient(105deg,
+    transparent 34%, rgba(255, 255, 255, .18) 47%, rgba(160, 220, 255, .1) 53%, transparent 66%);
+  background-size: 220% 100%;
+  mix-blend-mode: screen;
+  animation: orbSweep 5.5s cubic-bezier(.6,0,.4,1) infinite;
+}
+@keyframes orbSweep {
+  0%, 62%  { background-position: -120% 0; opacity: 0; }
+  70%      { opacity: 1; }
+  100%     { background-position: 220% 0; opacity: 0; }
+}
+
+/* the real thing, small, beside the drawing of it */
+.orb-real { display: grid; justify-items: center; align-content: center; gap: 8px; margin: 0; }
+.orb-real img {
+  /* place-self, because a grid item stretches by default and the stretched height
+     outranked aspect-ratio — the round inset came out as a tall ellipse */
+  display: block; place-self: center;
+  width: clamp(84px, 12vh, 132px); height: auto; aspect-ratio: 1;
+  object-fit: cover; border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2), 0 14px 34px rgba(2, 4, 16, .5);
+}
+.orb-real figcaption {
+  font-family: var(--ui); font-size: 8.5px; font-weight: 600; letter-spacing: .13em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+
+/* ══ 2. THE LAKE ══
+   The park's own aerial, laid flat and seen from a low angle, so the lagoon reads
+   as water you are standing beside rather than a photograph you are looking at. */
+.lake-stage {
+  /* smaller than it was: laid down at 58 degrees the plane is over 500px deep, and
+     with the head above it the section ran past its stage */
+  width: 100%; max-width: min(720px, 80vw);
+  perspective: 1100px; perspective-origin: 50% 20%;
+  margin-block: clamp(4px, 1.2vh, 14px);
+}
+.lake-plane {
+  position: relative;
+  transform: rotateX(58deg) rotateZ(-4deg) scale(1.02);
+  transform-style: preserve-3d;
+  border-radius: clamp(10px, 1.2vw, 16px); overflow: hidden;
+  box-shadow: 0 40px 90px rgba(2, 4, 16, .6);
+}
+.lake-plane img {
+  display: block; width: 100%; height: auto;
+  filter: saturate(1.06) brightness(.9) contrast(1.04);
+}
+/* a sheet of water over the whole plane: it is what the submarine goes under */
+.lake-sheet {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(20, 90, 140, .1), rgba(6, 30, 60, .3)),
+    repeating-linear-gradient(101deg,
+      rgba(190, 240, 255, .07) 0 2px, transparent 2px 9px);
+  animation: lakeShimmer 7s linear infinite;
+}
+@keyframes lakeShimmer { to { background-position: 0 0, 60px 0; } }
+
+/* the boat and the submarine run the same loop, half a lap apart. offset-path is
+   what keeps them on the water: a translate would have run them off the shore. */
+.lake-boat, .lake-sub {
+  position: absolute; z-index: 4; left: 0; top: 0;
+  width: 14px; height: 14px; border-radius: 50%;
+  offset-path: path("M 120 300 C 220 150, 470 120, 620 210 S 800 380, 640 470 S 260 500, 120 300");
+  offset-rotate: 0deg;
+}
+.lake-boat {
+  background: #fff5e0;
+  box-shadow: 0 0 0 3px rgba(255, 200, 120, .35), 0 0 16px rgba(255, 190, 90, .9);
+  animation: lakeRun 19s linear infinite;
+}
+.lake-sub {
+  width: 12px; height: 12px;
+  background: #b9f0ff;
+  box-shadow: 0 0 0 3px rgba(110, 220, 255, .3), 0 0 16px rgba(80, 210, 255, .85);
+  animation: lakeRun 19s linear infinite -9.5s, lakeDive 19s ease-in-out infinite -9.5s;
+}
+@keyframes lakeRun { to { offset-distance: 100%; } }
+/* under at the far side, up again on the way back — the sheet above it does the
+   rest, so the dot dims and softens rather than simply fading out */
+@keyframes lakeDive {
+  0%, 14%   { opacity: 1; filter: none; }
+  30%, 62%  { opacity: .4; filter: blur(2.5px); }
+  78%, 100% { opacity: 1; filter: none; }
+}
+/* the boat's wake: a ring that opens and dies where the boat set out */
+.lake-wake {
+  position: absolute; z-index: 2; left: 120px; top: 300px;
+  width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  border-radius: 50%; border: 1px solid rgba(200, 240, 255, .5);
+  animation: lakeWake 3.4s ease-out infinite;
+}
+@keyframes lakeWake {
+  from { transform: scale(.3); opacity: .8; }
+  to   { transform: scale(3.4); opacity: 0; }
+}
+
+/* ══ 3. THE STATUE ══
+   Standing on a floor that recedes, with the rule beside it reading up to its own
+   height. The person at its foot is 1.75 m, which is what makes 33.7 mean
+   something without a second claim being made. */
+.giant-stage {
+  position: relative;
+  width: 100%; max-width: min(760px, 92vw);
+  height: clamp(240px, 42vh, 420px);
+  perspective: 900px; perspective-origin: 50% 100%;
+  margin-block: clamp(4px, 1.2vh, 14px);
+}
+/* the ground, in perspective */
+.giant-floor {
+  position: absolute; left: -10%; right: -10%; bottom: 0; height: 46%;
+  transform: rotateX(74deg); transform-origin: 50% 100%;
+  background:
+    linear-gradient(180deg, rgba(120, 170, 255, .16), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(160, 200, 255, .16) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(160, 200, 255, .13) 0 1px, transparent 1px 42px);
+  mask: linear-gradient(180deg, transparent, #000 40%, #000);
+}
+.giant-img {
+  position: absolute; left: 50%; bottom: 6%;
+  transform: translateX(-50%);
+  height: 94%; width: auto; display: block;
+  filter: drop-shadow(0 24px 30px rgba(2, 4, 16, .7));
+}
+/* the statue's own contact shadow, on the floor rather than under the image */
+.giant-stage::after {
+  content: ''; position: absolute; left: 50%; bottom: 4%; z-index: 0;
+  width: 34%; height: 26px; transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(2, 4, 16, .75), transparent 70%);
+  filter: blur(5px);
+}
+/* the rule: a hairline the height of the figure, with the number at the top */
+.giant-rule {
+  position: absolute; right: clamp(6%, 9vw, 16%); bottom: 6%; z-index: 3;
+  height: 94%;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.giant-rule i {
+  display: block; width: 1px; height: 100%;
+  background: linear-gradient(180deg, rgba(255, 194, 77, .85), rgba(255, 194, 77, .12));
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+  transition: transform 1.5s cubic-bezier(.32,.72,0,1);
+}
+.giant-rule i::before, .giant-rule i::after {
+  content: ''; position: absolute; left: -4px; width: 9px; height: 1px;
+  background: rgba(255, 194, 77, .85);
+}
+.giant-rule i::before { top: 0; }
+.giant-rule i::after  { bottom: 0; }
+.reveal.in .giant-rule i { transform: scaleY(1); }
+.giant-num {
+  font-family: var(--fig); font-size: clamp(22px, 3.4vw, 40px); font-weight: 800;
+  letter-spacing: -.02em; color: #fff; line-height: .9;
+  font-variant-numeric: tabular-nums;
+}
+.giant-unit {
+  font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold); margin-top: 3px;
+}
+/* The person, for scale. 1.75 against 33.7 is 5.19% of the statue, and the statue
+   is 94% of the stage — so the figure is 4.88% of the stage, and the height has to
+   be set here rather than on the bar inside: this box is the one whose containing
+   block is the stage, and a percentage on an auto-height parent resolves to
+   nothing. That is what made the first pass 9px tall, which read as 0.85 m. */
+.giant-person {
+  position: absolute; left: 50%; bottom: 6%; z-index: 3;
+  margin-left: clamp(52px, 9vw, 96px);
+  height: calc(94% * 0.0519);
+  display: flex; align-items: flex-end; gap: 7px;
+}
+.giant-person i {
+  display: block; width: 3px; height: 100%;
+  min-height: 7px;
+  border-radius: 2px 2px 0 0;
+  background: rgba(234, 242, 255, .9);
+  box-shadow: 0 0 8px rgba(180, 215, 255, .5);
+}
+.giant-person em {
+  font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
+  letter-spacing: .04em; color: #8fa0c8; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .orb-stage { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .orb { width: clamp(150px, 34vw, 220px); }
+  .orb-real img { width: 74px; }
+  .lake-plane { transform: rotateX(52deg) rotateZ(-3deg); }
+  .giant-stage { height: clamp(200px, 34vh, 300px); }
+  .giant-rule { right: 2%; }
+  /* the statue is wide relative to a phone's stage, so the scale figure moves to
+     its other side rather than standing inside its silhouette */
+  /* far enough left that the label clears the silhouette too, not just the bar */
+  .giant-person { margin-left: calc(-1 * clamp(100px, 34vw, 150px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+  .orb-grid, .orb-sweep, .lake-sheet, .lake-wake { animation: none; }
+  .lake-boat, .lake-sub { animation: none; offset-distance: 30%; }
+  .reveal.in .giant-rule i { transition: none; }
+}
+
 /* ═══════════════ HOLD A ZONE CARD TO WATCH IT ═══════════════
    The clip plays in the poster's own frame — same rectangle, same corners, no
    overlay and no modal. Held down, the card is a window; let go and it is a
