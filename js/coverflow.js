@@ -121,6 +121,58 @@ window.WBK_COVERFLOW = (function () {
       }
     }
 
+    /* ── which card is the pointer on? ──
+       Not a question the browser can answer here. Every card off centre is yawed
+       up to 82 degrees inside a preserve-3d context, and Chromium's hit test
+       misses a card that steeply foreshortened: the pointer falls straight
+       through to .cf-track. So `.cf-card:hover` only ever matched the one card
+       square to the screen, and the per-card click listener — which is what makes
+       a card selectable — never fired on any of the others either.
+
+       getBoundingClientRect *does* project 3D transforms correctly, so the card
+       whose projected centre is nearest the pointer is the card under it. That is
+       also the intuitive answer where the rects overlap, as they heavily do. */
+    function cardIndexAtPoint(x, y) {
+      let best = -1, bestD = Infinity;
+      for (let i = 0; i < cards.length; i++) {
+        const c = cards[i];
+        if (parseFloat(c.style.opacity || "1") < 0.06) continue;      // folded away
+        const b = c.getBoundingClientRect();
+        if (y < b.top || y > b.bottom) continue;
+        const d = Math.abs(x - (b.left + b.width / 2));
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      return best;
+    }
+
+    // hover, via a class the CSS keys off instead of :hover
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      let hoverRaf = null, lastX = 0, lastY = 0;
+      const resolveHover = () => {
+        hoverRaf = null;
+        const at = cardIndexAtPoint(lastX, lastY);
+        for (let i = 0; i < cards.length; i++) cards[i].classList.toggle("is-hovered", i === at);
+      };
+      frame.addEventListener("pointermove", (e) => {
+        lastX = e.clientX; lastY = e.clientY;
+        if (hoverRaf === null) hoverRaf = requestAnimationFrame(resolveHover);
+      });
+      frame.addEventListener("pointerleave", () => {
+        if (hoverRaf !== null) { cancelAnimationFrame(hoverRaf); hoverRaf = null; }
+        for (const c of cards) c.classList.remove("is-hovered");
+      });
+    }
+
+    // and the click that selects. On the frame, not on the cards, for the same
+    // reason — a click never reaches a steeply yawed card. A drag is not a click.
+    frame.addEventListener("click", (e) => {
+      if (lastMoved > 6) return;                       // the capture handler below stops it
+      const at = cardIndexAtPoint(e.clientX, e.clientY);
+      if (at < 0 || at === selected) return;           // the centre card keeps its own behaviour
+      e.preventDefault();
+      goTo(at);
+    });
+
     function settle(to) {
       if (raf !== null) cancelAnimationFrame(raf);
       target = to;
@@ -190,11 +242,6 @@ window.WBK_COVERFLOW = (function () {
       if (e.key === "ArrowLeft") { e.preventDefault(); nudge(-1); }
       else if (e.key === "ArrowRight") { e.preventDefault(); nudge(1); }
     });
-    // a click on a card that isn't centred brings it in instead of following it
-    cards.forEach((c, i) => c.addEventListener("click", (e) => {
-      if (i !== selected) { e.preventDefault(); goTo(i); }
-    }));
-
     const prev = root.querySelector(".cf-nav.prev");
     const next = root.querySelector(".cf-nav.next");
     prev && prev.addEventListener("click", () => nudge(-1));

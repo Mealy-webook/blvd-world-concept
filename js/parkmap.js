@@ -172,7 +172,7 @@
     meta: [
       ...(r.zone ? [["pin", r.zone]] : []),
       ["fork", r.cuisine],
-      ...(r.booking ? [["time", r.booking]] : r.from ? [["price", "from SAR " + r.from]] : []),
+      ...(r.from ? [["price", "from SAR " + r.from]] : []),
     ],
   }));
   (WBK.showsByZone || []).forEach((s) => s.items.forEach((it) => items.push({

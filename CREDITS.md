@@ -158,3 +158,11 @@ re-encode noise. Re-encoded once, at crf 23.
 
 ffmpeg came from `pip install --user imageio-ffmpeg`; it is not otherwise on this
 machine.
+
+## Restaurant prices are placeholders
+
+`from` on each of the four restaurants in `js/data.js` (SAR 120-220) is invented.
+The earlier version carried the real booking condition instead — "Reservations on
+webook", "Book ahead, queues after 7 PM" — because no price for any of these
+kitchens exists in what we have. Those lines were replaced with start prices on
+request. Replace the numbers before this goes anywhere public.

@@ -10,7 +10,7 @@
      Instrument Sans for reading, JetBrains Mono for every figure. Caveat is
      only ever the handwriting in the letter. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=489" />
+<link rel="stylesheet" href="css/main.css?v=500" />
 </head>
 <body class="typo-body">
 
@@ -57,7 +57,7 @@
            is the file itself. Three defects were patched out of it with ffmpeg:
            the generator's sparkle in the water, and the garbled Riyadh Season
            lockup in the sky. See CREDITS.md. -->
-      <video id="hero-vid" class="hero-vid" src="video/hero.mp4?v=489"
+      <video id="hero-vid" class="hero-vid" src="video/hero.mp4?v=500"
              autoplay muted loop playsinline preload="auto"
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
@@ -99,6 +99,7 @@
 
         <div class="book-tiles">
           <a class="bt" href="#/packages">
+            <span class="bt-sheen" aria-hidden="true"></span>
             <span class="bt-ic" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 2.4s5.4 4.6 5.4 9.9a5.4 5.4 0 1 1-10.8 0C6.6 7 12 2.4 12 2.4zm0 6.3a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2z"/></svg>
             </span>
@@ -109,6 +110,7 @@
             <i class="bt-go" aria-hidden="true"></i>
           </a>
           <a class="bt" href="#/experiences">
+            <span class="bt-sheen" aria-hidden="true"></span>
             <span class="bt-ic" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 2.6 14.9 9l6.9.6-5.2 4.6 1.5 6.8L12 17.4 5.9 21l1.5-6.8L2.2 9.6 9.1 9z"/></svg>
             </span>
@@ -119,6 +121,7 @@
             <i class="bt-go" aria-hidden="true"></i>
           </a>
           <a class="bt" href="#/eats">
+            <span class="bt-sheen" aria-hidden="true"></span>
             <span class="bt-ic" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M6 2.5v7a3 3 0 0 0 2 2.8V21.5h2V12.3a3 3 0 0 0 2-2.8v-7h-2v6h-1v-6H8v6H7v-6zm10.5 0c-1.5 0-2.7 2-2.7 4.5 0 2 .8 3.6 1.9 4.2v10.3h2V11.2c1.1-.6 1.9-2.2 1.9-4.2 0-2.5-1.2-4.5-2.7-4.5z"/></svg>
             </span>
@@ -150,7 +153,7 @@
       <div class="zone-flow" id="zone-flow"></div>
 
       <div class="ride-cta reveal">
-        <a href="#/map" class="pill solid big-pill">
+        <a href="#/map" class="pill light big-pill">
           EXPLORE MAP
         </a>
         <a href="#/shows" class="pill ghost big-pill">
@@ -171,7 +174,7 @@
       <div class="pk-row reveal" id="pk-row"></div>
 
       <div class="pk-go reveal">
-        <a class="pill solid big-pill" href="#/packages">
+        <a class="pill light big-pill" href="#/packages">
           COMPARE ALL FIVE PACKAGES
         </a>
         <p class="rc-note">All prices per person &#183; every package expires at the end of the day</p>
@@ -198,7 +201,7 @@
           <b class="rp-count">14</b>
           <span>rides, running until the gates close</span>
         </p>
-        <a class="pill solid big-pill" href="#/rides">
+        <a class="pill light big-pill" href="#/rides">
           EXPLORE EVERY RIDE
         </a>
       </div>
@@ -208,9 +211,9 @@
     <!-- ── the card: one object, and the three moments around it ── -->
     <section class="cashless" id="cashless">
       <div class="cash-head reveal">
-        <h2 class="sec-title">GO CASHLESS</h2>
-        <p class="sec-sub">Every ticket comes with a BLVD card. Load it in the webook app, then
-          tap and go — rides, arcades, skill games. No tills. No cash. No queue.</p>
+        <h2 class="sec-title">READY TO GO DIGITAL!</h2>
+        <p class="sec-sub">Get your digital card now by booking a BLVD ticket.
+          No tills. No cash. No queue.</p>
       </div>
 
       <div class="cash-stage">
@@ -246,7 +249,7 @@
       </div>
 
       <div class="cash-go reveal">
-        <a class="pill solid big-pill" href="#/rides">
+        <a class="pill light big-pill" href="#/rides">
           SEE RIDE PRICES
         </a>
       </div>
@@ -452,8 +455,6 @@
       </a>
       <div class="eats-head reveal">
         <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
-        <p class="sec-sub">Four kitchens take reservations &#8212; Egyptian, Japanese fusion,
-          Mediterranean and a themed room for families. Book before you go and skip the queue.</p>
       </div>
       <div class="rail-wrap">
         <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">&#8249;</button>
@@ -478,7 +479,7 @@
       <div class="show-tabs" id="show-tabs" role="tablist"></div>
       <ol class="show-rail" id="show-rail"></ol>
       <div class="show-actions">
-        <a class="pill solid" id="dl-schedule"
+        <a class="pill light" id="dl-schedule"
            href="https://r2.webook.com/Shows%20Schedule%20Ramadan%20-BlvdWorld.pdf"
            target="_blank" rel="noopener" download>
           <span class="dl-ic" aria-hidden="true">↓</span> DOWNLOAD FULL SCHEDULE
@@ -512,7 +513,7 @@
 
       <div class="ride-cta reveal">
         <p class="rc-note">Ride packages from <b>SAR 89</b> per person</p>
-        <a href="#/packages" class="pill solid big-pill">EXPLORE THE RIDE PACKAGES</a>
+        <a href="#/packages" class="pill light big-pill">EXPLORE THE RIDE PACKAGES</a>
       </div>
     </section>
   </section>
@@ -582,7 +583,7 @@
         <button class="car-nav next" id="card-next">›</button>
       </div>
       <div class="step-actions">
-        <button class="pill solid" id="pick-continue">CUSTOMIZE THIS LETTER</button>
+        <button class="pill light" id="pick-continue">CUSTOMIZE THIS LETTER</button>
       </div>
     </div>
 
@@ -605,7 +606,7 @@
       </div>
       <div class="step-actions">
         <button class="pill ghost" id="back-pick">BACK</button>
-        <button class="pill solid" id="custom-continue">SIGN &amp; SEND</button>
+        <button class="pill light" id="custom-continue">SIGN &amp; SEND</button>
       </div>
     </div>
 
@@ -624,7 +625,7 @@
         </label>
         <div class="step-actions">
           <button type="button" class="pill ghost" id="back-custom">BACK</button>
-          <button type="submit" class="pill solid">SEND MY LETTER ✦</button>
+          <button type="submit" class="pill light">SEND MY LETTER ✦</button>
         </div>
       </form>
     </div>
@@ -637,7 +638,7 @@
         You're officially entered for today's exclusive prizes.</p>
       <div class="step-actions">
         <a href="#/" class="pill ghost js-to-globe">SEE IT IN THE GALLERY</a>
-        <a href="#/prizes" class="pill solid">SEE THE PRIZES</a>
+        <a href="#/prizes" class="pill light">SEE THE PRIZES</a>
       </div>
     </div>
   </section>
@@ -678,7 +679,7 @@
         <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
         <span>WIN EXCLUSIVE BLVD WORLD PRIZES ✦ </span>
       </div>
-      <a href="#/letter" class="pill solid big-pill floaty">SEND LETTER FOR A CHANCE TO WIN</a>
+      <a href="#/letter" class="pill light big-pill floaty">SEND LETTER FOR A CHANCE TO WIN</a>
     </div>
   </section>
 
@@ -736,23 +737,24 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=489"></script>
-  <script src="js/borders.js?v=489"></script>
-  <script src="js/scene.js?v=489"></script>
-  <script src="js/app.js?v=489"></script>
-  <script src="js/experiences.js?v=489"></script>
-  <script src="js/carousels.js?v=489"></script>
-  <script src="js/coverflow.js?v=489"></script>
-  <script src="js/zones.js?v=489"></script>
-  <script src="js/gallery.js?v=489"></script>
-  <script src="js/parkmap.js?v=489"></script>
-  <script src="js/sponsors.js?v=489"></script>
-  <script src="js/cashless.js?v=489"></script>
-  <script src="js/headings.js?v=489"></script>
-  <script src="js/bundles.js?v=489"></script>
-  <script src="js/ridex.js?v=489"></script>
-  <script src="js/cursor.js?v=489"></script>
+  <script src="js/data.js?v=500"></script>
+  <script src="js/borders.js?v=500"></script>
+  <script src="js/scene.js?v=500"></script>
+  <script src="js/app.js?v=500"></script>
+  <script src="js/experiences.js?v=500"></script>
+  <script src="js/carousels.js?v=500"></script>
+  <script src="js/coverflow.js?v=500"></script>
+  <script src="js/zones.js?v=500"></script>
+  <script src="js/gallery.js?v=500"></script>
+  <script src="js/parkmap.js?v=500"></script>
+  <script src="js/sponsors.js?v=500"></script>
+  <script src="js/cashless.js?v=500"></script>
+  <script src="js/headings.js?v=500"></script>
+  <script src="js/bundles.js?v=500"></script>
+  <script src="js/ridex.js?v=500"></script>
+  <script src="js/cursor.js?v=500"></script>
+  <script src="js/glass.js?v=500" defer></script>
   <!-- globe hidden for now — re-enable with the .globe-sec rule in main.css
-  <script type="module" src="js/globe.js?v=489"></script> -->
+  <script type="module" src="js/globe.js?v=500"></script> -->
 </body>
 </html>
