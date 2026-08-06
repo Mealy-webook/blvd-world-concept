@@ -3373,16 +3373,27 @@ body.route-experiences
 /* ── the rules, as plain cards ──
    Nine of them, all on screen. They were ticket stubs with notches masked out of
    their edges; the notches are gone and each card is centred on its own icon. */
-/* All nine at once, so nothing is behind a scroll. Five and four on a wide screen,
-   three rows of three in the middle, two columns on a phone — the last row is short
-   in each case, which reads as a torn sheet rather than as a broken grid. */
+/* All nine at once, so nothing is behind a scroll: five then four on a wide screen,
+   three rows of three in the middle, two columns on a phone.
+
+   Flex rather than grid, and that is the point. A grid puts the short last row's
+   cards in columns 1..4, hard left, with a gap where the fifth would be. Flex with
+   justify-content: center centres whatever the last row happens to hold, so four
+   cards sit under five. The basis is the column width worked out by hand — 100%
+   less the gaps, divided by the column count — because `flex: 1` would stretch the
+   four to fill the row instead. */
 .vr-strip {
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(9px, 1vw, 14px);
+  --vr-cols: 5;
+  --vr-gap: clamp(9px, 1vw, 14px);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--vr-gap);
   padding: 10px 0 4px;
 }
-@media (max-width: 1080px) { .vr-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 620px)  { .vr-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.vr-strip > * {
+  flex: 0 1 calc((100% - var(--vr-gap) * (var(--vr-cols) - 1)) / var(--vr-cols));
+}
+@media (max-width: 1080px) { .vr-strip { --vr-cols: 3; } }
+@media (max-width: 620px)  { .vr-strip { --vr-cols: 2; } }
 
 .vr-stub {
   min-width: 0;
