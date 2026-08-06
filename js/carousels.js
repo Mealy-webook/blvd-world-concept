@@ -240,6 +240,15 @@
       });
     }
 
+    // The chips themselves — one per zone, each flying its flag. This line was
+    // lost when the timeline was replaced by the programme: the rewrite spliced
+    // from paint() to the click wiring, and the markup builder sat between them,
+    // so the row rendered as an empty 38px strip.
+    tabs.innerHTML = zones.map((z, i) => `
+      <button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? "on" : ""}">
+        <span class="tab-flag" aria-hidden="true">${flag(z.zone)}</span>${z.zone}
+      </button>`).join("");
+
     $$("button", tabs).forEach((b, i) => b.addEventListener("click", () => paint(i)));
     paint(0);
   })();
