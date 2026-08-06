@@ -655,6 +655,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   text-transform: uppercase; color: #8fa0c8; text-align: center;
 }
 
+/* ── the rule under the price ──
+   A hairline closing off the call-to-action block before the tiles start. It only
+   shows where it is the only divider on screen: the real-video and original versions
+   already carry .bt-lead above the tiles, and the cartoon version has no price line
+   at all because the price sits inside its CTA tile. That leaves the globe version,
+   which had a price line and nothing separating it from the row below. */
+.hero-rule { display: none; }
+html[data-hero="globe"] .hero-rule {
+  display: block; width: min(720px, 100%); height: 1px;
+  margin-top: calc(var(--hero-gap) * -1 + 14px);
+  background: linear-gradient(90deg, transparent, rgba(199, 226, 255, .26) 18%,
+              rgba(199, 226, 255, .26) 82%, transparent);
+}
+
 /* ── the call to action's two shapes ──
    It carries an icon, a label and its own price in the markup. As a pill only the
    label shows and the price sits on the line beneath; as a tile (the cartoon
@@ -689,6 +703,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    reflowing — the grid stays one column, only the metrics come down */
 @media (max-width: 700px) {
   .bt { gap: 11px; padding: 14px 7px; }
+  /* At 105px a tile cannot hold "Book experiences" on one line — it truncated to
+     "Book experien…". Two short lines beat an ellipsis on a label this important. */
+  .bt-name { white-space: normal; overflow: visible; text-overflow: clip; }
   .bt-ic { width: 42px; height: 42px; border-radius: var(--r-sm); }
   .bt-ic svg { width: 20px; height: 20px; }
 }
@@ -4150,6 +4167,20 @@ html[data-hero="globe"] .bt-tag {
 }
 /* with no footage behind it the tag needs no shadow to hold its edges */
 html[data-hero="globe"] .bt-tag { text-shadow: none; }
+
+/* On a phone a tile is 105px and the tag is nowrap, so it ran past both edges and
+   the tile's overflow: hidden clipped it to "TRY TICKET INCLUD". It wraps to two
+   lines instead. Scoped the same way the tag itself is, because those rules set
+   font-size and white-space at 0,2,0 — a bare .bt-tag in a media query would lose
+   to them, media queries adding no specificity of their own. */
+@media (max-width: 700px) {
+  html[data-hero="cartoon"] .bt-tag,
+  html[data-hero="globe"] .bt-tag {
+    white-space: normal; text-wrap: balance;
+    font-size: 7.5px; letter-spacing: .07em; line-height: 1.3;
+    padding: 4px 7px;
+  }
+}
 html[data-hero="cartoon"] .hero-cta .hc-ic,
 html[data-hero="cartoon"] .hero-cta .hc-price { display: grid; }
 html[data-hero="cartoon"] .hero-cta.pill {
