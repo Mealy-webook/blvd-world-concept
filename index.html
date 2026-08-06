@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=581" />
+<link rel="stylesheet" href="css/main.css?v=585" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=581" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=585" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -191,6 +191,37 @@
         <a href="#/shows" class="pill ghost big-pill">
           Live shows
         </a>
+      </div>
+    </section>
+
+    <!-- ── the park, in one small model ──
+         A standing picture of the site, right after the zones the ring just walked
+         through. Deliberately not interactive: the artwork already names every
+         zone in print, so there is nothing here to hover or click — the way in is
+         the button underneath. The counts come from WBK.mapPins so they cannot
+         drift from the map page (js/minimap.js).
+
+         The artwork is the official map with its navy surround keyed out, so the
+         island sits on the page's own night rather than on a rectangle of someone
+         else's blue. See CREDITS.md. -->
+    <section class="mapmod" id="mapmod">
+      <p class="mm-lead reveal">
+        <i aria-hidden="true"></i>
+        <span>All of it, on one map</span>
+        <i aria-hidden="true"></i>
+      </p>
+
+      <div class="mm-art reveal">
+        <img src="img/map/park-map-cut.webp"
+             srcset="img/map/park-map-cut-sm.webp 900w, img/map/park-map-cut.webp 1600w"
+             sizes="(max-width: 700px) 92vw, min(1080px, 88vw)"
+             alt="The BLVD World park map: twenty-four zones around the lake, with both gates"
+             width="1600" height="852" draggable="false" />
+      </div>
+
+      <div class="mm-foot reveal">
+        <p class="mm-count" id="mm-count"></p>
+        <a class="pill light big-pill" href="#/map">Open the full map</a>
       </div>
     </section>
 
@@ -777,26 +808,27 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=581"></script>
-  <script src="js/borders.js?v=581"></script>
-  <script src="js/scene.js?v=581"></script>
-  <script src="js/app.js?v=581"></script>
-  <script src="js/experiences.js?v=581"></script>
-  <script src="js/carousels.js?v=581"></script>
-  <script src="js/coverflow.js?v=581"></script>
-  <script src="js/zones.js?v=581"></script>
-  <script src="js/fan.js?v=581"></script>
-  <script src="js/gallery.js?v=581"></script>
-  <script src="js/parkmap.js?v=581"></script>
-  <script src="js/sponsors.js?v=581"></script>
-  <script src="js/cashless.js?v=581"></script>
-  <script src="js/headings.js?v=581"></script>
-  <script src="js/bundles.js?v=581"></script>
-  <script src="js/ridex.js?v=581"></script>
-  <script src="js/cursor.js?v=581"></script>
-  <script src="js/glass.js?v=581" defer></script>
+  <script src="js/data.js?v=585"></script>
+  <script src="js/borders.js?v=585"></script>
+  <script src="js/scene.js?v=585"></script>
+  <script src="js/app.js?v=585"></script>
+  <script src="js/experiences.js?v=585"></script>
+  <script src="js/carousels.js?v=585"></script>
+  <script src="js/coverflow.js?v=585"></script>
+  <script src="js/zones.js?v=585"></script>
+  <script src="js/fan.js?v=585"></script>
+  <script src="js/gallery.js?v=585"></script>
+  <script src="js/parkmap.js?v=585"></script>
+  <script src="js/minimap.js?v=585"></script>
+  <script src="js/sponsors.js?v=585"></script>
+  <script src="js/cashless.js?v=585"></script>
+  <script src="js/headings.js?v=585"></script>
+  <script src="js/bundles.js?v=585"></script>
+  <script src="js/ridex.js?v=585"></script>
+  <script src="js/cursor.js?v=585"></script>
+  <script src="js/glass.js?v=585" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=581" defer></script>
+  <script src="js/heroes.js?v=585" defer></script>
 </body>
 </html>

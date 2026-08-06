@@ -2358,6 +2358,63 @@ html[data-hero="real"] .zc .zc-plate {
   .rc-strip .rc-cell:nth-child(n+7) { display: none; }
 }
 
+/* ═══════════════ THE PARK, IN ONE SMALL MODEL ═══════════════
+   A standing picture of the site, under the zones. No tray, no plate, no frame:
+   the artwork has its navy surround keyed out, so the island sits on the page's
+   own night sky and the shape of the park is its own edge. Framing it would have
+   put a rectangle back around the thing we just cut a rectangle off.
+
+   Static by intent. Every zone is already named in print on the artwork, so there
+   is nothing to hover and nothing to click — the way in is the button underneath. */
+.mapmod {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(14px, 2.4vh, 30px);
+}
+
+/* the same divider the hero uses over its tiles, so the module announces itself
+   in the site's own voice rather than with a heading of its own */
+.mm-lead {
+  display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);
+  width: 100%; max-width: 560px;
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .13em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.mm-lead i {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(199, 226, 255, .3));
+}
+.mm-lead i:last-child { background: linear-gradient(90deg, rgba(199, 226, 255, .3), transparent); }
+
+.mm-art {
+  width: 100%; max-width: min(1080px, 88vw); line-height: 0;
+  /* the island is a cut-out, so the shadow follows its silhouette rather than a
+     box — this is what puts it above the night instead of on top of it */
+  filter: drop-shadow(0 26px 46px rgba(2, 4, 16, .55));
+}
+.mm-art img { display: block; width: 100%; height: auto; }
+
+/* the count, then the way through — one under the other, both centred */
+.mm-foot { display: grid; justify-items: center; gap: clamp(10px, 1.6vh, 16px); }
+.mm-count {
+  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .11em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.mm-count b {
+  font-family: var(--fig); font-size: 15px; font-weight: 700; letter-spacing: .01em;
+  color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
+  margin-right: 2px;
+}
+.mm-count i { font-style: normal; opacity: .5; margin: 0 5px; }
+
+@media (max-width: 700px) {
+  .mapmod { gap: clamp(10px, 1.8vh, 18px); }
+  .mm-art { max-width: 96vw; filter: drop-shadow(0 14px 26px rgba(2, 4, 16, .5)); }
+  .mm-count { font-size: 10px; }
+  .mm-count b { font-size: 13px; }
+}
+
 /* ═══════════════ CASHLESS — THE BLVD CARD ═══════════════ */
 .cashless {
   position: relative; z-index: 11;

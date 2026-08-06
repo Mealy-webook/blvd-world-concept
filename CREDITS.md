@@ -181,3 +181,21 @@ no audio: **5.4 MB**, same 32 seconds, nothing cropped.
 
 It is the client's own material, used in a concept for the client. Confirm it is
 cleared before this is shown outside webook.
+
+## The home page's map cut-out
+
+`img/map/park-map-cut.webp` (1600x852) and `-cut-sm.webp` (900w) are the official
+BLVD World park map — the same `img/map/park-map.jpg` the map page serves — with
+its flat navy surround keyed out, so the island can sit on the page's own night
+sky instead of on a rectangle of someone else's blue.
+
+The cut is a connected-component key, not a colour key: pixels within 46 of the
+surround's RGB (34, 58, 118) are found, then only the components touching the
+frame edge are removed. A global key would have punched holes through everything
+navy *inside* the artwork — the two KSA gate labels, the dark roofs in Korea and
+China, the signage. The alpha is feathered by a 0.9px blur so the silhouette is
+not a staircase, and the result is cropped to its own bounding box.
+
+Nothing was added, moved or retouched. Both signs (blvdworld + stc, blvdcity),
+the Riyadh Season lockup, all 26 printed labels and the ring road survive
+unchanged. Same clearance question as the rest of the client's artwork.
