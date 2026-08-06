@@ -598,14 +598,42 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   color: #fff; text-transform: none;
 }
 
-/* the entry-ticket button, carrying its price quietly alongside */
-.hero-cta { display: inline-flex; align-items: baseline; gap: 14px; }
+/* What the tiles above it already include. It spans the whole set and sits on
+   one line where there is room — this rule was lost in an earlier rewrite of
+   this block, which left the note wrapping inside a single 105px column. */
+.bt-note {
+  grid-column: 1 / -1; justify-self: stretch; text-align: center;
+  margin-top: 6px;
+  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .05em;
+  color: #8fa0c8;
+}
+.bt-note b { font-weight: 700; color: #cfe4ff; }
+
+/* ── the entry-ticket button ──
+   Set like the tiles rather than as a solid pill: same outline, same radius, so
+   the four read as one family with this one wider and leading. */
+.hero-cta.pill.solid {
+  display: inline-flex; align-items: baseline; justify-content: center; gap: 14px;
+  width: min(720px, 100%);
+  background: transparent; color: #fff;
+  border: 1px solid rgba(199, 226, 255, .42); border-radius: var(--r-lg);
+  box-shadow: none;
+  transition: transform .45s var(--ease), border-color .35s var(--ease),
+              background-color .35s var(--ease);
+}
+.hero-cta.pill.solid:hover {
+  transform: translateY(-4px);
+  background-color: rgba(199, 226, 255, .1);
+  border-color: rgba(215, 236, 255, .85);
+  box-shadow: none;
+}
+.hero-cta.pill.solid:active { transform: translateY(-1px); }
 .hc-from {
   font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .04em;
-  text-transform: uppercase; color: rgba(8, 16, 31, .6);
+  text-transform: uppercase; color: #8fa0c8;
   font-variant-numeric: tabular-nums;
 }
-.hero-cta:hover .hc-from { color: rgba(8, 16, 31, .78); }
+.hero-cta:hover .hc-from { color: #cfe4ff; }
 
 /* three across has to hold on a phone, so the tile compresses rather than
    reflowing — the grid stays one column, only the metrics come down */
