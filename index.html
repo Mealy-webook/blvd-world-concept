@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=647" />
+<link rel="stylesheet" href="css/main.css?v=651" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=647" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=651" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -155,6 +155,36 @@
       </div>
       <div class="scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
     </div>
+
+    <!-- ── about: what the place is, in its own numbers ──
+         Straight after the hero, because the hero says the name and nothing else.
+         Built from components already on the page — the map module's divider, the
+         section title and sub, the records' figure row and the site's pills — and
+         every figure is counted by js/about.js from WBK rather than typed here, so
+         none of them can drift from the data behind them. -->
+    <section class="about" id="about">
+      <p class="mm-lead reveal">
+        <i aria-hidden="true"></i>
+        <span>What BLVD World is</span>
+        <i aria-hidden="true"></i>
+      </p>
+
+      <div class="ab-head reveal">
+        <h2 class="sec-title">THE WORLD,<br/>REBUILT IN RIYADH</h2>
+        <p class="sec-sub">
+          A Riyadh Season park built as a tour of the planet: country by country,
+          each with its own streets, kitchens and stages, around one lake you cross
+          by boat. One ticket gets you in; one card pays for everything inside.
+        </p>
+      </div>
+
+      <ul class="rec-facts reveal" id="ab-facts"></ul>
+
+      <div class="ab-go reveal">
+        <a class="pill light big-pill" href="#/map">Explore the map</a>
+        <a class="pill ghost big-pill" href="#/shows">Tonight&#8217;s shows</a>
+      </div>
+    </section>
 
     <!-- ── globe: letters from the world ── -->
     <section class="globe-sec" id="globe-sec">
@@ -979,31 +1009,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=647"></script>
-  <script src="js/borders.js?v=647"></script>
-  <script src="js/scene.js?v=647"></script>
-  <script src="js/app.js?v=647"></script>
-  <script src="js/experiences.js?v=647"></script>
-  <script src="js/carousels.js?v=647"></script>
-  <script src="js/coverflow.js?v=647"></script>
-  <script src="js/zones.js?v=647"></script>
-  <script src="js/zonepage.js?v=647"></script>
-  <script src="js/fan.js?v=647"></script>
-  <script src="js/zonevid.js?v=647"></script>
-  <script src="js/records.js?v=647"></script>
-  <script src="js/sphere.js?v=647" defer></script>
-  <script src="js/gallery.js?v=647"></script>
-  <script src="js/parkmap.js?v=647"></script>
-  <script src="js/minimap.js?v=647"></script>
-  <script src="js/sponsors.js?v=647"></script>
-  <script src="js/cashless.js?v=647"></script>
-  <script src="js/headings.js?v=647"></script>
-  <script src="js/bundles.js?v=647"></script>
-  <script src="js/ridex.js?v=647"></script>
-  <script src="js/cursor.js?v=647"></script>
-  <script src="js/glass.js?v=647" defer></script>
+  <script src="js/data.js?v=651"></script>
+  <script src="js/borders.js?v=651"></script>
+  <script src="js/scene.js?v=651"></script>
+  <script src="js/app.js?v=651"></script>
+  <script src="js/experiences.js?v=651"></script>
+  <script src="js/carousels.js?v=651"></script>
+  <script src="js/coverflow.js?v=651"></script>
+  <script src="js/zones.js?v=651"></script>
+  <script src="js/zonepage.js?v=651"></script>
+  <script src="js/fan.js?v=651"></script>
+  <script src="js/zonevid.js?v=651"></script>
+  <script src="js/records.js?v=651"></script>
+  <script src="js/sphere.js?v=651" defer></script>
+  <script src="js/gallery.js?v=651"></script>
+  <script src="js/parkmap.js?v=651"></script>
+  <script src="js/minimap.js?v=651"></script>
+  <script src="js/sponsors.js?v=651"></script>
+  <script src="js/about.js?v=651"></script>
+  <script src="js/cashless.js?v=651"></script>
+  <script src="js/headings.js?v=651"></script>
+  <script src="js/bundles.js?v=651"></script>
+  <script src="js/ridex.js?v=651"></script>
+  <script src="js/cursor.js?v=651"></script>
+  <script src="js/glass.js?v=651" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=647" defer></script>
+  <script src="js/heroes.js?v=651" defer></script>
 </body>
 </html>

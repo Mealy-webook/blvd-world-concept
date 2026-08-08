@@ -354,3 +354,20 @@ appears, in the same chip form the kitchens use.
 
 The clip on a zone page is the park-footage sample, labelled "Park footage · not this
 zone" — the same rule the zone cards follow, and for the same reason.
+
+## The animated gallery on the zone pages
+
+The mechanics are ported from **Animated Gallery** by *youcefbnm* on 21st.dev
+(`https://21st.dev/@youcefbnm/components/animated-gallery`), fetched through the
+21st.dev MCP tool: a tall scroll container with a sticky stage, three columns of
+pictures, the grid standing up out of the floor as it is scrolled — rotateX 75 to 0
+degrees across the first half — scaling 1.2 to 1 across the second, then each column
+drifting at its own rate. The per-column yRanges (-10 to 2, 15 to 5, -10 to 2) are
+the original's.
+
+The original is React with motion/react and Tailwind. This project is neither, so
+what came over is the behaviour and the numbers, written against the site's own
+markup and driven by the scroll position of `#zp` rather than the window's — a zone
+page is its own scroller, so a window-scroll driver would never move.
+
+The picture frames are the site's own radius and shadow, not the original's.

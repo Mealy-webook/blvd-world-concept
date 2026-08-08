@@ -107,60 +107,125 @@
       </section>`;
   }
 
-  /* ── experiences: an editorial column beside one real photograph ── */
-  function experiences(zone, exp) {
-    const items = [...(zone.attractions || []), ...((exp && exp.items) || [])];
-    if (!items.length) return "";
-    const fig = exp && exp.img ? `img/zones/${exp.img}` : null;
+  /* ── experiences: the rail the restaurants page uses, holding the card the
+        experiences page uses ──
+     .rail-wrap / .rail-btn / .rail is this site's horizontal list, and .xp-card is
+     already a thumbnail with a title and a price under it. Nothing new is built
+     here; the zone fills components that exist.
+
+     Two sources, and they are not the same thing. WBK.experiences are bookable and
+     carry an image and a price, so they make cards. The zone's own attractions and
+     its parkExperiences list are names with neither, so they stay as chips — a card
+     with an empty price line is a card pretending to be bookable. */
+  function experiences(zone, exp, name) {
+    const booked = (WBK.experiences || []).filter((x) => canon(x.zone) === name);
+    const named = [...(zone.attractions || []), ...((exp && exp.items) || [])]
+      .filter((n) => !booked.some((x) => x.title === n));
+    if (!booked.length && !named.length) return "";
+
     return `
-      <div class="zp-exp">
-        ${fig ? `<figure class="zp-exp-shot"><img src="${esc(fig)}" alt="" loading="lazy" onerror="this.closest('figure').remove()" /></figure>` : ""}
-        <ol class="zp-exp-list">
-          ${items.map((it, n) => `
-            <li>
-              <span class="zp-n">${String(n + 1).padStart(2, "0")}</span>
-              <b>${esc(it)}</b>
-            </li>`).join("")}
-        </ol>
-      </div>`;
+      ${booked.length ? `
+        <div class="rail-wrap">
+          <button class="rail-btn prev" type="button" data-rail="zp-xp-rail"
+                  aria-label="Previous experiences">&#8249;</button>
+          <div class="rail xp-rail" id="zp-xp-rail">
+            ${booked.map((x) => `
+              <article class="xp-card is-static">
+                <img src="img/${esc(x.img)}" alt="${esc(x.title)}" draggable="false" loading="lazy" />
+                <div class="xp-cap"><b>${esc(x.title)}</b><span>SAR ${esc(x.price)}</span></div>
+              </article>`).join("")}
+          </div>
+          <button class="rail-btn next" type="button" data-rail="zp-xp-rail"
+                  aria-label="More experiences">&#8250;</button>
+        </div>` : ""}
+      ${named.length ? `
+        <ul class="zp-chips">${named.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}`;
   }
 
-  /* ── rides: tickets, not photographs. See the note above. ── */
+  /* ── rides: the schedule timeline from the shows page ──
+     The same component and the same classes: .sch-row with .sch-time, .sch-shot,
+     .sch-body and .sch-meta. A ride has no time, so that column carries its number
+     instead — the list is what is in the zone rather than when it happens.
+
+     THE THUMBNAIL IS THE ZONE, NOT THE RIDE, and the block says so above itself.
+     None of the forty ride names the zones carry matches any of the fourteen rides
+     that have a photograph — they are different rides — so a photograph per ride
+     would have been the wrong ride on every row. A photograph of the zone is at
+     least of the place the ride stands in, which is the same call the shows page
+     makes in reverse when it shows the act rather than its zone. */
   function rides(zone) {
     const items = zone.rides || [];
     if (!items.length) return "";
+    const shots = (zone.imgs || []).filter(Boolean);
     return `
-      <ul class="zp-rides">
-        ${items.map((r, n) => `
-          <li><span class="zp-n">${String(n + 1).padStart(2, "0")}</span><b>${esc(r)}</b>
-              <i aria-hidden="true"></i></li>`).join("")}
-      </ul>`;
+      <p class="zp-note">Photographs are of the zone, not of the ride.</p>
+      <ol class="sch-list">
+        ${items.map((r, i) => `
+          <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
+            <span class="sch-time">${String(i + 1).padStart(2, "0")}<small>ride</small></span>
+            ${shots.length ? `
+              <span class="sch-shot">
+                <img src="img/zones/${esc(shots[i % shots.length])}" alt="" loading="lazy" draggable="false" />
+              </span>` : ""}
+            <span class="sch-body">
+              <b class="sch-name" title="${esc(r)}">${esc(r)}</b>
+              <span class="sch-meta">
+                <em class="sm-kind t-family">Ride</em>
+                <em class="sm-dur">${esc(zone.name)}</em>
+              </span>
+            </span>
+          </li>`).join("")}
+      </ol>`;
   }
 
-  /* ── the kitchens, in their own colours ── */
+  /* ── the kitchens: the restaurants page's own card, in the same rail ──
+     .eat-card with .eat-shot / .eat-text / .eat-meta / .eat-from, and the branded
+     plate the rail builds when a restaurant has one — class for class from
+     js/carousels.js rather than restyled here. */
+  const MARKS = {
+    lotus: '<path d="M24 6c4 6 6 11 6 16s-2 10-6 14c-4-4-6-9-6-14s2-10 6-16z"/>',
+    torii: '<path d="M8 16h32v4H8zM12 22h4v20h-4zM32 22h4v20h-4zM6 10h36v4H6z"/>',
+    star:  '<path d="M24 6l5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1z"/>',
+    route: '<path d="M10 38c8-4 8-12 14-16s10-2 14-6M8 20h8v8H8z"/>',
+  };
+  function plate(r) {
+    const b = r.brand;
+    if (!b) {
+      return r.food
+        ? `<img src="img/food/${esc(r.food)}" alt="${esc(r.name)}" draggable="false" loading="lazy" />`
+        : "";
+    }
+    return `
+      <div class="eat-logo" style="--plate:${esc(b.plate)};--ink:${esc(b.ink)}"
+           role="img" aria-label="${esc(r.name)}">
+        <svg class="el-mark" viewBox="0 0 48 48" aria-hidden="true">${MARKS[b.mark] || MARKS.star}</svg>
+        <p class="el-word">${esc(b.word || r.name)}</p>
+        <p class="el-tag">${esc(b.tag || "")}</p>
+      </div>`;
+  }
+
   function kitchens(name, zone) {
     const own = (WBK.restaurants || []).filter((r) => canon(r.zone) === name);
     const named = (zone.food || []).filter((f) => !own.some((r) => r.name === f));
     if (!own.length && !named.length) return "";
     return `
       ${own.length ? `
-        <div class="zp-eats">
-          ${own.map((r) => {
-            const b = r.brand || {};
-            return `
-              <article class="zp-eat" style="--plate:${esc(b.plate || "#12172f")}; --ink:${esc(b.ink || "#eaf2ff")}">
-                ${r.food ? `<img src="img/food/${esc(r.food)}" alt="" loading="lazy" onerror="this.remove()" />` : ""}
-                <div class="zp-eat-in">
-                  <p class="zp-eat-word">${esc(b.word || r.name)}</p>
-                  ${b.tag ? `<p class="zp-eat-tag">${esc(b.tag)}</p>` : ""}
-                  <div class="zp-eat-meta">
-                    <span>${esc(r.cuisine || "")}</span>
-                    ${r.from ? `<em>from SAR ${esc(r.from)}</em>` : ""}
-                  </div>
-                  ${r.desc ? `<p class="zp-eat-desc">${esc(r.desc)}</p>` : ""}
+        <div class="rail-wrap">
+          <button class="rail-btn prev" type="button" data-rail="zp-eat-rail"
+                  aria-label="Previous restaurants">&#8249;</button>
+          <div class="rail eat-rail" id="zp-eat-rail">
+            ${own.map((r) => `
+              <article class="eat-card">
+                <div class="eat-shot">${plate(r)}</div>
+                <div class="eat-text">
+                  <p class="eat-meta">${esc(r.cuisine || "")}</p>
+                  <h3>${esc(r.name)}</h3>
+                  ${r.from ? `<p class="eat-from">From <b>SAR ${esc(r.from)}</b></p>` : ""}
                 </div>
-              </article>`;
-          }).join("")}
+              </article>`).join("")}
+          </div>
+          <button class="rail-btn next" type="button" data-rail="zp-eat-rail"
+                  aria-label="More restaurants">&#8250;</button>
         </div>` : ""}
       ${named.length ? `
         <ul class="zp-chips">${named.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}`;
@@ -178,13 +243,22 @@
           <img src="img/shows/${esc(shot)}" alt="" loading="lazy" onerror="this.closest('figure').remove()" />
           <figcaption>${esc(name)} &#183; tonight</figcaption>
         </figure>
-        <ol class="zp-sched">
-          ${row.items.map((it) => `
-            <li>
-              <span class="zp-t">${esc(it.t)}<small>${esc(it.ap || "")}</small></span>
-              <b>${esc(it.n)}</b>
-              <span class="zp-ty">${esc(it.ty || "")}</span>
-              ${it.m ? `<span class="zp-m">${esc(it.m)}&#8202;min</span>` : ""}
+        <ol class="sch-list">
+          ${row.items.map((it, i) => `
+            <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
+              <span class="sch-time">${esc(it.t)}<small>${esc(it.ap || "")}</small></span>
+              <span class="sch-shot">
+                <img src="img/shows/${esc(ZONE_SHOW[name] || KIND_SHOW[(it.ty || "ROAMING").split(" ")[0]] || "roam-1.webp")}"
+                     alt="" loading="lazy" draggable="false" />
+              </span>
+              <span class="sch-body">
+                <b class="sch-name" title="${esc(it.n)}">${esc(it.n)}</b>
+                <span class="sch-meta">
+                  <em class="sm-kind t-${esc((it.ty || "roaming").split(" ")[0].toLowerCase())}">${esc(it.ty || "")}</em>
+                  ${it.m ? `<em class="sm-dur">${esc(it.m)} min</em>` : ""}
+                  ${i ? "" : '<em class="sm-open">Opens the night</em>'}
+                </span>
+              </span>
             </li>`).join("")}
         </ol>
       </div>`;
@@ -205,20 +279,48 @@
       </a>`;
   }
 
-  /* ── in pictures: a mosaic, and the clip labelled for what it is ── */
+  /* ── in pictures: the animated gallery, ported ──
+     Mechanics taken from 21st.dev's Animated Gallery (youcefbnm): a tall scroll
+     container with a sticky stage inside it, three columns of pictures, and the
+     whole grid standing up out of the floor — rotateX from 75 degrees to 0 as you
+     scroll through it — then each column drifting at its own rate afterwards.
+
+     The original is React with motion/react and Tailwind; this is that behaviour in
+     the site's own markup, driven by the scroll position of #zp (the page is its own
+     scroller, so window scroll would never move). Same numbers: 75 to 0 degrees over
+     the first half, 1.2 to 1 scale over the second, per-column parallax after that.
+
+     Three columns need photographs to fill them and a zone has two or three, so the
+     set is repeated across the columns rather than left with holes — and the clip
+     rides in the middle column where it lands. */
   function pictures(zone) {
     const imgs = (zone.imgs || []).filter(Boolean);
     if (!imgs.length) return "";
+
+    const COLS = 3;
+    const cell = (f) => `
+      <img src="img/zones/${esc(f)}" alt="${esc(zone.name)}" loading="lazy"
+           draggable="false" onerror="this.remove()" />`;
+    const clip = `
+      <figure class="zp-vid">
+        <video src="video/zones/sample-aerial.mp4" muted loop playsinline preload="none"
+               aria-hidden="true"></video>
+        <figcaption>Park footage &#183; not this zone</figcaption>
+      </figure>`;
+
+    /* four rows per column reads as a wall; with two photographs that is each one
+       twice, which is what the original does with its four-per-column arrays */
+    const cols = Array.from({ length: COLS }, (_, c) => {
+      const rows = Array.from({ length: 4 }, (_, r) => imgs[(c + r * COLS) % imgs.length]);
+      const html = rows.map(cell).join("");
+      return `<div class="ag-col" data-col="${c}">${c === 1 ? clip + html : html}</div>`;
+    });
+
     return `
-      <div class="zp-mosaic">
-        ${imgs.map((f, n) => `
-          <img class="${n === 0 ? "is-lead" : ""}" src="img/zones/${esc(f)}"
-               alt="${esc(zone.name)}" loading="lazy" onerror="this.remove()" />`).join("")}
-        <figure class="zp-vid">
-          <video src="video/zones/sample-aerial.mp4" muted loop playsinline preload="none"
-                 aria-hidden="true"></video>
-          <figcaption>Park footage &#183; not this zone</figcaption>
-        </figure>
+      <div class="ag-scroll">
+        <div class="ag-sticky">
+          <div class="ag-grid">${cols.join("")}</div>
+        </div>
       </div>`;
   }
 
@@ -264,7 +366,7 @@
     ].filter((f) => f.n > 0);
 
     const parts = [
-      { id: "experiences", label: "Experiences", title: "Experiences", html: experiences(zone, exp) },
+      { id: "experiences", label: "Experiences", title: "Experiences", html: experiences(zone, exp, name) },
       { id: "rides", label: "Rides", title: "Rides", html: rides(zone) },
       { id: "eat", label: "Cuisine", title: "Cuisine", html: kitchens(name, zone) },
       { id: "tonight", label: "Tonight", title: "Live tonight", html: schedule(name) },
@@ -348,6 +450,45 @@
       blocks.forEach((b) => b.classList.add("in"));
     }
 
+    /* ── the animated gallery's driver ──
+       Ported from 21st.dev's Animated Gallery: the grid stands up from 75 degrees to
+       0 across the first half of its own scroll, scales 1.2 to 1 across the second,
+       and the columns drift at their own rates after that. The original reads a
+       window scroll through motion/react's useScroll; this reads #zp, because on
+       this page the window never scrolls. */
+    const agScroll = body.querySelector(".ag-scroll");
+    const agGrid = body.querySelector(".ag-grid");
+    if (agScroll && agGrid && page) {
+      const agCols = [...agGrid.querySelectorAll(".ag-col")];
+      const RANGES = [[-10, 2], [15, 5], [-10, 2]];      // the original's yRange, in %
+      let raf = null;
+      const paint = () => {
+        raf = null;
+        const b = agScroll.getBoundingClientRect();
+        const h = Math.max(agScroll.offsetHeight - page.clientHeight, 1);
+        /* 0 when the block's top reaches the top of the page, 1 when its bottom does */
+        const p = Math.min(1, Math.max(0, -b.top / h));
+        if (still) {
+          agGrid.style.transform = "none";
+          return;
+        }
+        const rise = Math.min(1, p / 0.5);                       // the first half
+        const rot = 75 * (1 - rise);
+        const scale = p < 0.5 ? 1.2 : 1.2 - 0.2 * Math.min(1, (p - 0.5) / 0.4);
+        agGrid.style.transform = `rotateX(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        const drift = Math.min(1, Math.max(0, (p - 0.5) / 0.5));
+        agCols.forEach((c, i) => {
+          const [from, to] = RANGES[i % RANGES.length];
+          c.style.transform = `translateY(${(from + (to - from) * drift).toFixed(2)}%)`;
+        });
+      };
+      paint();
+      page.addEventListener("scroll", () => {
+        if (raf === null) raf = requestAnimationFrame(paint);
+      }, { passive: true });
+      addEventListener("resize", () => { if (raf === null) raf = requestAnimationFrame(paint); }, { passive: true });
+    }
+
     /* the clip plays only while it is on screen */
     const vid = body.querySelector(".zp-vid video");
     if (vid && !still && "IntersectionObserver" in window) {
@@ -380,6 +521,18 @@
       links.forEach((a) => {
         const sc = body.querySelector(a.getAttribute("href"));
         if (sc) spy.observe(sc);
+      });
+    }
+
+    /* the rail arrows, the same nudge the restaurants and shows pages give theirs */
+    for (const btn of body.querySelectorAll(".rail-btn[data-rail]")) {
+      btn.addEventListener("click", () => {
+        const rail = document.getElementById(btn.dataset.rail);
+        if (!rail) return;
+        const card = rail.firstElementChild;
+        const step = card ? card.getBoundingClientRect().width + 16 : 260;
+        rail.scrollBy({ left: btn.classList.contains("prev") ? -step : step,
+                        behavior: still ? "auto" : "smooth" });
       });
     }
 
