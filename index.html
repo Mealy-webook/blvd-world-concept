@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=686" />
+<link rel="stylesheet" href="css/main.css?v=687" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=686" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=687" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -184,6 +184,40 @@
       </div>
 
       <ul class="rec-facts reveal" id="ab-facts"></ul>
+
+      <!-- when it opens and where it is, in the about section rather than one of its
+           own: it is the same answer to the same question, and a reader who wants to
+           know what this place is wants to know when they can go. Values from
+           WBK.visit via js/about.js — the client's own card, word for word. -->
+      <div class="vs-panel reveal">
+        <div class="vs-item">
+          <span class="vs-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 1.9A10.1 10.1 0 1 0 22.1 12 10.1 10.1 0 0 0 12 1.9zm0 1.9A8.2 8.2 0 1 1 3.8 12 8.2 8.2 0 0 1 12 3.8zm-.95 3.1v5.6l4.6 2.75.95-1.6-3.65-2.17V6.9z"/></svg>
+          </span>
+          <p class="vs-label">Visiting hours</p>
+          <p class="vs-value" id="vs-hours">&nbsp;</p>
+          <p class="vs-note" id="vs-days">&nbsp;</p>
+        </div>
+
+        <div class="vs-item">
+          <span class="vs-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7.4 2.4v2H5.6A2.2 2.2 0 0 0 3.4 6.6v13A2.2 2.2 0 0 0 5.6 21.8h12.8a2.2 2.2 0 0 0 2.2-2.2v-13a2.2 2.2 0 0 0-2.2-2.2h-1.8v-2h-1.9v2H9.3v-2zM5.3 9.6h13.4v10H5.3zm2.2 2v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9zM7.5 15.3v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9z"/></svg>
+          </span>
+          <p class="vs-label">The season</p>
+          <p class="vs-value" id="vs-season">&nbsp;</p>
+          <p class="vs-note">Riyadh Season, every night in between</p>
+        </div>
+
+        <div class="vs-item">
+          <span class="vs-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2.2a7 7 0 0 0-7 7c0 5.1 7 12.6 7 12.6s7-7.5 7-12.6a7 7 0 0 0-7-7zm0 1.9a5.1 5.1 0 0 1 5.1 5.1c0 3.3-3.6 8.3-5.1 10.2-1.5-1.9-5.1-6.9-5.1-10.2A5.1 5.1 0 0 1 12 4.1zm0 2.4a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4z"/></svg>
+          </span>
+          <p class="vs-label">Where it is</p>
+          <p class="vs-value" id="vs-where">&nbsp;</p>
+          <p class="vs-note"><a class="vs-link" href="#/map">Open the park map</a></p>
+        </div>
+      </div>
+
     </section>
 
     <!-- ── globe: letters from the world ── -->
@@ -240,46 +274,6 @@
           <p class="dw-s">Inspired by cultures from around the world</p>
         </li>
       </ul>
-    </section>
-
-    <!-- ── planning the visit ──
-         Not three stat cards. A stat card puts one big figure above a label, which
-         works for "40+" and fails for "4:00 PM – 1:00 AM" and "Boulevard City,
-         Riyadh" — both wrapped onto three lines of display type doing a caption's
-         job. This is an information panel instead: the label first, the value at a
-         size you read rather than admire, and the detail under it.
-
-         Every value comes from WBK.visit via js/about.js — the client's own card,
-         word for word. -->
-    <section class="visit" id="visit">
-      <div class="vs-panel reveal">
-        <div class="vs-item">
-          <span class="vs-ic" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 1.9A10.1 10.1 0 1 0 22.1 12 10.1 10.1 0 0 0 12 1.9zm0 1.9A8.2 8.2 0 1 1 3.8 12 8.2 8.2 0 0 1 12 3.8zm-.95 3.1v5.6l4.6 2.75.95-1.6-3.65-2.17V6.9z"/></svg>
-          </span>
-          <p class="vs-label">Visiting hours</p>
-          <p class="vs-value" id="vs-hours">&nbsp;</p>
-          <p class="vs-note" id="vs-days">&nbsp;</p>
-        </div>
-
-        <div class="vs-item">
-          <span class="vs-ic" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7.4 2.4v2H5.6A2.2 2.2 0 0 0 3.4 6.6v13A2.2 2.2 0 0 0 5.6 21.8h12.8a2.2 2.2 0 0 0 2.2-2.2v-13a2.2 2.2 0 0 0-2.2-2.2h-1.8v-2h-1.9v2H9.3v-2zM5.3 9.6h13.4v10H5.3zm2.2 2v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9zM7.5 15.3v1.9h1.9v-1.9zm3.8 0v1.9h1.9v-1.9z"/></svg>
-          </span>
-          <p class="vs-label">The season</p>
-          <p class="vs-value" id="vs-season">&nbsp;</p>
-          <p class="vs-note">Riyadh Season, every night in between</p>
-        </div>
-
-        <div class="vs-item">
-          <span class="vs-ic" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 2.2a7 7 0 0 0-7 7c0 5.1 7 12.6 7 12.6s7-7.5 7-12.6a7 7 0 0 0-7-7zm0 1.9a5.1 5.1 0 0 1 5.1 5.1c0 3.3-3.6 8.3-5.1 10.2-1.5-1.9-5.1-6.9-5.1-10.2A5.1 5.1 0 0 1 12 4.1zm0 2.4a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4z"/></svg>
-          </span>
-          <p class="vs-label">Where it is</p>
-          <p class="vs-value" id="vs-where">&nbsp;</p>
-          <p class="vs-note"><a class="vs-link" href="#/map">Open the park map</a></p>
-        </div>
-      </div>
     </section>
 
     <!-- ── the park, in one small model ──
@@ -1098,32 +1092,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=686"></script>
-  <script src="js/borders.js?v=686"></script>
-  <script src="js/scene.js?v=686"></script>
-  <script src="js/app.js?v=686"></script>
-  <script src="js/experiences.js?v=686"></script>
-  <script src="js/carousels.js?v=686"></script>
-  <script src="js/coverflow.js?v=686"></script>
-  <script src="js/zones.js?v=686"></script>
-  <script src="js/zonepage.js?v=686"></script>
-  <script src="js/fan.js?v=686"></script>
-  <script src="js/zonevid.js?v=686"></script>
-  <script src="js/records.js?v=686"></script>
-  <script src="js/sphere.js?v=686" defer></script>
-  <script src="js/gallery.js?v=686"></script>
-  <script src="js/parkmap.js?v=686"></script>
-  <script src="js/minimap.js?v=686"></script>
-  <script src="js/sponsors.js?v=686"></script>
-  <script src="js/about.js?v=686"></script>
-  <script src="js/cashless.js?v=686"></script>
-  <script src="js/headings.js?v=686"></script>
-  <script src="js/bundles.js?v=686"></script>
-  <script src="js/ridex.js?v=686"></script>
-  <script src="js/cursor.js?v=686"></script>
-  <script src="js/glass.js?v=686" defer></script>
+  <script src="js/data.js?v=687"></script>
+  <script src="js/borders.js?v=687"></script>
+  <script src="js/scene.js?v=687"></script>
+  <script src="js/app.js?v=687"></script>
+  <script src="js/experiences.js?v=687"></script>
+  <script src="js/carousels.js?v=687"></script>
+  <script src="js/coverflow.js?v=687"></script>
+  <script src="js/zones.js?v=687"></script>
+  <script src="js/zonepage.js?v=687"></script>
+  <script src="js/fan.js?v=687"></script>
+  <script src="js/zonevid.js?v=687"></script>
+  <script src="js/records.js?v=687"></script>
+  <script src="js/sphere.js?v=687" defer></script>
+  <script src="js/gallery.js?v=687"></script>
+  <script src="js/parkmap.js?v=687"></script>
+  <script src="js/minimap.js?v=687"></script>
+  <script src="js/sponsors.js?v=687"></script>
+  <script src="js/about.js?v=687"></script>
+  <script src="js/cashless.js?v=687"></script>
+  <script src="js/headings.js?v=687"></script>
+  <script src="js/bundles.js?v=687"></script>
+  <script src="js/ridex.js?v=687"></script>
+  <script src="js/cursor.js?v=687"></script>
+  <script src="js/glass.js?v=687" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=686" defer></script>
+  <script src="js/heroes.js?v=687" defer></script>
 </body>
 </html>

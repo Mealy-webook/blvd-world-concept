@@ -3598,6 +3598,8 @@ html[data-hero="real"] .zc .zc-plate {
    One plate divided into three, not three stat cards: hours, dates and a place name
    are strings, and a stat card's job is a figure. Label, value, detail — read in
    that order, at sizes that suit words. */
+/* it sits under the about figures now */
+.about .vs-panel { margin-top: clamp(10px, 2vh, 22px); }
 .vs-panel {
   width: 100%; max-width: min(1020px, 100%);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3637,17 +3639,13 @@ html[data-hero="real"] .zc .zc-plate {
   line-height: 1.45; color: #9fb0d8; max-width: 30ch;
 }
 @media (max-width: 760px) {
-  .vs-panel { grid-template-columns: minmax(0, 1fr); }
+  /* it sits under the about figures now */
+.about .vs-panel { margin-top: clamp(10px, 2vh, 22px); }
+.vs-panel { grid-template-columns: minmax(0, 1fr); }
   .vs-item + .vs-item { box-shadow: inset 0 1px 0 rgba(199, 226, 255, .14); }
   .vs-item { padding: 16px 18px; }
 }
 
-.visit {
-  position: relative; z-index: 11;
-  padding: var(--sec-y) var(--sec-x);
-  min-height: 100%; align-content: center;
-  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
-}
 .vs-link { color: #cfe4ff; text-decoration: underline; text-underline-offset: 3px; }
 .vs-link:hover { color: #fff; }
 
