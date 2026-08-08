@@ -3461,185 +3461,401 @@ html[data-hero="real"] .zc .zc-plate {
 .eats.is-page { align-content: center; padding-block: clamp(72px, 11vh, 120px) var(--sec-y); }
 .eats-go { display: flex; justify-content: center; width: 100%; }
 
+/* the back link floats over the band rather than pushing it down */
+.page-back.is-over {
+  position: fixed; z-index: 20; left: var(--sec-x); top: clamp(16px, 3vh, 30px);
+}
+
 /* ═══════════════ A ZONE, IN FULL ═══════════════
-   Reached from a zone card. It is a page rather than a section: it scrolls on its
-   own, top to bottom, and every block on it renders only if the data behind it has
-   something to say — so no zone shows an empty heading. */
+   A page, not a stack of lists. The composition is: a cinematic band with the zone's
+   own photograph in it and the poster standing off the page, the figures counted
+   underneath, then blocks that each look like what they contain — an editorial column
+   for the experiences, tickets for the rides, the kitchens in their own brand
+   colours, the schedule on a rail, the park laid down flat, a mosaic of photographs.
+
+   Every page is tinted by --tone, which is the zone's colour on the printed park
+   map. Twenty zones are twenty pages rather than one page twenty times. */
 .zp {
   position: relative; z-index: 11;
   width: 100%; height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
-  padding: clamp(64px, 9vh, 104px) var(--sec-x) clamp(48px, 8vh, 90px);
-  display: grid; justify-items: center; align-content: start;
-  gap: clamp(20px, 3.4vh, 40px);
+  scroll-behavior: smooth;
 }
 .zp-body {
-  width: 100%; max-width: min(980px, 100%);
-  display: grid; gap: clamp(22px, 3.6vh, 46px);
+  --tone: #f58220;
+  width: 100%;
+  display: grid; gap: 0;
 }
 
-/* ── the head: the poster beside the name ── */
-.zp-head {
+/* ── the band ──
+   The photograph is in the page rather than behind it: full width, cropped tall,
+   with the night brought back over it so the type stays readable and the section
+   still belongs to the site. */
+.zp-hero {
+  position: relative; isolation: isolate;
+  min-height: min(88dvh, 780px);
+  display: grid; align-items: end;
+  padding: clamp(90px, 14vh, 150px) var(--sec-x) clamp(28px, 5vh, 56px);
+  overflow: hidden;
+}
+.zp-back {
+  position: absolute; inset: -8% 0 0; z-index: -2;
+  width: 100%; height: 108%; object-fit: cover; object-position: 50% 42%;
+  filter: saturate(.92) brightness(.5);
+  animation: zpDrift 26s ease-in-out infinite alternate;
+}
+@keyframes zpDrift {
+  from { transform: scale(1.06) translateY(0); }
+  to   { transform: scale(1.13) translateY(-2.2%); }
+}
+/* the night, coming back over the photograph — and the zone's own colour with it */
+.zp-veil {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 18% 30%, color-mix(in srgb, var(--tone) 34%, transparent), transparent 62%),
+    linear-gradient(180deg, rgba(6, 10, 30, .62) 0%, rgba(6, 10, 30, .34) 38%, var(--bg) 96%);
+}
+.zp-hero-in {
+  width: 100%; max-width: min(1120px, 100%); margin-inline: auto;
   display: grid; grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(18px, 3vw, 40px); align-items: center;
+  gap: clamp(20px, 4vw, 56px); align-items: end;
 }
+
+/* the poster, standing off the page and leaning to the pointer (js/zonepage.js) */
+.zp-poster-stage { perspective: 900px; }
 .zp-poster {
-  display: block; width: clamp(150px, 22vw, 260px); aspect-ratio: 3 / 4;
+  display: block; width: clamp(150px, 20vw, 250px); aspect-ratio: 3 / 4;
   object-fit: cover; border-radius: var(--r-lg);
-  box-shadow: var(--sh-3), inset 0 0 0 1px rgba(199, 226, 255, .14);
+  box-shadow: 0 40px 80px rgba(2, 4, 16, .7), inset 0 0 0 1px rgba(255, 255, 255, .16);
+  transform: rotateX(0) rotateY(0);
+  transition: transform .6s cubic-bezier(.32,.72,0,1);
+  will-change: transform;
 }
-.zp-title { display: grid; gap: clamp(8px, 1.4vh, 14px); justify-items: start; }
+
+.zp-title { display: grid; gap: clamp(9px, 1.5vh, 16px); justify-items: start; }
 .zp-eyebrow {
+  display: flex; align-items: center; gap: 9px;
   font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--gold);
+  text-transform: uppercase; color: #cfe0ff;
 }
-.zp-head .sec-title { text-align: left; }
+.zp-eyebrow i {
+  width: 26px; height: 2px; border-radius: 2px; background: var(--tone);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--tone) 70%, transparent);
+}
+/* the name, set as large as the site's display face goes: it is the page's subject */
+.zp-name {
+  font-family: var(--disp); font-weight: 800;
+  font-size: clamp(40px, 8.4vw, 118px); line-height: .88; letter-spacing: -.035em;
+  color: #fff; text-wrap: balance;
+  text-shadow: 0 4px 30px rgba(2, 4, 16, .5);
+}
 .zp-lede {
-  font-family: var(--body); font-size: clamp(14px, 1.5vw, 18px); line-height: 1.5;
-  color: #b8c8ea; max-width: 46ch;
+  font-family: var(--body); font-size: clamp(14px, 1.6vw, 19px); line-height: 1.45;
+  color: #dceaff; max-width: 42ch;
 }
-.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 
-/* ── a block, and the plain lists most of them are ── */
-.zp-block { display: grid; gap: clamp(10px, 1.6vh, 18px); }
-.zp-h {
-  font-family: var(--disp); font-weight: 800; font-size: clamp(15px, 1.9vw, 22px);
-  letter-spacing: -.015em; color: #fff;
-  padding-bottom: 8px; border-bottom: 1px solid rgba(199, 226, 255, .14);
+/* the counted figures, on a rule */
+.zp-facts {
+  list-style: none; margin: 4px 0 0; padding: 12px 0 0;
+  border-top: 1px solid rgba(199, 226, 255, .2);
+  width: 100%; max-width: 560px;
+  display: flex; flex-wrap: wrap; gap: 10px clamp(18px, 3vw, 40px);
 }
-.zp-list {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 8px clamp(12px, 2vw, 26px);
+.zp-facts li { display: flex; align-items: baseline; gap: 7px; }
+.zp-facts b {
+  font-family: var(--fig); font-size: clamp(20px, 2.6vw, 32px); font-weight: 800;
+  letter-spacing: -.02em; color: #fff; line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
-.zp-list li {
-  font-family: var(--body); font-size: clamp(13px, 1.3vw, 15px); color: #dceaff;
-  display: flex; align-items: baseline; gap: 9px;
+.zp-facts span {
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #a9bbdd;
 }
-.zp-list li::before {
-  content: ''; flex: none; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--gold); transform: translateY(-2px);
+.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+
+/* ── the page's own contents, sticky under the header ── */
+.zp-jump {
+  position: sticky; top: 0; z-index: 8;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  padding: 12px var(--sec-x);
+  background: linear-gradient(180deg, var(--bg) 55%, transparent);
+  backdrop-filter: blur(10px);
 }
-/* the short ones read better as chips than as a bulleted column */
-.zp-list.is-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.zp-list.is-chips li {
-  padding: 6px 12px; border-radius: var(--r-pill);
-  background: rgba(199, 226, 255, .07);
+.zp-jump::-webkit-scrollbar { display: none; }
+.zp-jump a {
+  flex: none; text-decoration: none;
+  padding: 8px 15px; border-radius: var(--r-pill);
+  font-family: var(--ui); font-size: 11.5px; font-weight: 600; color: #b8c8ea;
   box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
-  font-size: 12px; color: #cfe0ff;
+  transition: color .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
 }
-.zp-list.is-chips li::before { display: none; }
+.zp-jump a:hover { color: #fff; background: rgba(199, 226, 255, .08); }
+.zp-jump a.on {
+  color: #06091c; background: var(--tone);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--tone) 40%, transparent);
+}
 
-/* ── the kitchens ── */
+/* ── the blocks ── */
+.zp-blocks {
+  width: 100%; max-width: min(1120px, 100%); margin-inline: auto;
+  padding: clamp(20px, 4vh, 44px) var(--sec-x) clamp(60px, 10vh, 120px);
+  display: grid; gap: clamp(40px, 7vh, 90px);
+}
+.zp-block {
+  display: grid; gap: clamp(14px, 2.2vh, 26px);
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .7s var(--ease), transform .8s cubic-bezier(.32,.72,0,1);
+}
+.zp-block.in { opacity: 1; transform: none; }
+.zp-bh { display: flex; align-items: baseline; gap: 14px; }
+.zp-h {
+  font-family: var(--disp); font-weight: 800; font-size: clamp(19px, 2.8vw, 34px);
+  letter-spacing: -.025em; color: #fff; white-space: nowrap;
+}
+/* the rule runs from the heading to the edge, in the zone's colour */
+.zp-bh::after {
+  content: ''; flex: 1; height: 1px; margin-bottom: .4em;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 75%, transparent), transparent);
+}
+
+/* ── experiences: a photograph, and a numbered column beside it ── */
+.zp-exp {
+  display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: clamp(16px, 3vw, 38px); align-items: start;
+}
+.zp-exp-shot { margin: 0; }
+.zp-exp-shot img {
+  display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-2), inset 0 0 0 1px rgba(199, 226, 255, .12);
+}
+.zp-exp-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.zp-exp-list li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px;
+  align-items: baseline; padding: 13px 0;
+  border-bottom: 1px solid rgba(199, 226, 255, .1);
+}
+.zp-exp-list li:last-child { border-bottom: 0; }
+.zp-exp-list b {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.7vw, 20px);
+  letter-spacing: -.015em; color: #eaf2ff;
+}
+.zp-n {
+  font-family: var(--fig); font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  color: var(--tone); font-variant-numeric: tabular-nums;
+}
+
+/* ── rides: tickets. No photographs, on purpose — see js/zonepage.js ── */
+.zp-rides {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(10px, 1.4vw, 16px);
+}
+.zp-rides li {
+  position: relative; display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: clamp(14px, 1.6vw, 18px);
+  border-radius: var(--r-md);
+  background: linear-gradient(150deg, rgba(199, 226, 255, .08), rgba(199, 226, 255, .03));
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+/* the notch a ticket has, in the zone's colour */
+.zp-rides li::before {
+  content: ''; position: absolute; left: 0; top: 50%; width: 3px; height: 34%;
+  transform: translateY(-50%); border-radius: 0 3px 3px 0;
+  background: var(--tone);
+}
+.zp-rides li:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .24), 0 14px 30px rgba(2, 4, 16, .4);
+}
+.zp-rides b {
+  font-family: var(--body); font-weight: 600; font-size: clamp(13.5px, 1.4vw, 16px);
+  color: #eaf2ff;
+}
+.zp-rides i {
+  width: 7px; height: 7px; border-right: 1.6px solid #8fa0c8;
+  border-top: 1.6px solid #8fa0c8; transform: rotate(45deg);
+}
+
+/* ── the kitchens, in the colours the data gives them ── */
 .zp-eats {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: clamp(12px, 1.6vw, 20px);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: clamp(12px, 1.8vw, 22px);
 }
 .zp-eat {
-  display: grid; gap: 8px; align-content: start;
-  padding: clamp(12px, 1.4vw, 16px);
-  border-radius: var(--r-md);
-  background: rgba(199, 226, 255, .05);
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .12);
+  --plate: #12172f; --ink: #eaf2ff;
+  display: grid; align-content: start;
+  border-radius: var(--r-lg); overflow: hidden;
+  background: var(--plate);
+  box-shadow: var(--sh-2), inset 0 0 0 1px rgba(255, 255, 255, .1);
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
 }
-.zp-eat img {
-  display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
-  border-radius: var(--r-sm);
+.zp-eat:hover { transform: translateY(-3px); box-shadow: var(--sh-3), inset 0 0 0 1px rgba(255, 255, 255, .18); }
+.zp-eat img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.zp-eat-in { display: grid; gap: 6px; padding: clamp(14px, 1.6vw, 18px); }
+.zp-eat-word {
+  font-family: var(--disp); font-weight: 800; font-size: clamp(17px, 2vw, 24px);
+  letter-spacing: -.01em; color: var(--ink); line-height: 1;
 }
-.zp-eat-t { display: grid; gap: 2px; }
-.zp-eat-t b { font-family: var(--disp); font-weight: 700; font-size: 15px; color: #fff; }
-.zp-eat-t span {
+.zp-eat-tag {
+  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink); opacity: .72;
+}
+.zp-eat-meta {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 4px;
+  padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.zp-eat-meta span {
   font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .13em;
-  text-transform: uppercase; color: #8fa0c8;
+  text-transform: uppercase; color: var(--ink); opacity: .8;
 }
-.zp-eat-t em {
-  font-family: var(--fig); font-style: normal; font-size: 12px; font-weight: 700;
-  color: var(--gold); font-variant-numeric: tabular-nums;
+.zp-eat-meta em {
+  font-family: var(--fig); font-style: normal; font-size: 12.5px; font-weight: 700;
+  color: var(--ink); font-variant-numeric: tabular-nums;
 }
-.zp-eat p {
-  font-family: var(--body); font-size: 12.5px; line-height: 1.5; color: #a9bbdd;
+.zp-eat-desc {
+  font-family: var(--body); font-size: 12.5px; line-height: 1.5;
+  color: var(--ink); opacity: .82;
+}
+/* the kitchens a zone names without a card of their own */
+.zp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.zp-chips li {
+  padding: 7px 13px; border-radius: var(--r-pill);
+  background: rgba(199, 226, 255, .07);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
+  font-family: var(--body); font-size: 12.5px; color: #cfe0ff;
 }
 
 /* ── tonight ── */
-.zp-sched { list-style: none; margin: 0; padding: 0; display: grid; }
-.zp-sched li {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
-  align-items: baseline; gap: 0 clamp(10px, 1.6vw, 22px);
-  padding: 10px 0; border-bottom: 1px dashed rgba(199, 226, 255, .12);
+.zp-tonight {
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(16px, 3vw, 34px); align-items: start;
 }
-.zp-sched li:last-child { border-bottom: 0; }
+.zp-show-shot { position: relative; margin: 0; border-radius: var(--r-lg); overflow: hidden; }
+.zp-show-shot img {
+  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  filter: saturate(1.02) brightness(.9);
+}
+.zp-show-shot figcaption {
+  position: absolute; left: 12px; bottom: 12px;
+  padding: 5px 11px; border-radius: var(--r-pill);
+  background: rgba(6, 10, 30, .84);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
+  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: #eaf2ff;
+}
+/* the schedule on a rail in the zone's colour */
+.zp-sched {
+  list-style: none; margin: 0; padding: 0 0 0 18px; display: grid;
+  border-left: 1px solid color-mix(in srgb, var(--tone) 45%, transparent);
+}
+.zp-sched li {
+  position: relative;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: baseline; gap: 0 clamp(10px, 1.6vw, 20px);
+  padding: 11px 0;
+}
+.zp-sched li::before {
+  content: ''; position: absolute; left: -22px; top: 1.05em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--tone); box-shadow: 0 0 0 3px rgba(6, 10, 30, .9);
+}
+.zp-sched li + li { border-top: 1px dashed rgba(199, 226, 255, .12); }
 .zp-t {
-  font-family: var(--fig); font-size: 12.5px; font-weight: 700; color: var(--gold);
+  font-family: var(--fig); font-size: 12.5px; font-weight: 700; color: #fff;
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.zp-t small { font-size: 8.5px; font-weight: 500; opacity: .75; margin-left: 2px; }
+.zp-t small { font-size: 8.5px; font-weight: 500; opacity: .7; margin-left: 2px; }
 .zp-sched b {
-  font-family: var(--body); font-weight: 600; font-size: clamp(13px, 1.3vw, 15px);
+  font-family: var(--body); font-weight: 600; font-size: clamp(13px, 1.35vw, 15.5px);
   color: #eaf2ff; min-width: 0;
 }
 .zp-ty, .zp-m {
-  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .11em;
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
   text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
 }
-.zp-m { color: #b8c8ea; }
+.zp-m { font-family: var(--fig); letter-spacing: .04em; color: #b8c8ea; text-transform: none; }
 
-/* ── where it is ── */
-.zp-map {
-  position: relative; display: block; border-radius: var(--r-lg);
-  overflow: hidden; box-shadow: var(--sh-2), inset 0 0 0 1px rgba(199, 226, 255, .14);
+/* ── where it is: the park laid down, as the home module lays it ── */
+.zp-map { display: grid; gap: 10px; justify-items: center; text-decoration: none; }
+.zp-map-plane {
+  position: relative; display: block; width: 100%;
+  perspective: 1200px; perspective-origin: 50% 25%;
 }
-.zp-map img {
+.zp-map-plane img {
   display: block; width: 100%; height: auto;
-  filter: saturate(.9) brightness(.72);
-  transition: filter .5s var(--ease);
+  transform: rotateX(48deg) rotateZ(-3deg) scale(1.02);
+  transform-origin: 50% 60%;
+  filter: saturate(.95) brightness(.78);
+  transition: transform .9s cubic-bezier(.32,.72,0,1), filter .6s var(--ease);
 }
-.zp-map:hover img { filter: saturate(1) brightness(.86); }
+.zp-map:hover .zp-map-plane img { transform: rotateX(30deg) rotateZ(-1.5deg) scale(1.03); filter: saturate(1) brightness(.9); }
+/* the pin rides the plane with the map, so it stays over its own zone */
 .zp-pin {
-  position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px;
-  border-radius: 50%; background: var(--tone, #f58220);
-  box-shadow: 0 0 0 3px rgba(6, 10, 30, .8), 0 0 0 6px color-mix(in srgb, var(--tone, #f58220) 45%, transparent),
-              0 4px 14px rgba(2, 4, 16, .7);
+  position: absolute; z-index: 2; width: 13px; height: 13px; margin: -7px 0 0 -7px;
+  border-radius: 50%; background: var(--tone);
+  box-shadow: 0 0 0 3px rgba(6, 10, 30, .85),
+              0 0 0 7px color-mix(in srgb, var(--tone) 38%, transparent),
+              0 6px 18px rgba(2, 4, 16, .8);
   animation: zpPin 2.4s ease-in-out infinite;
 }
-@keyframes zpPin { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+@keyframes zpPin { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
 .zp-map-go {
-  position: absolute; right: 12px; bottom: 12px;
-  padding: 7px 13px; border-radius: var(--r-pill);
-  background: rgba(6, 10, 30, .82);
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
-  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .11em;
-  text-transform: uppercase; color: #eaf2ff;
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: #b8c8ea;
 }
+.zp-map:hover .zp-map-go { color: #fff; }
 
-/* ── in pictures ── */
-.zp-shots {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: clamp(8px, 1.2vw, 14px);
+/* ── in pictures: a mosaic, the first one leading ── */
+.zp-mosaic {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 1fr; gap: clamp(8px, 1.2vw, 14px);
 }
-.zp-shots img {
-  display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+.zp-mosaic img {
+  display: block; width: 100%; height: 100%; min-height: 170px; object-fit: cover;
   border-radius: var(--r-md); box-shadow: var(--sh-1);
+  transition: transform .6s cubic-bezier(.32,.72,0,1);
 }
-.zp-vid { position: relative; margin: 0; border-radius: var(--r-md); overflow: hidden; }
+.zp-mosaic img:hover { transform: scale(1.015); }
+/* the lead photograph takes two columns and both rows where there is room */
+.zp-mosaic img.is-lead { grid-column: span 2; grid-row: span 2; min-height: 260px; }
+.zp-vid {
+  position: relative; margin: 0; border-radius: var(--r-md); overflow: hidden;
+  box-shadow: var(--sh-1);
+}
 .zp-vid video {
-  display: block; width: 100%; max-width: 320px; aspect-ratio: 3 / 4;
-  object-fit: cover; border-radius: var(--r-md);
+  display: block; width: 100%; height: 100%; min-height: 170px; object-fit: cover;
 }
 .zp-vid figcaption {
-  position: absolute; left: 10px; bottom: 10px;
+  position: absolute; left: 8px; bottom: 8px;
   padding: 4px 9px; border-radius: var(--r-pill);
-  background: rgba(6, 10, 30, .84);
+  background: rgba(6, 10, 30, .86);
   box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
-  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
+  font-family: var(--ui); font-size: 8px; font-weight: 700; letter-spacing: .11em;
   text-transform: uppercase; color: #dbe6ff;
 }
 
-@media (max-width: 760px) {
-  .zp-head { grid-template-columns: minmax(0, 1fr); justify-items: start; }
-  .zp-poster { width: min(180px, 44vw); }
+.zp-lost {
+  min-height: 70dvh; display: grid; place-content: center; justify-items: center;
+  gap: 16px; text-align: center; padding: var(--sec-y) var(--sec-x);
+}
+
+@media (max-width: 860px) {
+  .zp-hero-in { grid-template-columns: minmax(0, 1fr); }
+  .zp-poster { width: min(160px, 40vw); }
+  .zp-exp, .zp-tonight { grid-template-columns: minmax(0, 1fr); }
+  .zp-mosaic img.is-lead { grid-column: span 2; grid-row: auto; min-height: 200px; }
   .zp-sched li { grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; }
   .zp-ty, .zp-m { grid-column: 2; }
+  .zp-map-plane img { transform: rotateX(40deg) rotateZ(-2deg) scale(1.04); }
 }
-@media (prefers-reduced-motion: reduce) { .zp-pin { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .zp-back { animation: none; }
+  .zp-pin { animation: none; }
+  .zp-block { transition: none; opacity: 1; transform: none; }
+  .zp { scroll-behavior: auto; }
+}
 
 /* ═══════════════ FAQs ═══════════════ */
 .faqs {
