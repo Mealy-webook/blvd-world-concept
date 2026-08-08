@@ -880,9 +880,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* the sponsor tiers close up to fit one stage */
 .sponsors .sp-tiers { gap: clamp(18px, 3vh, 30px); }
 .sponsors .sp-tier { gap: clamp(12px, 2vh, 18px); }
-/* on a short stage the boxes come down, not the pictures inside them */
-.sponsors .sp-plate,
-.sponsors .sp-tier:first-child .sp-plate { height: clamp(36px, 4.4vh, 54px); }
+.sponsors .sp-plate img, .sponsors .sp-tier:first-child .sp-plate img { height: clamp(34px, 4.4vh, 52px); }
 /* the schedule's rail gives height back on a short stage */
 @media (max-height: 900px) {
   .sch-row { padding: 11px 8px; }
@@ -3596,7 +3594,66 @@ html[data-hero="real"] .zc .zc-plate {
   line-height: 1.45; color: #9fb0d8; text-wrap: balance; max-width: 22ch;
 }
 
-@media (max-width: 980px) { .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* ── the visit panel ──
+   One plate divided into three, not three stat cards: hours, dates and a place name
+   are strings, and a stat card's job is a figure. Label, value, detail — read in
+   that order, at sizes that suit words. */
+.vs-panel {
+  width: 100%; max-width: min(1020px, 100%);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: clamp(16px, 1.8vw, 24px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .08), rgba(199, 226, 255, .03));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    0 18px 44px rgba(2, 4, 16, .34);
+  overflow: hidden;
+}
+.vs-item {
+  display: grid; align-content: start; gap: 6px;
+  padding: clamp(20px, 2.6vw, 34px) clamp(16px, 2vw, 28px);
+}
+/* a hairline between them rather than three separate plates */
+.vs-item + .vs-item { box-shadow: inset 1px 0 0 rgba(199, 226, 255, .14); }
+.vs-ic {
+  display: grid; place-items: center;
+  width: 34px; aspect-ratio: 1; margin-bottom: 6px;
+  border-radius: 50%;
+  background: rgba(199, 226, 255, .07);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .16);
+}
+.vs-ic svg { width: 55%; height: auto; fill: var(--gold); }
+.vs-label {
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+.vs-value {
+  font-family: var(--disp); font-weight: 700;
+  font-size: clamp(17px, 1.9vw, 24px); line-height: 1.15; letter-spacing: -.02em;
+  color: #fff; font-variant-numeric: tabular-nums; text-wrap: balance;
+}
+.vs-note {
+  font-family: var(--body); font-size: clamp(12px, 1.1vw, 13.5px); font-weight: 400;
+  line-height: 1.45; color: #9fb0d8; max-width: 30ch;
+}
+@media (max-width: 760px) {
+  .vs-panel { grid-template-columns: minmax(0, 1fr); }
+  .vs-item + .vs-item { box-shadow: inset 0 1px 0 rgba(199, 226, 255, .14); }
+  .vs-item { padding: 16px 18px; }
+}
+
+.visit {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  min-height: 100%; align-content: center;
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.vs-link { color: #cfe4ff; text-decoration: underline; text-underline-offset: 3px; }
+.vs-link:hover { color: #fff; }
+
+@media (max-width: 980px) {
+  .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 560px) {
   .dw-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .dw-card {
@@ -3612,332 +3669,230 @@ html[data-hero="real"] .zc .zc-plate {
 @media (prefers-reduced-motion: reduce) { .dw-card { transition: none; } }
 
 /* ═══════════════ A ZONE, IN FULL ═══════════════
-   A page, not a stack of lists. The composition is: a cinematic band with the zone's
-   own photograph in it and the poster standing off the page, the figures counted
-   underneath, then blocks that each look like what they contain — an editorial column
-   for the experiences, tickets for the rides, the kitchens in their own brand
-   colours, the schedule on a rail, the park laid down flat, a mosaic of photographs.
+   Redesigned as a stage and a spine.
 
-   Every page is tinted by --tone, which is the zone's colour on the printed park
-   map. Twenty zones are twenty pages rather than one page twenty times. */
+   The hero is not a band any more. A band gives every zone the same shape, and the
+   point of twenty of these pages is that they are twenty places — so the poster
+   stands on a floor that recedes, which is the frame the records section uses and
+   the one composition on this site that reliably says "here is the object". Its own
+   photograph is still behind it, far out of focus, carrying the colour of the place
+   without competing with the thing in front of it.
+
+   Below that, the page is a spine and a column: the contents run down the left as a
+   numbered index that stays with you, and the blocks run down the right. It used to
+   be a strip of chips over a full-width stack, which left every block ending in a
+   third of a screen of empty sky on the right and gave the reader nothing to hold on
+   to while scrolling. */
 .zp {
   position: relative; z-index: 11;
-  /* min-width: 0 is the whole fix for the phone layout. .view is a flex container,
-     and a flex item will not shrink below its content's min-content width unless it
-     is told to — so the widest thing inside this page (a chip row, a card) pushed
-     the page past the viewport, and justify-content: center then clipped it at both
-     edges. It looked like an overflow bug and was a flex-basis one. */
   width: 100%; min-width: 0; height: 100dvh;
-  /* the page scrolls down, never sideways: anything wide enough to need it (the
-     rails, the contents strip) scrolls inside itself */
   overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
   scroll-behavior: smooth;
 }
-.zp-body {
-  --tone: #f58220;
-  width: 100%;
-  display: grid; gap: 0;
-}
+.zp-body { --tone: #f58220; width: 100%; display: grid; gap: 0; }
 
-/* ── the band ──
-   The photograph is in the page rather than behind it: full width, cropped tall,
-   with the night brought back over it so the type stays readable and the section
-   still belongs to the site. */
+/* ── the stage ── */
 .zp-hero {
   position: relative; isolation: isolate;
-  min-height: min(88dvh, 780px);
-  display: grid; align-items: end;
-  padding: clamp(90px, 14vh, 150px) var(--sec-x) clamp(28px, 5vh, 56px);
-  overflow: hidden;
+  min-height: 100dvh;
+  display: grid; align-content: center;
+  padding: clamp(72px, 12vh, 128px) var(--sec-x) clamp(40px, 7vh, 80px);
 }
 .zp-back {
-  position: absolute; inset: -8% 0 0; z-index: -2;
-  width: 100%; height: 108%; object-fit: cover; object-position: 50% 42%;
-  filter: saturate(.92) brightness(.5);
-  animation: zpDrift 26s ease-in-out infinite alternate;
+  position: absolute; inset: -6% 0 0; z-index: -2;
+  width: 100%; height: 106%; object-fit: cover; object-position: 50% 45%;
+  /* far enough out of focus that it is weather, not a picture */
+  filter: blur(34px) saturate(1.15) brightness(.5);
+  transform: scale(1.12);
 }
-@keyframes zpDrift {
-  from { transform: scale(1.06) translateY(0); }
-  to   { transform: scale(1.13) translateY(-2.2%); }
-}
-/* the night, coming back over the photograph — and the zone's own colour with it */
 .zp-veil {
   position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(120% 90% at 18% 30%, color-mix(in srgb, var(--tone) 34%, transparent), transparent 62%),
-    linear-gradient(180deg, rgba(6, 10, 30, .62) 0%, rgba(6, 10, 30, .34) 38%, var(--bg) 96%);
+    radial-gradient(120% 90% at 70% 40%, color-mix(in srgb, var(--tone) 30%, transparent), transparent 62%),
+    linear-gradient(180deg, rgba(6, 10, 30, .82) 0%, rgba(6, 10, 30, .62) 45%, rgba(6, 10, 30, .96) 100%);
 }
 .zp-hero-in {
-  width: 100%; max-width: min(1120px, 100%); margin-inline: auto;
-  display: grid; grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(20px, 4vw, 56px); align-items: end;
+  width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  align-items: center; gap: clamp(24px, 4vw, 64px);
 }
 
-/* the poster, standing off the page and leaning to the pointer (js/zonepage.js) */
-.zp-poster-stage { perspective: 900px; }
-.zp-poster {
-  display: block; width: clamp(150px, 20vw, 250px); aspect-ratio: 3 / 4;
-  object-fit: cover; border-radius: var(--r-lg);
-  box-shadow: 0 40px 80px rgba(2, 4, 16, .7), inset 0 0 0 1px rgba(255, 255, 255, .16);
-  transform: rotateX(0) rotateY(0);
-  transition: transform .6s cubic-bezier(.32,.72,0,1);
-  will-change: transform;
-}
-
-.zp-title { display: grid; gap: clamp(9px, 1.5vh, 16px); justify-items: start; }
 .zp-eyebrow {
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 10px;
   font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .2em;
-  text-transform: uppercase; color: #cfe0ff;
+  text-transform: uppercase; color: color-mix(in srgb, var(--tone) 72%, #fff);
 }
-.zp-eyebrow i {
-  width: 26px; height: 2px; border-radius: 2px; background: var(--tone);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--tone) 70%, transparent);
-}
-/* the name, set as large as the site's display face goes: it is the page's subject */
+.zp-eyebrow i { width: 26px; height: 1px; background: currentColor; opacity: .7; }
 .zp-name {
   font-family: var(--disp); font-weight: 800;
-  font-size: clamp(40px, 8.4vw, 118px); line-height: .88; letter-spacing: -.035em;
-  color: #fff; text-wrap: balance;
-  text-shadow: 0 4px 30px rgba(2, 4, 16, .5);
+  font-size: clamp(38px, 7.4vw, 104px); line-height: .92; letter-spacing: -.035em;
+  color: #fff; margin-top: 10px; text-wrap: balance;
 }
 .zp-lede {
-  font-family: var(--body); font-size: clamp(14px, 1.6vw, 19px); line-height: 1.45;
-  color: #dceaff; max-width: 42ch;
+  margin-top: 14px; max-width: 40ch;
+  font-family: var(--body); font-size: clamp(14px, 1.5vw, 18px); font-weight: 400;
+  line-height: 1.55; color: #cfdcf7;
 }
-
-/* the counted figures, on a rule */
 .zp-facts {
-  list-style: none; margin: 4px 0 0; padding: 12px 0 0;
+  list-style: none; margin: clamp(16px, 2.4vh, 26px) 0 0; padding: 14px 0 0;
   border-top: 1px solid rgba(199, 226, 255, .2);
   width: 100%; max-width: min(560px, 100%);
   display: flex; flex-wrap: wrap; gap: 10px clamp(14px, 3vw, 40px);
 }
-.zp-facts li { display: flex; align-items: baseline; gap: 7px; }
+.zp-facts li {
+  display: flex; align-items: baseline; gap: 7px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #9fb0d8; white-space: nowrap;
+}
 .zp-facts b {
-  font-family: var(--fig); font-size: clamp(20px, 2.6vw, 32px); font-weight: 800;
-  letter-spacing: -.02em; color: #fff; line-height: 1;
+  font-family: var(--fig); font-size: clamp(20px, 2.6vw, 30px); font-weight: 800;
+  letter-spacing: -.02em; color: #fff; text-transform: none; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.zp-facts span {
-  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
-  text-transform: uppercase; color: #a9bbdd;
-}
-.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; width: 100%; }
+.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(16px, 2.4vh, 26px); width: 100%; }
 
-/* ── the page's own contents, sticky under the header ── */
+/* the poster, standing */
+.zp-stage {
+  position: relative; height: clamp(280px, 52vh, 520px);
+  perspective: 1000px; perspective-origin: 50% 100%;
+}
+.zp-floor {
+  position: absolute; left: -14%; right: -14%; bottom: 0; height: 44%;
+  transform: rotateX(74deg); transform-origin: 50% 100%;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--tone) 22%, transparent), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(180, 210, 255, .16) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(0deg, rgba(180, 210, 255, .12) 0 1px, transparent 1px 44px);
+  mask: linear-gradient(180deg, transparent, #000 38%, #000);
+}
+.zp-poster {
+  position: absolute; left: 50%; bottom: 7%;
+  transform: translateX(-50%);
+  height: 92%; width: auto; display: block;
+  border-radius: clamp(12px, 1.4vw, 20px);
+  box-shadow: 0 40px 90px rgba(2, 4, 16, .66),
+              0 0 60px color-mix(in srgb, var(--tone) 26%, transparent);
+  animation: zpFloat 7s ease-in-out infinite;
+}
+@keyframes zpFloat {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -1.4%; }
+}
+/* its contact shadow, on the floor */
+.zp-stage::after {
+  content: ''; position: absolute; left: 50%; bottom: 4%; z-index: -1;
+  width: 42%; height: 26px; transform: translateX(-50%);
+  border-radius: 50%; filter: blur(7px);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(2, 4, 16, .8), transparent 70%);
+}
+
+.zp-cue {
+  position: absolute; left: 50%; bottom: clamp(14px, 3vh, 30px);
+  transform: translateX(-50%);
+  display: grid; justify-items: center; gap: 7px;
+  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+.zp-cue i {
+  width: 1px; height: 26px;
+  background: linear-gradient(180deg, rgba(199, 226, 255, .7), transparent);
+}
+
+/* ── the spine and the column ── */
+.zp-main {
+  width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
+  padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(48px, 9vh, 100px);
+  display: grid; grid-template-columns: clamp(120px, 15vw, 190px) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 52px); align-items: start;
+}
 .zp-jump {
-  position: sticky; top: 0; z-index: 8;
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-  /* the Back button floats at the top left, so the strip starts to the right of it
-     rather than underneath it */
-  padding: 12px var(--sec-x) 12px calc(var(--sec-x) + 128px);
-  background: linear-gradient(180deg, var(--bg) 55%, transparent);
-  backdrop-filter: blur(10px);
+  position: sticky; top: clamp(16px, 4vh, 40px);
+  display: grid; gap: 2px; align-content: start;
 }
-.zp-jump::-webkit-scrollbar { display: none; }
 .zp-jump a {
-  flex: none; text-decoration: none;
-  padding: 8px 15px; border-radius: var(--r-pill);
-  font-family: var(--ui); font-size: 11.5px; font-weight: 600; color: #b8c8ea;
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
-  transition: color .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+  display: flex; align-items: baseline; gap: 9px;
+  padding: 9px 10px; border-radius: var(--r-sm);
+  font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
+  color: #9fb0d8; text-decoration: none;
+  transition: color .3s var(--ease), background .3s var(--ease);
 }
-.zp-jump a:hover { color: #fff; background: rgba(199, 226, 255, .08); }
-.zp-jump a.on {
-  color: #06091c; background: var(--tone);
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--tone) 40%, transparent);
+.zp-jump a em {
+  font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
+  letter-spacing: .06em; color: #67789f; font-variant-numeric: tabular-nums;
 }
+.zp-jump a:hover { color: #fff; background: rgba(199, 226, 255, .07); }
+.zp-jump a.on { color: #fff; background: rgba(199, 226, 255, .1); }
+.zp-jump a.on em { color: color-mix(in srgb, var(--tone) 80%, #fff); }
 
-/* ── the blocks ── */
-.zp-blocks {
-  width: 100%; max-width: min(1120px, 100%); margin-inline: auto;
-  padding: clamp(20px, 4vh, 44px) var(--sec-x) clamp(60px, 10vh, 120px);
-  display: grid; gap: clamp(40px, 7vh, 90px);
-}
+.zp-blocks { display: grid; gap: clamp(34px, 6vh, 76px); min-width: 0; }
 .zp-block {
-  display: grid; gap: clamp(14px, 2.2vh, 26px);
+  scroll-margin-top: clamp(16px, 4vh, 40px);
   opacity: 0; transform: translateY(18px);
-  transition: opacity .7s var(--ease), transform .8s cubic-bezier(.32,.72,0,1);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
 }
 .zp-block.in { opacity: 1; transform: none; }
-.zp-bh { display: flex; align-items: baseline; gap: 14px; }
+.zp-bh { display: flex; align-items: baseline; gap: 14px; margin-bottom: clamp(12px, 2vh, 20px); }
 .zp-h {
-  font-family: var(--disp); font-weight: 800; font-size: clamp(19px, 2.8vw, 34px);
-  letter-spacing: -.025em; color: #fff; white-space: nowrap;
+  font-family: var(--disp); font-weight: 800;
+  font-size: clamp(20px, 2.6vw, 34px); letter-spacing: -.025em; color: #fff;
+  white-space: nowrap;
 }
-/* the rule runs from the heading to the edge, in the zone's colour */
+/* the rule that finishes the heading takes the zone's colour */
 .zp-bh::after {
-  content: ''; flex: 1; height: 1px; margin-bottom: .4em;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 75%, transparent), transparent);
+  content: ''; flex: 1; height: 1px; align-self: center;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--tone) 70%, transparent), rgba(199, 226, 255, .12) 60%, transparent);
+}
+.zp-note {
+  font-family: var(--body); font-size: 12.5px; font-weight: 400; color: #8fa0c8;
+  margin-bottom: 12px;
 }
 
-/* the notch a ticket has, in the zone's colour */
-
-/* the kitchens a zone names without a card of their own */
-/* Named things, as cards rather than chips: a chip reads as a control you can
-   press and these press nothing. The card is the three-card section's pane, reused
-   at a smaller size. */
+/* named things, as cards rather than chips: a chip reads as a control you can press
+   and these press nothing */
 .zp-cards {
   list-style: none; margin: 0; padding: 0; width: 100%;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: clamp(8px, 1vw, 14px);
 }
 .zp-cards .dw-card {
-  padding: clamp(14px, 1.6vw, 20px) clamp(12px, 1.4vw, 18px);
-  gap: 0; align-content: center; min-height: 76px;
+  padding: clamp(13px, 1.5vw, 18px) clamp(12px, 1.3vw, 16px);
+  gap: 0; align-content: center; min-height: 72px;
 }
-.zp-cards .dw-card p { font-size: clamp(12.5px, 1.2vw, 15px); max-width: none; }
-/* the fast-lane figure, beside the ride's own price */
+.zp-cards .dw-card::after { display: none; }     /* no glow on a small card */
+.zp-cards .dw-card p { font-size: clamp(12.5px, 1.15vw, 14.5px); max-width: none; }
 .zp-fast {
   display: block; margin-top: 3px;
   font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .08em;
   text-transform: uppercase; color: #8fa0c8;
 }
 
-.zp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.zp-chips li {
-  padding: 7px 13px; border-radius: var(--r-pill);
-  background: rgba(199, 226, 255, .07);
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
-  font-family: var(--body); font-size: 12.5px; color: #cfe0ff;
-}
-
-/* ── tonight ── */
-/* one column: the rows carry their own thumbnails, so the lead figure that used to
-   sit beside them is gone and there is nothing to sit beside */
-.zp-tonight { display: grid; }
-.zp-show-shot { position: relative; margin: 0; border-radius: var(--r-lg); overflow: hidden; }
-.zp-show-shot img {
-  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
-  filter: saturate(1.02) brightness(.9);
-}
-.zp-show-shot figcaption {
-  position: absolute; left: 12px; bottom: 12px;
-  padding: 5px 11px; border-radius: var(--r-pill);
-  background: rgba(6, 10, 30, .84);
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
-  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: #eaf2ff;
-}
-/* the schedule on a rail in the zone's colour */
-
-/* ── where it is: the park laid down, as the home module lays it ── */
-.zp-map { display: grid; gap: 10px; justify-items: center; text-decoration: none; }
-.zp-map-plane {
-  position: relative; display: block; width: 100%;
-  perspective: 1200px; perspective-origin: 50% 25%;
-}
-.zp-map-plane img {
-  display: block; width: 100%; height: auto;
-  transform: rotateX(48deg) rotateZ(-3deg) scale(1.02);
-  transform-origin: 50% 60%;
-  filter: saturate(.95) brightness(.78);
-  transition: transform .9s cubic-bezier(.32,.72,0,1), filter .6s var(--ease);
-}
-.zp-map:hover .zp-map-plane img { transform: rotateX(30deg) rotateZ(-1.5deg) scale(1.03); filter: saturate(1) brightness(.9); }
-/* the pin rides the plane with the map, so it stays over its own zone */
-.zp-pin {
-  position: absolute; z-index: 2; width: 13px; height: 13px; margin: -7px 0 0 -7px;
-  border-radius: 50%; background: var(--tone);
-  box-shadow: 0 0 0 3px rgba(6, 10, 30, .85),
-              0 0 0 7px color-mix(in srgb, var(--tone) 38%, transparent),
-              0 6px 18px rgba(2, 4, 16, .8);
-  animation: zpPin 2.4s ease-in-out infinite;
-}
-@keyframes zpPin { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
-.zp-map-go {
-  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: #b8c8ea;
-}
-.zp-map:hover .zp-map-go { color: #fff; }
-
-/* ── in pictures: the animated gallery ──
-   Ported from 21st.dev's Animated Gallery (youcefbnm). A tall scroll container with
-   a sticky stage in it; the grid inside stands up out of the floor as the block is
-   scrolled and the columns then drift at their own rates. The transforms are written
-   by js/zonepage.js from #zp's scroll position — the page is its own scroller.
-
-   The picture frames themselves are the site's: the same radius and shadow the rest
-   of the photographs on this page carry. */
-/* The geometry, corrected. The original hangs its perspective origin at "center top"
-   and rotates about the grid's middle, which in a box this size threw the plane clean
-   out of the sticky window — the block photographed as empty sky. Hinged along the
-   bottom edge instead, with the origin in the middle of the window, the grid stands
-   up *into* frame and every stage of it is inside the clip.
-
-   170vh rather than 350: the original owns a whole page, this is one block on a page
-   that already has six, and 260vh of scroll for one gallery made the zone page nearly
-   six thousand pixels tall. */
-.ag-scroll {
-  position: relative; height: 170vh;
-}
-.ag-sticky {
-  position: sticky; top: 0; height: 100dvh; overflow: hidden;
-  display: grid; align-items: center; justify-items: center;
-  perspective: 1200px; perspective-origin: 50% 50%;
-}
-.ag-grid {
-  width: 100%;
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(6px, 1vw, 12px);
-  transform-origin: 50% 100%;          /* hinged along the bottom */
-  will-change: transform;
-}
-.ag-col {
-  display: flex; flex-direction: column; gap: clamp(6px, 1vw, 12px);
-  will-change: transform;
-}
-/* the middle column starts higher, the way the original offsets its second column */
-.ag-col[data-col="1"] { margin-top: -12%; }
-.ag-col img, .ag-col .zp-vid video {
-  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
-  object-fit: cover; border-radius: var(--r-md); box-shadow: var(--sh-1);
-}
-.ag-col .zp-vid { position: relative; margin: 0; border-radius: var(--r-md); overflow: hidden; }
-.zp-vid figcaption {
-  position: absolute; left: 8px; bottom: 8px;
-  padding: 4px 9px; border-radius: var(--r-pill);
-  background: rgba(6, 10, 30, .86);
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
-  font-family: var(--ui); font-size: 8px; font-weight: 700; letter-spacing: .11em;
-  text-transform: uppercase; color: #dbe6ff;
-}
-/* the block runs the height of its own scroll, so it needs no gap after it */
-#zp-pictures { gap: 0; }
-#zp-pictures .zp-bh { margin-bottom: clamp(10px, 2vh, 20px); }
-
+/* the back link, and the zone that is not there */
 .zp-lost {
-  min-height: 70dvh; display: grid; place-content: center; justify-items: center;
-  gap: 16px; text-align: center; padding: var(--sec-y) var(--sec-x);
+  min-height: 100dvh; display: grid; align-content: center; justify-items: center;
+  gap: 16px; padding: var(--sec-y) var(--sec-x); text-align: center;
 }
 
-@media (max-width: 860px) {
-  .zp-hero-in { grid-template-columns: minmax(0, 1fr); }
-  /* the Back button has the top row to itself here, so the strip stops making room
-     for it beside itself */
-  .zp-jump { padding-left: var(--sec-x); top: 56px; }
-  .zp-facts b { font-size: clamp(18px, 5vw, 24px); }
-  .zp-go .pill { flex: 1 1 auto; justify-content: center; }
-  .zp-poster { width: min(160px, 40vw); }
-  .zp-map-plane img { transform: rotateX(40deg) rotateZ(-2deg) scale(1.04); }
-}
-@media (max-width: 700px) {
-  /* two columns on a phone: three at 375px is three postage stamps */
-  .ag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ag-col[data-col="2"] { display: none; }
-  .ag-scroll { height: 150vh; }
+@media (max-width: 900px) {
+  /* the spine lies down and becomes the strip it used to be */
+  .zp-main { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .zp-jump {
+    position: sticky; top: 0; z-index: 8;
+    grid-auto-flow: column; grid-auto-columns: max-content;
+    overflow-x: auto; scrollbar-width: none;
+    gap: 6px; padding: 10px 0;
+    background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .78) 70%, transparent);
+  }
+  .zp-jump::-webkit-scrollbar { display: none; }
+  .zp-jump a { border: var(--b-1); border-radius: var(--r-pill); padding: 8px 13px; }
+  .zp-jump a em { display: none; }
+  .zp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .zp-stage { height: clamp(220px, 38vh, 330px); order: -1; }
+  .zp-cue { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .zp-back { animation: none; }
-  /* no standing up and no drift: a plain wall of pictures */
-  .ag-scroll { height: auto; }
-  .ag-sticky { position: static; height: auto; overflow: visible; }
-  .ag-grid, .ag-col { transform: none !important; }
-  .ag-col[data-col="1"] { margin-top: 0; }
-  .zp-pin { animation: none; }
-  .zp-block { transition: none; opacity: 1; transform: none; }
-  .zp { scroll-behavior: auto; }
+  .zp-block { transition: none; }
+  .zp-poster { animation: none; }
 }
 
 /* ═══════════════ FAQs ═══════════════ */
@@ -4379,50 +4334,27 @@ body.route-experiences
 }
 .sp-logos { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: center; }
 .sp-plate {
-  /* flex, not grid with place-items: center. A centred grid item is sized by its own
-     content, so width/height: 100% on the image resolved against a track the image
-     itself was sizing — circular, and the browser fell back to the SVG's intrinsic
-     size. Every logo came out at whatever the file happened to be. */
-  display: flex; align-items: center; justify-content: center;
-  /* each logo in a container of its own, in the site's own cell: rounded, a hairline,
-     a little glass. It also makes the equal boxes visible, which is half the point of
-     having them. */
-  border-radius: clamp(10px, 1vw, 14px);
-  background: linear-gradient(170deg, rgba(199, 226, 255, .07), rgba(199, 226, 255, .028));
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14),
-              inset 0 1px 0 rgba(255, 255, 255, .06);
-  /* The box is the same for every partner in a tier, and the logo is fitted into
-     it. Sizing by height alone is what made this wall lopsided: at 52px tall a wide
-     wordmark like DUNKIN' or aramco filled 200px across while a compact mark like
-     MUC or Domino's filled 90, so one rule gave some partners twice the presence of
-     others. Equal boxes, each logo its own proportions inside. */
-  width: clamp(120px, 13vw, 168px); height: clamp(44px, 5.2vh, 62px);
-  padding: 6px 10px;
+  display: grid; place-items: center; padding: 14px 20px;
   transition: transform .5s var(--ease), opacity .35s var(--ease);
 }
-.sp-plate:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(170deg, rgba(199, 226, 255, .11), rgba(199, 226, 255, .05));
-  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .24),
-              inset 0 1px 0 rgba(255, 255, 255, .1),
-              0 12px 28px rgba(2, 4, 16, .3);
-}
+.sp-plate:hover { transform: translateY(-3px); }
 .sp-plate:hover img { opacity: 1; }
 .sp-plate img {
-  display: block; width: 100%; height: 100%;
-  object-fit: contain; object-position: 50% 50%;
+  display: block; height: 52px; width: auto;
   /* one white family: the SVGs are colour, the crops are already white ink */
   filter: brightness(0) invert(1);
-  opacity: .78; transition: opacity .35s var(--ease);
+  opacity: .68; transition: opacity .35s var(--ease);
+  /* wide bilingual lockups would otherwise hog the row — contain keeps them
+     from distorting once the cap kicks in */
+  max-width: 168px; object-fit: contain;
 }
-/* the premium tier reads a size up — on the box, not on the picture */
-.sp-tier:first-child .sp-plate { width: clamp(140px, 15vw, 196px); height: clamp(52px, 6vh, 74px); }
+.sp-tier:first-child .sp-plate img { height: 60px; max-width: 186px; }   /* premium reads largest */
 /* the two single-logo tiers share a row */
 .sp-pair { display: flex; flex-wrap: wrap; gap: clamp(30px, 7vw, 90px); justify-content: center; }
 .sp-pair .sp-tier { width: auto; }
 @media (max-width: 700px) {
   .sp-plate { padding: 13px 16px; border-radius: var(--r-md); }
-  .sp-plate, .sp-tier:first-child .sp-plate { width: clamp(104px, 30vw, 132px); height: 44px; }
+  .sp-plate img, .sp-tier:first-child .sp-plate img { height: 40px; max-width: 128px; }
   .sp-label { font-size: 11px; letter-spacing: .16em; }
 }
 

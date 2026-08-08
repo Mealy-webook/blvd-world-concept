@@ -60,4 +60,21 @@
      brochure saying 40+ and 350+. The about row above still counts, because those
      four figures describe this site's own data. */
 
+
+  /* ── the visit card ──
+     Written from WBK.visit, which is the client's own card word for word. Reading it
+     from the data rather than typing it here means the hours cannot end up saying one
+     thing on the home page and another in the FAQ. */
+  const v = WBK.visit;
+  if (v) {
+    const set = (id, text) => {
+      const el = document.getElementById(id);
+      if (el && text) el.textContent = text;
+    };
+    set("vs-hours", `${v.from} \u2013 ${v.to}`);
+    set("vs-days", `${v.days}, right through the season`);
+    set("vs-season", `${v.seasonFrom} \u2013 ${v.seasonTo}`);
+    set("vs-where", v.where);
+  }
+
 })();

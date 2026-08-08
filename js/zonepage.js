@@ -71,6 +71,16 @@
     return pool[i % pool.length];
   }
 
+  /* ── the hero ──
+     The poster stands on a floor that recedes, which is the frame the records
+     section uses and the one thing on this site that reliably reads as "here is the
+     object". It replaces a band with a picture behind it: a band gives a zone the
+     same shape as every other zone, and the whole point of twenty of these pages is
+     that they are twenty places.
+
+     The zone's own photograph is still back there, far out of focus, so the page has
+     the colour of the place without competing with the poster standing in front of
+     it. */
   function head(zone, tone, facts) {
     const shot = (zone.imgs || [])[0];
     const poster = zone.poster ? `img/zones/posters/${zone.poster}` : null;
@@ -78,11 +88,8 @@
       <header class="zp-hero" style="--tone:${esc(tone)}">
         ${shot ? `<img class="zp-back" src="img/zones/${esc(shot)}" alt="" aria-hidden="true" />` : ""}
         <span class="zp-veil" aria-hidden="true"></span>
+
         <div class="zp-hero-in">
-          ${poster ? `
-            <div class="zp-poster-stage">
-              <img class="zp-poster" src="${esc(poster)}" alt="${esc(zone.name)}" draggable="false" />
-            </div>` : ""}
           <div class="zp-title">
             <p class="zp-eyebrow"><i aria-hidden="true"></i>A zone of BLVD World</p>
             <h1 class="zp-name">${esc(zone.name.toUpperCase())}</h1>
@@ -95,7 +102,15 @@
               <a class="pill ghost big-pill" href="#/map?zone=${encodeURIComponent(zone.name)}">See it on the map</a>
             </div>
           </div>
+
+          ${poster ? `
+            <div class="zp-stage">
+              <div class="zp-floor" aria-hidden="true"></div>
+              <img class="zp-poster" src="${esc(poster)}" alt="${esc(zone.name)}" draggable="false" />
+            </div>` : ""}
         </div>
+
+        <p class="zp-cue" aria-hidden="true"><span>Scroll</span><i></i></p>
       </header>`;
   }
 
@@ -105,7 +120,10 @@
     if (blocks.length < 3) return "";
     return `
       <nav class="zp-jump" aria-label="On this page">
-        ${blocks.map((b) => `<a href="#zp-${b.id}">${esc(b.label)}</a>`).join("")}
+        ${blocks.map((b, i) => `
+          <a href="#zp-${b.id}">
+            <em>${String(i + 1).padStart(2, "0")}</em>${esc(b.label)}
+          </a>`).join("")}
       </nav>`;
   }
 
@@ -425,8 +443,10 @@
     body.style.setProperty("--tone", tone);
     body.innerHTML =
       head(zone, tone, facts) +
-      contents(parts) +
-      `<div class="zp-blocks">${parts.map((b) => block(b.id, b.title, "", b.html)).join("")}</div>`;
+      `<div class="zp-main">
+         ${contents(parts)}
+         <div class="zp-blocks">${parts.map((b) => block(b.id, b.title, "", b.html)).join("")}</div>
+       </div>`;
 
     dress();
   }

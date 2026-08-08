@@ -265,6 +265,22 @@ window.WBK = {
     { name: "Africa",        lat: 0.0,   lon: 20.0,   blurb: "Safari scale: drums, colour, a baobab you can ride." , imgs: ["africa.webp", "park8.jpg", "park6.jpg"], attractions: ["Immersive Safari Trail", "Savanna Drum Circle", "Tribal Art Market"], food: ["Safari Grill", "Baobab Juice Bar"], rides: ["Safari Jeep Adventure", "Jungle Rapids"] },
   ],
 
+  /* ── when it is open, and for how long ─────────────────────────
+     The client's own card, quoted: every day from 4:00 PM to 1:00 AM, and a season
+     running 11 October to 2 May. Nothing here is derived or rounded.
+
+     It squares with the schedule we already hold, which is a good sign rather than a
+     coincidence: the last act on any zone's list is 12:45 AM, fifteen minutes before
+     the gates shut. */
+  visit: {
+    days: "Every day",
+    from: "4:00 PM",
+    to: "1:00 AM",
+    seasonFrom: "11 October",
+    seasonTo: "2 May",
+    where: "Boulevard City, Riyadh",
+  },
+
   /* ── what the map has to carry ──────────────────────────────────
      The client's own table of minimum points of interest, quoted as given —
      including the ranges, which are theirs and not a hedge of ours. It is a brief
