@@ -565,7 +565,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .view.active .hero-title .line:nth-child(3) { animation-delay: .79s; }
 .view.active .hero-title.arch .arch-type { animation: heroIn 1s .55s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-sub   { animation: heroIn .9s .98s cubic-bezier(.2,.8,.25,1) both; }
-.view.active .hero-ctas  { animation: heroIn .9s 1.1s cubic-bezier(.2,.8,.25,1) both; }
 .view.active .hero-ui .hero-logo { animation: heroLogoIn .9s .74s cubic-bezier(.2,.8,.25,1) both; }
 /* The keyframes carry the filter, and an animation with `both` owns that property
    for good — which is why dropping brightness(0) invert(1) from .hero-logo alone left
@@ -616,17 +615,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   50%      { transform: translateY(3%)  rotate(4deg); }
 }
 .hero-sub { max-width: 640px; font-size: clamp(15px, 1.35vw, 19px); font-weight: 400; color: #dfe9ff; text-shadow: 0 2px 12px rgba(4,6,20,.8); }
-.hero-ctas { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
 
 /* booking CTAs with starting prices */
 /* ── the hero's three ways in, as tiles ── */
 .book-tiles {
-  /* Three across at every width. They are small enough to stay a row on a phone,
-     and stacking them made the hero taller than the screen. */
-  --bt-gap: clamp(8px, 1.6vw, 26px);
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Four across at every width, the entry ticket first. They stay one row on a
+     phone — stacking them made the hero taller than the screen — and the row is
+     wider than it was because it carries the call to action now rather than
+     sitting underneath it. */
+  --bt-gap: clamp(7px, 1.3vw, 20px);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--bt-gap);
-  width: min(720px, 100%);
+  width: min(880px, 100%);
+  align-items: stretch;
 }
 
 /* ── the three ways in, under the entry-ticket button ──
@@ -649,10 +650,51 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   border-color: rgba(215, 236, 255, .85);
 }
 .bt-go { display: none; }          /* the chevron went with the tile's fill */
-/* The tag each tile carries. Hidden by default, because in most versions the
-   divider above the row says it once for all three; the cartoon version drops that
-   divider and lets each tile say it for itself instead. */
-.bt-tag { display: none; }
+
+/* ── the one that is the call to action ──
+   The same tile, louder. It is the same kind of thing as its neighbours — a way in
+   with a price — so it keeps their shape and their metrics and takes the magenta, a
+   filled icon plate and a shadow to be the one you reach for. Giving it a different
+   shape is what the old pill did, and it cost the hero two extra rows to say the
+   same thing. */
+.bt.is-primary {
+  background: var(--btn);
+  border-color: transparent;
+  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
+}
+.bt.is-primary:hover {
+  background-color: var(--btn-hi);
+  border-color: transparent;
+  box-shadow: var(--sh-2), inset 0 -2px 0 rgba(104, 0, 60, .5);
+}
+.bt.is-primary .bt-ic {
+  background: rgba(255, 255, 255, .22);
+  border-color: rgba(255, 255, 255, .38);
+}
+.bt.is-primary:hover .bt-ic { background: rgba(255, 255, 255, .3); }
+.bt.is-primary .bt-ic svg { fill: #fff; }
+.bt.is-primary .bt-name { color: var(--btn-ink); }
+.bt.is-primary .bt-price { color: rgba(255, 255, 255, .82); }
+.bt.is-primary .bt-price b { color: #fff; }
+.bt.is-primary .bt-tag {
+  color: #fff;
+  background: rgba(255, 255, 255, .18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3);
+}
+/* The tag each tile carries, on every version now. It used to be shown only in the
+   two versions that dropped the divider above the row, because a divider saying
+   entry is included and a tag saying the same thing read as a mistake rather than as
+   emphasis. There is no divider anywhere any more — the entry ticket is in the row —
+   so the tag is simply part of a tile. */
+.bt-tag {
+  display: block;
+  margin-top: 2px; padding: 4px 10px; border-radius: var(--r-pill);
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; white-space: nowrap;
+  color: #ffe6b0;
+  background: rgba(255, 194, 77, .13);
+  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .3);
+}
 
 .bt-ic {
   display: grid; place-items: center; width: 52px; height: 52px; border-radius: var(--r-md);
@@ -668,9 +710,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   letter-spacing: -.015em; color: #fff; line-height: 1.1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
-/* the same treatment as .hero-price under the button: 11px label, and the figure in
-   mono at 14px. It used to scale to 19px, which made a secondary tile's price larger
-   than the entry ticket's own. */
+/* 11px label, the figure in tabular at 14px. It used to scale to 19px, which made a
+   tile's price larger than the entry ticket's own — they share one treatment now
+   because they are the same kind of thing in the same row. */
 .bt-price {
   font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
   text-transform: uppercase; color: #8fa0c8;
@@ -683,58 +725,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-variant-numeric: tabular-nums;
 }
 
-/* ── the divider above the tiles ──
-   A rule, the line, a rule. It says what the three below have in common, and it
-   separates them from the call to action above rather than trailing underneath
-   them as a footnote. */
-.bt-lead {
-  display: flex; align-items: center; gap: clamp(10px, 1.6vw, 20px);
-  width: min(720px, 100%);
-}
-.bt-lead i { flex: 1; height: 1px; background: rgba(199, 226, 255, .2); }
-.bt-lead span {
-  flex: none;
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: #8fa0c8; text-align: center;
-}
-
-/* ── the rule under the price ──
-   A hairline closing off the call-to-action block before the tiles start. It only
-   shows where it is the only divider on screen: the real-video and original versions
-   already carry .bt-lead above the tiles, and the cartoon version has no price line
-   at all because the price sits inside its CTA tile. That leaves the globe version,
-   which had a price line and nothing separating it from the row below. */
-.hero-rule { display: none; }
-html[data-hero="globe"] .hero-rule {
-  display: block; width: min(720px, 100%); height: 1px;
-  margin-top: calc(var(--hero-gap) * -1 + 14px);
-  background: linear-gradient(90deg, transparent, rgba(199, 226, 255, .26) 18%,
-              rgba(199, 226, 255, .26) 82%, transparent);
-}
-
 /* ── the call to action's two shapes ──
    It carries an icon, a label and its own price in the markup. As a pill only the
    label shows and the price sits on the line beneath; as a tile (the cartoon
    version) all three show and that separate line goes away. This is the pill case. */
-.hc-ic, .hc-price { display: none; }
-.hc-name { font: inherit; }
 
 /* ── the price under the button ──
    It belongs to the call to action, not to the stack, so it is pulled back out of
    --hero-gap and sits close under the pill — a full gap would read as another row
    of the hero rather than as the button's own price. Figures in mono, like every
    other price on the site. */
-.hero-price {
-  margin: calc(var(--hero-gap) * -1 + 9px) 0 0;
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: #b9c9e8;
-  text-shadow: 0 1px 7px rgba(3, 6, 22, .85);
-}
-.hero-price b {
-  font-family: var(--fig); font-size: 14px; font-weight: 700; letter-spacing: .01em;
-  color: #fff; text-transform: none;
-  font-variant-numeric: tabular-nums;
-}
 
 /* ── the entry-ticket button ──
    A solid pill, the site's own call to action, sized to its words. The price is
@@ -744,6 +744,17 @@ html[data-hero="globe"] .hero-rule {
 
 /* three across has to hold on a phone, so the tile compresses rather than
    reflowing — the grid stays one column, only the metrics come down */
+/* Two by two on a phone. Four across leaves 77px a tile at 375, which is narrower
+   than "Book restaurants" can wrap into — the names spilled out of their tiles and
+   the prices were cut mid-figure. The hero has the room: it lost a pill, a price
+   line and a divider when the call to action joined the row. */
+@media (max-width: 560px) {
+  .book-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(420px, 100%);
+    --bt-gap: 10px;
+  }
+}
 @media (max-width: 700px) {
   .bt { gap: 11px; padding: 14px 7px; }
   /* At 105px a tile cannot hold "Book experiences" on one line — it truncated to
@@ -2377,38 +2388,14 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 /* ── the seal ──
-   Guinness World Records' own mark is a trademark and is not in this repository, so
-   this is a seal of ours standing in its place: a ring, laurels, a star and the
-   words, set in the site's own type. It is deliberately not an imitation of theirs —
-   the point of the slot is that the real file replaces it. */
+   Guinness World Records' own mark, at the top of the section. It is a trademark and
+   it is theirs: it sits on a white disc of its own because the logo's field is navy,
+   and on this page's night sky that would have been a dark mark on a dark ground. */
 .rec-seal { display: grid; place-items: center; }
-.rec-seal-type, .rec-seal-mark {
-  width: clamp(84px, 11vh, 116px); height: auto; display: block;
-}
-
-.sl-ring {
-  fill: none; stroke: rgba(255, 194, 77, .85); stroke-width: 1.6;
-}
-.sl-ring.thin { stroke: rgba(255, 194, 77, .35); stroke-width: .7; }
-.sl-leaf {
-  fill: none; stroke: rgba(255, 194, 77, .7); stroke-width: 2.2;
-  stroke-linecap: round;
-}
-.sl-leaf.sm { stroke-width: 1.4; opacity: .8; }
-.sl-star { fill: var(--gold); }
-/* The arc is 116 units long (pi times the 37 radius) and the words are 22
-   characters: at 8.4px with .13em of tracking they measured about 134 and the ends
-   were being cut off. 6.8px and .05em fits with room to spare. */
-.sl-arc {
-  fill: #ffe6b0; font-family: var(--ui); font-size: 6.8px; font-weight: 700;
-  letter-spacing: .05em; text-anchor: middle;
-}
-.sl-arc-b { font-size: 6.2px; letter-spacing: .12em; fill: rgba(255, 230, 176, .78); }
-/* the count of records on the page, so the seal says something true rather than
-   only looking official */
-.sl-n {
-  fill: #fff; font-family: var(--fig); font-size: 15px; font-weight: 800;
-  text-anchor: middle; font-variant-numeric: tabular-nums;
+.rec-seal-mark {
+  width: clamp(76px, 9.5vh, 104px); height: auto; display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .92), 0 10px 30px rgba(2, 4, 16, .5);
 }
 
 /* the label above it all */
@@ -4203,7 +4190,6 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
   .bt-ic svg { width: 18px; height: 18px; }
   .bt-name { font-size: 14px; }
   .bt-price b { font-size: 14px; }
-  .bt-lead span { font-size: 9.5px; }
 }
 
 /* ══ THE GALLERY LIGHTBOX ══
@@ -4328,18 +4314,6 @@ html.has-cursor input *, html.has-cursor textarea * { cursor: text; }
    invisible. Three stacked shadows give the letters their own dark ground: a
    tight one for the edges and two wide ones that read as a halo rather than a
    box. The rules either side are brighter for the same reason. */
-.bt-lead span {
-  color: #fff;
-  text-shadow:
-    0 0 4px rgba(2, 5, 20, .95),
-    0 1px 3px rgba(2, 5, 20, .95),
-    0 0 14px rgba(2, 5, 20, .85),
-    0 0 30px rgba(2, 5, 20, .7);
-}
-.bt-lead i {
-  background: rgba(232, 244, 255, .5);
-  box-shadow: 0 0 6px rgba(2, 5, 20, .6);
-}
 
 /* ══ THE TILES AS LIQUID GLASS ══
    The earlier pass read as a grey box, and the reason was the scrim: a flat wash
@@ -4574,8 +4548,6 @@ html[data-hero="globe"] .globe-sec { display: none; }
    none of the dark tint either. That tint exists to keep a label readable when a
    firework goes off behind it; over flat navy it only makes the panes look like
    grey slabs, so here the glass goes back to a clean, mostly-clear pane. */
-html[data-hero="globe"] .bt-lead span { text-shadow: 0 1px 6px rgba(2, 5, 20, .8); }
-html[data-hero="globe"] .hero-price { text-shadow: 0 1px 6px rgba(2, 5, 20, .8); }
 html[data-hero="globe"] .hero-title.arch { filter: none; }
 html[data-hero="globe"] .bt {
   background: linear-gradient(168deg, rgba(255, 255, 255, .13) 0%,
@@ -4737,9 +4709,6 @@ html[data-hero="original"] .hero-vid { display: none; }
 html[data-hero="original"] .globe-sec { display: none; }
 html[data-hero="original"] .hero-logo { display: none; }
 html[data-hero="original"] .hero-title.arch { filter: none; }
-html[data-hero="original"] .bt-lead span { text-shadow: none; color: #8fa0c8; }
-html[data-hero="original"] .hero-price { text-shadow: none; color: #8fa0c8; }
-html[data-hero="original"] .bt-lead i { background: rgba(199, 226, 255, .2); box-shadow: none; }
 
 /* the tiles, back to an outline */
 html[data-hero="original"] .bt {
@@ -4788,79 +4757,29 @@ html[data-hero="original"] .skip-btn:hover { background: #fff; }
    name and its price — and bigger than them in every dimension, which is what
    makes it the primary rather than a fourth equal. The separate price line goes
    away because the price is inside it now. */
-html[data-hero="cartoon"] .hero-price { display: none; }
 
 /* ── the tag, on the versions that use it ──
    Cartoon and globe both put the wording on each tile rather than once above the
    row. The divider goes with it in both: two things on one screen saying entry is
    included reads as a mistake, not as emphasis. The real-video and original
    versions keep the divider and carry no tag. */
-html[data-hero="cartoon"] .bt-lead,
-html[data-hero="globe"] .bt-lead { display: none; }
-html[data-hero="cartoon"] .bt-tag,
-html[data-hero="globe"] .bt-tag {
-  display: block;
-  margin-top: 2px; padding: 4px 10px; border-radius: var(--r-pill);
-  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
-  text-transform: uppercase; white-space: nowrap;
-  color: #ffe6b0;
-  background: rgba(255, 194, 77, .13);
-  box-shadow: inset 0 0 0 1px rgba(255, 194, 77, .3);
-}
 
-/* On a phone a tile is 105px and the tag is nowrap, so it ran past both edges and
+/* On a phone a tile is narrow and the tag is nowrap, so it ran past both edges and
    the tile's overflow: hidden clipped it to "TRY TICKET INCLUD". It wraps to two
-   lines instead. Scoped the same way the tag itself is, because those rules set
-   font-size and white-space at 0,2,0 — a bare .bt-tag in a media query would lose
-   to them, media queries adding no specificity of their own. */
+   lines instead. No version scoping needed now that the tag is not version-scoped
+   either — the earlier rule had to match 0,2,0 to win, because a media query adds no
+   specificity of its own. */
 @media (max-width: 700px) {
-  html[data-hero="cartoon"] .bt-tag,
-  html[data-hero="globe"] .bt-tag {
+  .bt-tag {
     white-space: normal; text-wrap: balance;
     font-size: 7.5px; letter-spacing: .07em; line-height: 1.3;
     padding: 4px 7px;
   }
 }
-html[data-hero="cartoon"] .hero-cta .hc-ic,
-html[data-hero="cartoon"] .hero-cta .hc-price { display: grid; }
-html[data-hero="cartoon"] .hero-cta.pill {
-  display: grid; grid-template-columns: minmax(0, 1fr);
-  justify-items: center; text-align: center; gap: 10px;
-  width: min(286px, 100%);
-  font-size: 15px; letter-spacing: -.01em;
-}
 /* A tile is 105px taller than the pill it replaced, and that came out of the gap
    above the scroll cue. The stack gives some of it back: the tile does not need
    the same air around it as the heading does. */
 html[data-hero="cartoon"] .hero-ui { --hero-gap: clamp(12px, 1.9vh, 22px); }
-html[data-hero="cartoon"] .hero-cta .hc-ic {
-  place-items: center; width: 52px; height: 52px; border-radius: 15px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, .16));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .6),
-    inset 0 -1px 0 rgba(104, 0, 60, .3),
-    0 4px 12px rgba(2, 4, 16, .3);
-}
-html[data-hero="cartoon"] .hero-cta .hc-ic svg {
-  width: 24px; height: 24px; fill: #fff;
-  filter: drop-shadow(0 1px 2px rgba(2, 4, 16, .5));
-}
-html[data-hero="cartoon"] .hero-cta .hc-text { display: grid; gap: 4px; justify-items: center; }
-html[data-hero="cartoon"] .hero-cta .hc-name {
-  font-family: var(--disp); font-weight: 700; font-size: var(--cta-tile-type);
-  letter-spacing: -.015em; line-height: 1.1; text-transform: none;
-  text-shadow: 0 1px 8px rgba(3, 6, 22, .75);
-}
-html[data-hero="cartoon"] .hero-cta .hc-price {
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; color: rgba(255, 255, 255, .82);
-  display: flex; align-items: baseline; gap: 6px;
-  text-shadow: 0 1px 7px rgba(3, 6, 22, .8);
-}
-html[data-hero="cartoon"] .hero-cta .hc-price b {
-  font-family: var(--fig); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
-  color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
-}
 /* the CTA is a tile in this version, so the three tiles beside it are set at its
    name's size rather than at the pill's */
 html[data-hero="cartoon"] .bt-name { font-size: var(--cta-tile-type); }
@@ -4872,54 +4791,3 @@ html[data-hero="cartoon"] .bt-name { font-size: var(--cta-tile-type); }
    higher setting: a brighter fill, a hotter specular rim, more air around the
    words, and a magenta bloom under it that nothing else in the hero has. The
    magenta stays the primary's colour; it just stops being a flat fill. */
-html[data-hero="cartoon"] .hero-cta.pill.solid {
-  position: relative; isolation: isolate;
-  padding: 17px 18px 16px; border-radius: 24px; border: 0;
-  color: #fff;
-  /* The first pass matched the tiles too closely and came out *quieter* than the
-     solid pill it replaced — a pale pane on bright water. The magenta has to carry
-     most of the face for this to read as the primary; the glass is the top third,
-     the highlight and the rim. */
-  background:
-    linear-gradient(168deg, rgba(255, 255, 255, .46) 0%, rgba(255, 160, 210, .42) 22%,
-                    rgba(209, 0, 119, .88) 58%, rgba(180, 0, 102, .95) 100%);
-  backdrop-filter: blur(48px) saturate(190%) brightness(1.05);
-  -webkit-backdrop-filter: blur(48px) saturate(190%) brightness(1.05);
-  box-shadow:
-    0 22px 54px rgba(2, 4, 16, .5),
-    0 14px 46px rgba(209, 0, 119, .62),
-    inset 0 1px 0 rgba(255, 255, 255, .4),
-    inset 0 -1px 1px rgba(104, 0, 60, .5);
-  text-shadow: 0 1px 8px rgba(3, 6, 22, .7);
-  transition: transform .5s cubic-bezier(.32,.72,0,1),
-              background .4s cubic-bezier(.32,.72,0,1),
-              box-shadow .4s cubic-bezier(.32,.72,0,1);
-}
-/* the rim, the same trick the tiles use: a ring that refracts harder than the pane */
-html[data-hero="cartoon"] .hero-cta.pill.solid::before {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  border-radius: inherit; pointer-events: none; padding: 1.5px;
-  background: linear-gradient(145deg,
-    rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .4) 24%,
-    rgba(255, 255, 255, .08) 46%, rgba(255, 255, 255, 0) 62%,
-    rgba(255, 190, 230, .7) 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-}
-html[data-hero="cartoon"] .hero-cta.pill.solid:hover {
-  transform: translateY(-4px);
-  background:
-    linear-gradient(168deg, rgba(255, 255, 255, .58) 0%, rgba(255, 175, 220, .5) 22%,
-                    rgba(229, 19, 139, .92) 58%, rgba(200, 10, 120, .97) 100%);
-  box-shadow:
-    0 32px 68px rgba(2, 4, 16, .56),
-    0 18px 58px rgba(229, 19, 139, .72),
-    inset 0 1px 0 rgba(255, 255, 255, .5),
-    inset 0 -1px 1px rgba(104, 0, 60, .5);
-}
-html[data-hero="cartoon"] .hero-cta.pill.solid:active { transform: translateY(-1px) scale(.985); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  html[data-hero="cartoon"] .hero-cta.pill.solid { background: var(--btn); }
-}

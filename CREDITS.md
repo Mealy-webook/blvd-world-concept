@@ -280,19 +280,25 @@ evidence: the statue does not move in real life.
 
 ### The seal
 
-**Guinness World Records' logo is not in this repository and is not reproduced.** It
-is a trademark, and drawing an imitation of it would be manufacturing a
-certification. The seal above the chips is ours: a ring, laurels, a star and the
-words, set in the site's own type, standing in the slot where the real mark goes.
-The number in the middle is the count of panels on the page rather than a figure
-typed into the artwork, so it cannot drift from what is shown.
+`img/records/gwr-logo.svg` is **Guinness World Records' own logo**, supplied by the
+client as the file Wikipedia hosts
+(`upload.wikimedia.org/wikipedia/en/f/f4/Guinness_World_Records_logo.svg`). It is
+their trademark, not ours, and Wikipedia's copy is a non-free file held there under
+fair use — which is not the same permission as putting it on a park's marketing
+site.
 
-To use the official mark: put the file GWR issues to record holders at
-`img/records/gwr-logo.svg` and swap it for the `.rec-seal-type` SVG — the markup
-carries the exact snippet in a comment. Two things to settle first, neither of them
-ours to decide: that the records are certified and current, and that the usage terms
-in the holder's kit are met (they cover minimum size, clear space, and what may be
-claimed next to the mark).
+Two things to settle before this is public, neither of them ours to decide: that the
+records are certified and current, and that the usage terms in the kit GWR issues to
+record holders are met (they cover minimum size, clear space, and what may be
+claimed next to the mark). Replace this file with the one from that kit.
+
+It sits on a white disc because the logo's own field is navy and this page's ground
+is a night sky — a dark mark on a dark ground otherwise. Nothing about the artwork
+itself was altered.
+
+An earlier revision carried a seal of our own here — a ring, laurels, a star and the
+words in the site's type — drawn precisely so that no imitation of the real mark was
+being made while we did not have it. It was replaced when the real file arrived.
 
 ### The sphere's globe
 
