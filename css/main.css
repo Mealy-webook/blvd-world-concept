@@ -3496,7 +3496,15 @@ html[data-hero="real"] .zc .zc-plate {
    map. Twenty zones are twenty pages rather than one page twenty times. */
 .zp {
   position: relative; z-index: 11;
-  width: 100%; height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+  /* min-width: 0 is the whole fix for the phone layout. .view is a flex container,
+     and a flex item will not shrink below its content's min-content width unless it
+     is told to — so the widest thing inside this page (a chip row, a card) pushed
+     the page past the viewport, and justify-content: center then clipped it at both
+     edges. It looked like an overflow bug and was a flex-basis one. */
+  width: 100%; min-width: 0; height: 100dvh;
+  /* the page scrolls down, never sideways: anything wide enough to need it (the
+     rails, the contents strip) scrolls inside itself */
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
   scroll-behavior: smooth;
 }
 .zp-body {
@@ -3576,8 +3584,8 @@ html[data-hero="real"] .zc .zc-plate {
 .zp-facts {
   list-style: none; margin: 4px 0 0; padding: 12px 0 0;
   border-top: 1px solid rgba(199, 226, 255, .2);
-  width: 100%; max-width: 560px;
-  display: flex; flex-wrap: wrap; gap: 10px clamp(18px, 3vw, 40px);
+  width: 100%; max-width: min(560px, 100%);
+  display: flex; flex-wrap: wrap; gap: 10px clamp(14px, 3vw, 40px);
 }
 .zp-facts li { display: flex; align-items: baseline; gap: 7px; }
 .zp-facts b {
@@ -3589,13 +3597,15 @@ html[data-hero="real"] .zc .zc-plate {
   font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .12em;
   text-transform: uppercase; color: #a9bbdd;
 }
-.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; width: 100%; }
 
 /* ── the page's own contents, sticky under the header ── */
 .zp-jump {
   position: sticky; top: 0; z-index: 8;
   display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-  padding: 12px var(--sec-x);
+  /* the Back button floats at the top left, so the strip starts to the right of it
+     rather than underneath it */
+  padding: 12px var(--sec-x) 12px calc(var(--sec-x) + 128px);
   background: linear-gradient(180deg, var(--bg) 55%, transparent);
   backdrop-filter: blur(10px);
 }
@@ -3648,10 +3658,9 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 /* ── tonight ── */
-.zp-tonight {
-  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-  gap: clamp(16px, 3vw, 34px); align-items: start;
-}
+/* one column: the rows carry their own thumbnails, so the lead figure that used to
+   sit beside them is gone and there is nothing to sit beside */
+.zp-tonight { display: grid; }
 .zp-show-shot { position: relative; margin: 0; border-radius: var(--r-lg); overflow: hidden; }
 .zp-show-shot img {
   display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
@@ -3705,21 +3714,28 @@ html[data-hero="real"] .zc .zc-plate {
 
    The picture frames themselves are the site's: the same radius and shadow the rest
    of the photographs on this page carry. */
+/* The geometry, corrected. The original hangs its perspective origin at "center top"
+   and rotates about the grid's middle, which in a box this size threw the plane clean
+   out of the sticky window — the block photographed as empty sky. Hinged along the
+   bottom edge instead, with the origin in the middle of the window, the grid stands
+   up *into* frame and every stage of it is inside the clip.
+
+   170vh rather than 350: the original owns a whole page, this is one block on a page
+   that already has six, and 260vh of scroll for one gallery made the zone page nearly
+   six thousand pixels tall. */
 .ag-scroll {
-  position: relative; height: 260vh;
-  perspective: 1000px; perspective-origin: 50% 0%;
-  transform-style: preserve-3d;
+  position: relative; height: 170vh;
 }
 .ag-sticky {
   position: sticky; top: 0; height: 100dvh; overflow: hidden;
-  display: grid; align-items: center;
-  perspective: 1000px; perspective-origin: 50% 0%;
-  transform-style: preserve-3d;
+  display: grid; align-items: center; justify-items: center;
+  perspective: 1200px; perspective-origin: 50% 50%;
 }
 .ag-grid {
+  width: 100%;
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(6px, 1vw, 12px);
-  transform-style: preserve-3d; transform-origin: 50% 50%;
+  transform-origin: 50% 100%;          /* hinged along the bottom */
   will-change: transform;
 }
 .ag-col {
@@ -3727,7 +3743,7 @@ html[data-hero="real"] .zc .zc-plate {
   will-change: transform;
 }
 /* the middle column starts higher, the way the original offsets its second column */
-.ag-col[data-col="1"] { margin-top: -18%; }
+.ag-col[data-col="1"] { margin-top: -12%; }
 .ag-col img, .ag-col .zp-vid video {
   display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
   object-fit: cover; border-radius: var(--r-md); box-shadow: var(--sh-1);
@@ -3752,15 +3768,19 @@ html[data-hero="real"] .zc .zc-plate {
 
 @media (max-width: 860px) {
   .zp-hero-in { grid-template-columns: minmax(0, 1fr); }
+  /* the Back button has the top row to itself here, so the strip stops making room
+     for it beside itself */
+  .zp-jump { padding-left: var(--sec-x); top: 56px; }
+  .zp-facts b { font-size: clamp(18px, 5vw, 24px); }
+  .zp-go .pill { flex: 1 1 auto; justify-content: center; }
   .zp-poster { width: min(160px, 40vw); }
-  .zp-tonight { grid-template-columns: minmax(0, 1fr); }
   .zp-map-plane img { transform: rotateX(40deg) rotateZ(-2deg) scale(1.04); }
 }
 @media (max-width: 700px) {
   /* two columns on a phone: three at 375px is three postage stamps */
   .ag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ag-col[data-col="2"] { display: none; }
-  .ag-scroll { height: 200vh; }
+  .ag-scroll { height: 150vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .zp-back { animation: none; }

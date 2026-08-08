@@ -49,12 +49,27 @@
      kind of show. That table lives in js/carousels.js and is repeated here rather
      than exported, because it is a fact about the photographs on disk. */
   const ZONE_SHOW = {
-    "Saudi Arabia": "saudi.webp", "Türkiye": "turkiye.webp", Spain: "spain.webp",
-    Morocco: "morocco.webp", China: "china.webp", "South Korea": "korea.webp",
-    Indonesia: "indonesia.webp", Mexico: "mexico.webp", Kuwait: "kuwait.webp",
-    Levant: "levant.webp",
+    "Saudi Arabia": ["saudi.webp"], "Türkiye": ["turkiye.webp"], Spain: ["spain.webp"],
+    Morocco: ["morocco.webp"], China: ["china.webp"],
+    "South Korea": ["korea.webp", "korea-2.webp"], Indonesia: ["indonesia.webp"],
+    Mexico: ["mexico.webp"], Kuwait: ["kuwait.webp"], Levant: ["levant.webp"],
   };
-  const KIND_SHOW = { STAGE: "stage-1.webp", DANCE: "dance-1.webp", ROAMING: "roam-1.webp" };
+  const BY_KIND = {
+    STAGE:   ["stage-1.webp", "turkiye.webp", "stage-2.webp"],
+    DANCE:   ["dance-1.webp", "dance-2.webp", "levant.webp"],
+    ROAMING: ["roam-1.webp", "roam-2.webp", "saudi.webp"],
+  };
+  /* The rotation is the shows page's, not a simplification of it: a zone with an act
+     of its own leads with it and comes back to it every other stop, and the rest
+     comes from a pool sorted by the kind of show. Passing one photograph for the
+     whole zone — which is what this page did first — put the same picture on all
+     nine rows, which is the exact thing the shows page wrote that rule to avoid. */
+  function showShot(zone, kind, i) {
+    const own = ZONE_SHOW[zone];
+    if (own && i % 2 === 0) return own[(i / 2) % own.length];
+    const pool = BY_KIND[(kind || "ROAMING").split(" ")[0]] || BY_KIND.ROAMING;
+    return pool[i % pool.length];
+  }
 
   function head(zone, tone, facts) {
     const shot = (zone.imgs || [])[0];
@@ -107,16 +122,18 @@
       </section>`;
   }
 
-  /* ── experiences: the rail the restaurants page uses, holding the card the
-        experiences page uses ──
-     .rail-wrap / .rail-btn / .rail is this site's horizontal list, and .xp-card is
-     already a thumbnail with a title and a price under it. Nothing new is built
-     here; the zone fills components that exist.
+  /* ── experiences: the rail, holding the rail's own card ──
+     .rail-wrap / .rail-btn / .rail is this site's horizontal list. The card in it is
+     .eat-card, not .xp-card: both have a picture, a name and a price, but .xp-card is
+     the experiences page's *coverflow* card — position: absolute, top and left at
+     50%, its caption at opacity 0 until the carousel drives it — so in a flex rail
+     every one stacked in the middle and showed nothing. .eat-card is the rail card:
+     a fixed width, the image above, the type under it. One rail card for both rails.
 
      Two sources, and they are not the same thing. WBK.experiences are bookable and
-     carry an image and a price, so they make cards. The zone's own attractions and
-     its parkExperiences list are names with neither, so they stay as chips — a card
-     with an empty price line is a card pretending to be bookable. */
+     carry an image and a price, so they make cards. A zone's own attraction names
+     have neither, so they stay chips — a card with an empty price line is a card
+     pretending to be bookable. */
   function experiences(zone, exp, name) {
     const booked = (WBK.experiences || []).filter((x) => canon(x.zone) === name);
     const named = [...(zone.attractions || []), ...((exp && exp.items) || [])]
@@ -128,11 +145,17 @@
         <div class="rail-wrap">
           <button class="rail-btn prev" type="button" data-rail="zp-xp-rail"
                   aria-label="Previous experiences">&#8249;</button>
-          <div class="rail xp-rail" id="zp-xp-rail">
+          <div class="rail" id="zp-xp-rail">
             ${booked.map((x) => `
-              <article class="xp-card is-static">
-                <img src="img/${esc(x.img)}" alt="${esc(x.title)}" draggable="false" loading="lazy" />
-                <div class="xp-cap"><b>${esc(x.title)}</b><span>SAR ${esc(x.price)}</span></div>
+              <article class="eat-card">
+                <div class="eat-shot">
+                  <img src="img/${esc(x.img)}" alt="${esc(x.title)}" draggable="false" loading="lazy" />
+                </div>
+                <div class="eat-text">
+                  <p class="eat-meta">${esc(zone.name)}</p>
+                  <h3>${esc(x.title)}</h3>
+                  <p class="eat-from">From <b>SAR ${esc(x.price)}</b></p>
+                </div>
               </article>`).join("")}
           </div>
           <button class="rail-btn next" type="button" data-rail="zp-xp-rail"
@@ -162,7 +185,7 @@
       <ol class="sch-list">
         ${items.map((r, i) => `
           <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
-            <span class="sch-time">${String(i + 1).padStart(2, "0")}<small>ride</small></span>
+            <span class="sch-time">${String(i + 1).padStart(2, "0")}</span>
             ${shots.length ? `
               <span class="sch-shot">
                 <img src="img/zones/${esc(shots[i % shots.length])}" alt="" loading="lazy" draggable="false" />
@@ -235,20 +258,16 @@
   function schedule(name) {
     const row = (WBK.showsByZone || []).find((s) => canon(s.zone) === name);
     if (!row || !row.items || !row.items.length) return "";
-    const first = row.items[0];
-    const shot = ZONE_SHOW[name] || KIND_SHOW[(first.ty || "ROAMING").split(" ")[0]] || "roam-1.webp";
+    /* the lead figure this used to compute is gone — every row carries its own
+       thumbnail through showShot() now, so nothing here needs a photograph */
     return `
       <div class="zp-tonight">
-        <figure class="zp-show-shot">
-          <img src="img/shows/${esc(shot)}" alt="" loading="lazy" onerror="this.closest('figure').remove()" />
-          <figcaption>${esc(name)} &#183; tonight</figcaption>
-        </figure>
         <ol class="sch-list">
           ${row.items.map((it, i) => `
             <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
               <span class="sch-time">${esc(it.t)}<small>${esc(it.ap || "")}</small></span>
               <span class="sch-shot">
-                <img src="img/shows/${esc(ZONE_SHOW[name] || KIND_SHOW[(it.ty || "ROAMING").split(" ")[0]] || "roam-1.webp")}"
+                <img src="img/shows/${esc(showShot(name, it.ty, i))}"
                      alt="" loading="lazy" draggable="false" />
               </span>
               <span class="sch-body">
@@ -303,15 +322,20 @@
            draggable="false" onerror="this.remove()" />`;
     const clip = `
       <figure class="zp-vid">
-        <video src="video/zones/sample-aerial.mp4" muted loop playsinline preload="none"
-               aria-hidden="true"></video>
+        <!-- a poster, because preload="none" means the box is empty until it plays and
+             an empty box in the middle of a wall of photographs reads as a hole -->
+        <video src="video/zones/sample-aerial.mp4" poster="img/zones/${esc(imgs[0])}"
+               muted loop playsinline preload="none" aria-hidden="true"></video>
         <figcaption>Park footage &#183; not this zone</figcaption>
       </figure>`;
 
     /* four rows per column reads as a wall; with two photographs that is each one
        twice, which is what the original does with its four-per-column arrays */
     const cols = Array.from({ length: COLS }, (_, c) => {
-      const rows = Array.from({ length: 4 }, (_, r) => imgs[(c + r * COLS) % imgs.length]);
+      /* (c + r), not (c + r*COLS): with three photographs across three columns the
+         second stride is a multiple of the count, so every row in a column resolved
+         to the same picture and the wall was three columns of one image each. */
+      const rows = Array.from({ length: 4 }, (_, r) => imgs[(c + r) % imgs.length]);
       const html = rows.map(cell).join("");
       return `<div class="ag-col" data-col="${c}">${c === 1 ? clip + html : html}</div>`;
     });
@@ -473,8 +497,10 @@
           return;
         }
         const rise = Math.min(1, p / 0.5);                       // the first half
-        const rot = 75 * (1 - rise);
-        const scale = p < 0.5 ? 1.2 : 1.2 - 0.2 * Math.min(1, (p - 0.5) / 0.4);
+        /* 55 rather than the original's 75: hinged at the bottom of a window this
+           size, anything past about 60 degrees is edge-on and reads as nothing */
+        const rot = 55 * (1 - rise);
+        const scale = p < 0.5 ? 1.12 : 1.12 - 0.12 * Math.min(1, (p - 0.5) / 0.4);
         agGrid.style.transform = `rotateX(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
         const drift = Math.min(1, Math.max(0, (p - 0.5) / 0.5));
         agCols.forEach((c, i) => {
@@ -524,16 +550,61 @@
       });
     }
 
-    /* the rail arrows, the same nudge the restaurants and shows pages give theirs */
-    for (const btn of body.querySelectorAll(".rail-btn[data-rail]")) {
-      btn.addEventListener("click", () => {
-        const rail = document.getElementById(btn.dataset.rail);
-        if (!rail) return;
-        const card = rail.firstElementChild;
-        const step = card ? card.getBoundingClientRect().width + 16 : 260;
-        rail.scrollBy({ left: btn.classList.contains("prev") ? -step : step,
-                        behavior: still ? "auto" : "smooth" });
-      });
+    /* ── the components' own entrances ──
+       Both cards ship at opacity 0 and wait for a class: .eat-card wants .pop with a
+       --pop-d stagger, .sch-row wants .in. Their own pages add them from an observer,
+       so a page that borrows the markup and not the activation gets a rail of
+       invisible cards and a schedule of invisible rows — which is exactly what this
+       page had. Using a component means using its entrance too. */
+    const cards = [...body.querySelectorAll(".eat-card")];
+    cards.forEach((c, i) => c.style.setProperty("--pop-d", (i % 6) * 70 + "ms"));
+    const rows = [...body.querySelectorAll(".sch-row")];
+    if (still || !("IntersectionObserver" in window)) {
+      cards.forEach((c) => c.classList.add("pop"));
+      rows.forEach((rw) => rw.classList.add("in"));
+    } else {
+      const enter = new IntersectionObserver((es) => {
+        for (const e of es) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add(e.target.classList.contains("eat-card") ? "pop" : "in");
+          enter.unobserve(e.target);
+        }
+      }, { root: page, threshold: 0.15 });
+      [...cards, ...rows].forEach((el) => enter.observe(el));
+      /* a fail-open, the way both of those pages have one: nothing may be left
+         invisible because an observer did not fire */
+      setTimeout(() => {
+        cards.forEach((c) => c.classList.add("pop"));
+        rows.forEach((rw) => rw.classList.add("in"));
+      }, 3500);
+    }
+
+    /* The rail arrows, the same nudge the other pages give theirs — and .spent when
+       there is nothing to scroll to, which the component already styles (dimmed and
+       inert). Two experience cards in a rail this wide leaves both arrows pointing at
+       nothing, and an arrow that does nothing when pressed is worse than no arrow. */
+    for (const rail of body.querySelectorAll(".rail")) {
+      const btns = [...body.querySelectorAll(`.rail-btn[data-rail="${rail.id}"]`)];
+      const mark = () => {
+        const room = rail.scrollWidth - rail.clientWidth;
+        const at = rail.scrollLeft;
+        btns.forEach((b) => {
+          const isPrev = b.classList.contains("prev");
+          b.classList.toggle("spent", room < 4 || (isPrev ? at < 4 : at > room - 4));
+        });
+      };
+      for (const b of btns) {
+        b.addEventListener("click", () => {
+          const card = rail.firstElementChild;
+          const step = card ? card.getBoundingClientRect().width + 16 : 260;
+          rail.scrollBy({ left: b.classList.contains("prev") ? -step : step,
+                          behavior: still ? "auto" : "smooth" });
+        });
+      }
+      rail.addEventListener("scroll", mark, { passive: true });
+      mark();
+      /* the cards are lazy, so the rail's width is not final on the first pass */
+      setTimeout(mark, 800);
     }
 
     if (page) page.scrollTop = 0;
