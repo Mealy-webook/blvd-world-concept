@@ -265,6 +265,23 @@ window.WBK = {
     { name: "Africa",        lat: 0.0,   lon: 20.0,   blurb: "Safari scale: drums, colour, a baobab you can ride." , imgs: ["africa.webp", "park8.jpg", "park6.jpg"], attractions: ["Immersive Safari Trail", "Savanna Drum Circle", "Tribal Art Market"], food: ["Safari Grill", "Baobab Juice Bar"], rides: ["Safari Jeep Adventure", "Jungle Rapids"] },
   ],
 
+  /* ── what the map has to carry ──────────────────────────────────
+     The client's own table of minimum points of interest, quoted as given —
+     including the ranges, which are theirs and not a hedge of ours. It is a brief
+     rather than a survey, so where it disagrees with the printed map the map is
+     what we draw and this is what we quote: the artwork shows two gates, the table
+     lists three (Gate 1, Gate 2 and a VIP gate). See CREDITS.md. */
+  mapSpec: [
+    { n: "24\u201327", l: "zones" },
+    { n: "23",         l: "experiences" },
+    { n: "15",         l: "rides" },
+    { n: "7\u201310",  l: "restaurants" },
+    { n: "17",         l: "toilets" },
+    { n: "7",          l: "mosques" },
+    { n: "6",          l: "clinics" },
+    { n: "3",          l: "gates" },
+  ],
+
   // ── park map pins ──────────────────────────────────────────────
   // x / y are percentages of img/map/park-map.jpg, measured off the label
   // pills on the official park map. `zone` links a pin to the matching

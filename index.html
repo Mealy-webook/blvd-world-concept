@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=659" />
+<link rel="stylesheet" href="css/main.css?v=673" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=659" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=673" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -184,27 +184,10 @@
       </div>
 
       <ul class="rec-facts reveal" id="ab-facts"></ul>
-
-      <div class="ab-go reveal">
-        <a class="pill light big-pill" href="#/map">Explore the map</a>
-        <a class="pill ghost big-pill" href="#/shows">Tonight&#8217;s shows</a>
-      </div>
-    </section>
-
-    <!-- ── globe: letters from the world ── -->
-    <section class="globe-sec" id="globe-sec">
-      <div id="globe-holder"></div>
-      <div class="gallery-head reveal">
-        <p class="eyebrow">DRAG TO EXPLORE</p>
-      </div>
     </section>
 
     <!-- ── the season's zones, as a ring of campaign posters ── -->
     <section class="zonesec" id="pex">
-      <div class="zs-head reveal">
-        <h2 class="sec-title">TRAVEL THE WORLD<br/>IN ONE NIGHT</h2>
-      </div>
-
       <!-- two layouts for the same zones: the ring, and the fan the globe version
            uses instead. CSS shows one and hides the other; see data-hero. -->
       <div class="zone-flow" id="zone-flow"></div>
@@ -221,11 +204,55 @@
 
       <!-- the map link went with it: the section right below is the map, and it
            carries its own way in -->
-      <div class="ride-cta reveal">
-        <a href="#/shows" class="pill light big-pill">
-          Live shows
-        </a>
+    </section>
+
+    <!-- ── globe: letters from the world ── -->
+    <section class="globe-sec" id="globe-sec">
+      <div id="globe-holder"></div>
+      <div class="gallery-head reveal">
+        <p class="eyebrow">DRAG TO EXPLORE</p>
       </div>
+    </section>
+
+    <!-- ── what you get, in three ──
+         Built from cells this page already has: the same rounded pane with an inset
+         hairline the cashless steps use, and the same inline-SVG icon the hero tiles
+         use. Nothing new was invented for it.
+
+         THE COPY IS OURS, NOT THE REFERENCE'S. The layout came from a brochure whose
+         three lines read "worlds inspired by Frozen, MARVEL and Pixar" — that is
+         Disney's, and this park has no Frozen, MARVEL or Pixar in it. Putting those
+         names here would be a claim about the park that is not true. These three say
+         what BLVD World actually has, and every figure in them is counted from WBK by
+         js/about.js rather than typed. See CREDITS.md. -->
+    <section class="draws" id="draws">
+      <ul class="dw-grid reveal">
+        <li class="dw-card">
+          <span class="dw-ic" aria-hidden="true">
+            <!-- a compass star: the site's own eight-point mark, the one the loader
+                 and the sky already use -->
+            <svg viewBox="0 0 24 24"><path d="M12 1.4l1.9 6.3 4.6-3.2-3.2 4.6 6.3 1.9-6.3 1.9 3.2 4.6-4.6-3.2L12 22.6l-1.9-6.3-4.6 3.2 3.2-4.6L2.4 13l6.3-1.9-3.2-4.6 4.6 3.2z"/></svg>
+          </span>
+          <p><b id="dw-zones">Twenty-four</b> countries rebuilt street by street, each
+             with its own kitchens, stages and shops</p>
+        </li>
+        <li class="dw-card">
+          <span class="dw-ic" aria-hidden="true">
+            <!-- a coaster car over its track, two riders aboard -->
+            <svg viewBox="0 0 24 24"><path d="M2.4 17.2c4.6 0 8.3-1.6 11-4.3 2.4-2.4 4-5.6 5-9.5l1.9.5c-1.1 4.2-2.9 7.8-5.6 10.5-3.1 3.1-7.3 4.8-12.3 4.8zM7.9 12.1l7.6-2.6 1.5 3.1a2.2 2.2 0 0 1-1.4 3.1l-4.6 1.2a2.2 2.2 0 0 1-2.5-1.1zM10.2 6.2a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zm4.3-1.1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM4.6 19.6h15.8v1.8H4.6z"/></svg>
+          </span>
+          <p><b id="dw-rides">Fourteen</b> rides and dozens of attractions, from
+             carousels to drop towers &#8212; for every age</p>
+        </li>
+        <li class="dw-card">
+          <span class="dw-ic" aria-hidden="true">
+            <!-- a note and two stars: the shows -->
+            <svg viewBox="0 0 24 24"><path d="M20.6 2.6v11.2a3.3 3.3 0 1 1-1.9-3V6.4l-6.6 1.8v8.5a3.3 3.3 0 1 1-1.9-3V5.4zM5.2 2.4l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2L2.2 5.4l2.2-.8zM8.6 9.8l.5 1.4 1.4.5-1.4.5-.5 1.4-.5-1.4-1.4-.5 1.4-.5z"/></svg>
+          </span>
+          <p><b id="dw-shows">151</b> showtimes a night, and a lake you cross by boat
+             and by submarine</p>
+        </li>
+      </ul>
     </section>
 
     <!-- ── the park, in one small model ──
@@ -502,10 +529,8 @@
 
 
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
-    <!-- off the home page, on request. The corridor and its lightbox stay exactly
-         as they are — one [hidden] rule in the reset covers the section — so
-         bringing it back is this attribute and its nav tab. -->
-    <section class="gallery" id="gallery" hidden>
+    <!-- back on the page, before the rules -->
+    <section class="gallery" id="gallery">
       <!-- The photographs come down a tunnel rather than along a belt: each sits at
            its own depth and the run advances, so a picture grows out of the dark,
            passes, and is recycled to the far end. Ported from the reference
@@ -978,6 +1003,7 @@
            Book menu and the sections' own buttons, not from here, so every tab
            is scroll-spied and none of them navigates away. -->
       <a href="#pex" data-sec="pex">Zones</a>
+      <a href="#gallery" data-sec="gallery">Gallery</a>
       <a href="#rules" data-sec="rules">Rules</a>
       <a href="#faqs" data-sec="faqs">FAQ</a>
       <a href="#sponsors" data-sec="sponsors">Partners</a>
@@ -1014,32 +1040,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=659"></script>
-  <script src="js/borders.js?v=659"></script>
-  <script src="js/scene.js?v=659"></script>
-  <script src="js/app.js?v=659"></script>
-  <script src="js/experiences.js?v=659"></script>
-  <script src="js/carousels.js?v=659"></script>
-  <script src="js/coverflow.js?v=659"></script>
-  <script src="js/zones.js?v=659"></script>
-  <script src="js/zonepage.js?v=659"></script>
-  <script src="js/fan.js?v=659"></script>
-  <script src="js/zonevid.js?v=659"></script>
-  <script src="js/records.js?v=659"></script>
-  <script src="js/sphere.js?v=659" defer></script>
-  <script src="js/gallery.js?v=659"></script>
-  <script src="js/parkmap.js?v=659"></script>
-  <script src="js/minimap.js?v=659"></script>
-  <script src="js/sponsors.js?v=659"></script>
-  <script src="js/about.js?v=659"></script>
-  <script src="js/cashless.js?v=659"></script>
-  <script src="js/headings.js?v=659"></script>
-  <script src="js/bundles.js?v=659"></script>
-  <script src="js/ridex.js?v=659"></script>
-  <script src="js/cursor.js?v=659"></script>
-  <script src="js/glass.js?v=659" defer></script>
+  <script src="js/data.js?v=673"></script>
+  <script src="js/borders.js?v=673"></script>
+  <script src="js/scene.js?v=673"></script>
+  <script src="js/app.js?v=673"></script>
+  <script src="js/experiences.js?v=673"></script>
+  <script src="js/carousels.js?v=673"></script>
+  <script src="js/coverflow.js?v=673"></script>
+  <script src="js/zones.js?v=673"></script>
+  <script src="js/zonepage.js?v=673"></script>
+  <script src="js/fan.js?v=673"></script>
+  <script src="js/zonevid.js?v=673"></script>
+  <script src="js/records.js?v=673"></script>
+  <script src="js/sphere.js?v=673" defer></script>
+  <script src="js/gallery.js?v=673"></script>
+  <script src="js/parkmap.js?v=673"></script>
+  <script src="js/minimap.js?v=673"></script>
+  <script src="js/sponsors.js?v=673"></script>
+  <script src="js/about.js?v=673"></script>
+  <script src="js/cashless.js?v=673"></script>
+  <script src="js/headings.js?v=673"></script>
+  <script src="js/bundles.js?v=673"></script>
+  <script src="js/ridex.js?v=673"></script>
+  <script src="js/cursor.js?v=673"></script>
+  <script src="js/glass.js?v=673" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=659" defer></script>
+  <script src="js/heroes.js?v=673" defer></script>
 </body>
 </html>

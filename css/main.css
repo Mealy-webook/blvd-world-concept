@@ -878,7 +878,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* the sponsor tiers close up to fit one stage */
 .sponsors .sp-tiers { gap: clamp(18px, 3vh, 30px); }
 .sponsors .sp-tier { gap: clamp(12px, 2vh, 18px); }
-.sponsors .sp-plate img, .sponsors .sp-tier:first-child .sp-plate img { height: clamp(34px, 4.4vh, 52px); }
+/* on a short stage the boxes come down, not the pictures inside them */
+.sponsors .sp-plate,
+.sponsors .sp-tier:first-child .sp-plate { height: clamp(36px, 4.4vh, 54px); }
 /* the schedule's rail gives height back on a short stage */
 @media (max-height: 900px) {
   .sch-row { padding: 11px 8px; }
@@ -1613,11 +1615,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transform-style: preserve-3d;
 }
 .cf-card {
-  /* not clipped: the New badge stands above the card's top edge, and overflow:
-     hidden cut it off. The corners come from the media's own border-radius
-     instead — an image and a video each clip to that without any help. */
+  /* Clipped again. It was visible so the New badge could stand above the card's top
+     edge; the badge sits inside the card now, so nothing needs to escape — and the
+     clip is what keeps a hovered card's zoom inside its own frame instead of letting
+     it grow up into the section title above the ring. */
   position: absolute; left: 50%; top: 0; width: var(--cf-card); aspect-ratio: 3 / 4;
-  border-radius: var(--r-lg); overflow: visible; will-change: transform;
+  border-radius: var(--r-lg); overflow: hidden; will-change: transform;
   background: var(--s-well);
   box-shadow: var(--sh-3);
   cursor: pointer;
@@ -1662,15 +1665,40 @@ html[data-hero="real"] .zc .zc-plate {
 /* the New tag, top-left — the only corner free of poster artwork on all eight
    (the Riyadh Season lockup takes the top-right) */
 .zc-new {
-  /* above the card and centred on its top edge: a label on the zone rather than
-     something printed on the poster */
-  position: absolute; z-index: 6; left: 50%; top: 0;
-  transform: translate(-50%, -60%);
+  /* Inside the card, not straddling its top edge. It used to sit 60% of its own
+     height above the card so it read as a label on the zone rather than something
+     printed on the poster — but the ring is a preserve-3d context, where a child
+     that leaves its parent's box is drawn against whatever the neighbouring cards
+     are doing rather than over them. The half that stood proud was landing behind
+     the next card along, and the badge looked cut in two. Inside the card it is in
+     the poster's own plane, after the image in the DOM, and it is never anything
+     but whole. */
+  position: absolute; z-index: 6; left: 50%; top: 10px;
+  transform: translateX(-50%);
   font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
   text-transform: uppercase; color: var(--pick-ink);
   padding: 5px 11px; border-radius: var(--r-pill);
   background: var(--pick);
   box-shadow: var(--sh-1);
+}
+
+/* ── the three new zones ──
+   The badge alone was a label on an otherwise identical card. These are the reason
+   to come back this season, so the card itself carries it: a gold hairline, a warm
+   glow under it, and the badge a size up. It reads at ring distance, before the word
+   is legible. */
+.zc.is-new::before,
+.fan-card.is-new::before {
+  content: ''; position: absolute; inset: -1px; z-index: 4; pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px rgba(255, 194, 77, .9),
+              0 0 34px rgba(255, 170, 60, .34);
+}
+.zc.is-new { border-radius: var(--r-lg); }
+.cf-card:has(.is-new), .fan-card.is-new { filter: drop-shadow(0 0 26px rgba(255, 170, 60, .22)); }
+.is-new .zc-new, .fan-card.is-new .zc-new {
+  font-size: 10.5px; padding: 6px 13px;
+  box-shadow: var(--sh-2), 0 0 18px rgba(255, 194, 77, .55);
 }
 
 /* the centre card gets a hairline so it reads as picked, not just brighter */
@@ -1721,7 +1749,7 @@ html[data-hero="real"] .zc .zc-plate {
 
 /* the New tag lifts with its card */
 .zc-new { transition: transform .4s cubic-bezier(.32,.72,0,1), box-shadow .4s var(--ease); }
-.cf-card.is-hovered .zc-new { transform: translate(-50%, calc(-60% - 3px)) scale(1.05); box-shadow: var(--sh-2); }
+.cf-card.is-hovered .zc-new { transform: translate(-50%, -3px) scale(1.05); box-shadow: var(--sh-2); }
 
 @media (prefers-reduced-motion: reduce) {
   .cf-card.is-hovered .zc img { transform: none; }
@@ -1739,11 +1767,15 @@ html[data-hero="real"] .zc .zc-plate {
   backdrop-filter: blur(6px);
   transition: background .25s var(--ease), border-color .25s var(--ease), transform .3s var(--ease);
 }
-.cf-nav.prev { left: clamp(8px, 3vw, 40px); }
-.cf-nav.next { right: clamp(8px, 3vw, 40px); }
+/* in the bar with the dots now, so they are laid out rather than positioned */
+.cf-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(10px, 1.6vw, 20px);
+}
+.cf-nav.prev, .cf-nav.next { position: static; transform: none; }
 .cf-nav:hover { background: rgba(6, 10, 30, .95); border-color: rgba(199, 226, 255, .6); }
-.cf-nav.prev:hover { transform: translateY(-50%) translateX(-2px); }
-.cf-nav.next:hover { transform: translateY(-50%) translateX(2px); }
+.cf-nav.prev:hover { transform: translateX(-2px); }
+.cf-nav.next:hover { transform: translateX(2px); }
 
 .cf-dots {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 7px;
@@ -2816,7 +2848,6 @@ html[data-hero="real"] .zc .zc-plate {
 /* the figure row wants more air here than it has inside a record panel, where it
    sits under a stage rather than under a paragraph */
 .about .rec-facts { margin-top: clamp(4px, 1.4vh, 14px); }
-.ab-go { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 
 /* ═══════════════ THE PARK, IN ONE SMALL MODEL ═══════════════
    A standing picture of the site, under the zones. No tray, no plate, no frame:
@@ -2867,20 +2898,26 @@ html[data-hero="real"] .zc .zc-plate {
   filter: drop-shadow(0 30px 44px rgba(2, 4, 16, .6));
   transition: transform .9s cubic-bezier(.32,.72,0,1);
 }
-/* it lifts towards flat when you look at it, which is the difference between a
-   decorative angle and one you can read through */
-.mm-art:hover img { transform: rotateX(34deg) rotateZ(-2deg) scale(1.05); }
+/* It does not move under the pointer. It used to lift towards flat on hover, which
+   was a nice idea and the wrong one here: the whole module is a picture with a
+   button under it, nothing about it is interactive, and a thing that moves when the
+   cursor crosses it reads as something you can use. */
 
 /* the count, then the way through — one under the other, both centred */
 .mm-foot { display: grid; justify-items: center; gap: clamp(10px, 1.6vh, 16px); }
+/* eight figures rather than two, so it wraps and centres instead of insisting on
+   one line */
 .mm-count {
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .11em;
-  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center;
+  gap: 4px 10px;
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #8fa0c8; max-width: min(760px, 92vw);
 }
+.mm-count span { white-space: nowrap; }
 .mm-count b {
-  font-family: var(--fig); font-size: 15px; font-weight: 700; letter-spacing: .01em;
+  font-family: var(--fig); font-size: 14px; font-weight: 700; letter-spacing: .01em;
   color: #fff; text-transform: none; font-variant-numeric: tabular-nums;
-  margin-right: 2px;
+  margin-right: 3px;
 }
 .mm-count i { font-style: normal; opacity: .5; margin: 0 5px; }
 
@@ -3485,6 +3522,67 @@ html[data-hero="real"] .zc .zc-plate {
   position: fixed; z-index: 20; left: var(--sec-x); top: clamp(16px, 3vh, 30px);
 }
 
+/* ═══════════════ WHAT YOU GET, IN THREE ═══════════════
+   Three cells of the kind this page already has: the cashless steps' rounded pane
+   with its inset hairline, and the hero tiles' inline-SVG icon. The only thing
+   particular to this section is that the three are equal — no primary, no order,
+   just three things that are all true at once. */
+.draws {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  min-height: 100%; align-content: center;
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+}
+.dw-grid {
+  list-style: none; margin: 0; padding: 0;
+  width: 100%; max-width: min(1080px, 100%);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 26px);
+}
+.dw-card {
+  display: grid; justify-items: center; align-content: start; gap: clamp(14px, 2.2vh, 26px);
+  padding: clamp(24px, 3.4vw, 44px) clamp(16px, 2vw, 28px) clamp(26px, 3.6vw, 46px);
+  border-radius: clamp(16px, 1.8vw, 26px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .04));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .22),
+    inset 0 1px 0 rgba(255, 255, 255, .1),
+    0 16px 40px rgba(2, 4, 16, .34);
+  text-align: center;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease),
+              background .45s var(--ease);
+}
+.dw-card:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .14), rgba(199, 226, 255, .06));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .3),
+    inset 0 1px 0 rgba(255, 255, 255, .14),
+    0 22px 50px rgba(2, 4, 16, .4);
+}
+/* the icon in the pale blue the reference uses, which is this site's own --ice */
+.dw-ic { display: block; width: clamp(40px, 4.6vw, 58px); height: auto; }
+.dw-ic svg { width: 100%; height: auto; display: block; fill: #a9dbe8; }
+.dw-card p {
+  font-family: var(--body); font-size: clamp(13px, 1.35vw, 16.5px); font-weight: 400;
+  line-height: 1.5; color: #dceaff; text-wrap: balance; max-width: 26ch;
+}
+.dw-card b {
+  font-family: var(--fig); font-weight: 700; color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 820px) {
+  .dw-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .dw-card {
+    grid-template-columns: auto minmax(0, 1fr); justify-items: start;
+    text-align: left; gap: 14px; padding: 16px 18px;
+  }
+  .dw-ic { width: 34px; }
+  .dw-card p { max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) { .dw-card { transition: none; } }
+
 /* ═══════════════ A ZONE, IN FULL ═══════════════
    A page, not a stack of lists. The composition is: a cinematic band with the zone's
    own photograph in it and the poster standing off the page, the figures counted
@@ -3649,6 +3747,26 @@ html[data-hero="real"] .zc .zc-plate {
 /* the notch a ticket has, in the zone's colour */
 
 /* the kitchens a zone names without a card of their own */
+/* Named things, as cards rather than chips: a chip reads as a control you can
+   press and these press nothing. The card is the three-card section's pane, reused
+   at a smaller size. */
+.zp-cards {
+  list-style: none; margin: 0; padding: 0; width: 100%;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: clamp(8px, 1vw, 14px);
+}
+.zp-cards .dw-card {
+  padding: clamp(14px, 1.6vw, 20px) clamp(12px, 1.4vw, 18px);
+  gap: 0; align-content: center; min-height: 76px;
+}
+.zp-cards .dw-card p { font-size: clamp(12.5px, 1.2vw, 15px); max-width: none; }
+/* the fast-lane figure, beside the ride's own price */
+.zp-fast {
+  display: block; margin-top: 3px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+
 .zp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .zp-chips li {
   padding: 7px 13px; border-radius: var(--r-pill);
@@ -4233,27 +4351,37 @@ body.route-experiences
 }
 .sp-logos { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: center; }
 .sp-plate {
-  display: grid; place-items: center; padding: 14px 20px;
+  /* flex, not grid with place-items: center. A centred grid item is sized by its own
+     content, so width/height: 100% on the image resolved against a track the image
+     itself was sizing — circular, and the browser fell back to the SVG's intrinsic
+     size. Every logo came out at whatever the file happened to be. */
+  display: flex; align-items: center; justify-content: center;
+  /* The box is the same for every partner in a tier, and the logo is fitted into
+     it. Sizing by height alone is what made this wall lopsided: at 52px tall a wide
+     wordmark like DUNKIN' or aramco filled 200px across while a compact mark like
+     MUC or Domino's filled 90, so one rule gave some partners twice the presence of
+     others. Equal boxes, each logo its own proportions inside. */
+  width: clamp(120px, 13vw, 168px); height: clamp(44px, 5.2vh, 62px);
+  padding: 6px 10px;
   transition: transform .5s var(--ease), opacity .35s var(--ease);
 }
 .sp-plate:hover { transform: translateY(-3px); }
 .sp-plate:hover img { opacity: 1; }
 .sp-plate img {
-  display: block; height: 52px; width: auto;
+  display: block; width: 100%; height: 100%;
+  object-fit: contain; object-position: 50% 50%;
   /* one white family: the SVGs are colour, the crops are already white ink */
   filter: brightness(0) invert(1);
-  opacity: .68; transition: opacity .35s var(--ease);
-  /* wide bilingual lockups would otherwise hog the row — contain keeps them
-     from distorting once the cap kicks in */
-  max-width: 168px; object-fit: contain;
+  opacity: .78; transition: opacity .35s var(--ease);
 }
-.sp-tier:first-child .sp-plate img { height: 60px; max-width: 186px; }   /* premium reads largest */
+/* the premium tier reads a size up — on the box, not on the picture */
+.sp-tier:first-child .sp-plate { width: clamp(140px, 15vw, 196px); height: clamp(52px, 6vh, 74px); }
 /* the two single-logo tiers share a row */
 .sp-pair { display: flex; flex-wrap: wrap; gap: clamp(30px, 7vw, 90px); justify-content: center; }
 .sp-pair .sp-tier { width: auto; }
 @media (max-width: 700px) {
   .sp-plate { padding: 13px 16px; border-radius: var(--r-md); }
-  .sp-plate img, .sp-tier:first-child .sp-plate img { height: 40px; max-width: 128px; }
+  .sp-plate, .sp-tier:first-child .sp-plate { width: clamp(104px, 30vw, 132px); height: 44px; }
   .sp-label { font-size: 11px; letter-spacing: .16em; }
 }
 
@@ -5008,7 +5136,6 @@ html[data-hero="globe"] .zone-fan {
    for the nearest positioned ancestor and land wherever the section happens to put
    them. Anchored here they sit against the deck, on purpose. */
 .zone-fan { position: relative; }
-.zone-fan .cf-nav { top: calc(50% - clamp(12px, 2vh, 22px)); }
 
 .fan-stage {
   position: relative; width: 100%; max-width: min(80rem, 100%);
@@ -5021,7 +5148,11 @@ html[data-hero="globe"] .zone-fan {
   /* sized from the stage, so the deck always fits the space it is given. The
      posters are 3:4, where the old ride cards were 4:7. */
   height: 92%; width: auto; aspect-ratio: 3 / 4;
-  border-radius: var(--r-lg); overflow: hidden;
+  /* visible, not hidden: the New badge stands 60% of its own height above the
+     card's top edge, and overflow: hidden cut the top off it. The corners come from
+     the image's own border-radius instead — the ring card was fixed this way and
+     this one was missed. */
+  border-radius: var(--r-lg); overflow: visible;
   transform-origin: 50% 50%; will-change: transform, opacity; cursor: pointer;
   background: var(--s-well);
   border: 1px solid rgba(124, 196, 255, .2);
@@ -5029,6 +5160,7 @@ html[data-hero="globe"] .zone-fan {
 }
 .fan-card img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  border-radius: inherit;                 /* it clips itself now the card does not */
   user-select: none; -webkit-user-drag: none;
   filter: saturate(.96) brightness(.78);
   transition: filter .45s var(--ease);

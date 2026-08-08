@@ -49,12 +49,19 @@ window.WBK_COVERFLOW = (function () {
                    aria-label="${i + 1} of ${count}">${card(it, i)}</div>`).join("")}
           </div>
         </div>
-        ${showNavigation ? `
-          <button class="cf-nav prev" type="button" aria-label="Previous slide">&#8249;</button>
-          <button class="cf-nav next" type="button" aria-label="Next slide">&#8250;</button>` : ""}
       </div>
       ${showCaption ? `<div class="cf-caption" aria-live="polite"></div>` : ""}
-      ${showPagination ? `<div class="cf-dots" role="tablist"></div>` : ""}`;
+      <!-- The arrows sit with the dots rather than out at the frame's edges. Out
+           there they were two floating circles a third of a screen away from the
+           thing they move, and on a wide screen nobody connected them to it. Here
+           they are one control: back, where you are, forward. -->
+      <div class="cf-bar">
+        ${showNavigation ? `
+          <button class="cf-nav prev" type="button" aria-label="Previous slide">&#8249;</button>` : ""}
+        ${showPagination ? `<div class="cf-dots" role="tablist"></div>` : ""}
+        ${showNavigation ? `
+          <button class="cf-nav next" type="button" aria-label="Next slide">&#8250;</button>` : ""}
+      </div>`;
 
     const frame = root.querySelector(".cf-frame");
     const cards = [...root.querySelectorAll(".cf-card")];

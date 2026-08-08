@@ -92,7 +92,6 @@
                 <li><b data-to="${f.n}">${f.n}</b><span>${esc(f.label)}</span></li>`).join("")}
             </ul>
             <div class="zp-go">
-              <a class="pill solid big-pill" href="https://webook.com" target="_blank" rel="noopener">Book entry ticket</a>
               <a class="pill ghost big-pill" href="#/map?zone=${encodeURIComponent(zone.name)}">See it on the map</a>
             </div>
           </div>
@@ -120,6 +119,16 @@
         </div>
         ${inner}
       </section>`;
+  }
+
+  /* A thing we know the name of and nothing else. It was a chip; chips read as
+     filters you can press, and these do nothing. The same pane the three-card
+     section uses carries a name perfectly well and stops promising a control. */
+  function nameCards(names) {
+    if (!names || !names.length) return "";
+    return `<ul class="zp-cards">${names
+      .map((n) => `<li class="dw-card"><p>${esc(n)}</p></li>`)
+      .join("")}</ul>`;
   }
 
   /* ── experiences: the rail, holding the rail's own card ──
@@ -162,43 +171,58 @@
                   aria-label="More experiences">&#8250;</button>
         </div>` : ""}
       ${named.length ? `
-        <ul class="zp-chips">${named.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}`;
+        ${nameCards(named)}` : ""}`;
   }
 
-  /* ── rides: the schedule timeline from the shows page ──
-     The same component and the same classes: .sch-row with .sch-time, .sch-shot,
-     .sch-body and .sch-meta. A ride has no time, so that column carries its number
-     instead — the list is what is in the zone rather than when it happens.
+  /* ── rides: the rail's card, with the prices the rides page publishes ──
+     These were rows on the shows page's timeline, which was the right shape for a
+     schedule and the wrong one for a menu: a ride has no time and no duration, so
+     two of the timeline's three columns were carrying a number that meant nothing.
+     As cards they show what a ride actually has — a picture, a name, what it costs
+     to ride it and what the fast lane costs. Both figures are WBK's own, the same
+     ones #/rides prints. */
+  function rides(zone, name) {
+    /* Matched by name, not by zone. WBK.rides is the park's ride list — name, kind,
+       picture, SAR to ride and SAR for the fast lane — and it carries no zone at
+       all; the zones carry ride names. Filtering it by r.zone therefore threw on
+       every zone page and took the whole page down with it. */
+    const priced = new Map((WBK.rides || []).map((r) => [r.name, r]));
+    const list = (zone.rides || []).map((n) => priced.get(n)).filter(Boolean);
+    const named = (zone.rides || []).filter((n) => !priced.has(n));
+    /* Most zones will land entirely in `named`, with no price on the card, and that
+       is the data telling the truth rather than a bug. WBK.rides is the park's
+       fourteen priced rides — Wave Swinger, Sky Loop and so on. The zones carry
+       their own ride names — Hallyu Spin, Seoul Sky Tower — and the two lists do not
+       overlap. A price cannot be attached to a ride nobody has priced; it needs a
+       mapping from the client, and until there is one a name is all we have. */
+    if (!list.length && !named.length) return "";
 
-     THE THUMBNAIL IS THE ZONE, NOT THE RIDE, and the block says so above itself.
-     None of the forty ride names the zones carry matches any of the fourteen rides
-     that have a photograph — they are different rides — so a photograph per ride
-     would have been the wrong ride on every row. A photograph of the zone is at
-     least of the place the ride stands in, which is the same call the shows page
-     makes in reverse when it shows the act rather than its zone. */
-  function rides(zone) {
-    const items = zone.rides || [];
-    if (!items.length) return "";
-    const shots = (zone.imgs || []).filter(Boolean);
     return `
-      <p class="zp-note">Photographs are of the zone, not of the ride.</p>
-      <ol class="sch-list">
-        ${items.map((r, i) => `
-          <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
-            <span class="sch-time">${String(i + 1).padStart(2, "0")}</span>
-            ${shots.length ? `
-              <span class="sch-shot">
-                <img src="img/zones/${esc(shots[i % shots.length])}" alt="" loading="lazy" draggable="false" />
-              </span>` : ""}
-            <span class="sch-body">
-              <b class="sch-name" title="${esc(r)}">${esc(r)}</b>
-              <span class="sch-meta">
-                <em class="sm-kind t-family">Ride</em>
-                <em class="sm-dur">${esc(zone.name)}</em>
-              </span>
-            </span>
-          </li>`).join("")}
-      </ol>`;
+      ${list.length ? `
+        <div class="rail-wrap">
+          <button class="rail-btn prev" type="button" data-rail="zp-ride-rail"
+                  aria-label="Previous rides">&#8249;</button>
+          <div class="rail" id="zp-ride-rail">
+            ${list.map((r) => `
+              <article class="eat-card">
+                <div class="eat-shot">
+                  <img src="img/rides/${esc(r.img)}" alt="${esc(r.name)}"
+                       draggable="false" loading="lazy" />
+                </div>
+                <div class="eat-text">
+                  <p class="eat-meta">${esc(r.kind || "Ride")}</p>
+                  <h3>${esc(r.name)}</h3>
+                  <p class="eat-from">
+                    <b>SAR ${esc(r.reg)}</b>
+                    ${r.fast ? `<span class="zp-fast">fast lane SAR ${esc(r.fast)}</span>` : ""}
+                  </p>
+                </div>
+              </article>`).join("")}
+          </div>
+          <button class="rail-btn next" type="button" data-rail="zp-ride-rail"
+                  aria-label="More rides">&#8250;</button>
+        </div>` : ""}
+      ${nameCards(named)}`;
   }
 
   /* ── the kitchens: the restaurants page's own card, in the same rail ──
@@ -251,7 +275,7 @@
                   aria-label="More restaurants">&#8250;</button>
         </div>` : ""}
       ${named.length ? `
-        <ul class="zp-chips">${named.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}`;
+        ${nameCards(named)}` : ""}`;
   }
 
   /* ── tonight, on a rail, led by a photograph of the act ── */
@@ -351,7 +375,7 @@
   function shops(zone) {
     /* waiting on data; see the note at the top of this file */
     if (!zone.shops || !zone.shops.length) return "";
-    return `<ul class="zp-chips">${zone.shops.map((sh) => `<li>${esc(sh)}</li>`).join("")}</ul>`;
+    return nameCards(zone.shops);
   }
 
   function render() {
@@ -395,7 +419,6 @@
       { id: "eat", label: "Cuisine", title: "Cuisine", html: kitchens(name, zone) },
       { id: "tonight", label: "Tonight", title: "Live tonight", html: schedule(name) },
       { id: "shops", label: "Shops", title: "Shops and retail", html: shops(zone) },
-      { id: "where", label: "Where", title: "Where it is", html: locator(name, tone) },
       { id: "pictures", label: "Pictures", title: "In pictures", html: pictures(zone) },
     ].filter((b) => b.html);
 
