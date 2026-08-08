@@ -3345,62 +3345,101 @@ html[data-hero="real"] .zc .zc-plate {
 /* the way from the card to what a ride actually costs */
 .cash-go { display: flex; justify-content: center; width: 100%; }
 
-/* ── the belts ──
-   Two rows of plates drifting in opposite directions. Every plate is the same
-   size — a fixed width and a fixed 3:2 box, with the photograph covering it — so
-   a portrait shot and a landscape one occupy exactly the same rectangle and the
-   rows stay level. The belt's height is pinned to the plate's, so the section
-   does not resize as images arrive. */
-.gal-belts {
-  width: 100%; display: grid; gap: clamp(10px, 1.2vw, 18px); overflow: hidden;
-  --plate-w: clamp(220px, 24vw, 340px);
-  --plate-h: calc(var(--plate-w) / 1.5);        /* 3:2 */
-}
-.gal-belt {
-  height: var(--plate-h); overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-}
-.gal-run {
-  display: flex; gap: clamp(10px, 1.2vw, 18px); width: max-content; height: 100%;
-  transform: translateX(var(--nudge, 0%));
-  animation: galDrift var(--dur, 46s) linear infinite;
-}
-.b1 .gal-run { --dur: 52s; }
-.b2 .gal-run { --dur: 44s; animation-direction: reverse; }
-@keyframes galDrift { to { transform: translateX(calc(-50% + var(--nudge, 0%))); } }
-.gal-belts.held .gal-run { animation-play-state: paused; }
+/* ── the corridor ──
+   The photographs come at you down a tunnel: each one sits at its own depth, the
+   scene has perspective, and the whole run advances so that a picture grows out of
+   the dark, passes, and is recycled to the far end. Ported from the reference
+   InfiniteGallery — same idea, same numbers where they carried over (spacing 3,
+   twelve on screen, falloff .8 near and 14 far), written for this page rather than
+   for React.
 
-.gal-plate {
-  position: relative; flex: 0 0 auto;
-  width: var(--plate-w); height: var(--plate-h);
-  border-radius: var(--r-lg); overflow: hidden; border: var(--b-1);
-  box-shadow: var(--sh-2);
-  transition: transform .45s cubic-bezier(.2,.8,.25,1), border-color .35s, box-shadow .35s;
+   Depth is a real transform, so the near photograph occludes the far one and the
+   sizes come from the projection instead of from a scale we picked. */
+.gal-corridor {
+  position: relative;
+  width: 100%; height: clamp(300px, 52vh, 560px);
+  perspective: 1150px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  cursor: grab;
+  /* the input model, said once: drag it, or let it run */
+  touch-action: pan-y;
 }
-.gal-plate img {
-  width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block;
-  filter: saturate(.96) brightness(.9);
-  transition: transform .7s cubic-bezier(.2,.8,.25,1), filter .45s;
+.gal-corridor.is-dragging { cursor: grabbing; }
+.gal-scene { position: absolute; inset: 0; transform-style: preserve-3d; }
+
+.gal-card {
+  position: absolute; left: 50%; top: 50%;
+  width: var(--card-w, 300px); height: calc(var(--card-w, 300px) / 1.5);
+  margin: calc(var(--card-w, 300px) / -3) 0 0 calc(var(--card-w, 300px) / -2);
+  border-radius: var(--r-lg); overflow: hidden;
+  border: var(--b-1); box-shadow: var(--sh-2);
+  background: #060a1e;
+  /* js/gallery.js writes this every frame; nothing else may, or the two fight */
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  cursor: pointer;
 }
-.gal-plate::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(6,10,30,0) 45%, rgba(3,0,60,.9) 100%);
+.gal-card img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.98) brightness(.92);
+  pointer-events: none;
 }
-.gal-plate figcaption {
-  position: absolute; z-index: 2; left: 14px; right: 14px; bottom: 12px;
-  font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .1em;
+.gal-card figcaption {
+  position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 10px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .1em;
   text-transform: uppercase; color: #dceaff;
-  opacity: 0; transform: translateY(6px); transition: opacity .35s, transform .35s;
+  opacity: 0; transition: opacity .3s var(--ease);
+  text-shadow: 0 1px 6px rgba(2, 4, 16, .9);
 }
-.gal-plate { cursor: pointer; }
-.gal-plate:hover {
-  transform: translateY(-4px); border-color: rgba(255, 194, 77, .5);
-  box-shadow: var(--sh-3);
+.gal-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(6,10,30,0) 55%, rgba(3,0,60,.85) 100%);
+  opacity: 0; transition: opacity .3s var(--ease);
 }
-.gal-plate:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
-.gal-plate:hover img { transform: scale(1.05); filter: saturate(1.06) brightness(1.02); }
-.gal-plate:hover figcaption { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .gal-run { animation: none; } }
+.gal-card:hover figcaption, .gal-card:hover::after,
+.gal-card:focus-visible figcaption { opacity: 1; }
+.gal-card:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
+
+/* the dark at the end of the tunnel, so photographs arrive out of something */
+.gal-corridor::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 50%, transparent 42%, rgba(6, 10, 30, .75) 100%);
+}
+
+/* The title over the corridor, blended out of it — the reference sets the heading
+   in exclusion over the photographs, and it is the one thing here that could not be
+   done with a colour: what it reads as depends on what is behind it. */
+.gal-over {
+  position: absolute; inset: 0; z-index: 4; display: grid; place-items: center;
+  pointer-events: none; mix-blend-mode: exclusion; padding: 0 6vw; text-align: center;
+}
+/* Its own size, not the section-wide one: this heading has photographs passing
+   behind it rather than a page, so it is set to the corridor's width instead of the
+   viewport's. Exclusion means it reads dark over a bright photograph and bright over
+   the night — which is the effect, but it needs the type small enough that a whole
+   word is rarely over one picture. */
+.gal-over .sec-title {
+  color: #fff;
+  font-size: clamp(26px, 6.4vw, 74px);
+  line-height: .95;
+}
+
+.gal-hint {
+  font-family: var(--fig); font-size: 10px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: #7b8bb0; text-align: center;
+}
+.gal-hint b { color: #b8c8ea; font-weight: 600; }
+
+@media (max-width: 700px) {
+  .gal-corridor { height: clamp(260px, 44vh, 380px); }
+  .gal-hint { font-size: 9px; letter-spacing: .1em; }
+  .gal-over .sec-title { font-size: clamp(24px, 8vw, 40px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gal-card { transition: none; }
+}
 
 /* a home section standing on its own: it fills the view and makes room for the
    back link, the way the rides and packages pages do */

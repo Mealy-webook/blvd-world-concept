@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=632" />
+<link rel="stylesheet" href="css/main.css?v=639" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=632" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=639" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -466,10 +466,21 @@
 
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
     <section class="gallery" id="gallery">
-      <div class="gal-head reveal">
-        <h2 class="sec-title">THE NIGHT IN PICTURES</h2>
+      <!-- The photographs come down a tunnel rather than along a belt: each sits at
+           its own depth and the run advances, so a picture grows out of the dark,
+           passes, and is recycled to the far end. Ported from the reference
+           InfiniteGallery — js/gallery.js holds the numbers and says which of the
+           reference's inputs this page can afford to take. -->
+      <div class="gal-corridor reveal" id="gal-corridor" tabindex="0"
+           role="region" aria-label="Photographs of the park">
+        <div class="gal-scene" id="gal-scene"></div>
+        <div class="gal-over">
+          <h2 class="sec-title">THE NIGHT<br/>IN PICTURES</h2>
+        </div>
       </div>
-      <div class="gal-belts" id="gal-belts"></div>
+      <p class="gal-hint reveal">
+        Drag to travel <b>&#183;</b> click a photograph to open it
+      </p>
     </section>
 
     <!-- ── venue rules (Figma node 16001:45722) ──
@@ -943,30 +954,30 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=632"></script>
-  <script src="js/borders.js?v=632"></script>
-  <script src="js/scene.js?v=632"></script>
-  <script src="js/app.js?v=632"></script>
-  <script src="js/experiences.js?v=632"></script>
-  <script src="js/carousels.js?v=632"></script>
-  <script src="js/coverflow.js?v=632"></script>
-  <script src="js/zones.js?v=632"></script>
-  <script src="js/fan.js?v=632"></script>
-  <script src="js/zonevid.js?v=632"></script>
-  <script src="js/records.js?v=632"></script>
-  <script src="js/sphere.js?v=632" defer></script>
-  <script src="js/gallery.js?v=632"></script>
-  <script src="js/parkmap.js?v=632"></script>
-  <script src="js/minimap.js?v=632"></script>
-  <script src="js/sponsors.js?v=632"></script>
-  <script src="js/cashless.js?v=632"></script>
-  <script src="js/headings.js?v=632"></script>
-  <script src="js/bundles.js?v=632"></script>
-  <script src="js/ridex.js?v=632"></script>
-  <script src="js/cursor.js?v=632"></script>
-  <script src="js/glass.js?v=632" defer></script>
+  <script src="js/data.js?v=639"></script>
+  <script src="js/borders.js?v=639"></script>
+  <script src="js/scene.js?v=639"></script>
+  <script src="js/app.js?v=639"></script>
+  <script src="js/experiences.js?v=639"></script>
+  <script src="js/carousels.js?v=639"></script>
+  <script src="js/coverflow.js?v=639"></script>
+  <script src="js/zones.js?v=639"></script>
+  <script src="js/fan.js?v=639"></script>
+  <script src="js/zonevid.js?v=639"></script>
+  <script src="js/records.js?v=639"></script>
+  <script src="js/sphere.js?v=639" defer></script>
+  <script src="js/gallery.js?v=639"></script>
+  <script src="js/parkmap.js?v=639"></script>
+  <script src="js/minimap.js?v=639"></script>
+  <script src="js/sponsors.js?v=639"></script>
+  <script src="js/cashless.js?v=639"></script>
+  <script src="js/headings.js?v=639"></script>
+  <script src="js/bundles.js?v=639"></script>
+  <script src="js/ridex.js?v=639"></script>
+  <script src="js/cursor.js?v=639"></script>
+  <script src="js/glass.js?v=639" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=632" defer></script>
+  <script src="js/heroes.js?v=639" defer></script>
 </body>
 </html>
