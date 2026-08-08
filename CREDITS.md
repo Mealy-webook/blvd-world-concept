@@ -327,3 +327,30 @@ drawing the surface. To make it real, sample a video texture of the actual show 
 Grendizer is Go Nagai / Toei Animation's character. The statue is BLVD World's,
 and the image is the client's own cut-out of it — the same standing as the rest of
 the artwork here.
+
+## The zone pages, and the booklet that could not be read
+
+A zone card now opens `#/zone?z=<name>`. Everything on that page is read from data the
+project already holds — `WBK.zones` (blurb, poster, photographs, attractions,
+kitchens, rides), `WBK.parkExperiences`, `WBK.restaurants`, `WBK.showsByZone` and
+`WBK.mapPins` — so nothing is typed per zone and no block can claim something the
+data does not have: each one renders only if its source has something in it.
+
+**Shops and retail is missing, and deliberately.** Nothing in this project carries
+retail data. We were pointed at the Riyadh Season 2025 booklet for content:
+
+    https://booklet.riyadhseason.com/Riyadh_Season_Booklet_2025.pdf
+
+It downloads with HTTP 200 and 210,562 bytes, and it is not a usable document: no
+page tree (`/Type /Page` appears zero times), no cross-reference table, no trailer,
+one XObject and no extractable text. The link we were given was a
+`chrome-extension://` viewer URL wrapping it, which suggests the file behind it may
+need a session the plain fetch does not have. Nothing was taken from it, and no
+substitute was invented — naming twenty zones' shops out of nothing would have been
+the one thing on the page that could not be checked.
+
+The block is written and waiting. Give a zone a `shops` array in `WBK.zones` and it
+appears, in the same chip form the kitchens use.
+
+The clip on a zone page is the park-footage sample, labelled "Park footage · not this
+zone" — the same rule the zone cards follow, and for the same reason.

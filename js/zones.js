@@ -57,7 +57,7 @@
        the country name painted into the artwork; the photograph does not, so the
        photo variant carries a name plate of its own. */
     card: (z) => `
-      <a class="zc is-poster" href="#/map?zone=${encodeURIComponent(z.name)}"
+      <a class="zc is-poster" href="#/zone?z=${encodeURIComponent(z.name)}"
          aria-label="${z.name} — open on the park map">
         <img class="zc-poster" src="img/zones/posters/${z.poster}" alt="${z.name}"
              draggable="false" loading="lazy">

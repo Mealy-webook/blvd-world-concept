@@ -365,7 +365,7 @@
       deckId: "zone-deck", prevId: "zone-prev", nextId: "zone-next", dotsId: "zone-dots",
       items,
       card: (z) => `
-        <a class="fan-card is-zone" href="#/map?zone=${encodeURIComponent(z.name)}"
+        <a class="fan-card is-zone" href="#/zone?z=${encodeURIComponent(z.name)}"
            aria-label="${z.name} — open on the park map">
           <img src="img/zones/posters/${z.poster}" alt="${z.name}"
                draggable="false" loading="lazy">

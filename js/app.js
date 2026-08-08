@@ -13,6 +13,7 @@
     packages: $("#view-packages"),
     shows: $("#view-shows"),
     eats: $("#view-eats"),
+    zone: $("#view-zone"),
   };
 
   let booted = false;

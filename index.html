@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=639" />
+<link rel="stylesheet" href="css/main.css?v=645" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=639" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=645" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -283,7 +283,9 @@
          The lake panel carries no dimension because we were not given one — see
          CREDITS.md. js/records.js drives the chips, the sphere's rings and the
          count-up. -->
-    <section class="rec" id="records">
+    <!-- held back, on request. The panels, the chips and the shader all stay as
+         they are; one [hidden] rule in the reset hides the section. -->
+    <section class="rec" id="records" hidden>
       <!-- THE MARK.
            Guinness World Records' own logo, supplied by the client as the Wikipedia
            file. It is a trademark and it is theirs, not ours: it belongs on this
@@ -465,7 +467,10 @@
 
 
     <!-- ── gallery: plates drift past on two counter-running belts ── -->
-    <section class="gallery" id="gallery">
+    <!-- off the home page, on request. The corridor and its lightbox stay exactly
+         as they are — one [hidden] rule in the reset covers the section — so
+         bringing it back is this attribute and its nav tab. -->
+    <section class="gallery" id="gallery" hidden>
       <!-- The photographs come down a tunnel rather than along a belt: each sits at
            its own depth and the run advances, so a picture grows out of the dark,
            passes, and is recycled to the far end. Ported from the reference
@@ -566,6 +571,27 @@
 
 
   <!-- ══════════ PARK MAP (own route: #/map) ══════════ -->
+  <!-- ══════════ A ZONE, IN FULL ══════════
+       Reached from a zone card: #/zone?z=Egypt. Everything on it is read from the
+       data the site already holds — the zone's own blurb, experiences, rides and
+       kitchens, the restaurants filed under it, tonight's schedule for it, and its
+       pin on the park map. js/zonepage.js builds it; nothing here is typed per
+       zone, so a zone added to WBK.zones gets a page for free.
+
+       One block is missing and is missing on purpose: shops and retail. There is no
+       retail data anywhere in the project, and the booklet we were pointed at came
+       down as an incomplete PDF with no page tree and no extractable text. Rather
+       than invent shop names for twenty zones, the block appears only once the data
+       does. See CREDITS.md. -->
+  <section id="view-zone" class="view">
+    <div class="zp" id="zp">
+      <a href="#/" class="page-back" aria-label="Back to the landing page">
+        <span class="mb-arrow" aria-hidden="true"></span>Back
+      </a>
+      <div class="zp-body" id="zp-body"></div>
+    </div>
+  </section>
+
   <section id="view-map" class="view">
     <section class="pmap" id="parkmap">
       <!-- the artwork is the page; every control floats over it -->
@@ -917,7 +943,6 @@
            Book menu and the sections' own buttons, not from here, so every tab
            is scroll-spied and none of them navigates away. -->
       <a href="#pex" data-sec="pex">Zones</a>
-      <a href="#gallery" data-sec="gallery">Gallery</a>
       <a href="#rules" data-sec="rules">Rules</a>
       <a href="#faqs" data-sec="faqs">FAQ</a>
       <a href="#sponsors" data-sec="sponsors">Partners</a>
@@ -954,30 +979,31 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=639"></script>
-  <script src="js/borders.js?v=639"></script>
-  <script src="js/scene.js?v=639"></script>
-  <script src="js/app.js?v=639"></script>
-  <script src="js/experiences.js?v=639"></script>
-  <script src="js/carousels.js?v=639"></script>
-  <script src="js/coverflow.js?v=639"></script>
-  <script src="js/zones.js?v=639"></script>
-  <script src="js/fan.js?v=639"></script>
-  <script src="js/zonevid.js?v=639"></script>
-  <script src="js/records.js?v=639"></script>
-  <script src="js/sphere.js?v=639" defer></script>
-  <script src="js/gallery.js?v=639"></script>
-  <script src="js/parkmap.js?v=639"></script>
-  <script src="js/minimap.js?v=639"></script>
-  <script src="js/sponsors.js?v=639"></script>
-  <script src="js/cashless.js?v=639"></script>
-  <script src="js/headings.js?v=639"></script>
-  <script src="js/bundles.js?v=639"></script>
-  <script src="js/ridex.js?v=639"></script>
-  <script src="js/cursor.js?v=639"></script>
-  <script src="js/glass.js?v=639" defer></script>
+  <script src="js/data.js?v=645"></script>
+  <script src="js/borders.js?v=645"></script>
+  <script src="js/scene.js?v=645"></script>
+  <script src="js/app.js?v=645"></script>
+  <script src="js/experiences.js?v=645"></script>
+  <script src="js/carousels.js?v=645"></script>
+  <script src="js/coverflow.js?v=645"></script>
+  <script src="js/zones.js?v=645"></script>
+  <script src="js/zonepage.js?v=645"></script>
+  <script src="js/fan.js?v=645"></script>
+  <script src="js/zonevid.js?v=645"></script>
+  <script src="js/records.js?v=645"></script>
+  <script src="js/sphere.js?v=645" defer></script>
+  <script src="js/gallery.js?v=645"></script>
+  <script src="js/parkmap.js?v=645"></script>
+  <script src="js/minimap.js?v=645"></script>
+  <script src="js/sponsors.js?v=645"></script>
+  <script src="js/cashless.js?v=645"></script>
+  <script src="js/headings.js?v=645"></script>
+  <script src="js/bundles.js?v=645"></script>
+  <script src="js/ridex.js?v=645"></script>
+  <script src="js/cursor.js?v=645"></script>
+  <script src="js/glass.js?v=645" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=639" defer></script>
+  <script src="js/heroes.js?v=645" defer></script>
 </body>
 </html>

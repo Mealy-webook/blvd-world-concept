@@ -1506,13 +1506,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .fan-card {
   position: absolute; left: 50%; top: 50%;
   /* sized from the stage so the deck always fits the space it is given */
-  height: 88%; width: auto; aspect-ratio: 4 / 7; border-radius: var(--r-lg); overflow: hidden;
+  height: 88%; width: auto; aspect-ratio: 4 / 7; border-radius: var(--r-lg); overflow: visible;
   transform-origin: 50% 50%; will-change: transform, opacity; cursor: pointer;
   background: var(--s-card);
   border: var(--b-2);
   box-shadow: var(--sh-3), 0 0 0 1px rgba(255, 255, 255, .03) inset;
 }
 .fan-card img {
+  border-radius: inherit;
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   user-select: none; -webkit-user-drag: none;
 }
@@ -1612,8 +1613,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   transform-style: preserve-3d;
 }
 .cf-card {
+  /* not clipped: the New badge stands above the card's top edge, and overflow:
+     hidden cut it off. The corners come from the media's own border-radius
+     instead — an image and a video each clip to that without any help. */
   position: absolute; left: 50%; top: 0; width: var(--cf-card); aspect-ratio: 3 / 4;
-  border-radius: var(--r-lg); overflow: hidden; will-change: transform;
+  border-radius: var(--r-lg); overflow: visible; will-change: transform;
   background: var(--s-well);
   box-shadow: var(--sh-3);
   cursor: pointer;
@@ -1627,6 +1631,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* the poster is an <a> to that zone on the map; it still fills its card */
 .zc { position: absolute; inset: 0; display: block; text-decoration: none; }
 .zc img {
+  border-radius: var(--r-lg);
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; display: block; user-select: none;
   filter: saturate(.96) brightness(.7);
@@ -1657,7 +1662,10 @@ html[data-hero="real"] .zc .zc-plate {
 /* the New tag, top-left — the only corner free of poster artwork on all eight
    (the Riyadh Season lockup takes the top-right) */
 .zc-new {
-  position: absolute; z-index: 2; left: 12px; top: 12px;
+  /* above the card and centred on its top edge: a label on the zone rather than
+     something printed on the poster */
+  position: absolute; z-index: 6; left: 50%; top: 0;
+  transform: translate(-50%, -60%);
   font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .16em;
   text-transform: uppercase; color: var(--pick-ink);
   padding: 5px 11px; border-radius: var(--r-pill);
@@ -1713,7 +1721,7 @@ html[data-hero="real"] .zc .zc-plate {
 
 /* the New tag lifts with its card */
 .zc-new { transition: transform .4s cubic-bezier(.32,.72,0,1), box-shadow .4s var(--ease); }
-.cf-card.is-hovered .zc-new { transform: translateY(-2px) scale(1.05); box-shadow: var(--sh-2); }
+.cf-card.is-hovered .zc-new { transform: translate(-50%, calc(-60% - 3px)) scale(1.05); box-shadow: var(--sh-2); }
 
 @media (prefers-reduced-motion: reduce) {
   .cf-card.is-hovered .zc img { transform: none; }
@@ -2740,7 +2748,7 @@ html[data-hero="real"] .zc .zc-plate {
    overlay and no modal. Held down, the card is a window; let go and it is a
    poster again. See js/zonevid.js. */
 .zc-vid {
-  position: absolute; inset: 0; z-index: 3;
+  position: absolute; inset: 0; z-index: 3; border-radius: var(--r-lg);
   width: 100%; height: 100%; object-fit: cover; display: block;
   opacity: 0; pointer-events: none;
   transition: opacity .34s cubic-bezier(.32,.72,0,1);
@@ -3452,6 +3460,186 @@ html[data-hero="real"] .zc .zc-plate {
 /* four cards do not fill a page, so the restaurants centre in it instead */
 .eats.is-page { align-content: center; padding-block: clamp(72px, 11vh, 120px) var(--sec-y); }
 .eats-go { display: flex; justify-content: center; width: 100%; }
+
+/* ═══════════════ A ZONE, IN FULL ═══════════════
+   Reached from a zone card. It is a page rather than a section: it scrolls on its
+   own, top to bottom, and every block on it renders only if the data behind it has
+   something to say — so no zone shows an empty heading. */
+.zp {
+  position: relative; z-index: 11;
+  width: 100%; height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+  padding: clamp(64px, 9vh, 104px) var(--sec-x) clamp(48px, 8vh, 90px);
+  display: grid; justify-items: center; align-content: start;
+  gap: clamp(20px, 3.4vh, 40px);
+}
+.zp-body {
+  width: 100%; max-width: min(980px, 100%);
+  display: grid; gap: clamp(22px, 3.6vh, 46px);
+}
+
+/* ── the head: the poster beside the name ── */
+.zp-head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 40px); align-items: center;
+}
+.zp-poster {
+  display: block; width: clamp(150px, 22vw, 260px); aspect-ratio: 3 / 4;
+  object-fit: cover; border-radius: var(--r-lg);
+  box-shadow: var(--sh-3), inset 0 0 0 1px rgba(199, 226, 255, .14);
+}
+.zp-title { display: grid; gap: clamp(8px, 1.4vh, 14px); justify-items: start; }
+.zp-eyebrow {
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold);
+}
+.zp-head .sec-title { text-align: left; }
+.zp-lede {
+  font-family: var(--body); font-size: clamp(14px, 1.5vw, 18px); line-height: 1.5;
+  color: #b8c8ea; max-width: 46ch;
+}
+.zp-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+/* ── a block, and the plain lists most of them are ── */
+.zp-block { display: grid; gap: clamp(10px, 1.6vh, 18px); }
+.zp-h {
+  font-family: var(--disp); font-weight: 800; font-size: clamp(15px, 1.9vw, 22px);
+  letter-spacing: -.015em; color: #fff;
+  padding-bottom: 8px; border-bottom: 1px solid rgba(199, 226, 255, .14);
+}
+.zp-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px clamp(12px, 2vw, 26px);
+}
+.zp-list li {
+  font-family: var(--body); font-size: clamp(13px, 1.3vw, 15px); color: #dceaff;
+  display: flex; align-items: baseline; gap: 9px;
+}
+.zp-list li::before {
+  content: ''; flex: none; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold); transform: translateY(-2px);
+}
+/* the short ones read better as chips than as a bulleted column */
+.zp-list.is-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.zp-list.is-chips li {
+  padding: 6px 12px; border-radius: var(--r-pill);
+  background: rgba(199, 226, 255, .07);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .14);
+  font-size: 12px; color: #cfe0ff;
+}
+.zp-list.is-chips li::before { display: none; }
+
+/* ── the kitchens ── */
+.zp-eats {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.zp-eat {
+  display: grid; gap: 8px; align-content: start;
+  padding: clamp(12px, 1.4vw, 16px);
+  border-radius: var(--r-md);
+  background: rgba(199, 226, 255, .05);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .12);
+}
+.zp-eat img {
+  display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
+  border-radius: var(--r-sm);
+}
+.zp-eat-t { display: grid; gap: 2px; }
+.zp-eat-t b { font-family: var(--disp); font-weight: 700; font-size: 15px; color: #fff; }
+.zp-eat-t span {
+  font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .13em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+.zp-eat-t em {
+  font-family: var(--fig); font-style: normal; font-size: 12px; font-weight: 700;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+.zp-eat p {
+  font-family: var(--body); font-size: 12.5px; line-height: 1.5; color: #a9bbdd;
+}
+
+/* ── tonight ── */
+.zp-sched { list-style: none; margin: 0; padding: 0; display: grid; }
+.zp-sched li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: baseline; gap: 0 clamp(10px, 1.6vw, 22px);
+  padding: 10px 0; border-bottom: 1px dashed rgba(199, 226, 255, .12);
+}
+.zp-sched li:last-child { border-bottom: 0; }
+.zp-t {
+  font-family: var(--fig); font-size: 12.5px; font-weight: 700; color: var(--gold);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.zp-t small { font-size: 8.5px; font-weight: 500; opacity: .75; margin-left: 2px; }
+.zp-sched b {
+  font-family: var(--body); font-weight: 600; font-size: clamp(13px, 1.3vw, 15px);
+  color: #eaf2ff; min-width: 0;
+}
+.zp-ty, .zp-m {
+  font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.zp-m { color: #b8c8ea; }
+
+/* ── where it is ── */
+.zp-map {
+  position: relative; display: block; border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: var(--sh-2), inset 0 0 0 1px rgba(199, 226, 255, .14);
+}
+.zp-map img {
+  display: block; width: 100%; height: auto;
+  filter: saturate(.9) brightness(.72);
+  transition: filter .5s var(--ease);
+}
+.zp-map:hover img { filter: saturate(1) brightness(.86); }
+.zp-pin {
+  position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border-radius: 50%; background: var(--tone, #f58220);
+  box-shadow: 0 0 0 3px rgba(6, 10, 30, .8), 0 0 0 6px color-mix(in srgb, var(--tone, #f58220) 45%, transparent),
+              0 4px 14px rgba(2, 4, 16, .7);
+  animation: zpPin 2.4s ease-in-out infinite;
+}
+@keyframes zpPin { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+.zp-map-go {
+  position: absolute; right: 12px; bottom: 12px;
+  padding: 7px 13px; border-radius: var(--r-pill);
+  background: rgba(6, 10, 30, .82);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: #eaf2ff;
+}
+
+/* ── in pictures ── */
+.zp-shots {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: clamp(8px, 1.2vw, 14px);
+}
+.zp-shots img {
+  display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: var(--r-md); box-shadow: var(--sh-1);
+}
+.zp-vid { position: relative; margin: 0; border-radius: var(--r-md); overflow: hidden; }
+.zp-vid video {
+  display: block; width: 100%; max-width: 320px; aspect-ratio: 3 / 4;
+  object-fit: cover; border-radius: var(--r-md);
+}
+.zp-vid figcaption {
+  position: absolute; left: 10px; bottom: 10px;
+  padding: 4px 9px; border-radius: var(--r-pill);
+  background: rgba(6, 10, 30, .84);
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .2);
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: #dbe6ff;
+}
+
+@media (max-width: 760px) {
+  .zp-head { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .zp-poster { width: min(180px, 44vw); }
+  .zp-sched li { grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; }
+  .zp-ty, .zp-m { grid-column: 2; }
+}
+@media (prefers-reduced-motion: reduce) { .zp-pin { animation: none; } }
 
 /* ═══════════════ FAQs ═══════════════ */
 .faqs {
