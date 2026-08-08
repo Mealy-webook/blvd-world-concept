@@ -200,8 +200,13 @@
             settle();
           } else if (first) {
             // the deck deals itself out from a single stack below
-            set(el, { x: 0, y: 12 * hM, rot: 0, scale: 0.5, opacity: 0, zIndex: c.zIndex });
-            to(el, target, { duration: 1.2, ease: EASE_ENTER, delay: 0.2 + slot * 0.06, onDone: settle });
+            /* a tight stack, not a loose one: at scale .5 and 12 units down the
+               cards were far enough apart to read as a fade-in rather than a deck
+               opening. Squared up on the centre and small, the spread is the
+               movement you notice. */
+            set(el, { x: 0, y: 6 * hM, rot: slot % 2 ? 2.5 : -2.5, scale: 0.34, opacity: 0, zIndex: c.zIndex });
+            to(el, target, { duration: 1.15, ease: EASE_ENTER,
+                             delay: 0.12 + Math.abs(slot - (slotCount >> 1)) * 0.075, onDone: settle });
           } else if (!wasVisible) {
             // arriving from whichever side we are paging towards
             const enterX = direction === "right" ? 40 : -40;
@@ -312,13 +317,36 @@
       sx = null;
     });
 
-    // deal the deck when the section arrives, with a timer fail-open so the
-    // cards can never be left sitting at opacity 0
+    /* Deal the deck when the section arrives. Two triggers, because this page
+       scrolls inside #view-home rather than the document and an observer is the
+       wrong single point of failure for something that leaves the cards at
+       opacity 0 if it never fires. */
+    let armed = true;
+    const scroller = deck.closest(".view");
+    const fire = () => {
+      if (!armed || innerHeight <= 1) return;
+      armed = false;
+      scroller && scroller.removeEventListener("scroll", check);
+      removeEventListener("scroll", check);
+      io.disconnect();
+      render();
+    };
+    function check() {
+      if (!armed) return;
+      const b = deck.getBoundingClientRect();
+      if (b.top < innerHeight * 0.85 && b.bottom > 0) fire();
+    }
     const io = new IntersectionObserver((es) => {
-      for (const en of es) if (en.isIntersecting && innerHeight > 1) { render(); io.disconnect(); }
+      for (const en of es) if (en.isIntersecting) fire();
     }, { threshold: 0.15 });
     io.observe(deck);
-    setTimeout(() => { if (!entered) { render(); io.disconnect(); } }, 4000);
+    scroller && scroller.addEventListener("scroll", check, { passive: true });
+    addEventListener("scroll", check, { passive: true });
+    check();
+    /* the same backstop, at the same length and for the same reason: four seconds
+       was shorter than the intro, so the fan could deal itself out before the
+       section had ever been on screen */
+    setTimeout(fire, 20000);
 
     return { cycle, goTo };
   }

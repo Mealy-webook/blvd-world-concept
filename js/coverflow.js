@@ -27,6 +27,7 @@ window.WBK_COVERFLOW = (function () {
       showNavigation = true,
       label = "Cover carousel",
       start = 0,                  // which index the ring opens on
+      dealIn = true,              // gathered at the centre until the section arrives
       onSelect,
     } = opts;
 
@@ -96,6 +97,40 @@ window.WBK_COVERFLOW = (function () {
     // select() runs during the first paint
     let refreshHover = () => {};
 
+    /* ── the deal ──
+       The ring starts gathered: every card stacked on the centre one, a little
+       small, a little turned. When the section arrives they fly out to their places
+       one after another from the middle of the deck outwards, overshooting a touch
+       before they settle.
+
+       It is a factor on the layout rather than a separate animation, so a drag that
+       begins mid-deal is not fighting a transition — paint() reads it like any other
+       term and the two simply compose. Once dealt it is 1 and costs a comparison. */
+    const STILL = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let deal = dealIn && !STILL ? 0 : 1;      // 0 gathered · 1 spread
+    let dealAnchor = start;
+    /* One card's own flight takes SPAN of the run, and each card out from the centre
+       starts STEP later. STEP is derived rather than picked so that the last card to
+       leave lands exactly as the run ends: with a fixed step the whole spread was
+       over by 45% of the duration and the rest of it animated nothing. */
+    const DEAL_SPAN = 0.5;
+    const DEAL_FAR = loop ? Math.floor(count / 2) : Math.max(count - 1, 1);
+    const DEAL_STEP = DEAL_FAR ? (1 - DEAL_SPAN) / DEAL_FAR : 0;
+
+    /* eased back: the card passes its mark and comes back to it, which is what
+       makes a spread read as thrown rather than slid */
+    function back(t) {
+      const c1 = 1.9, c3 = c1 + 1;
+      return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    }
+    function spreadOf(i) {
+      if (deal >= 1) return 1;
+      let d = Math.abs(i - dealAnchor);
+      if (loop) d = Math.min(d, count - d);          // the ring's shorter way round
+      const p = (deal - d * DEAL_STEP) / DEAL_SPAN;
+      return back(Math.max(0, Math.min(1, p)));
+    }
+
     // Paint straight to the DOM — sixty passes a second is no place for
     // rebuilding markup.
     function paint() {
@@ -116,13 +151,18 @@ window.WBK_COVERFLOW = (function () {
         // capped short of edge-on so a far card never turns its back
         const tilt = Math.min(rotate * ramp, 82) * Math.sign(offset);
         const c = cards[i];
+        /* every term the layout produces is scaled by how far this card has been
+           dealt: at 0 it sits on the centre card, at 1 it is exactly where the ring
+           wants it */
+        const sp = spreadOf(i);
         c.style.transform =
-          `translateX(calc(-50% + ${offset * pitch}px)) ` +
-          `translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
+          `translateX(calc(-50% + ${offset * pitch * sp}px)) ` +
+          `translateZ(${-depth * width * ramp * sp}px) ` +
+          `rotateY(${-tilt * sp}deg) scale(${(0.9 + 0.1 * sp).toFixed(3)})`;
         // a card is teleported across the ring at exactly half a turn out, so it
         // has to be gone by then or the jump shows
         const edge = loop ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
-        c.style.opacity = String(Math.max(0, 1 - fade * distance) * edge);
+        c.style.opacity = String(Math.max(0, 1 - fade * distance) * edge * Math.min(1, sp * 1.6));
         c.style.zIndex = String(100 - Math.round(distance));
       }
     }
@@ -295,6 +335,64 @@ window.WBK_COVERFLOW = (function () {
 
     select(indexAt(start));
     paint();
+
+    /* Dealt when the ring is actually looked at, not on load — it is the second
+       section down, and a spread nobody sees is a spread that did not happen. The
+       timer is a fail-open: whatever happens to the observer, the cards cannot be
+       left stacked. */
+    function runDeal() {
+      if (deal >= 1) return;
+      dealAnchor = selected;
+      const DUR = 1500;
+      let t0 = null;
+      const step = (now) => {
+        if (t0 === null) t0 = now;
+        deal = Math.min((now - t0) / DUR, 1);
+        paint();
+        if (deal < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+    if (deal < 1) {
+      /* Two triggers and a backstop, and the scroll one is not belt-and-braces:
+         this page scrolls inside #view-home rather than the document, and an
+         observer is the wrong single point of failure for something that leaves the
+         deck invisible if it never fires. Whichever comes first wins; all three then
+         stand down. */
+      let armed = true;
+      const scroller = root.closest(".view");
+      const check = () => {
+        if (!armed) return;
+        const b = root.getBoundingClientRect();
+        if (b.top < innerHeight * 0.85 && b.bottom > 0) fire();
+      };
+      const fire = () => {
+        if (!armed) return;
+        armed = false;
+        scroller && scroller.removeEventListener("scroll", check);
+        removeEventListener("scroll", check);
+        io && io.disconnect();
+        runDeal();
+      };
+
+      let io = null;
+      if ("IntersectionObserver" in window) {
+        io = new IntersectionObserver((es) => {
+          for (const en of es) if (en.isIntersecting) fire();
+        }, { threshold: 0.2 });
+        io.observe(root);
+      }
+      scroller && scroller.addEventListener("scroll", check, { passive: true });
+      addEventListener("scroll", check, { passive: true });
+      check();                                  // in case it is already on screen
+
+      /* A backstop, not a schedule. Six seconds beat a real visitor to the section —
+         the intro alone runs about five — and the ring spread itself while nobody
+         was looking at it. Twenty is past any first scroll, and short enough that a
+         deck somehow left gathered heals itself. */
+      setTimeout(fire, 20000);
+    }
+
     return { goTo, nudge, measure };
   }
 
