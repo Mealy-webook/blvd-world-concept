@@ -54,25 +54,10 @@
   }, { threshold: 0.45 });
   io.observe(out);
 
-  /* ── the three-card section's own figures ──
-     Same rule as the row above: counted, never typed. The zone count is the map's
-     pins, so it agrees with the map module and the about row rather than telling a
-     third story. */
-  /* All three in numerals. Spelling the small ones out left the row reading
-     "24 countries · Fourteen rides · 151 showtimes", which is three cards agreeing
-     about everything except how to write a number. */
-
-  const allPins = (WBK.mapPins || []);
-  const zoneN = allPins.filter((p) => !p.gate).length;
-  const rideN = (WBK.rides || []).length;
-  const showN = (WBK.showsByZone || []).reduce((t, z) => t + (z.items ? z.items.length : 0), 0);
-
-  const put = (id, text) => {
-    const el = document.getElementById(id);
-    if (el && text) el.textContent = text;
-  };
-  put("dw-zones", zoneN ? String(zoneN) : "");
-  put("dw-rides", rideN ? String(rideN) : "");
-  put("dw-shows", showN ? String(showN) : "");
+  /* The four-card section's figures are the client's park totals, written into the
+     markup rather than counted here: our data holds a sample (fourteen named rides,
+     four featured restaurants) and counting it would have printed 14 and 4 beside a
+     brochure saying 40+ and 350+. The about row above still counts, because those
+     four figures describe this site's own data. */
 
 })();
