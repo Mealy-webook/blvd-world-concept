@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=694" />
+<link rel="stylesheet" href="css/main.css?v=699" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=694" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=699" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -581,32 +581,17 @@
       </div>
     </section>
 
-    <!-- ── the gallery, as a deck ──
-         The photographs are a hand of cards you flick through, not a tunnel you fly
-         down. It is the fan this site already has — the same component the zones use
-         in the globe version, which deals itself out, pages with the arrows, takes a
-         swipe and pushes its neighbours aside on hover — with photographs in it
-         instead of posters. Clicking the front one opens it full size in the
-         lightbox. js/gallery.js. -->
+    <!-- ── the gallery ──
+         Back to the belts, on request: two rows of plates drifting in opposite
+         directions, moving on their own, with the page's scroll nudging them a
+         little further along. Clicking a plate opens it full size. js/gallery.js —
+         restored from the commit before it was replaced rather than rebuilt, so it
+         is the same code that ran the first time. -->
     <section class="gallery" id="gallery">
       <div class="gal-head reveal">
         <h2 class="sec-title">THE NIGHT IN PICTURES</h2>
       </div>
-
-      <div class="gal-fan" id="gal-fan">
-        <div class="fan-stage">
-          <div class="fan-deck" id="gal-deck"></div>
-        </div>
-        <div class="fan-nav">
-          <button class="cf-nav prev" type="button" id="gal-prev" aria-label="Previous photograph">&#8249;</button>
-          <div class="fan-dots" id="gal-dots" role="tablist" aria-label="Photographs"></div>
-          <button class="cf-nav next" type="button" id="gal-next" aria-label="Next photograph">&#8250;</button>
-        </div>
-      </div>
-
-      <p class="gal-hint reveal">
-        Swipe or use the arrows <b>&#183;</b> click the front photograph to open it
-      </p>
+      <div class="gal-belts" id="gal-belts"></div>
     </section>
 
     <!-- ── venue rules (Figma node 16001:45722) ──
@@ -1101,32 +1086,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=694"></script>
-  <script src="js/borders.js?v=694"></script>
-  <script src="js/scene.js?v=694"></script>
-  <script src="js/app.js?v=694"></script>
-  <script src="js/experiences.js?v=694"></script>
-  <script src="js/carousels.js?v=694"></script>
-  <script src="js/coverflow.js?v=694"></script>
-  <script src="js/zones.js?v=694"></script>
-  <script src="js/zonepage.js?v=694"></script>
-  <script src="js/fan.js?v=694"></script>
-  <script src="js/zonevid.js?v=694"></script>
-  <script src="js/records.js?v=694"></script>
-  <script src="js/sphere.js?v=694" defer></script>
-  <script src="js/gallery.js?v=694"></script>
-  <script src="js/parkmap.js?v=694"></script>
-  <script src="js/minimap.js?v=694"></script>
-  <script src="js/sponsors.js?v=694"></script>
-  <script src="js/about.js?v=694"></script>
-  <script src="js/cashless.js?v=694"></script>
-  <script src="js/headings.js?v=694"></script>
-  <script src="js/bundles.js?v=694"></script>
-  <script src="js/ridex.js?v=694"></script>
-  <script src="js/cursor.js?v=694"></script>
-  <script src="js/glass.js?v=694" defer></script>
+  <script src="js/data.js?v=699"></script>
+  <script src="js/borders.js?v=699"></script>
+  <script src="js/scene.js?v=699"></script>
+  <script src="js/app.js?v=699"></script>
+  <script src="js/experiences.js?v=699"></script>
+  <script src="js/carousels.js?v=699"></script>
+  <script src="js/coverflow.js?v=699"></script>
+  <script src="js/zones.js?v=699"></script>
+  <script src="js/zonepage.js?v=699"></script>
+  <script src="js/fan.js?v=699"></script>
+  <script src="js/zonevid.js?v=699"></script>
+  <script src="js/records.js?v=699"></script>
+  <script src="js/sphere.js?v=699" defer></script>
+  <script src="js/gallery.js?v=699"></script>
+  <script src="js/parkmap.js?v=699"></script>
+  <script src="js/minimap.js?v=699"></script>
+  <script src="js/sponsors.js?v=699"></script>
+  <script src="js/about.js?v=699"></script>
+  <script src="js/cashless.js?v=699"></script>
+  <script src="js/headings.js?v=699"></script>
+  <script src="js/bundles.js?v=699"></script>
+  <script src="js/ridex.js?v=699"></script>
+  <script src="js/cursor.js?v=699"></script>
+  <script src="js/glass.js?v=699" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=694" defer></script>
+  <script src="js/heroes.js?v=699" defer></script>
 </body>
 </html>

@@ -52,17 +52,20 @@
          target="_blank" rel="noopener">${b.cta}</a>
     </article>`;
 
-  host.innerHTML = TIERS.map((t) => {
-    const items = list.filter((b) => b.group === t.key);
-    if (!items.length) return "";
-    return `
-      <section class="tk-tier">
-        <p class="tk-tier-h reveal">
-          <span>${t.label}</span><i aria-hidden="true"></i><small>${t.note}</small>
-        </p>
-        <div class="pl-row">${items.map(ticket).join("")}</div>
-      </section>`;
-  }).join("");
+  /* ── one group, five plans ──
+     They used to be split into two tiers with a heading over each: ride credit, then
+     unlimited. Two headings is two decisions, and there is only one — which of these
+     five do I want. In a single row the reader compares all five prices in one pass,
+     which is the point of a price table.
+
+     Nothing is lost with the tier headings. What they carried — "loaded onto a card",
+     "worn as an NFC bracelet" — each plan already lists among its inclusions, on the
+     card it applies to. TIERS still gives the order, so credit comes before unlimited
+     and the row reads cheapest to dearest. */
+  const ordered = TIERS.flatMap((t) => list.filter((b) => b.group === t.key));
+  host.innerHTML = ordered.length
+    ? `<div class="pl-row is-one">${ordered.map(ticket).join("")}</div>`
+    : "";
 
   // the reveal system only watches what existed at boot
   window.WBK_REVEAL && WBK_REVEAL.scan && WBK_REVEAL.scan();

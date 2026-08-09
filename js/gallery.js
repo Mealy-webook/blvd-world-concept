@@ -1,14 +1,10 @@
-// ── gallery: the night's photographs, as a deck ────────────────────────────
-// A hand of cards you flick through rather than a tunnel you fly down. The deck is
-// js/fan.js — the same component the zones use in the globe version, which deals
-// itself out when the section arrives, pages with the arrows and the dots, takes a
-// swipe, and pushes its neighbours aside as the pointer crosses it. Nothing here
-// re-implements any of that; this file supplies the cards and the lightbox.
-//
-// The front card opens full size. A card off the front comes forward first, which is
-// the contract both the fan and the ring already use everywhere else on this site.
+// ── gallery: two belts of plates drifting in opposite directions ──
+// The drift is CSS; scrolling nudges the belts a little further along, so the
+// section keeps moving with the page rather than looping in place. Clicking a
+// plate opens it full size in a lightbox.
 (function () {
-  const deck = document.getElementById("gal-deck");
+  const host = document.getElementById("gal-belts");
+  if (!host) return;
 
   const PLATES = [
     { img: "fireworks.jpg",     cap: "Fireworks over the lake" },
@@ -21,27 +17,32 @@
     { img: "night-aerial.jpg",  cap: "One night, many worlds" },
   ];
 
-  if (deck && window.WBK_FAN) {
-    WBK_FAN.make({
-      deckId: "gal-deck", prevId: "gal-prev", nextId: "gal-next", dotsId: "gal-dots",
-      items: PLATES,
-      /* a button rather than a link: there is nowhere to navigate to, the lightbox
-         opens in place, and a link with no href is a control pretending to be one */
-      card: (p, i) => `
-        <button class="fan-card is-shot" type="button" data-i="${i}"
-                aria-label="Open ${p.cap}">
-          <img src="img/gallery/${p.img}" alt="${p.cap}" draggable="false" loading="lazy">
-          <figcaption class="fs-cap">${p.cap}</figcaption>
-        </button>`,
-    });
+  // the index is on the plate, because each belt renders its run twice over and
+  // the same photograph therefore appears in the strip more than once
+  const plate = (p) => `
+    <figure class="gal-plate" role="button" tabindex="0"
+            data-i="${PLATES.indexOf(p)}" aria-label="Open ${p.cap}">
+      <img src="img/gallery/${p.img}" alt="${p.cap}" loading="lazy" draggable="false">
+      <figcaption>${p.cap}</figcaption>
+    </figure>`;
 
-    /* Only the front card opens. fan.js brings a card to the front when it is
-       clicked and marks it .is-front, so this checks rather than duplicates that. */
-    deck.addEventListener("click", (e) => {
-      const card = e.target.closest(".fan-card");
-      if (card && card.classList.contains("is-front")) open(+card.dataset.i || 0);
-    });
-  }
+  // each belt holds its run twice over, so the -50% keyframe lands seamlessly
+  const belt = (items, cls) => {
+    const run = items.map(plate).join("");
+    return `<div class="gal-belt ${cls}"><div class="gal-run">${run}${run}</div></div>`;
+  };
+
+  const half = Math.ceil(PLATES.length / 2);
+  host.innerHTML = belt(PLATES.slice(0, half), "b1") + belt(PLATES.slice(half), "b2");
+
+  const runs = [...host.querySelectorAll(".gal-run")];
+
+  // pause the drift while a plate is being looked at
+  host.addEventListener("pointerover", (e) => {
+    const f = e.target.closest(".gal-plate");
+    host.classList.toggle("held", !!f);
+  });
+  host.addEventListener("pointerleave", () => host.classList.remove("held"));
 
   /* ── the lightbox ──
      One frame, reused. It hangs off <body> rather than the section: .view carries
@@ -109,18 +110,18 @@
     if (opener && opener.focus) opener.focus({ preventScroll: true });
   }
 
-  /* The keyboard route. The click route lives up with the deck, where it can ask
-     fan.js which card is at the front; a card off the front comes forward instead of
-     opening, which is the contract the rest of this site uses. */
-  if (deck) {
-    deck.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
-      const card = e.target.closest(".fan-card");
-      if (!card || !card.classList.contains("is-front")) return;
-      e.preventDefault();
-      open(+card.dataset.i || 0);
-    });
-  }
+  // a plate opens by click, and by keyboard because it answers to a role
+  host.addEventListener("click", (e) => {
+    const f = e.target.closest(".gal-plate");
+    if (f) open(+f.dataset.i || 0);
+  });
+  host.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const f = e.target.closest(".gal-plate");
+    if (!f) return;
+    e.preventDefault();
+    open(+f.dataset.i || 0);
+  });
 
   // the page scrolls inside #view-home, not the window, so rather than freezing
   // that container — and risking its scroll position — the overlay simply eats
@@ -149,4 +150,23 @@
   });
 
   // scroll adds a little extra travel, in opposite directions per belt
+  const view = document.getElementById("view-home");
+  if (!view) return;
+  let queued = false;
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      const r = host.getBoundingClientRect();
+      const vh = view.clientHeight || 1;
+      if (r.bottom < -200 || r.top > vh + 200) return;      // off screen, skip
+      // -1 → 1 as the section crosses the viewport
+      const p = 1 - 2 * ((r.top + r.height / 2) / vh);
+      runs[0].style.setProperty("--nudge", `${(-p * 5).toFixed(2)}%`);
+      runs[1] && runs[1].style.setProperty("--nudge", `${(p * 5).toFixed(2)}%`);
+    });
+  }
+  view.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 })();
