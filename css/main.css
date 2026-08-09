@@ -3807,7 +3807,7 @@ html[data-hero="real"] .zc .zc-plate {
      Plus" wraps to two lines and "Family Package" does not — and a price table whose
      prices are not on one line is five cards, not a table. The 1fr on the list is
      what pushes every button to the same bottom edge. */
-  grid-template-rows: minmax(2.6em, auto) auto auto 1fr auto;
+  grid-template-rows: minmax(2.6em, auto) auto auto auto 1fr auto;
   align-content: stretch;
   gap: clamp(8px, 1.2vh, 14px);
   padding: clamp(20px, 2.4vw, 30px) clamp(16px, 1.8vw, 24px) clamp(18px, 2vw, 26px);
@@ -3915,6 +3915,34 @@ html[data-hero="real"] .zc .zc-plate {
   padding-bottom: clamp(8px, 1.4vh, 14px);
   border-bottom: 1px solid rgba(199, 226, 255, .14);
 }
+/* ── the pass, as an object ──
+   A row between the rate and the inclusions: the artwork of the thing you actually
+   walk in holding. It reads as a caption, not a feature — small, dim, one line —
+   because the card is a detail of the plan and not a reason to pick it. */
+.pl-media {
+  display: flex; align-items: center; gap: 10px;
+  margin: 2px 0 0; min-height: 34px;
+  font-family: var(--fig); font-size: 10px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: #8fa0c8;
+}
+.pl-media span { min-width: 0; }
+/* the deck: one card, or three fanned behind each other for the family plan */
+.pl-deck { position: relative; display: block; width: 52px; height: 32px; flex: none; }
+.pl-deck img {
+  position: absolute; bottom: 0; left: 0; width: 42px; height: auto;
+  border-radius: 3px;
+  box-shadow: 0 2px 7px rgba(2, 4, 16, .55), 0 0 0 1px rgba(199, 226, 255, .18);
+  /* fanned rather than stacked: three cards squared up behind each other read as one
+     card with a thick edge, which is the opposite of the point */
+  transform: rotate(calc(var(--n) * -7deg)) translate(calc(var(--n) * 4px), calc(var(--n) * -3px));
+  transform-origin: 20% 100%;
+  z-index: calc(3 - var(--n));
+  filter: brightness(calc(1 - var(--n) * .2));
+}
+.pl-glyph { width: 44px; height: 30px; flex: none; color: #b8c8ea; }
+.pl.is-pick .pl-media { color: rgba(255, 255, 255, .82); }
+.pl.is-pick .pl-glyph { color: #fff; }
+
 .pl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
 .pl-list li {
   display: flex; align-items: baseline; gap: 9px;

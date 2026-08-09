@@ -125,7 +125,7 @@ window.WBK = {
       count: "10",
       price: 135,
       media: "One card",
-      blurb: "Ten rides, on one attraction or mixed.",
+      blurb: "Ten rides, on one or spread across many.",
       includes: [
         "Any 10 rides",
       ,
@@ -144,7 +144,7 @@ window.WBK = {
       flag: "BEST FOR GROUPS",
       blurb: "Thirty rides, three cards, one night out.",
       includes: [
-        "Any 30 rides, in any combination",
+        "Any 30 rides",
         "Three cards — ten games on each",
       ],
       cta: "Book Family Package",
@@ -157,9 +157,9 @@ window.WBK = {
       count: "∞",
       price: 199,
       media: "NFC bracelet",
-      blurb: "Any attraction, an unlimited number of times.",
+      blurb: "Any ride, an unlimited number of times.",
       includes: [
-        "Every attraction, as many times as you like",
+        "Every ride, as many times as you like",
         "Regular queue line",
         "Worn all night as an NFC bracelet",
       ],
@@ -177,7 +177,7 @@ window.WBK = {
       flag: "NO QUEUING",
       blurb: "The same night, on the fast queue.",
       includes: [
-        "Every attraction, as many times as you like",
+        "Every ride, as many times as you like",
         "Fast queue line at every gate",
         "Worn all night as an NFC bracelet",
       ],

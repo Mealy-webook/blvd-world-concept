@@ -39,6 +39,41 @@
      is one line to change. */
   const PICK = "FAMILY PACKAGE";
 
+  /* ── what the pass arrives as ──
+     Every plan already carried a `media` line in the data — "One card", "NFC
+     bracelet", "3 cards · 10 games each" — and nothing on the page drew it. A card
+     and a bracelet are different objects that you wear or carry differently, and the
+     difference between the SAR 135 plan and the SAR 199 one is largely that: one is
+     a card in your pocket, the other is on your wrist all night.
+
+     The card is the real BLVD card artwork the cashless section uses, not a new
+     drawing of one. The bracelet has no artwork anywhere on the site, so it is drawn
+     here — a strap and a tap disc, in the same two strokes the rest of the UI uses. */
+  const CARD_ART = "img/blvd-card.png";
+  const bracelet = `
+    <svg class="pl-glyph" viewBox="0 0 44 30" aria-hidden="true" focusable="false">
+      <rect x="2.4" y="9.6" width="39.2" height="10.8" rx="5.4"
+            fill="none" stroke="currentColor" stroke-width="2.2" />
+      <circle cx="22" cy="15" r="5.4" fill="currentColor" opacity=".18" />
+      <circle cx="22" cy="15" r="5.4" fill="none" stroke="currentColor" stroke-width="2.2" />
+      <path d="M25.4 11.6a4.8 4.8 0 0 1 0 6.8M27.9 9.1a8.3 8.3 0 0 1 0 11.8"
+            fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </svg>`;
+
+  /* three overlapping cards for the family plan, one for the rest — the count is in
+     the copy, so the picture may as well agree with it */
+  function media(b) {
+    const isBand = /bracelet/i.test(b.media || "");
+    const many = /^3 /.test(b.media || "");
+    const art = many
+      ? `<span class="pl-deck">${[0, 1, 2].map((n) => `<img src="${CARD_ART}" alt="" style="--n:${n}" />`).join("")}</span>`
+      : `<span class="pl-deck"><img src="${CARD_ART}" alt="" style="--n:0" /></span>`;
+    return `
+      <p class="pl-media${isBand ? " is-band" : ""}">
+        ${isBand ? bracelet : art}<span>${b.media || ""}</span>
+      </p>`;
+  }
+
   const ticket = (b, i) => `
     <article class="pl${b.name === PICK ? " is-pick" : ""} reveal" style="--i:${i}">
       ${b.name === PICK ? `<p class="pl-flag">${b.flag || "Best value"}</p>` : ""}
@@ -50,6 +85,7 @@
         <span class="pl-cur">SAR</span><b>${b.price}</b>
       </p>
       <p class="pl-rate">${perRide(b)} &#183; per person</p>
+      ${media(b)}
       <ul class="pl-list">
         ${b.includes.filter(Boolean).map((line) => `
           <li><i aria-hidden="true"></i>${line}</li>`).join("")}

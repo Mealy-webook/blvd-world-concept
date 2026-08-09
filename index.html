@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=716" />
+<link rel="stylesheet" href="css/main.css?v=721" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=716" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=721" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -177,7 +177,7 @@
              thing in the site's voice, is gone rather than stacked underneath it. -->
         <p class="sec-sub">
           Boulevard World brings the world together for you in one destination.
-          In 2025, explore exciting new zones from Indonesia, Korea, and Kuwait,
+          In 2026/2027, explore exciting new zones from Indonesia, Korea, and Kuwait,
           along with refreshed favorites that offer a deeper journey into global
           cultures.
         </p>
@@ -544,7 +544,7 @@
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="eats-head reveal">
-        <h2 class="sec-title">SIT DOWN<br/>AND STAY A WHILE</h2>
+        <h2 class="sec-title">BOOK RESTAURANTS</h2>
       </div>
       <div class="rail-wrap">
         <button class="rail-btn prev" id="eat-prev" aria-label="Previous restaurants">&#8249;</button>
@@ -580,7 +580,9 @@
 
   <section id="view-rides" class="view">
     <section class="ridex" id="ridespage">
-      <a href="#/" class="page-back" aria-label="Back to the landing page">
+      <!-- back to the packages page, not the landing page: the only link into this
+           page is the one on the packages page, so that is where "back" means -->
+      <a href="#/packages" class="page-back" aria-label="Back to the ride packages">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="rx-head reveal">
@@ -614,14 +616,12 @@
       <a href="#/" class="page-back" aria-label="Back to the landing page">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
+      <!-- The eyebrow read "Ride packages" and the title read "Pick how you ride";
+           now the title reads "Ride packages", so the eyebrow went with the
+           description rather than sit above the heading repeating it. -->
       <div class="bd-head reveal">
-        <p class="eyebrow">Ride packages</p>
-        <h2 class="sec-title">PICK HOW<br/>YOU RIDE</h2>
-        <p class="sec-sub">Buy rides by the handful and spend them wherever you like, or
-          go unlimited on a bracelet until the gates close. Prices are per person, for
-          one night.</p>
+        <h2 class="sec-title">RIDE PACKAGES</h2>
       </div>
-      <div class="bd-grid" id="bd-grid"></div>
       <!-- what the passes actually buy. The rail is the one the restaurants and the
            zone pages use, with rides in it; every figure is the ride's own price from
            WBK.rides, the same one #/rides prints. js/bundles.js fills it. -->
@@ -637,6 +637,8 @@
                   aria-label="More rides">&#8250;</button>
         </div>
       </div>
+
+      <div class="bd-grid" id="bd-grid"></div>
 
       <!-- the card the passes load onto, moved here from the home page rather than
            copied: it was hidden there, and this is the page where it answers a
@@ -922,8 +924,6 @@
       <div class="xp-head reveal">
         <p class="eyebrow">Book ahead</p>
         <h2 class="sec-title">EXPERIENCES</h2>
-        <p class="sec-sub">Ten things worth booking before you arrive &#8212; each one
-          in its own zone, each with entry to that zone included.</p>
       </div>
 
       <!-- Search sits above the chips, not beside them: it is the broader of the two
@@ -1114,32 +1114,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=716"></script>
-  <script src="js/borders.js?v=716"></script>
-  <script src="js/scene.js?v=716"></script>
-  <script src="js/app.js?v=716"></script>
-  <script src="js/experiences.js?v=716"></script>
-  <script src="js/carousels.js?v=716"></script>
-  <script src="js/coverflow.js?v=716"></script>
-  <script src="js/zones.js?v=716"></script>
-  <script src="js/zonepage.js?v=716"></script>
-  <script src="js/fan.js?v=716"></script>
-  <script src="js/zonevid.js?v=716"></script>
-  <script src="js/records.js?v=716"></script>
-  <script src="js/sphere.js?v=716" defer></script>
-  <script src="js/gallery.js?v=716"></script>
-  <script src="js/parkmap.js?v=716"></script>
-  <script src="js/minimap.js?v=716"></script>
-  <script src="js/sponsors.js?v=716"></script>
-  <script src="js/about.js?v=716"></script>
-  <script src="js/cashless.js?v=716"></script>
-  <script src="js/headings.js?v=716"></script>
-  <script src="js/bundles.js?v=716"></script>
-  <script src="js/ridex.js?v=716"></script>
-  <script src="js/cursor.js?v=716"></script>
-  <script src="js/glass.js?v=716" defer></script>
+  <script src="js/data.js?v=721"></script>
+  <script src="js/borders.js?v=721"></script>
+  <script src="js/scene.js?v=721"></script>
+  <script src="js/app.js?v=721"></script>
+  <script src="js/experiences.js?v=721"></script>
+  <script src="js/carousels.js?v=721"></script>
+  <script src="js/coverflow.js?v=721"></script>
+  <script src="js/zones.js?v=721"></script>
+  <script src="js/zonepage.js?v=721"></script>
+  <script src="js/fan.js?v=721"></script>
+  <script src="js/zonevid.js?v=721"></script>
+  <script src="js/records.js?v=721"></script>
+  <script src="js/sphere.js?v=721" defer></script>
+  <script src="js/gallery.js?v=721"></script>
+  <script src="js/parkmap.js?v=721"></script>
+  <script src="js/minimap.js?v=721"></script>
+  <script src="js/sponsors.js?v=721"></script>
+  <script src="js/about.js?v=721"></script>
+  <script src="js/cashless.js?v=721"></script>
+  <script src="js/headings.js?v=721"></script>
+  <script src="js/bundles.js?v=721"></script>
+  <script src="js/ridex.js?v=721"></script>
+  <script src="js/cursor.js?v=721"></script>
+  <script src="js/glass.js?v=721" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=716" defer></script>
+  <script src="js/heroes.js?v=721" defer></script>
 </body>
 </html>
