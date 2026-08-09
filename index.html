@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=705" />
+<link rel="stylesheet" href="css/main.css?v=708" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=705" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=708" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -908,32 +908,29 @@
   <!-- ══════════ EXPERIENCES ══════════ -->
   <section id="view-experiences" class="view">
     <canvas id="stars-xp" class="stars"></canvas>
-    <div class="xp-stage">
-      <div class="xp-arc" id="xp-arc">
-        <div class="xp-track" id="xp-track"></div>
-        <button class="xp-nav prev" id="xp-prev" aria-label="Previous experience">‹</button>
-        <button class="xp-nav next" id="xp-next" aria-label="Next experience">›</button>
-      </div>
-
-      <div class="xp-dots" id="xp-dots"></div>
-
-      <footer class="xp-foot">
-        <header class="xp-head">
-          <h2 class="xp-title" id="xp-title">Sky Flyer</h2>
-        </header>
-        <p class="xp-blurb" id="xp-blurb"></p>
-        <div class="xp-buy">
-          <div class="xp-price">
-            <b id="xp-price">SAR 150</b>
-            <span class="xp-per">per person · entry included</span>
-          </div>
-          <a href="https://webook.com" target="_blank" rel="noopener" class="xp-cta">Book</a>
-        </div>
-      </footer>
-
+    <!-- ── experiences ──
+         The restaurants' card, in a grid that scrolls down rather than across, with
+         the zones as filters. It was a concave arc carousel: one experience readable
+         at a time, nine turned away from you, and no way to answer "what is there in
+         Egypt". Ten things you might book is a list, and a list you can filter.
+         js/experiences.js. -->
+    <div class="xp-page" id="xp-page">
       <a href="#/" class="page-back" aria-label="Back to the landing page">
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
+
+      <div class="xp-head reveal">
+        <p class="eyebrow">Book ahead</p>
+        <h2 class="sec-title">EXPERIENCES</h2>
+        <p class="sec-sub">Ten things worth booking before you arrive &#8212; each one
+          in its own zone, each with entry to that zone included.</p>
+      </div>
+
+      <!-- the shows page's chip strip, filtering instead of switching -->
+      <div class="xp-filters reveal" id="xp-filters" role="group" aria-label="Filter by zone"></div>
+
+      <div class="xp-grid" id="xp-grid"></div>
+      <p class="xp-empty" id="xp-empty" hidden>Nothing in that zone yet.</p>
     </div>
   </section>
 
@@ -1105,32 +1102,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=705"></script>
-  <script src="js/borders.js?v=705"></script>
-  <script src="js/scene.js?v=705"></script>
-  <script src="js/app.js?v=705"></script>
-  <script src="js/experiences.js?v=705"></script>
-  <script src="js/carousels.js?v=705"></script>
-  <script src="js/coverflow.js?v=705"></script>
-  <script src="js/zones.js?v=705"></script>
-  <script src="js/zonepage.js?v=705"></script>
-  <script src="js/fan.js?v=705"></script>
-  <script src="js/zonevid.js?v=705"></script>
-  <script src="js/records.js?v=705"></script>
-  <script src="js/sphere.js?v=705" defer></script>
-  <script src="js/gallery.js?v=705"></script>
-  <script src="js/parkmap.js?v=705"></script>
-  <script src="js/minimap.js?v=705"></script>
-  <script src="js/sponsors.js?v=705"></script>
-  <script src="js/about.js?v=705"></script>
-  <script src="js/cashless.js?v=705"></script>
-  <script src="js/headings.js?v=705"></script>
-  <script src="js/bundles.js?v=705"></script>
-  <script src="js/ridex.js?v=705"></script>
-  <script src="js/cursor.js?v=705"></script>
-  <script src="js/glass.js?v=705" defer></script>
+  <script src="js/data.js?v=708"></script>
+  <script src="js/borders.js?v=708"></script>
+  <script src="js/scene.js?v=708"></script>
+  <script src="js/app.js?v=708"></script>
+  <script src="js/experiences.js?v=708"></script>
+  <script src="js/carousels.js?v=708"></script>
+  <script src="js/coverflow.js?v=708"></script>
+  <script src="js/zones.js?v=708"></script>
+  <script src="js/zonepage.js?v=708"></script>
+  <script src="js/fan.js?v=708"></script>
+  <script src="js/zonevid.js?v=708"></script>
+  <script src="js/records.js?v=708"></script>
+  <script src="js/sphere.js?v=708" defer></script>
+  <script src="js/gallery.js?v=708"></script>
+  <script src="js/parkmap.js?v=708"></script>
+  <script src="js/minimap.js?v=708"></script>
+  <script src="js/sponsors.js?v=708"></script>
+  <script src="js/about.js?v=708"></script>
+  <script src="js/cashless.js?v=708"></script>
+  <script src="js/headings.js?v=708"></script>
+  <script src="js/bundles.js?v=708"></script>
+  <script src="js/ridex.js?v=708"></script>
+  <script src="js/cursor.js?v=708"></script>
+  <script src="js/glass.js?v=708" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=705" defer></script>
+  <script src="js/heroes.js?v=708" defer></script>
 </body>
 </html>

@@ -99,6 +99,7 @@
                 <li><b data-to="${f.n}">${f.n}</b><span>${esc(f.label)}</span></li>`).join("")}
             </ul>
             <div class="zp-go">
+              <a class="pill light big-pill" href="#/shows">Tonight&#8217;s schedule</a>
               <a class="pill ghost big-pill" href="#/map?zone=${encodeURIComponent(zone.name)}">See it on the map</a>
             </div>
           </div>
@@ -119,12 +120,14 @@
   function contents(blocks) {
     if (blocks.length < 3) return "";
     return `
-      <nav class="zp-jump" aria-label="On this page">
+      <div class="zp-jump" role="tablist" aria-label="On this page">
         ${blocks.map((b, i) => `
-          <a href="#zp-${b.id}">
+          <button class="zp-tab${i === 0 ? " on" : ""}" type="button" role="tab"
+                  aria-selected="${i === 0 ? "true" : "false"}"
+                  aria-controls="zp-${b.id}" data-block="${b.id}">
             <em>${String(i + 1).padStart(2, "0")}</em>${esc(b.label)}
-          </a>`).join("")}
-      </nav>`;
+          </button>`).join("")}
+      </div>`;
   }
 
   function block(id, title, note, inner) {
@@ -139,14 +142,27 @@
       </section>`;
   }
 
-  /* A thing we know the name of and nothing else. It was a chip; chips read as
-     filters you can press, and these do nothing. The same pane the three-card
-     section uses carries a name perfectly well and stops promising a control. */
-  function nameCards(names) {
+  /* A thing we know the name of and nothing else — an attraction, a ride or a
+     kitchen the park lists but the data carries no picture or price for.
+
+     It uses the restaurants' card, so the blocks are one component throughout, with
+     the zone's own photograph standing in for the missing one. That picture is of the
+     zone and not of the thing named on it, which is exactly what the note above each
+     block says: a card that looks like a photograph of an attraction, carrying a
+     photograph of somewhere near it, has to say so. */
+  function nameCards(names, zone) {
     if (!names || !names.length) return "";
-    return `<ul class="zp-cards">${names
-      .map((n) => `<li class="dw-card"><p>${esc(n)}</p></li>`)
-      .join("")}</ul>`;
+    const shot = (zone && (zone.imgs || [])[0]) || null;
+    return `<div class="zp-cards">${names.map((n, i) => `
+      <article class="eat-card" style="--pop-d:${(i % 6) * 70}ms">
+        <div class="eat-shot">
+          ${shot ? `<img src="img/zones/${esc(shot)}" alt="" draggable="false" loading="lazy" />` : ""}
+        </div>
+        <div class="eat-text">
+          <p class="eat-meta">${esc(zone ? zone.name : "")}</p>
+          <h3>${esc(n)}</h3>
+        </div>
+      </article>`).join("")}</div>`;
   }
 
   /* ── experiences: the rail, holding the rail's own card ──
@@ -189,7 +205,7 @@
                   aria-label="More experiences">&#8250;</button>
         </div>` : ""}
       ${named.length ? `
-        ${nameCards(named)}` : ""}`;
+        ${nameCards(named, zone)}` : ""}`;
   }
 
   /* ── rides: the rail's card, with the prices the rides page publishes ──
@@ -240,7 +256,7 @@
           <button class="rail-btn next" type="button" data-rail="zp-ride-rail"
                   aria-label="More rides">&#8250;</button>
         </div>` : ""}
-      ${nameCards(named)}`;
+      ${nameCards(named, zone)}`;
   }
 
   /* ── the kitchens: the restaurants page's own card, in the same rail ──
@@ -306,7 +322,7 @@
                   aria-label="More restaurants">&#8250;</button>
         </div>` : ""}
       ${named.length ? `
-        ${nameCards(named)}` : ""}`;
+        ${nameCards(named, zone)}` : ""}`;
   }
 
   /* ── tonight, on a rail, led by a photograph of the act ── */
@@ -406,7 +422,7 @@
   function shops(zone) {
     /* waiting on data; see the note at the top of this file */
     if (!zone.shops || !zone.shops.length) return "";
-    return nameCards(zone.shops);
+    return nameCards(zone.shops, zone);
   }
 
   function render() {
@@ -444,12 +460,17 @@
       { n: showN, label: "shows tonight" },
     ].filter((f) => f.n > 0);
 
+    /* The note is on the blocks whose cards borrow the zone's own photograph for
+       something the data has no picture of. It is short, and it is not optional: a
+       card shaped like a photograph of a ride, carrying a photograph of the street
+       outside it, has to say which it is. */
+    const BORROWED = "Photographs are of the zone, not of the attraction.";
     const parts = [
-      { id: "experiences", label: "Experiences", title: "Experiences", html: experiences(zone, exp, name) },
-      { id: "rides", label: "Rides", title: "Rides", html: rides(zone) },
+      { id: "experiences", label: "Experiences", title: "Experiences", note: BORROWED, html: experiences(zone, exp, name) },
+      { id: "rides", label: "Rides", title: "Rides", note: BORROWED, html: rides(zone) },
       { id: "eat", label: "Cuisine", title: "Cuisine", html: kitchens(name, zone) },
       { id: "tonight", label: "Tonight", title: "Live tonight", html: schedule(name) },
-      { id: "shops", label: "Shops", title: "Shops and retail", html: shops(zone) },
+      { id: "shops", label: "Shops", title: "Shops and retail", note: BORROWED, html: shops(zone) },
       { id: "pictures", label: "Pictures", title: "In pictures", html: pictures(zone) },
     ].filter((b) => b.html);
 
@@ -458,7 +479,7 @@
       head(zone, tone, facts) +
       `<div class="zp-main">
          ${contents(parts)}
-         <div class="zp-blocks">${parts.map((b) => block(b.id, b.title, "", b.html)).join("")}</div>
+         <div class="zp-blocks">${parts.map((b) => block(b.id, b.title, b.note || "", b.html)).join("")}</div>
        </div>`;
 
     dress();
@@ -604,6 +625,50 @@
         const sc = body.querySelector(a.getAttribute("href"));
         if (sc) spy.observe(sc);
       });
+    }
+
+    /* ── the tabs ──
+       One block at a time, the way the records section works. The index used to be
+       jump links down a stack; as tabs the page is one screen deep instead of six,
+       and the label you press is the thing you get rather than a place you are sent.
+
+       hidden comes off before the class goes on, and offsetHeight forces the layout
+       in between: a block cannot transition out of display: none, and reading the
+       layout is what gives the transition a frame to start from. Waiting a
+       requestAnimationFrame instead would fail in a background tab. */
+    const tabs = [...body.querySelectorAll(".zp-tab")];
+    const panels = [...body.querySelectorAll(".zp-block")];
+    function showBlock(id) {
+      for (const t of tabs) {
+        const on = t.dataset.block === id;
+        t.classList.toggle("on", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      }
+      for (const b of panels) {
+        const on = b.id === `zp-${id}`;
+        if (on) {
+          b.hidden = false;
+          void b.offsetHeight;
+          b.classList.add("in");
+        } else {
+          b.classList.remove("in");
+          b.hidden = true;
+        }
+      }
+    }
+    if (tabs.length) {
+      for (const t of tabs) t.addEventListener("click", () => showBlock(t.dataset.block));
+      /* left and right move between them, which is what a tablist promises */
+      body.querySelector(".zp-jump").addEventListener("keydown", (e) => {
+        const at = tabs.indexOf(document.activeElement);
+        const by = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (at < 0 || !by) return;
+        e.preventDefault();
+        const next = tabs[(at + by + tabs.length) % tabs.length];
+        next.focus();
+        showBlock(next.dataset.block);
+      });
+      showBlock(tabs[0].dataset.block);
     }
 
     /* ── the components' own entrances ──

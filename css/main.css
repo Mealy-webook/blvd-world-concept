@@ -3637,6 +3637,75 @@ html[data-hero="real"] .zc .zc-plate {
 }
 @media (prefers-reduced-motion: reduce) { .dw-card { transition: none; } }
 
+/* ═══════════════ EXPERIENCES ═══════════════
+   The restaurants' card in a grid, with the zones as filters. It replaced a concave
+   arc carousel — one experience readable at a time, nine turned away, and no way to
+   ask what is in a given zone. Nothing here is a new component: .eat-card does the
+   cards and the chips are the shows page's, filtering instead of switching. */
+.xp-page {
+  position: relative; z-index: 11;
+  width: 100%; min-width: 0; height: 100dvh;
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  padding: clamp(64px, 11vh, 108px) var(--sec-x) clamp(40px, 8vh, 90px);
+  display: grid; justify-items: center; align-content: start;
+  gap: clamp(14px, 2.4vh, 26px);
+}
+.xp-head {
+  display: grid; justify-items: center; gap: clamp(8px, 1.2vh, 14px);
+  text-align: center; max-width: min(760px, 100%);
+}
+
+/* ── the filters ── */
+.xp-filters {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  width: 100%; max-width: min(920px, 100%);
+}
+.xp-chip {
+  display: inline-flex; align-items: baseline; gap: 7px;
+  padding: 9px 15px; border-radius: var(--r-pill);
+  border: var(--b-1); background: rgba(199, 226, 255, .05);
+  font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
+  color: #b8c8ea; cursor: pointer;
+  transition: background .3s var(--ease), color .3s var(--ease),
+              border-color .3s var(--ease), transform .3s var(--ease);
+}
+.xp-chip em {
+  font-family: var(--fig); font-style: normal; font-size: 10px; font-weight: 700;
+  color: #7b8bb0; font-variant-numeric: tabular-nums;
+}
+.xp-chip:hover { color: #fff; background: rgba(199, 226, 255, .1); transform: translateY(-1px); }
+.xp-chip.is-on {
+  color: var(--pick-ink); background: var(--pick); border-color: transparent;
+  box-shadow: 0 6px 18px rgba(255, 194, 77, .26);
+}
+.xp-chip.is-on em { color: rgba(28, 20, 3, .7); }
+
+/* ── the grid ──
+   Down, never across. Three across on a wide screen, and the card is the same
+   .eat-card the rails carry, so a photograph, a zone, a name and a price sit in the
+   same places here as everywhere else. */
+.xp-grid {
+  width: 100%; max-width: min(1180px, 100%);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+  align-items: start;
+}
+.xp-grid .eat-card { width: 100%; }
+/* the blurb is the one thing an experience has that a restaurant card does not */
+.xp-grid .xp-blurb {
+  font-family: var(--body); font-size: 12.5px; font-weight: 400; line-height: 1.45;
+  color: #9fb0d8; margin-top: 2px;
+}
+.xp-book { margin-top: 10px; justify-content: center; width: 100%; }
+.xp-empty {
+  font-family: var(--body); font-size: 14px; color: #8fa0c8; padding: 30px 0;
+}
+
+@media (max-width: 700px) {
+  .xp-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .xp-chip { padding: 8px 12px; font-size: 11px; }
+}
+
 /* ═══════════════ THE PACKAGES, AS PLANS ═══════════════
    Five cards read as a column of comparable things rather than five torn tickets.
    Everything sits in the same place on every card — name, what it is, price, rate,
@@ -3968,20 +4037,23 @@ html[data-hero="real"] .zc .zc-plate {
   position: sticky; top: clamp(16px, 4vh, 40px);
   display: grid; gap: 2px; align-content: start;
 }
-.zp-jump a {
-  display: flex; align-items: baseline; gap: 9px;
-  padding: 9px 10px; border-radius: var(--r-sm);
+.zp-tab {
+  display: flex; align-items: baseline; gap: 9px; text-align: left;
+  padding: 9px 11px; border: 0; border-radius: var(--r-sm);
+  background: transparent; cursor: pointer;
   font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
-  color: #9fb0d8; text-decoration: none;
+  color: #9fb0d8;
   transition: color .3s var(--ease), background .3s var(--ease);
 }
-.zp-jump a em {
+.zp-tab em {
   font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
   letter-spacing: .06em; color: #67789f; font-variant-numeric: tabular-nums;
 }
-.zp-jump a:hover { color: #fff; background: rgba(199, 226, 255, .07); }
-.zp-jump a.on { color: #fff; background: rgba(199, 226, 255, .1); }
-.zp-jump a.on em { color: color-mix(in srgb, var(--tone) 80%, #fff); }
+.zp-tab:hover { color: #fff; background: rgba(199, 226, 255, .07); }
+.zp-tab.on { color: #fff; background: rgba(199, 226, 255, .12); }
+.zp-tab.on em { color: color-mix(in srgb, var(--tone) 80%, #fff); }
+/* one panel at a time; [hidden] is honoured by the rule in the reset */
+.zp-block[hidden] { display: none; }
 
 .zp-blocks { display: grid; gap: clamp(34px, 6vh, 76px); min-width: 0; }
 .zp-block {
@@ -4009,17 +4081,14 @@ html[data-hero="real"] .zc .zc-plate {
 
 /* named things, as cards rather than chips: a chip reads as a control you can press
    and these press nothing */
+/* the same card the rails carry, in a grid rather than a rail */
 .zp-cards {
-  list-style: none; margin: 0; padding: 0; width: 100%;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: clamp(8px, 1vw, 14px);
+  width: 100%;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  align-items: start;
 }
-.zp-cards .dw-card {
-  padding: clamp(13px, 1.5vw, 18px) clamp(12px, 1.3vw, 16px);
-  gap: 0; align-content: center; min-height: 72px;
-}
-.zp-cards .dw-card::after { display: none; }     /* no glow on a small card */
-.zp-cards .dw-card p { font-size: clamp(12.5px, 1.15vw, 14.5px); max-width: none; }
+.zp-cards .eat-card { width: 100%; }
 /* the ones in this zone are the ones the block is about; the rest are along the
    rail behind them, each naming the zone it is actually in */
 .zp-blocks .eat-card:not(.is-here) { opacity: .82; }
@@ -4049,8 +4118,8 @@ html[data-hero="real"] .zc .zc-plate {
     background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .78) 70%, transparent);
   }
   .zp-jump::-webkit-scrollbar { display: none; }
-  .zp-jump a { border: var(--b-1); border-radius: var(--r-pill); padding: 8px 13px; }
-  .zp-jump a em { display: none; }
+  .zp-tab { border: var(--b-1); border-radius: var(--r-pill); padding: 8px 13px; }
+  .zp-tab em { display: none; }
   .zp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
   .zp-stage { height: clamp(220px, 38vh, 330px); order: -1; }
   .zp-cue { display: none; }
@@ -4196,94 +4265,11 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 /* ═══════════════ EXPERIENCES (light editorial stage) ═══════════════ */
 #view-experiences { background: var(--page-bg); }
-.xp-stage {
-  position: absolute; inset: 0; overflow: hidden;
-  /* cards · dots · name+description+price */
-  display: grid; grid-template-rows: 1fr auto auto; gap: 0;
-  padding: clamp(16px, 3vh, 34px) 4vw clamp(14px, 2.6vh, 28px);
-  color: var(--ink);
-}
 
-.xp-head { position: relative; text-align: center; display: grid; justify-items: center; z-index: 3; }
-.xp-title {
-  font-family: var(--disp); font-weight: 700;
-  font-size: clamp(30px, 4.6vw, 60px); line-height: .98; letter-spacing: .01em;
-  color: #fff;
-  transition: opacity .28s ease, transform .28s ease;
-}
-.xp-title.swap { opacity: 0; transform: translateY(8px); }
 
 /* concave arc */
-.xp-arc {
-  position: relative; z-index: 2; perspective: 1500px; perspective-origin: 50% 46%;
-  touch-action: pan-y; cursor: grab; user-select: none;
-}
-.xp-arc:active { cursor: grabbing; }
-.xp-track { position: absolute; inset: 0; transform-style: preserve-3d; }
-.xp-card {
-  position: absolute; top: 50%; left: 50%;
-  width: clamp(190px, 24vw, 296px); aspect-ratio: 3/4;
-  margin: 0; border-radius: var(--r-lg); overflow: hidden;
-  background: #0d1233; will-change: transform, opacity;
-  border: var(--b-1);
-  box-shadow: var(--sh-3);
-  transform-origin: 50% 50%; backface-visibility: hidden;
-}
-.xp-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.xp-card::after {
-  content: ''; position: absolute; inset: 0; transition: opacity .3s;
-  background: linear-gradient(180deg, rgba(6, 10, 30, 0) 40%, rgba(5, 8, 24, .6) 100%);
-  opacity: var(--veil, 0);
-}
-.xp-card .xp-cap {
-  position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 14px 13px;
-  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
-  color: #fff; opacity: var(--capop, 0); transition: opacity .3s;
-  background: linear-gradient(180deg, transparent, rgba(18, 14, 10, .78));
-}
-.xp-cap b { font-family: var(--ui); font-weight: 400; font-size: 15px; letter-spacing: .02em; }
-.xp-cap span { font-size: 12px; font-weight: 700; opacity: .9; white-space: nowrap; }
 
-.xp-nav {
-  position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
-  width: 46px; height: 46px; border-radius: 50%; font-size: 22px; line-height: 1;
-  color: #cfe4ff; background: rgba(10, 16, 48, .6); border: 2px solid rgba(199, 226, 255, .5);
-  backdrop-filter: blur(6px); transition: transform .2s, box-shadow .2s, border-color .2s;
-}
-.xp-nav:hover { transform: translateY(-50%) scale(1.08); border-color: rgba(159, 208, 255, .9); }
-.xp-nav.prev { left: 2.5vw; } .xp-nav.next { right: 2.5vw; }
 
-.xp-foot { position: relative; z-index: 3; display: grid; gap: 12px; justify-items: center; text-align: center; }
-.xp-blurb {
-  max-width: 92vw; font-size: clamp(13px, 1.25vw, 16px); line-height: 1.5;
-  color: var(--dim); font-weight: 600; transition: opacity .28s ease;
-  white-space: nowrap; /* copy is written to fit a single line */
-}
-.xp-blurb.swap { opacity: 0; }
-.xp-buy { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); flex-wrap: wrap; justify-content: center; }
-.xp-price { display: grid; justify-items: start; text-align: left; line-height: 1.2; }
-.xp-price b {
-  font-family: var(--disp); font-weight: 700; font-size: clamp(26px, 2.8vw, 38px); letter-spacing: -.02em; color: #fff;
-}
-.xp-per { font-size: 11px; color: var(--dim); font-weight: 700; letter-spacing: .04em; }
-.xp-cta {
-  font-family: var(--ui); font-weight: 600; font-size: 15px; letter-spacing: -.005em;
-  padding: 16px 46px; border-radius: var(--r-pill); color: var(--btn-ink); background: var(--btn);
-  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
-  transition: transform .2s, box-shadow .2s, background .25s var(--ease);
-}
-.xp-cta:hover {
-  transform: translateY(-2px); background: var(--btn-hi);
-  box-shadow: var(--sh-1), inset 0 -2px 0 rgba(104, 0, 60, .5);
-}
-
-.xp-dots { display: flex; gap: 8px; align-items: center; justify-content: center;
-  position: relative; z-index: 3; padding: 4px 0 14px; }
-.xp-dots button {
-  width: 7px; height: 7px; border-radius: 50%; background: rgba(159, 176, 216, .38); padding: 0;
-  transition: width .3s cubic-bezier(.2,.8,.25,1), background .3s, box-shadow .3s;
-}
-.xp-dots button.on { width: 26px; border-radius: var(--r-pill); background: var(--btn); }
 
 /* ── the back control ──
    One component on every routed page — rides, packages, shows, experiences —
@@ -4309,8 +4295,6 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 
 body.route-experiences 
 @media (max-width: 760px) {
-  .xp-nav { display: none; }
-  .xp-stage::after { bottom: 25%; }
   /* keep the music toggle clear of the price block */
 }
 
