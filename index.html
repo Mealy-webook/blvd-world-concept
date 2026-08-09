@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=708" />
+<link rel="stylesheet" href="css/main.css?v=716" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=708" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=716" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -926,6 +926,18 @@
           in its own zone, each with entry to that zone included.</p>
       </div>
 
+      <!-- Search sits above the chips, not beside them: it is the broader of the two
+           tools, and on a phone a field wedged into a scrolling chip row is a field
+           you cannot hit. Both narrow the same grid at once. -->
+      <div class="xp-search reveal">
+        <span class="xp-mag" aria-hidden="true"></span>
+        <input id="xp-q" class="xp-field" type="search" autocomplete="off"
+               placeholder="Search experiences, zones&#8230;" aria-label="Search experiences" />
+        <button id="xp-clear" class="xp-clear" type="button" hidden aria-label="Clear the search">
+          <span aria-hidden="true">&#215;</span>
+        </button>
+      </div>
+
       <!-- the shows page's chip strip, filtering instead of switching -->
       <div class="xp-filters reveal" id="xp-filters" role="group" aria-label="Filter by zone"></div>
 
@@ -1102,32 +1114,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=708"></script>
-  <script src="js/borders.js?v=708"></script>
-  <script src="js/scene.js?v=708"></script>
-  <script src="js/app.js?v=708"></script>
-  <script src="js/experiences.js?v=708"></script>
-  <script src="js/carousels.js?v=708"></script>
-  <script src="js/coverflow.js?v=708"></script>
-  <script src="js/zones.js?v=708"></script>
-  <script src="js/zonepage.js?v=708"></script>
-  <script src="js/fan.js?v=708"></script>
-  <script src="js/zonevid.js?v=708"></script>
-  <script src="js/records.js?v=708"></script>
-  <script src="js/sphere.js?v=708" defer></script>
-  <script src="js/gallery.js?v=708"></script>
-  <script src="js/parkmap.js?v=708"></script>
-  <script src="js/minimap.js?v=708"></script>
-  <script src="js/sponsors.js?v=708"></script>
-  <script src="js/about.js?v=708"></script>
-  <script src="js/cashless.js?v=708"></script>
-  <script src="js/headings.js?v=708"></script>
-  <script src="js/bundles.js?v=708"></script>
-  <script src="js/ridex.js?v=708"></script>
-  <script src="js/cursor.js?v=708"></script>
-  <script src="js/glass.js?v=708" defer></script>
+  <script src="js/data.js?v=716"></script>
+  <script src="js/borders.js?v=716"></script>
+  <script src="js/scene.js?v=716"></script>
+  <script src="js/app.js?v=716"></script>
+  <script src="js/experiences.js?v=716"></script>
+  <script src="js/carousels.js?v=716"></script>
+  <script src="js/coverflow.js?v=716"></script>
+  <script src="js/zones.js?v=716"></script>
+  <script src="js/zonepage.js?v=716"></script>
+  <script src="js/fan.js?v=716"></script>
+  <script src="js/zonevid.js?v=716"></script>
+  <script src="js/records.js?v=716"></script>
+  <script src="js/sphere.js?v=716" defer></script>
+  <script src="js/gallery.js?v=716"></script>
+  <script src="js/parkmap.js?v=716"></script>
+  <script src="js/minimap.js?v=716"></script>
+  <script src="js/sponsors.js?v=716"></script>
+  <script src="js/about.js?v=716"></script>
+  <script src="js/cashless.js?v=716"></script>
+  <script src="js/headings.js?v=716"></script>
+  <script src="js/bundles.js?v=716"></script>
+  <script src="js/ridex.js?v=716"></script>
+  <script src="js/cursor.js?v=716"></script>
+  <script src="js/glass.js?v=716" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=708" defer></script>
+  <script src="js/heroes.js?v=716" defer></script>
 </body>
 </html>

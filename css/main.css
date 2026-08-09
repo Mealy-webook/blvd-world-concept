@@ -3696,13 +3696,91 @@ html[data-hero="real"] .zc .zc-plate {
   font-family: var(--body); font-size: 12.5px; font-weight: 400; line-height: 1.45;
   color: #9fb0d8; margin-top: 2px;
 }
-.xp-book { margin-top: 10px; justify-content: center; width: 100%; }
+/* ── the card is the button ──
+   A stretched anchor over the whole card. No pill under the price: the card had one
+   destination, and a control inside a control only raises the question of what the
+   rest of the card does. The word stays, as a plate that arrives on hover, so a
+   pointer is still told what a click will do. */
+.xp-hit {
+  position: absolute; inset: 0; z-index: 2;
+  border-radius: var(--r-lg); text-decoration: none;
+}
+/* The label is for screen readers only. A plate reading "Book" used to fade in on
+   hover; it is gone. The card already lifts and its photograph scales under the
+   pointer, which is the whole of what a hover state is for — and the plate only
+   re-drew the button the card was meant to replace. */
+.xp-hit span {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.xp-hit:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+/* ── search ── */
+.xp-search {
+  position: relative; width: 100%; max-width: 460px;
+  display: flex; align-items: center;
+}
+.xp-field {
+  width: 100%; appearance: none;
+  padding: 13px 42px 13px 42px;
+  border: var(--b-1); border-radius: var(--r-pill);
+  background: rgba(10, 16, 34, .55);
+  font-family: var(--ui); font-size: 14.5px; font-weight: 500; letter-spacing: -.005em;
+  color: #eaf1ff;
+  transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.xp-field::placeholder { color: #7d8db4; font-weight: 400; }
+.xp-field:focus { outline: none; border-color: rgba(199, 226, 255, .34); background: rgba(12, 19, 40, .8); }
+.xp-field::-webkit-search-cancel-button { display: none; }   /* ours is below */
+/* the glass, drawn rather than fetched: a ring and a handle */
+.xp-mag {
+  position: absolute; left: 16px; width: 13px; height: 13px;
+  border: 2px solid #8fa0c8; border-radius: 50%; pointer-events: none;
+}
+.xp-mag::after {
+  content: ""; position: absolute; right: -5px; bottom: -4px;
+  width: 7px; height: 2px; background: #8fa0c8; border-radius: 2px;
+  transform: rotate(45deg);
+}
+.xp-clear {
+  position: absolute; right: 8px; display: grid; place-items: center;
+  width: 28px; height: 28px; border: 0; border-radius: 50%;
+  background: rgba(199, 226, 255, .1); color: #cfe0ff;
+  font-size: 17px; line-height: 1; cursor: pointer;
+  transition: background .25s var(--ease);
+}
+.xp-clear:hover { background: rgba(199, 226, 255, .2); }
 .xp-empty {
   font-family: var(--body); font-size: 14px; color: #8fa0c8; padding: 30px 0;
 }
 
 @media (max-width: 700px) {
-  .xp-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  /* Two up, fixed — not auto-fill. At 390px a 210px minimum resolves to one column,
+     and one column of square photographs is a screen per experience: ten screens to
+     see ten things you might book. Two up is what a product grid does on a phone. */
+  .xp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .xp-grid .xp-blurb { display: none; }        /* the name and the price carry it */
+  .xp-grid .eat-card { gap: 8px; }
+  /* the chips become one scrolling row rather than three stacked ones: three rows of
+     filters above the fold pushes the thing being filtered off it */
+  .xp-filters {
+    flex-wrap: nowrap; justify-content: flex-start;
+    overflow-x: auto; scrollbar-width: none;
+    /* A scroll container's automatic minimum size is zero, not its content — so as a
+       grid item this row collapsed to its own 2px of padding and the chips hung out
+       of it. max-content in the block axis pins the height to the chips; the inline
+       axis is untouched, so it still scrolls sideways. */
+    min-height: max-content;
+    /* and the chips must size to themselves rather than stretch to the line, or the
+       max-content the line is measuring is the stretched chip and the two resolve
+       against each other at nothing */
+    align-items: center;
+    padding-bottom: 2px;
+    -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+            mask-image: linear-gradient(90deg, #000 88%, transparent);
+  }
+  .xp-filters::-webkit-scrollbar { display: none; }
+  .xp-chip { flex: 0 0 auto; }
   .xp-chip { padding: 8px 12px; font-size: 11px; }
 }
 
@@ -4027,20 +4105,31 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 /* ── the spine and the column ── */
+/* One column, with the tabs across the top of it. This was a master–detail split —
+   a numbered spine down the left, the panel to its right — which is the layout for
+   picking through a long list where the list itself is worth keeping in view. Five
+   tabs are not that list. They read as tabs, they behave as tabs, and now they look
+   like tabs, at every width rather than only below 900px. */
 .zp-main {
   width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
   padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(48px, 9vh, 100px);
-  display: grid; grid-template-columns: clamp(120px, 15vw, 190px) minmax(0, 1fr);
-  gap: clamp(20px, 3vw, 52px); align-items: start;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(18px, 2.6vh, 34px); align-items: start;
 }
 .zp-jump {
-  position: sticky; top: clamp(16px, 4vh, 40px);
-  display: grid; gap: 2px; align-content: start;
+  position: sticky; top: 0; z-index: 8;
+  display: flex; flex-wrap: wrap; gap: 7px;
+  /* The back pill is absolutely positioned in the top-left of the view, so it does
+     not scroll away — a strip that sticks to top: 0 slides under it and stays there.
+     The strip starts to the right of the pill instead, which is where the pill
+     permanently is. */
+  padding: 12px 0 13px clamp(104px, 13vw, 124px);
+  background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .8) 66%, transparent);
 }
 .zp-tab {
-  display: flex; align-items: baseline; gap: 9px; text-align: left;
-  padding: 9px 11px; border: 0; border-radius: var(--r-sm);
-  background: transparent; cursor: pointer;
+  display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto;
+  padding: 9px 16px; border: var(--b-1); border-radius: var(--r-pill);
+  background: rgba(10, 16, 34, .5); cursor: pointer;
   font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
   color: #9fb0d8;
   transition: color .3s var(--ease), background .3s var(--ease);
@@ -4108,17 +4197,18 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 @media (max-width: 900px) {
-  /* the spine lies down and becomes the strip it used to be */
-  .zp-main { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  /* one scrolling row rather than a wrapping block: four tabs on their own line
+     above the panel is a lot of phone to spend on navigation */
   .zp-jump {
-    position: sticky; top: 0; z-index: 8;
-    grid-auto-flow: column; grid-auto-columns: max-content;
-    overflow-x: auto; scrollbar-width: none;
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    min-height: max-content; align-items: center;   /* see .xp-filters above */
     gap: 6px; padding: 10px 0;
-    background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .78) 70%, transparent);
+    /* the desktop trick — starting the strip to the right of the back pill — costs
+       a third of a 390px screen, so here the strip sticks below the pill instead */
+    padding-left: 0; top: 56px;
   }
   .zp-jump::-webkit-scrollbar { display: none; }
-  .zp-tab { border: var(--b-1); border-radius: var(--r-pill); padding: 8px 13px; }
+  .zp-tab { padding: 8px 13px; white-space: nowrap; }
   .zp-tab em { display: none; }
   .zp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
   .zp-stage { height: clamp(220px, 38vh, 330px); order: -1; }
@@ -5195,6 +5285,18 @@ html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
   text-align: center; font-family: var(--ui); font-size: 13px; color: var(--dim);
 }
 
+/* ── the back pill, on a narrow screen ──
+   It is absolutely positioned in the top-left of whichever page it is on, which is
+   free of charge while the page's own heading is a wide, left-aligned block. On a
+   phone the headings are centred and start at the top of the page, so the pill was
+   landing on top of "LIVE SHOWS". These pages each open with var(--sec-y) of padding,
+   which is not enough to clear it — so at this width they open with the pill's height
+   instead. */
+@media (max-width: 700px) {
+  .page-back { top: 12px; padding: 9px 15px 9px 12px; font-size: 11.5px; }
+  .shows, .eats, .ridex, .bundles { padding-top: 68px; }
+}
+
 /* ── the switcher ──
    A review control, not part of the campaign: it names each version and stays out
    of the way, bottom-left, on the one corner nothing else uses. */
@@ -5236,9 +5338,24 @@ html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
 /* it belongs to the landing page; the sub-pages have their own openings */
 body:not(.route-home) .hv { display: none; }
 
+/* On a phone the switcher had the bottom-left corner to itself on a desktop and
+   nothing like it here: fixed, four rows tall, it sat over the About copy, the map
+   CTA and half the rules grid on every screen. It folds to a single line of chips
+   along the bottom instead — still a review control, no longer a lid over the page. */
 @media (max-width: 700px) {
-  .hv { left: 8px; bottom: 8px; padding: 8px 9px 9px; }
+  .hv {
+    left: 8px; right: 8px; bottom: 8px;
+    grid-auto-flow: column; align-items: center; justify-content: start;
+    gap: 6px; padding: 7px 8px;
+    overflow-x: auto; scrollbar-width: none;
+    opacity: .9;
+  }
+  .hv::-webkit-scrollbar { display: none; }
+  .hv-label { display: none; }
+  .hv-opts { grid-auto-flow: column; gap: 5px; }
+  .hv-opt { padding: 6px 11px; border-radius: var(--r-pill); white-space: nowrap; }
   .hv-opt span { display: none; }
+  .hv-opt b { font-size: 11px; }
 }
 
 /* ══ THE ZONES AS A FAN ══

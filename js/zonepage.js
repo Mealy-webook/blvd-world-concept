@@ -325,35 +325,6 @@
         ${nameCards(named, zone)}` : ""}`;
   }
 
-  /* ── tonight, on a rail, led by a photograph of the act ── */
-  function schedule(name) {
-    const row = (WBK.showsByZone || []).find((s) => canon(s.zone) === name);
-    if (!row || !row.items || !row.items.length) return "";
-    /* the lead figure this used to compute is gone — every row carries its own
-       thumbnail through showShot() now, so nothing here needs a photograph */
-    return `
-      <div class="zp-tonight">
-        <ol class="sch-list">
-          ${row.items.map((it, i) => `
-            <li class="sch-row${i === 0 ? " is-first" : ""}" style="--d:${Math.min(i, 9) * 45}ms">
-              <span class="sch-time">${esc(it.t)}<small>${esc(it.ap || "")}</small></span>
-              <span class="sch-shot">
-                <img src="img/shows/${esc(showShot(name, it.ty, i))}"
-                     alt="" loading="lazy" draggable="false" />
-              </span>
-              <span class="sch-body">
-                <b class="sch-name" title="${esc(it.n)}">${esc(it.n)}</b>
-                <span class="sch-meta">
-                  <em class="sm-kind t-${esc((it.ty || "roaming").split(" ")[0].toLowerCase())}">${esc(it.ty || "")}</em>
-                  ${it.m ? `<em class="sm-dur">${esc(it.m)} min</em>` : ""}
-                  ${i ? "" : '<em class="sm-open">Opens the night</em>'}
-                </span>
-              </span>
-            </li>`).join("")}
-        </ol>
-      </div>`;
-  }
-
   /* ── where it is: the park laid down, the way the home module lays it ── */
   function locator(name, tone) {
     const pin = (WBK.mapPins || []).find((p) => canon(p.zone || p.label) === name);
@@ -469,7 +440,8 @@
       { id: "experiences", label: "Experiences", title: "Experiences", note: BORROWED, html: experiences(zone, exp, name) },
       { id: "rides", label: "Rides", title: "Rides", note: BORROWED, html: rides(zone) },
       { id: "eat", label: "Cuisine", title: "Cuisine", html: kitchens(name, zone) },
-      { id: "tonight", label: "Tonight", title: "Live tonight", html: schedule(name) },
+      /* "Tonight" is gone: the hero already sends you to the schedule, and the
+         schedule there is the whole park's, which is the one worth reading. */
       { id: "shops", label: "Shops", title: "Shops and retail", note: BORROWED, html: shops(zone) },
       { id: "pictures", label: "Pictures", title: "In pictures", html: pictures(zone) },
     ].filter((b) => b.html);

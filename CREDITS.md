@@ -371,3 +371,24 @@ markup and driven by the scroll position of `#zp` rather than the window's — a
 page is its own scroller, so a window-scroll driver would never move.
 
 The picture frames are the site's own radius and shadow, not the original's.
+
+
+## Experience photography, from webook.com
+
+Downloaded from the BLVD World zone page on webook.com (`/en/zones/boulevard-world-rs25`),
+which serves them from `images.cmscloud.ai`. These are webook's own pictures of the park.
+
+| file | what it shows | used for |
+| --- | --- | --- |
+| `img/exp/wbk1.jpg` | the lake from a boat, whale sculpture, coaster behind | Dolphinarium |
+| `img/exp/wbk2.jpg` | the Eiffel Tower and dining under the floral arches | Midnight Manor (Italy) |
+| `img/exp/wbk4.jpg` | cable cars over a misted, blue-lit street | Skiing School (Courchevel) |
+| `img/exp/wbk5.jpg` | a ferris wheel seen through a keyhole arch | held, unused |
+| `img/exp/wbk7.jpg` | the lit temple colonnade and pyramid | Escape Room (Egypt) |
+| `img/exp/wbk-hero.jpg` | the EXPLORE NEW WORLDS key art | held, unused |
+| `img/exp/wbk-dome.jpg` | the VUZ Dome key art | The Dome Cinema |
+
+**Still stand-ins.** Swimming with Dolphins, Battle Dome, the Lion Experience, Pac-Man
+and PUBG have no live picture on webook: their RS25 listings are delisted now the season
+has ended (the pages return the default cover), and the 25/26 booking page is behind a
+login. These five need art from the client.

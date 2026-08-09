@@ -34,8 +34,17 @@
     }),
   ].join("");
 
+  /* The card books. There is no pill under it any more: a card whose whole face is
+     one destination should be one control, and a button inside it only invited the
+     question of what the rest of the card did.
+
+     It stays a link rather than becoming a click handler on the <article>, so it
+     keeps everything a link is: the keyboard reaches it, the status bar shows where
+     it goes, and middle-click still opens a tab. The trick is the stretched anchor —
+     it sits at inset 0 over a position: relative card, so the whole face is the hit
+     area while the text underneath stays selectable text rather than link text. */
   const card = (x, i) => `
-    <article class="eat-card" style="--pop-d:${(i % 6) * 70}ms">
+    <article class="eat-card is-book" style="--pop-d:${(i % 6) * 70}ms">
       <div class="eat-shot">
         <img src="img/${x.img}" alt="${x.title}" draggable="false" loading="lazy" />
       </div>
@@ -45,14 +54,36 @@
         ${x.blurb ? `<p class="xp-blurb">${x.blurb}</p>` : ""}
         <p class="eat-from">From <b>SAR ${x.price}</b></p>
       </div>
-      <a class="pill ghost xp-book" href="https://webook.com" target="_blank"
-         rel="noopener" aria-label="Book ${x.title}">Book</a>
+      <a class="xp-hit" href="https://webook.com" target="_blank" rel="noopener"
+         aria-label="Book ${x.title}"><span>Book</span></a>
     </article>`;
 
-  function paint(zone) {
-    const list = zone ? ALL.filter((x) => x.zone === zone) : ALL;
+  /* Two filters over one list rather than two lists: the chip narrows by zone, the
+     field narrows by words, and paint() always applies both. Keeping the state in two
+     variables up here is what makes typing and then pressing a chip do the obvious
+     thing instead of throwing the other one away. */
+  let pickedZone = "";
+  let query = "";
+
+  const norm = (t) => (t || "").toLowerCase();
+  function hits(x) {
+    if (!query) return true;
+    /* every word has to appear somewhere — "egypt escape" finds the escape room in
+       Egypt, and does not find everything in Egypt plus every escape room */
+    const hay = norm(`${x.title} ${x.zone} ${x.blurb || ""}`);
+    return query.split(/\s+/).every((w) => hay.includes(w));
+  }
+
+  function paint() {
+    const zone = pickedZone;
+    const list = ALL.filter((x) => (!zone || x.zone === zone) && hits(x));
     grid.innerHTML = list.map(card).join("");
-    if (empty) empty.hidden = list.length > 0;
+    if (empty) {
+      empty.hidden = list.length > 0;
+      empty.textContent = query
+        ? `Nothing matches \u201c${query}\u201d${zone ? ` in ${zone}` : ""}.`
+        : "Nothing in that zone yet.";
+    }
     /* .eat-card ships at opacity 0 and waits for .pop — the component's contract.
        A frame's delay lets the new cards start from their own beginning rather than
        inheriting the outgoing ones' finished state. */
@@ -71,8 +102,38 @@
       c.classList.toggle("is-on", on);
       c.setAttribute("aria-pressed", on ? "true" : "false");
     }
-    paint(chip.dataset.zone);
+    pickedZone = chip.dataset.zone;
+    paint();
   });
 
-  paint("");
+  /* the field, and the clear button that only exists while there is something to
+     clear — a permanently dimmed x is furniture */
+  const field = document.getElementById("xp-q");
+  const clear = document.getElementById("xp-clear");
+  if (field) {
+    field.addEventListener("input", () => {
+      query = norm(field.value).trim();
+      if (clear) clear.hidden = !query;
+      paint();
+    });
+    /* Escape empties the field, which is what Escape does in a search box */
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && field.value) {
+        e.stopPropagation();
+        field.value = ""; query = "";
+        if (clear) clear.hidden = true;
+        paint();
+      }
+    });
+  }
+  if (clear) {
+    clear.addEventListener("click", () => {
+      field.value = ""; query = "";
+      clear.hidden = true;
+      field.focus();
+      paint();
+    });
+  }
+
+  paint();
 })();

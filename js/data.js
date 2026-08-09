@@ -350,14 +350,25 @@ window.WBK = {
   ],
 
   // premium experiences — every ticket includes park entry
+  /* PHOTOGRAPHY. Five of these are webook's own BLVD World pictures, pulled from the
+     park's page on webook.com: wbk4 is the misted cable-car street (Courchevel),
+     wbk7 the lit temple colonnade (Egypt), wbk1 the lake from a boat, wbk2 the
+     Eiffel Tower under the floral arches (Italy), and wbk-dome is the VUZ Dome's own
+     key art — the one exact match, since VUZ Dome *is* the dome cinema.
+
+     The other five are stand-ins. Their RS25 listings are delisted now that the
+     season has ended, so webook serves a default cover for them, and the current
+     booking page is behind a login. Swimming with Dolphins, Battle Dome, the Lion
+     Experience, Pac-Man and PUBG need pictures from the client, not from the site.
+     See CREDITS.md. */
   experiences: [
-    { img: "exp/snow.jpg",      title: "Skiing School",     zone: "Courchevel", price: 260, blurb: "Real snow, real instructors — learn to ski inside the dome." },
-    { img: "exp/pyramid.jpg",   title: "Escape Room",        zone: "Egypt",      price: 180, blurb: "Secret of the Pharaoh: sixty minutes to break out of the tomb." },
-    { img: "zones/park4.jpg",     title: "Dolphinarium",       zone: "The Planet", price: 220, blurb: "A full dolphin show under the dome, twice nightly." },
+    { img: "exp/wbk4.jpg",      title: "Skiing School",     zone: "Courchevel", price: 260, blurb: "Real snow, real instructors — learn to ski inside the dome." },
+    { img: "exp/wbk7.jpg",      title: "Escape Room",        zone: "Egypt",      price: 180, blurb: "Secret of the Pharaoh: sixty minutes to break out of the tomb." },
+    { img: "exp/wbk1.jpg",      title: "Dolphinarium",       zone: "The Planet", price: 220, blurb: "A full dolphin show under the dome, twice nightly." },
     { img: "zones/park7.jpg",     title: "Swimming with Dolphins", zone: "The Planet", price: 480, blurb: "Get in the water and meet them up close." },
     { img: "zones/park2.jpg",     title: "Battle Dome",        zone: "Warzone",    price: 150, blurb: "Team laser combat in a floodlit arena." },
-    { img: "exp/gondola.jpg",   title: "Midnight Manor",     zone: "Italy",      price: 140, blurb: "A haunted walk-through where the house pushes back." },
-    { img: "zones/park3.jpg",     title: "The Dome Cinema",    zone: "The Planet", price: 120, blurb: "Films projected across a full wraparound dome." },
+    { img: "exp/wbk2.jpg",      title: "Midnight Manor",     zone: "Italy",      price: 140, blurb: "A haunted walk-through where the house pushes back." },
+    { img: "exp/wbk-dome.jpg",  title: "The Dome Cinema",    zone: "The Planet", price: 120, blurb: "Films projected across a full wraparound dome." },
     { img: "zones/park1.jpg",     title: "Lion Experience",    zone: "Africa",     price: 200, blurb: "Come face to face with the pride on the safari trail." },
     { img: "zones/park5.jpg",     title: "Pac-Man",            zone: "Iran",       price: 110, blurb: "Step inside the maze — you are the yellow one." },
     { img: "zones/egypt.jpg",     title: "PUBG",               zone: "Egypt",      price: 160, blurb: "The battle royale, staged for real among the ruins." },
