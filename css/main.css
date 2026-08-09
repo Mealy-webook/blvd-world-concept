@@ -2936,6 +2936,9 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 /* ═══════════════ CASHLESS — THE BLVD CARD ═══════════════ */
+/* inside the packages page it is a block on a page, not a screen of its own: the
+   min-height that gives it a stage on the home page would leave a hole here */
+#packagespage .cashless { min-height: 0; padding-top: clamp(20px, 4vh, 44px); }
 .cashless {
   position: relative; z-index: 11;
   padding: var(--sec-y) var(--sec-x);
@@ -3667,20 +3670,66 @@ html[data-hero="real"] .zc .zc-plate {
     inset 0 0 0 1px rgba(199, 226, 255, .16),
     inset 0 1px 0 rgba(255, 255, 255, .07),
     0 14px 36px rgba(2, 4, 16, .3);
-  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease),
+              background .5s var(--ease);
+  /* dealt in, left to right: js/bundles.js gives each card its index */
+  opacity: 0; translate: 0 18px;
+  animation: plIn .6s var(--ease) calc(var(--i, 0) * 80ms) forwards;
 }
-.pl:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .26), 0 20px 46px rgba(2, 4, 16, .38); }
+@keyframes plIn { to { opacity: 1; translate: 0 0; } }
+
+.pl:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .1), rgba(199, 226, 255, .04));
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .3), 0 22px 50px rgba(2, 4, 16, .4);
+}
+/* the ticks light in sequence as the card comes up, which is the only thing on these
+   cards that reads as a list being checked off */
+.pl:hover .pl-list i { animation: plTick .4s var(--ease) both; }
+.pl:hover .pl-list li:nth-child(2) i { animation-delay: .06s; }
+.pl:hover .pl-list li:nth-child(3) i { animation-delay: .12s; }
+@keyframes plTick { from { transform: scale(.6); opacity: .4; } }
 
 /* the pick, in the site's magenta — the one card that is a decision rather than an
    option, and it is the one the data already flags */
 .pl.is-pick {
-  background: linear-gradient(170deg, rgba(209, 0, 119, .2), rgba(209, 0, 119, .07));
+  background: linear-gradient(170deg, rgba(209, 0, 119, .22), rgba(209, 0, 119, .07));
   box-shadow:
-    inset 0 0 0 1px rgba(255, 120, 190, .5),
-    inset 0 1px 0 rgba(255, 255, 255, .12),
-    0 20px 48px rgba(2, 4, 16, .42),
-    0 0 40px rgba(209, 0, 119, .22);
+    inset 0 0 0 1px rgba(255, 120, 190, .55),
+    inset 0 1px 0 rgba(255, 255, 255, .14),
+    0 22px 54px rgba(2, 4, 16, .46),
+    0 0 46px rgba(209, 0, 119, .26);
+  /* it stands a little proud of the row, and breathes — a highlight that only
+     differs in colour is a colour, not a recommendation */
+  transform: translateY(-6px) scale(1.015);
+  animation: plIn .6s var(--ease) calc(var(--i, 0) * 80ms) forwards,
+             plBreathe 4.5s ease-in-out calc(var(--i, 0) * 80ms + .8s) infinite;
 }
+@keyframes plBreathe {
+  0%, 100% { box-shadow: inset 0 0 0 1px rgba(255, 120, 190, .55),
+                         inset 0 1px 0 rgba(255, 255, 255, .14),
+                         0 22px 54px rgba(2, 4, 16, .46),
+                         0 0 46px rgba(209, 0, 119, .26); }
+  50%      { box-shadow: inset 0 0 0 1px rgba(255, 150, 205, .7),
+                         inset 0 1px 0 rgba(255, 255, 255, .18),
+                         0 26px 62px rgba(2, 4, 16, .5),
+                         0 0 72px rgba(209, 0, 119, .42); }
+}
+.pl.is-pick:hover { transform: translateY(-10px) scale(1.02); }
+/* a sheen crossing the pick, the same one the hero tiles carry */
+.pl.is-pick::after {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  border-radius: inherit; overflow: hidden;
+  background: linear-gradient(105deg,
+    transparent 38%, rgba(255, 255, 255, .16) 48%, transparent 60%);
+  background-size: 260% 100%;
+  animation: plSheen 6s ease-in-out 1.4s infinite;
+}
+@keyframes plSheen {
+  0%, 62% { background-position: 180% 0; }
+  100%    { background-position: -80% 0; }
+}
+.pl > * { position: relative; z-index: 1; }
 .pl-flag {
   position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
   z-index: 2;
@@ -3737,12 +3786,46 @@ html[data-hero="real"] .zc .zc-plate {
 
 .pl-cta { margin-top: clamp(8px, 1.4vh, 16px); justify-content: center; align-self: end; }
 
+/* ── the rides the passes buy ── */
+.bd-rides {
+  width: 100%; max-width: min(1240px, 100%); margin-inline: auto;
+  /* stretch, not centre. As a centred grid item the rail-wrap was sized to fit its
+     content, so its own max-width of 1240px won over the 746px column it sits in and
+     the whole rail laid out past the right edge of the page — present, populated and
+     entirely off screen. Stretching it makes the column the constraint, which is what
+     lets the rail scroll inside itself instead of overflowing. */
+  display: grid; justify-items: stretch; gap: clamp(10px, 1.6vh, 18px);
+  margin-top: clamp(18px, 3vh, 34px);
+}
+.bd-rides .rail-wrap { width: 100%; max-width: 100%; min-width: 0; }
+.bd-rides .rail { min-width: 0; }
+.bd-rides-h { justify-self: center; }
+/* the site's divider, so the strip announces itself the way every other one does */
+.bd-rides-h {
+  display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);
+  width: 100%; max-width: 460px;
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: #8fa0c8; white-space: nowrap;
+}
+.bd-rides-h i { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(199, 226, 255, .3)); }
+.bd-rides-h i:last-child { background: linear-gradient(90deg, rgba(199, 226, 255, .3), transparent); }
+.pl-fast {
+  display: block; margin-top: 3px;
+  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: #8fa0c8;
+}
+
 @media (max-width: 700px) {
   .pl-row { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .pl { padding: 18px 18px 20px; }
   .pl-price b { font-size: 32px; }
 }
-@media (prefers-reduced-motion: reduce) { .pl { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .pl { transition: none; opacity: 1; translate: none; animation: none; }
+  .pl.is-pick { animation: none; }
+  .pl.is-pick::after { animation: none; opacity: 0; }
+  .pl:hover .pl-list i { animation: none; }
+}
 
 /* ═══════════════ A ZONE, IN FULL ═══════════════
    Redesigned as a stage and a spine.

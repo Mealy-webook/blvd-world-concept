@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=699" />
+<link rel="stylesheet" href="css/main.css?v=705" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=699" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=705" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -286,266 +286,6 @@
          The artwork is the official map with its navy surround keyed out, so the
          island sits on the page's own night rather than on a rectangle of someone
          else's blue. See CREDITS.md. -->
-    <!-- held back for now, on request. The zones section carries the way to the map
-         instead — see the CTA under the ring. -->
-    <section class="mapmod" id="mapmod" hidden>
-      <p class="mm-lead reveal">
-        <i aria-hidden="true"></i>
-        <span>All of it, on one map</span>
-        <i aria-hidden="true"></i>
-      </p>
-
-      <div class="mm-art reveal">
-        <img src="img/map/park-map-cut.webp"
-             srcset="img/map/park-map-cut-sm.webp 900w, img/map/park-map-cut.webp 1600w"
-             sizes="(max-width: 700px) 96vw, min(860px, 84vw)"
-             alt="The BLVD World park map: twenty-four zones around the lake, with both gates"
-             width="1600" height="852" draggable="false" />
-      </div>
-
-      <div class="mm-foot reveal">
-        <p class="mm-count" id="mm-count"></p>
-        <a class="pill light big-pill" href="#/map">Open the full map</a>
-      </div>
-    </section>
-
-    <!-- ── packages: the way through to their own page ── -->
-    <section class="pkcall" id="bundles">
-      <div class="pk-head reveal">
-        <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
-        <p class="sec-sub">Grab a handful of rides and spend them your way, or strap on a
-          bracelet and go unlimited until the gates close.</p>
-      </div>
-
-      <!-- the five prices, as a row of stubs you can read at a glance -->
-      <div class="pk-row reveal" id="pk-row"></div>
-
-      <div class="pk-go reveal">
-        <a class="pill light big-pill" href="#/packages">
-          Compare all five packages
-        </a>
-        <p class="rc-note">All prices per person &#183; every package expires at the end of the day</p>
-      </div>
-    </section>
-
-    <!-- ── rides: the count set large, the names live, the backdrop following ── -->
-    <!-- fourteen rides strung along three intensity rails: the shape of the
-         section is the answer to "how wild does this get?" -->
-    <!-- A poster, not a directory. All fourteen rides, their fares, filters and
-         a stage live on #/rides; this section's only job is to make you want to
-         go there, so it is one photograph, one number and one way through. -->
-    <!-- hidden for now: the design of this section is still unsettled. The rides
-         themselves remain reachable from the nav and the hero tile. -->
-    <!-- held back, on request -->
-    <section class="ridetrack is-poster" id="rides2" hidden>
-      <figure class="rp-shot">
-        <img src="img/rides/sky-loop.jpg" alt="" draggable="false" />
-      </figure>
-      <div class="rp-scrim" aria-hidden="true"></div>
-      <div class="rp-copy reveal">
-        <p class="eyebrow">HOLD ON TIGHT</p>
-        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
-        <p class="rp-line">
-          <b class="rp-count">14</b>
-          <span>rides, running until the gates close</span>
-        </p>
-        <a class="pill light big-pill" href="#/rides">
-          Explore every ride
-        </a>
-      </div>
-    </section>
-
-    <!-- ── cashless: the BLVD card, in 3D ── -->
-    <!-- ── the card: one object, and the three moments around it ── -->
-    <!-- ══════════ WORLD RECORDS ══════════
-         Three records, one frame, chips to move between them. They were three
-         sections; one is better — the frame is the same every time (a floor that
-         recedes, the thing standing on it, a rule reading its height, a 1.75 m
-         figure at its foot), so what changes between chips is the record rather
-         than the layout, and the comparison is the point.
-
-         Every figure on the page is one we were given: 35 m, 220 seats, 33.7 m.
-         The lake panel carries no dimension because we were not given one — see
-         CREDITS.md. js/records.js drives the chips, the sphere's rings and the
-         count-up. -->
-    <!-- held back, on request. The panels, the chips and the shader all stay as
-         they are; one [hidden] rule in the reset hides the section. -->
-    <section class="rec" id="records" hidden>
-      <!-- THE MARK.
-           Guinness World Records' own logo, supplied by the client as the Wikipedia
-           file. It is a trademark and it is theirs, not ours: it belongs on this
-           page only for as long as the records behind it are certified and current,
-           and the record-holder kit's terms (minimum size, clear space, what may be
-           claimed beside it) are met. Replace this file with the one GWR issues to
-           holders before anything public. See CREDITS.md. -->
-      <div class="rec-seal reveal">
-        <img class="rec-seal-mark" src="img/records/gwr-logo.svg"
-             alt="Guinness World Records" width="120" height="120" draggable="false" />
-      </div>
-
-      <div class="rec-tabs reveal" role="tablist" aria-label="World records">
-        <button class="rec-tab is-on" type="button" role="tab" aria-selected="true"
-                aria-controls="rec-sphere" data-rec="sphere">The sphere</button>
-        <button class="rec-tab" type="button" role="tab" aria-selected="false"
-                aria-controls="rec-lake" data-rec="lake">The lake</button>
-        <button class="rec-tab" type="button" role="tab" aria-selected="false"
-                aria-controls="rec-giant" data-rec="giant">Grendizer</button>
-      </div>
-
-      <div class="rec-deck reveal">
-        <!-- ── the sphere ── -->
-        <article class="rec-panel is-on" id="rec-sphere" role="tabpanel" data-rec="sphere">
-          <h2 class="rec-title">The largest spherical object</h2>
-          <div class="rec-stage">
-            <div class="rec-floor" aria-hidden="true"></div>
-            <div class="rec-rule" aria-hidden="true">
-              <i></i>
-              <b class="rec-num" data-to="35">0</b><span class="rec-unit">m</span>
-            </div>
-            <!-- A real sphere, not a picture of one: a fragment shader intersects a
-                 ray with a unit ball, so the surface is sampled rather than drawn
-                 flat, and it turns. What runs on it is generated per pixel and is
-                 a stand-in — we have no capture of the sphere's own show — which the
-                 note under the panel says out loud. js/sphere.js. -->
-            <canvas class="rec-thing is-globe" id="sphere-globe"
-                    width="640" height="640" aria-hidden="true"></canvas>
-            <!-- and the photograph, for anything that cannot run the shader -->
-            <img class="rec-thing is-sphere" id="sphere-still" hidden
-                 src="img/records/sphere-cut.webp"
-                 alt="The sphere at BLVD World, its exterior display lit red and white"
-                 width="404" height="404" draggable="false" />
-            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
-
-          </div>
-          <ul class="rec-facts">
-            <li><b>35</b><span>metres wide</span></li>
-            <li><b>360&#176;</b><span>exterior display</span></li>
-            <li><b>220</b><span>seats inside</span></li>
-          </ul>
-          <p class="rec-line">
-            A ball of light in the middle of the lagoon, with an immersive theatre inside it.
-          </p>
-          <!-- said plainly, because the ball above is the record and what runs on it
-               is ours: the figures are the client's, the pattern is not -->
-          <p class="rec-note">
-            The size and the display are the park's. The pattern running across it
-            here is a drawn stand-in for the show itself.
-          </p>
-        </article>
-
-        <!-- ── the lake ── -->
-        <article class="rec-panel" id="rec-lake" role="tabpanel" data-rec="lake" hidden>
-          <h2 class="rec-title">The largest artificial lake</h2>
-          <div class="rec-stage">
-            <div class="rec-floor" aria-hidden="true"></div>
-            <!-- water does not stand on a floor, so here the floor is the water:
-                 the park's own aerial laid down on it, with the boat and the
-                 submarine running the same loop half a lap apart -->
-            <div class="rec-thing is-lake">
-              <div class="lake-plane">
-                <img src="img/records/lagoon.webp"
-                     alt="The central lagoon at BLVD World from the air"
-                     width="1080" height="648" draggable="false" />
-                <span class="lake-sheet" aria-hidden="true"></span>
-                <i class="lake-wake" aria-hidden="true"></i>
-                <i class="lake-boat" aria-hidden="true"></i>
-                <i class="lake-sub" aria-hidden="true"></i>
-              </div>
-            </div>
-          </div>
-          <!-- no figure on this one: we were given no dimension for the lake, and
-               a number invented to balance the row is the worst kind of tidy -->
-          <ul class="rec-facts">
-            <li><span>Boat rides</span></li>
-            <li><span>Submarine rides</span></li>
-          </ul>
-          <p class="rec-line">
-            The central lagoon &#8212; crossed by boat, and by submarine.
-          </p>
-        </article>
-
-        <!-- ── the statue ── -->
-        <article class="rec-panel" id="rec-giant" role="tabpanel" data-rec="giant" hidden>
-          <h2 class="rec-title">The tallest metal replica of a fictional character</h2>
-          <div class="rec-stage">
-            <div class="rec-floor" aria-hidden="true"></div>
-            <div class="rec-rule" aria-hidden="true">
-              <i></i>
-              <b class="rec-num" data-to="33.7">0.0</b><span class="rec-unit">m</span>
-            </div>
-            <!-- Two layers, so it can move: the arm is cut out of the render along
-                 the shoulder and given back on top of the body at exactly its own
-                 offset, pivoting on the shoulder ball. It breathes, and every nine
-                 seconds it waves. See CREDITS.md for how the cut was made. -->
-            <div class="rec-thing is-giant" role="img"
-                 aria-label="The Grendizer statue at BLVD World, 33.7 metres tall">
-              <img class="gz-body" src="img/records/grendizer-body.webp" alt=""
-                   width="341" height="668" draggable="false" />
-              <img class="gz-arm" src="img/records/grendizer-arm.webp" alt=""
-                   width="104" height="229" draggable="false" />
-            </div>
-            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
-          </div>
-          <ul class="rec-facts">
-            <li><b>33.7</b><span>metres tall</span></li>
-            <li><b>19</b><span>people, head to toe</span></li>
-          </ul>
-          <p class="rec-line">Grendizer, in steel.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- held back for now, on request. One [hidden] rule in the reset covers every
-         section, so the attribute is all it takes. -->
-    <section class="cashless" id="cashless" hidden>
-      <div class="cash-head reveal">
-        <h2 class="sec-title">READY TO GO DIGITAL!</h2>
-        <p class="sec-sub">Get your digital card now by booking a BLVD ticket.
-          No tills. No cash. No queue.</p>
-      </div>
-
-      <!-- The card leads and the three moments follow it, on a rail: one card,
-           then what you do with it. No container around the set — each moment is
-           already a cell, and a box drawn around three boxes says nothing. -->
-      <div class="cash-body reveal">
-        <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
-        <div class="card-stage" id="card-stage">
-          <!-- the card artwork as supplied, used as-is: the wordmark, the
-               issuer lockup, the field, the rides and cash figures and the tap
-               mark are all in the image. Only the tilt and the glare are ours. -->
-          <div class="blvd-card is-art" id="blvd-card">
-            <img src="img/blvd-card.png" alt="BLVD World card &#8212; 10 rides, SAR 100"
-                 width="342" height="216" draggable="false" />
-            <i class="bc-glare" aria-hidden="true"></i>
-          </div>
-        </div>
-
-        <ol class="cash-steps">
-          <li>
-            <span class="cs-num">01</span>
-            <b class="cs-do">Book any ticket</b>
-            <span class="cs-say">Entry, entry + experience or a ride package &#8212; the card is yours at the gate</span>
-          </li>
-          <li>
-            <span class="cs-num">02</span>
-            <b class="cs-do">Top up in the app</b>
-            <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
-          </li>
-          <li>
-            <span class="cs-num">03</span>
-            <b class="cs-do">Tap and play</b>
-            <span class="cs-say">One tap at every ride and skill game &#8212; the balance follows you all night</span>
-          </li>
-        </ol>
-      </div>
-
-      <div class="cash-go reveal">
-        <a class="pill light big-pill" href="#/rides">
-          See ride prices
-        </a>
-      </div>
-    </section>
-
     <!-- ── restaurants live on their own route: #/eats ── -->
 
     <!-- ── daily shows ── -->
@@ -875,12 +615,291 @@
         <span class="mb-arrow" aria-hidden="true"></span>Back
       </a>
       <div class="bd-head reveal">
-        <p class="eyebrow">PICK YOUR NIGHT</p>
+        <p class="eyebrow">Ride packages</p>
+        <h2 class="sec-title">PICK HOW<br/>YOU RIDE</h2>
+        <p class="sec-sub">Buy rides by the handful and spend them wherever you like, or
+          go unlimited on a bracelet until the gates close. Prices are per person, for
+          one night.</p>
+      </div>
+      <div class="bd-grid" id="bd-grid"></div>
+      <!-- what the passes actually buy. The rail is the one the restaurants and the
+           zone pages use, with rides in it; every figure is the ride's own price from
+           WBK.rides, the same one #/rides prints. js/bundles.js fills it. -->
+      <div class="bd-rides reveal">
+        <p class="bd-rides-h">
+          <i aria-hidden="true"></i><span>What you can ride</span><i aria-hidden="true"></i>
+        </p>
+        <div class="rail-wrap">
+          <button class="rail-btn prev" type="button" data-rail="bd-ride-rail"
+                  aria-label="Previous rides">&#8249;</button>
+          <div class="rail" id="bd-ride-rail"></div>
+          <button class="rail-btn next" type="button" data-rail="bd-ride-rail"
+                  aria-label="More rides">&#8250;</button>
+        </div>
+      </div>
+
+      <!-- the card the passes load onto, moved here from the home page rather than
+           copied: it was hidden there, and this is the page where it answers a
+           question the reader is already asking. -->
+    <section class="mapmod" id="mapmod" hidden>
+      <p class="mm-lead reveal">
+        <i aria-hidden="true"></i>
+        <span>All of it, on one map</span>
+        <i aria-hidden="true"></i>
+      </p>
+
+      <div class="mm-art reveal">
+        <img src="img/map/park-map-cut.webp"
+             srcset="img/map/park-map-cut-sm.webp 900w, img/map/park-map-cut.webp 1600w"
+             sizes="(max-width: 700px) 96vw, min(860px, 84vw)"
+             alt="The BLVD World park map: twenty-four zones around the lake, with both gates"
+             width="1600" height="852" draggable="false" />
+      </div>
+
+      <div class="mm-foot reveal">
+        <p class="mm-count" id="mm-count"></p>
+        <a class="pill light big-pill" href="#/map">Open the full map</a>
+      </div>
+    </section>
+
+    <!-- ── packages: the way through to their own page ── -->
+    <section class="pkcall" id="bundles">
+      <div class="pk-head reveal">
         <h2 class="sec-title">FIVE WAYS TO RIDE</h2>
         <p class="sec-sub">Grab a handful of rides and spend them your way, or strap on a
           bracelet and go unlimited until the gates close.</p>
       </div>
-      <div class="bd-grid" id="bd-grid"></div>
+
+      <!-- the five prices, as a row of stubs you can read at a glance -->
+      <div class="pk-row reveal" id="pk-row"></div>
+
+      <div class="pk-go reveal">
+        <a class="pill light big-pill" href="#/packages">
+          Compare all five packages
+        </a>
+        <p class="rc-note">All prices per person &#183; every package expires at the end of the day</p>
+      </div>
+    </section>
+
+    <!-- ── rides: the count set large, the names live, the backdrop following ── -->
+    <!-- fourteen rides strung along three intensity rails: the shape of the
+         section is the answer to "how wild does this get?" -->
+    <!-- A poster, not a directory. All fourteen rides, their fares, filters and
+         a stage live on #/rides; this section's only job is to make you want to
+         go there, so it is one photograph, one number and one way through. -->
+    <!-- hidden for now: the design of this section is still unsettled. The rides
+         themselves remain reachable from the nav and the hero tile. -->
+    <!-- held back, on request -->
+    <section class="ridetrack is-poster" id="rides2" hidden>
+      <figure class="rp-shot">
+        <img src="img/rides/sky-loop.jpg" alt="" draggable="false" />
+      </figure>
+      <div class="rp-scrim" aria-hidden="true"></div>
+      <div class="rp-copy reveal">
+        <p class="eyebrow">HOLD ON TIGHT</p>
+        <h2 class="sec-title">RIDE UNTIL CLOSING</h2>
+        <p class="rp-line">
+          <b class="rp-count">14</b>
+          <span>rides, running until the gates close</span>
+        </p>
+        <a class="pill light big-pill" href="#/rides">
+          Explore every ride
+        </a>
+      </div>
+    </section>
+
+    <!-- ── cashless: the BLVD card, in 3D ── -->
+    <!-- ── the card: one object, and the three moments around it ── -->
+    <!-- ══════════ WORLD RECORDS ══════════
+         Three records, one frame, chips to move between them. They were three
+         sections; one is better — the frame is the same every time (a floor that
+         recedes, the thing standing on it, a rule reading its height, a 1.75 m
+         figure at its foot), so what changes between chips is the record rather
+         than the layout, and the comparison is the point.
+
+         Every figure on the page is one we were given: 35 m, 220 seats, 33.7 m.
+         The lake panel carries no dimension because we were not given one — see
+         CREDITS.md. js/records.js drives the chips, the sphere's rings and the
+         count-up. -->
+    <!-- held back, on request. The panels, the chips and the shader all stay as
+         they are; one [hidden] rule in the reset hides the section. -->
+    <section class="rec" id="records" hidden>
+      <!-- THE MARK.
+           Guinness World Records' own logo, supplied by the client as the Wikipedia
+           file. It is a trademark and it is theirs, not ours: it belongs on this
+           page only for as long as the records behind it are certified and current,
+           and the record-holder kit's terms (minimum size, clear space, what may be
+           claimed beside it) are met. Replace this file with the one GWR issues to
+           holders before anything public. See CREDITS.md. -->
+      <div class="rec-seal reveal">
+        <img class="rec-seal-mark" src="img/records/gwr-logo.svg"
+             alt="Guinness World Records" width="120" height="120" draggable="false" />
+      </div>
+
+      <div class="rec-tabs reveal" role="tablist" aria-label="World records">
+        <button class="rec-tab is-on" type="button" role="tab" aria-selected="true"
+                aria-controls="rec-sphere" data-rec="sphere">The sphere</button>
+        <button class="rec-tab" type="button" role="tab" aria-selected="false"
+                aria-controls="rec-lake" data-rec="lake">The lake</button>
+        <button class="rec-tab" type="button" role="tab" aria-selected="false"
+                aria-controls="rec-giant" data-rec="giant">Grendizer</button>
+      </div>
+
+      <div class="rec-deck reveal">
+        <!-- ── the sphere ── -->
+        <article class="rec-panel is-on" id="rec-sphere" role="tabpanel" data-rec="sphere">
+          <h2 class="rec-title">The largest spherical object</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <div class="rec-rule" aria-hidden="true">
+              <i></i>
+              <b class="rec-num" data-to="35">0</b><span class="rec-unit">m</span>
+            </div>
+            <!-- A real sphere, not a picture of one: a fragment shader intersects a
+                 ray with a unit ball, so the surface is sampled rather than drawn
+                 flat, and it turns. What runs on it is generated per pixel and is
+                 a stand-in — we have no capture of the sphere's own show — which the
+                 note under the panel says out loud. js/sphere.js. -->
+            <canvas class="rec-thing is-globe" id="sphere-globe"
+                    width="640" height="640" aria-hidden="true"></canvas>
+            <!-- and the photograph, for anything that cannot run the shader -->
+            <img class="rec-thing is-sphere" id="sphere-still" hidden
+                 src="img/records/sphere-cut.webp"
+                 alt="The sphere at BLVD World, its exterior display lit red and white"
+                 width="404" height="404" draggable="false" />
+            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
+
+          </div>
+          <ul class="rec-facts">
+            <li><b>35</b><span>metres wide</span></li>
+            <li><b>360&#176;</b><span>exterior display</span></li>
+            <li><b>220</b><span>seats inside</span></li>
+          </ul>
+          <p class="rec-line">
+            A ball of light in the middle of the lagoon, with an immersive theatre inside it.
+          </p>
+          <!-- said plainly, because the ball above is the record and what runs on it
+               is ours: the figures are the client's, the pattern is not -->
+          <p class="rec-note">
+            The size and the display are the park's. The pattern running across it
+            here is a drawn stand-in for the show itself.
+          </p>
+        </article>
+
+        <!-- ── the lake ── -->
+        <article class="rec-panel" id="rec-lake" role="tabpanel" data-rec="lake" hidden>
+          <h2 class="rec-title">The largest artificial lake</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <!-- water does not stand on a floor, so here the floor is the water:
+                 the park's own aerial laid down on it, with the boat and the
+                 submarine running the same loop half a lap apart -->
+            <div class="rec-thing is-lake">
+              <div class="lake-plane">
+                <img src="img/records/lagoon.webp"
+                     alt="The central lagoon at BLVD World from the air"
+                     width="1080" height="648" draggable="false" />
+                <span class="lake-sheet" aria-hidden="true"></span>
+                <i class="lake-wake" aria-hidden="true"></i>
+                <i class="lake-boat" aria-hidden="true"></i>
+                <i class="lake-sub" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+          <!-- no figure on this one: we were given no dimension for the lake, and
+               a number invented to balance the row is the worst kind of tidy -->
+          <ul class="rec-facts">
+            <li><span>Boat rides</span></li>
+            <li><span>Submarine rides</span></li>
+          </ul>
+          <p class="rec-line">
+            The central lagoon &#8212; crossed by boat, and by submarine.
+          </p>
+        </article>
+
+        <!-- ── the statue ── -->
+        <article class="rec-panel" id="rec-giant" role="tabpanel" data-rec="giant" hidden>
+          <h2 class="rec-title">The tallest metal replica of a fictional character</h2>
+          <div class="rec-stage">
+            <div class="rec-floor" aria-hidden="true"></div>
+            <div class="rec-rule" aria-hidden="true">
+              <i></i>
+              <b class="rec-num" data-to="33.7">0.0</b><span class="rec-unit">m</span>
+            </div>
+            <!-- Two layers, so it can move: the arm is cut out of the render along
+                 the shoulder and given back on top of the body at exactly its own
+                 offset, pivoting on the shoulder ball. It breathes, and every nine
+                 seconds it waves. See CREDITS.md for how the cut was made. -->
+            <div class="rec-thing is-giant" role="img"
+                 aria-label="The Grendizer statue at BLVD World, 33.7 metres tall">
+              <img class="gz-body" src="img/records/grendizer-body.webp" alt=""
+                   width="341" height="668" draggable="false" />
+              <img class="gz-arm" src="img/records/grendizer-arm.webp" alt=""
+                   width="104" height="229" draggable="false" />
+            </div>
+            <span class="rec-scale" aria-hidden="true"><i></i><em>1.75 m</em></span>
+          </div>
+          <ul class="rec-facts">
+            <li><b>33.7</b><span>metres tall</span></li>
+            <li><b>19</b><span>people, head to toe</span></li>
+          </ul>
+          <p class="rec-line">Grendizer, in steel.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- the card the passes load onto, moved here from the home page rather than
+         copied: it was hidden there, and this is the page where it answers a question
+         the reader is already asking. -->
+    <section class="cashless" id="cashless">
+      <div class="cash-head reveal">
+        <h2 class="sec-title">READY TO GO DIGITAL!</h2>
+        <p class="sec-sub">Get your digital card now by booking a BLVD ticket.
+          No tills. No cash. No queue.</p>
+      </div>
+
+      <!-- The card leads and the three moments follow it, on a rail: one card,
+           then what you do with it. No container around the set — each moment is
+           already a cell, and a box drawn around three boxes says nothing. -->
+      <div class="cash-body reveal">
+        <!-- tilts to the pointer, layers lift on Z (js/cashless.js) -->
+        <div class="card-stage" id="card-stage">
+          <!-- the card artwork as supplied, used as-is: the wordmark, the
+               issuer lockup, the field, the rides and cash figures and the tap
+               mark are all in the image. Only the tilt and the glare are ours. -->
+          <div class="blvd-card is-art" id="blvd-card">
+            <img src="img/blvd-card.png" alt="BLVD World card &#8212; 10 rides, SAR 100"
+                 width="342" height="216" draggable="false" />
+            <i class="bc-glare" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <ol class="cash-steps">
+          <li>
+            <span class="cs-num">01</span>
+            <b class="cs-do">Book any ticket</b>
+            <span class="cs-say">Entry, entry + experience or a ride package &#8212; the card is yours at the gate</span>
+          </li>
+          <li>
+            <span class="cs-num">02</span>
+            <b class="cs-do">Top up in the app</b>
+            <span class="cs-say">Before you arrive, or from anywhere in BLVD World, as often as you like</span>
+          </li>
+          <li>
+            <span class="cs-num">03</span>
+            <b class="cs-do">Tap and play</b>
+            <span class="cs-say">One tap at every ride and skill game &#8212; the balance follows you all night</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="cash-go reveal">
+        <a class="pill light big-pill" href="#/rides">
+          See ride prices
+        </a>
+      </div>
+    </section>
+
       <p class="bd-note reveal">All prices per person &#183; every package expires at the end of the day</p>
     </section>
   </section>
@@ -1086,32 +1105,32 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=699"></script>
-  <script src="js/borders.js?v=699"></script>
-  <script src="js/scene.js?v=699"></script>
-  <script src="js/app.js?v=699"></script>
-  <script src="js/experiences.js?v=699"></script>
-  <script src="js/carousels.js?v=699"></script>
-  <script src="js/coverflow.js?v=699"></script>
-  <script src="js/zones.js?v=699"></script>
-  <script src="js/zonepage.js?v=699"></script>
-  <script src="js/fan.js?v=699"></script>
-  <script src="js/zonevid.js?v=699"></script>
-  <script src="js/records.js?v=699"></script>
-  <script src="js/sphere.js?v=699" defer></script>
-  <script src="js/gallery.js?v=699"></script>
-  <script src="js/parkmap.js?v=699"></script>
-  <script src="js/minimap.js?v=699"></script>
-  <script src="js/sponsors.js?v=699"></script>
-  <script src="js/about.js?v=699"></script>
-  <script src="js/cashless.js?v=699"></script>
-  <script src="js/headings.js?v=699"></script>
-  <script src="js/bundles.js?v=699"></script>
-  <script src="js/ridex.js?v=699"></script>
-  <script src="js/cursor.js?v=699"></script>
-  <script src="js/glass.js?v=699" defer></script>
+  <script src="js/data.js?v=705"></script>
+  <script src="js/borders.js?v=705"></script>
+  <script src="js/scene.js?v=705"></script>
+  <script src="js/app.js?v=705"></script>
+  <script src="js/experiences.js?v=705"></script>
+  <script src="js/carousels.js?v=705"></script>
+  <script src="js/coverflow.js?v=705"></script>
+  <script src="js/zones.js?v=705"></script>
+  <script src="js/zonepage.js?v=705"></script>
+  <script src="js/fan.js?v=705"></script>
+  <script src="js/zonevid.js?v=705"></script>
+  <script src="js/records.js?v=705"></script>
+  <script src="js/sphere.js?v=705" defer></script>
+  <script src="js/gallery.js?v=705"></script>
+  <script src="js/parkmap.js?v=705"></script>
+  <script src="js/minimap.js?v=705"></script>
+  <script src="js/sponsors.js?v=705"></script>
+  <script src="js/about.js?v=705"></script>
+  <script src="js/cashless.js?v=705"></script>
+  <script src="js/headings.js?v=705"></script>
+  <script src="js/bundles.js?v=705"></script>
+  <script src="js/ridex.js?v=705"></script>
+  <script src="js/cursor.js?v=705"></script>
+  <script src="js/glass.js?v=705" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=699" defer></script>
+  <script src="js/heroes.js?v=705" defer></script>
 </body>
 </html>
