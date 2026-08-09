@@ -3507,6 +3507,25 @@ html[data-hero="real"] .zc .zc-plate {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(10px, 1.4vw, 20px);
 }
+/* ── last season, in one figure ──
+   Same section furniture as the rest of the page; the card is .dw-card. The grid
+   drops to one column for it, and the card widens rather than sitting as a quarter
+   of a row with three empty quarters beside it. */
+.visits {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; gap: var(--sp-4); justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+.vi-head { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.dw-grid.is-one {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: min(620px, 100%);
+}
+.dw-grid.is-one .dw-card { padding-block: clamp(30px, 4vw, 46px); }
+/* the figure runs longer than a bare number, so it takes the width it needs */
+.dw-grid.is-one .dw-n { font-size: clamp(34px, 5.4vw, 68px); }
+
 .dw-card {
   position: relative; overflow: hidden;
   display: grid; justify-items: center; align-content: start;
@@ -4140,24 +4159,57 @@ html[data-hero="real"] .zc .zc-plate {
    like tabs, at every width rather than only below 900px. */
 .zp-main {
   width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
-  padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(48px, 9vh, 100px);
+  /* the last value leaves room for the floating dock, which is out of flow and would
+     otherwise sit on top of the final row of cards */
+  padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(110px, 16vh, 150px);
   display: grid; grid-template-columns: minmax(0, 1fr);
   gap: clamp(18px, 2.6vh, 34px); align-items: start;
 }
+/* ── the tabs, as a floating dock ──
+   Off the top of the column and onto the bottom of the screen: a pill that is as
+   wide as its tabs and no wider, centred, floating over the content.
+
+   width: max-content is the whole of "hug the content" — the default for a grid item
+   is to stretch to the column, and the reason the strip used to need a left padding
+   the width of the back pill was that it spanned the full width and ran underneath
+   it. Down here it clears the pill by being nowhere near it.
+
+   It is fixed rather than sticky. #zp is the scroller, not the window, so a sticky
+   bottom inside it would sit at the bottom of the *content*; and .view carries a
+   filter, which makes it the containing block for fixed children — so fixed here
+   means the bottom of this view, which is what it looks like. */
 .zp-jump {
-  position: sticky; top: 0; z-index: 8;
-  display: flex; flex-wrap: wrap; gap: 7px;
-  /* The back pill is absolutely positioned in the top-left of the view, so it does
-     not scroll away — a strip that sticks to top: 0 slides under it and stays there.
-     The strip starts to the right of the pill instead, which is where the pill
-     permanently is. */
-  padding: 12px 0 13px clamp(104px, 13vw, 124px);
-  background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .8) 66%, transparent);
+  position: fixed; z-index: 30;
+  bottom: clamp(14px, 3vh, 30px);
+  left: 50%; translate: -50% 0;
+  width: max-content; max-width: calc(100vw - 2 * var(--sec-x));
+  display: flex; flex-wrap: nowrap; gap: 4px;
+  padding: 6px;
+  border-radius: var(--r-pill);
+  /* the outer shell: glass tray, hairline, and a shadow deep enough to lift it off
+     whatever photograph happens to be behind it */
+  background: rgba(8, 13, 32, .72);
+  border: 1px solid rgba(199, 226, 255, .16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    0 18px 44px rgba(2, 4, 16, .55);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  overflow-x: auto; scrollbar-width: none;
+  /* a scroll container's automatic minimum size is zero — see .xp-filters */
+  min-height: max-content; align-items: center;
+}
+.zp-jump::-webkit-scrollbar { display: none; }
+/* it arrives after the page does, from just below the fold */
+.zp-jump { animation: zpDock .5s .25s var(--ease) both; }
+@keyframes zpDock {
+  from { opacity: 0; translate: -50% 16px; }
+  to   { opacity: 1; translate: -50% 0; }
 }
 .zp-tab {
   display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto;
-  padding: 9px 16px; border: var(--b-1); border-radius: var(--r-pill);
-  background: rgba(10, 16, 34, .5); cursor: pointer;
+  padding: 9px 17px; border: 0; border-radius: var(--r-pill);
+  background: transparent; cursor: pointer; white-space: nowrap;
   font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
   color: #9fb0d8;
   transition: color .3s var(--ease), background .3s var(--ease);
@@ -4167,8 +4219,11 @@ html[data-hero="real"] .zc .zc-plate {
   letter-spacing: .06em; color: #67789f; font-variant-numeric: tabular-nums;
 }
 .zp-tab:hover { color: #fff; background: rgba(199, 226, 255, .07); }
-.zp-tab.on { color: #fff; background: rgba(199, 226, 255, .12); }
-.zp-tab.on em { color: color-mix(in srgb, var(--tone) 80%, #fff); }
+.zp-tab.on {
+  color: var(--pick-ink); background: var(--pick);
+  box-shadow: 0 4px 14px rgba(255, 194, 77, .3);
+}
+.zp-tab.on em { color: rgba(28, 20, 3, .62); }
 /* one panel at a time; [hidden] is honoured by the rule in the reset */
 .zp-block[hidden] { display: none; }
 
@@ -4225,18 +4280,9 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 @media (max-width: 900px) {
-  /* one scrolling row rather than a wrapping block: four tabs on their own line
-     above the panel is a lot of phone to spend on navigation */
-  .zp-jump {
-    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
-    min-height: max-content; align-items: center;   /* see .xp-filters above */
-    gap: 6px; padding: 10px 0;
-    /* the desktop trick — starting the strip to the right of the back pill — costs
-       a third of a 390px screen, so here the strip sticks below the pill instead */
-    padding-left: 0; top: 56px;
-  }
-  .zp-jump::-webkit-scrollbar { display: none; }
-  .zp-tab { padding: 8px 13px; white-space: nowrap; }
+  /* the dock is already a hugging, scrolling pill — it only wants to be tighter */
+  .zp-jump { gap: 3px; padding: 5px; max-width: calc(100vw - 20px); }
+  .zp-tab { padding: 8px 14px; }
   .zp-tab em { display: none; }
   .zp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
   .zp-stage { height: clamp(220px, 38vh, 330px); order: -1; }
