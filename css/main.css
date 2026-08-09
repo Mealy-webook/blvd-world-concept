@@ -3412,86 +3412,42 @@ html[data-hero="real"] .zc .zc-plate {
 /* the way from the card to what a ride actually costs */
 .cash-go { display: flex; justify-content: center; width: 100%; }
 
-/* ── the corridor ──
-   The photographs come at you down a tunnel: each one sits at its own depth, the
-   scene has perspective, and the whole run advances so that a picture grows out of
-   the dark, passes, and is recycled to the far end. Ported from the reference
-   InfiniteGallery — same idea, same numbers where they carried over (spacing 3,
-   twelve on screen, falloff .8 near and 14 far), written for this page rather than
-   for React.
+/* ── the deck ──
+   The photographs are the fan this site already has, with pictures in it instead of
+   posters: it deals itself out when the section arrives, pages with the arrows and
+   the dots, takes a swipe and pushes its neighbours aside under the pointer. All of
+   that is js/fan.js and none of it is repeated here — what follows is only what a
+   photograph needs that a poster does not.
 
-   Depth is a real transform, so the near photograph occludes the far one and the
-   sizes come from the projection instead of from a scale we picked. */
-.gal-corridor {
-  position: relative;
-  width: 100%; height: clamp(300px, 52vh, 560px);
-  perspective: 1150px;
-  perspective-origin: 50% 50%;
-  overflow: hidden;
-  cursor: grab;
-  /* the input model, said once: drag it, or let it run */
-  touch-action: pan-y;
+   It replaced a corridor of images flying at the camera, which was a good effect and
+   the wrong one for eight photographs: you cannot look at any of them for long
+   enough, and the two nearest always hid the rest. */
+.gal-fan {
+  width: 100%; display: grid; justify-items: center; gap: clamp(8px, 1.4vh, 16px);
 }
-.gal-corridor.is-dragging { cursor: grabbing; }
-.gal-scene { position: absolute; inset: 0; transform-style: preserve-3d; }
-
-.gal-card {
-  position: absolute; left: 50%; top: 50%;
-  width: var(--card-w, 300px); height: calc(var(--card-w, 300px) / 1.5);
-  margin: calc(var(--card-w, 300px) / -3) 0 0 calc(var(--card-w, 300px) / -2);
-  border-radius: var(--r-lg); overflow: hidden;
-  border: var(--b-1); box-shadow: var(--sh-2);
-  background: #060a1e;
-  /* js/gallery.js writes this every frame; nothing else may, or the two fight */
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity;
-  cursor: pointer;
+/* a photograph is landscape where a poster is 3:4, so this deck's cards are wider
+   and shorter than the zones' */
+.gal-fan .fan-card {
+  /* narrower than the picture would like. The fan's slot table spreads seven cards
+     across the stage on offsets tuned for 3:4 posters; a 4:3 photograph at the width
+     it wants pushes the outer two off the edge of the frame. */
+  aspect-ratio: 4 / 3; height: auto; width: clamp(200px, 24vw, 330px);
+  border: 0; padding: 0; cursor: pointer;
+  background: var(--s-well);
+  box-shadow: 0 26px 60px rgba(2, 4, 14, .62), inset 0 0 0 1px rgba(255, 255, 255, .06);
 }
-.gal-card img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: saturate(.98) brightness(.92);
-  pointer-events: none;
+.gal-fan .fan-card img { border-radius: inherit; }
+/* the caption belongs to the front card only: on the ones behind it, it is type at
+   an angle over someone else's photograph */
+.fs-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 26px 14px 12px;
+  font-family: var(--ui); font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #eaf2ff; text-align: left;
+  background: linear-gradient(180deg, transparent, rgba(3, 6, 22, .88));
+  opacity: 0; transition: opacity .35s var(--ease);
 }
-.gal-card figcaption {
-  position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 10px;
-  font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: #dceaff;
-  opacity: 0; transition: opacity .3s var(--ease);
-  text-shadow: 0 1px 6px rgba(2, 4, 16, .9);
-}
-.gal-card::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(6,10,30,0) 55%, rgba(3,0,60,.85) 100%);
-  opacity: 0; transition: opacity .3s var(--ease);
-}
-.gal-card:hover figcaption, .gal-card:hover::after,
-.gal-card:focus-visible figcaption { opacity: 1; }
-.gal-card:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
-
-/* the dark at the end of the tunnel, so photographs arrive out of something */
-.gal-corridor::after {
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  background:
-    radial-gradient(120% 90% at 50% 50%, transparent 42%, rgba(6, 10, 30, .75) 100%);
-}
-
-/* The title over the corridor, blended out of it — the reference sets the heading
-   in exclusion over the photographs, and it is the one thing here that could not be
-   done with a colour: what it reads as depends on what is behind it. */
-.gal-over {
-  position: absolute; inset: 0; z-index: 4; display: grid; place-items: center;
-  pointer-events: none; mix-blend-mode: exclusion; padding: 0 6vw; text-align: center;
-}
-/* Its own size, not the section-wide one: this heading has photographs passing
-   behind it rather than a page, so it is set to the corridor's width instead of the
-   viewport's. Exclusion means it reads dark over a bright photograph and bright over
-   the night — which is the effect, but it needs the type small enough that a whole
-   word is rarely over one picture. */
-.gal-over .sec-title {
-  color: #fff;
-  font-size: clamp(26px, 6.4vw, 74px);
-  line-height: .95;
-}
+.gal-fan .fan-card.is-front .fs-cap { opacity: 1; }
 
 .gal-hint {
   font-family: var(--fig); font-size: 10px; font-weight: 600; letter-spacing: .14em;
@@ -3500,12 +3456,8 @@ html[data-hero="real"] .zc .zc-plate {
 .gal-hint b { color: #b8c8ea; font-weight: 600; }
 
 @media (max-width: 700px) {
-  .gal-corridor { height: clamp(260px, 44vh, 380px); }
+  .gal-fan .fan-card { width: clamp(200px, 62vw, 300px); }
   .gal-hint { font-size: 9px; letter-spacing: .1em; }
-  .gal-over .sec-title { font-size: clamp(24px, 8vw, 40px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .gal-card { transition: none; }
 }
 
 /* a home section standing on its own: it fills the view and makes room for the
@@ -3622,6 +3574,10 @@ html[data-hero="real"] .zc .zc-plate {
 .vs-item + .vs-item { box-shadow: inset 1px 0 0 rgba(199, 226, 255, .14); }
 .vs-ic {
   display: grid; place-items: center;
+  /* centred with the type above it. The panel inherits text-align: center from the
+     about section, so the label, the value and the note were all centred while the
+     icon — a grid item, not text — stayed at the start of its column. */
+  justify-self: center;
   width: 34px; aspect-ratio: 1; margin-bottom: 6px;
   border-radius: 50%;
   background: rgba(199, 226, 255, .07);
