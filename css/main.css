@@ -4159,57 +4159,29 @@ html[data-hero="real"] .zc .zc-plate {
    like tabs, at every width rather than only below 900px. */
 .zp-main {
   width: 100%; max-width: min(1180px, 100%); margin-inline: auto;
-  /* the last value leaves room for the floating dock, which is out of flow and would
-     otherwise sit on top of the final row of cards */
-  padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(110px, 16vh, 150px);
+  padding: clamp(28px, 5vh, 60px) var(--sec-x) clamp(48px, 9vh, 100px);
   display: grid; grid-template-columns: minmax(0, 1fr);
   gap: clamp(18px, 2.6vh, 34px); align-items: start;
 }
-/* ── the tabs, as a floating dock ──
-   Off the top of the column and onto the bottom of the screen: a pill that is as
-   wide as its tabs and no wider, centred, floating over the content.
+/* ── the tabs, in the flow ──
+   A strip at the top of the column, not a dock: the floating one moved to the home
+   page, where the sections it names are the whole scroll. Here the tabs belong to the
+   column they switch, so they sit above it.
 
-   width: max-content is the whole of "hug the content" — the default for a grid item
-   is to stretch to the column, and the reason the strip used to need a left padding
-   the width of the back pill was that it spanned the full width and ran underneath
-   it. Down here it clears the pill by being nowhere near it.
-
-   It is fixed rather than sticky. #zp is the scroller, not the window, so a sticky
-   bottom inside it would sit at the bottom of the *content*; and .view carries a
-   filter, which makes it the containing block for fixed children — so fixed here
-   means the bottom of this view, which is what it looks like. */
+   The left padding is the back pill's width. That pill is absolutely positioned in the
+   top-left of the view and does not scroll away, so a strip that sticks to top: 0
+   would slide under it and stay there; starting to its right is where the pill
+   permanently is. */
 .zp-jump {
-  position: fixed; z-index: 30;
-  bottom: clamp(14px, 3vh, 30px);
-  left: 50%; translate: -50% 0;
-  width: max-content; max-width: calc(100vw - 2 * var(--sec-x));
-  display: flex; flex-wrap: nowrap; gap: 4px;
-  padding: 6px;
-  border-radius: var(--r-pill);
-  /* the outer shell: glass tray, hairline, and a shadow deep enough to lift it off
-     whatever photograph happens to be behind it */
-  background: rgba(8, 13, 32, .72);
-  border: 1px solid rgba(199, 226, 255, .16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .08),
-    0 18px 44px rgba(2, 4, 16, .55);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  overflow-x: auto; scrollbar-width: none;
-  /* a scroll container's automatic minimum size is zero — see .xp-filters */
-  min-height: max-content; align-items: center;
-}
-.zp-jump::-webkit-scrollbar { display: none; }
-/* it arrives after the page does, from just below the fold */
-.zp-jump { animation: zpDock .5s .25s var(--ease) both; }
-@keyframes zpDock {
-  from { opacity: 0; translate: -50% 16px; }
-  to   { opacity: 1; translate: -50% 0; }
+  position: sticky; top: 0; z-index: 8;
+  display: flex; flex-wrap: wrap; gap: 7px;
+  padding: 12px 0 13px clamp(104px, 13vw, 124px);
+  background: linear-gradient(180deg, rgba(6, 10, 30, .96), rgba(6, 10, 30, .8) 66%, transparent);
 }
 .zp-tab {
   display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto;
-  padding: 9px 17px; border: 0; border-radius: var(--r-pill);
-  background: transparent; cursor: pointer; white-space: nowrap;
+  padding: 9px 16px; border: var(--b-1); border-radius: var(--r-pill);
+  background: rgba(10, 16, 34, .5); cursor: pointer; white-space: nowrap;
   font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
   color: #9fb0d8;
   transition: color .3s var(--ease), background .3s var(--ease);
@@ -4219,11 +4191,8 @@ html[data-hero="real"] .zc .zc-plate {
   letter-spacing: .06em; color: #67789f; font-variant-numeric: tabular-nums;
 }
 .zp-tab:hover { color: #fff; background: rgba(199, 226, 255, .07); }
-.zp-tab.on {
-  color: var(--pick-ink); background: var(--pick);
-  box-shadow: 0 4px 14px rgba(255, 194, 77, .3);
-}
-.zp-tab.on em { color: rgba(28, 20, 3, .62); }
+.zp-tab.on { color: #fff; background: rgba(199, 226, 255, .14); }
+.zp-tab.on em { color: color-mix(in srgb, var(--tone) 80%, #fff); }
 /* one panel at a time; [hidden] is honoured by the rule in the reset */
 .zp-block[hidden] { display: none; }
 
@@ -4280,9 +4249,15 @@ html[data-hero="real"] .zc .zc-plate {
 }
 
 @media (max-width: 900px) {
-  /* the dock is already a hugging, scrolling pill — it only wants to be tighter */
-  .zp-jump { gap: 3px; padding: 5px; max-width: calc(100vw - 20px); }
-  .zp-tab { padding: 8px 14px; }
+  /* one scrolling row, and below the back pill rather than to the right of it: on a
+     390px screen that left padding costs a third of the width */
+  .zp-jump {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    min-height: max-content; align-items: center;   /* see .xp-filters above */
+    gap: 6px; padding: 10px 0; top: 56px;
+  }
+  .zp-jump::-webkit-scrollbar { display: none; }
+  .zp-tab { padding: 8px 13px; }
   .zp-tab em { display: none; }
   .zp-hero-in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
   .zp-stage { height: clamp(220px, 38vh, 330px); order: -1; }
@@ -4330,7 +4305,9 @@ html[data-hero="real"] .zc .zc-plate {
 .faq-a p { padding: 0 54px 20px 20px; font-size: 14.5px; font-weight: 400; line-height: 1.68; color: var(--dim); max-width: 66ch; }
 /* ═══════════════ STICKY BOOKING BAR ═══════════════ */
 #sticky-cta {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 121;
+  /* the section tabs left this bar for the dock at the bottom, so what is left is the
+     mark on one side and the actions on the other */
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
   padding: 12px clamp(16px, 3vw, 34px);
   background: linear-gradient(180deg, rgba(7, 11, 34, .92), rgba(7, 11, 34, .72));
@@ -4346,21 +4323,111 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .sc-logo .brand-img.small { height: 72px; margin: -18px 0 -18px -6px; }
 .sc-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
 
-/* section tabs with scroll-spy */
-.sc-tabs { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
+/* ═══════════════ THE FILM ═══════════════
+   The park's own banner film, framed the way the cards are framed: a tray with a
+   hairline and a concentric inner radius, so the video sits in something rather than
+   floating as a bare rectangle. */
+.film {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; gap: var(--sp-4); justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+.fm-head { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.fm-frame {
+  position: relative; width: 100%; max-width: min(1040px, 100%);
+  padding: clamp(6px, .8vw, 10px);
+  border-radius: clamp(18px, 2vw, 28px);
+  background: rgba(199, 226, 255, .06);
+  border: 1px solid rgba(199, 226, 255, .16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 26px 60px rgba(2, 4, 16, .46);
+}
+.fm-vid {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* concentric with the tray: the outer radius less the padding */
+  border-radius: calc(clamp(18px, 2vw, 28px) - clamp(6px, .8vw, 10px));
+  background: #06070d;
+}
+/* the plate that starts it, and takes itself away once it has */
+.fm-play {
+  position: absolute; inset: clamp(6px, .8vw, 10px);
+  /* align-content, not just place-items: two auto rows in a stretched grid each centre
+     their own item, which put the disc in the top half and the label in the bottom */
+  display: grid; place-items: center; align-content: center;
+  gap: 14px; grid-auto-flow: row;
+  border: 0; border-radius: inherit; cursor: pointer;
+  background: linear-gradient(180deg, rgba(4, 7, 20, .28), rgba(4, 7, 20, .62));
+  transition: opacity .4s var(--ease), visibility .4s;
+}
+.fm-play i {
+  width: clamp(58px, 6vw, 78px); aspect-ratio: 1; border-radius: 50%;
+  background: #eef3ff; box-shadow: 0 14px 34px rgba(2, 4, 16, .5);
+  display: grid; place-items: center;
+  transition: transform .3s var(--ease);
+}
+/* the triangle, drawn rather than fetched */
+.fm-play i::after {
+  content: ""; width: 0; height: 0; margin-left: 5px;
+  border-left: clamp(17px, 1.8vw, 23px) solid #0b1020;
+  border-block: clamp(11px, 1.15vw, 15px) solid transparent;
+}
+.fm-play span {
+  font-family: var(--ui); font-size: 12px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: #dce7ff;
+}
+.fm-play:hover i { transform: scale(1.07); }
+.fm-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.fm-frame.is-playing .fm-play { opacity: 0; visibility: hidden; }
+
+/* ═══════════════ THE SECTION DOCK ═══════════════
+   The scroll-spied section nav, floating at the bottom of the home page: a pill as
+   wide as its tabs and no wider, centred, over the content.
+
+   It used to ride inside #sticky-cta at the top, which meant it only existed once you
+   were past the hero and not at all below 1080px — the width where a section nav is
+   most useful. Down here it is always there, and on a phone it scrolls sideways
+   rather than disappearing. */
+.sc-tabs {
+  position: fixed; z-index: 120;
+  bottom: clamp(14px, 3vh, 30px);
+  left: 50%; translate: -50% 0;
+  width: max-content; max-width: calc(100vw - 2 * var(--sec-x));
+  display: flex; align-items: center; flex-wrap: nowrap; gap: 2px;
+  padding: 6px;
+  border-radius: var(--r-pill);
+  background: rgba(8, 13, 32, .72);
+  border: 1px solid rgba(199, 226, 255, .16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    0 18px 44px rgba(2, 4, 16, .55);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  overflow-x: auto; scrollbar-width: none;
+  /* a scroll container's automatic minimum size is zero — see .xp-filters */
+  min-height: max-content;
+}
+.sc-tabs::-webkit-scrollbar { display: none; }
+/* it belongs to the home scroll; every other route has its own back link */
+body:not(.route-home) .sc-tabs { display: none; }
 #sc-tabs a[data-sec="globe-sec"] { display: none; }   /* its section is hidden */
 .sc-tabs a {
-  position: relative; font-family: var(--ui); font-weight: 600; font-size: 11px; letter-spacing: .14em;
-  color: var(--dim); padding: 8px 13px; border-radius: var(--r-pill); white-space: nowrap;
-  transition: color .2s, background .2s;
+  position: relative; flex: 0 0 auto;
+  font-family: var(--ui); font-weight: 600; font-size: 11px; letter-spacing: .12em;
+  color: var(--dim); padding: 9px 15px; border-radius: var(--r-pill); white-space: nowrap;
+  transition: color .25s var(--ease), background .25s var(--ease);
 }
 .sc-tabs a:hover { color: #eaf2ff; background: rgba(124, 196, 255, .1); }
-.sc-tabs a.on { color: #eaf2ff; }
-.sc-tabs a.on::after {
-  content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, #35e0ff, #4da6ff);
+/* the underline is gone: inside a tray the current tab is a filled pill, which is
+   what the zone dock does and what a dock is read as */
+.sc-tabs a.on {
+  color: var(--pick-ink); background: var(--pick);
+  box-shadow: 0 4px 14px rgba(255, 194, 77, .3);
 }
-@media (max-width: 1080px) { .sc-tabs { display: none; } }
+@media (max-width: 700px) {
+  .sc-tabs { gap: 1px; padding: 5px; max-width: calc(100vw - 20px); }
+  .sc-tabs a { padding: 8px 12px; font-size: 10.5px; letter-spacing: .08em; }
+}
 .sc-pill { font-size: 13px; padding: 12px 24px; }
 
 /* ── the Book menu ──

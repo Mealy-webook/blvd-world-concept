@@ -198,7 +198,9 @@
     const rail = document.querySelector("#scroll-rail i");
     const cue = document.querySelector(".scroll-cue");
     const stickyBar = document.getElementById("sticky-cta");
-    const tabs = [...document.querySelectorAll("#sticky-cta [data-sec]")];
+    /* the dock moved out of #sticky-cta — it is a top-level nav now, because a child
+       of that bar is translated off-screen with it */
+    const tabs = [...document.querySelectorAll("#sc-tabs [data-sec]")];
 
     // tabs scroll the inner container (a plain anchor jump would not work,
     // because the page scrolls inside #view-home rather than the window)
