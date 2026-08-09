@@ -3625,6 +3625,102 @@ html[data-hero="real"] .zc .zc-plate {
 }
 @media (prefers-reduced-motion: reduce) { .dw-card { transition: none; } }
 
+/* ═══════════════ THE PACKAGES, AS PLANS ═══════════════
+   Five cards read as a column of comparable things rather than five torn tickets.
+   Everything sits in the same place on every card — name, what it is, price, rate,
+   what is in it, the way to buy — so the eye runs down one row and compares like
+   with like. The old stub put the ride count where the eye lands first, and the ride
+   count is not what anybody is choosing on. */
+.pl-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: clamp(10px, 1.4vw, 20px); width: 100%; align-items: stretch;
+}
+.pl {
+  position: relative; display: grid; align-content: start;
+  gap: clamp(8px, 1.2vh, 14px);
+  padding: clamp(20px, 2.4vw, 30px) clamp(16px, 1.8vw, 24px) clamp(18px, 2vw, 26px);
+  border-radius: clamp(14px, 1.6vw, 22px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .07), rgba(199, 226, 255, .025));
+  box-shadow:
+    inset 0 0 0 1px rgba(199, 226, 255, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .07),
+    0 14px 36px rgba(2, 4, 16, .3);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.pl:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .26), 0 20px 46px rgba(2, 4, 16, .38); }
+
+/* the pick, in the site's magenta — the one card that is a decision rather than an
+   option, and it is the one the data already flags */
+.pl.is-pick {
+  background: linear-gradient(170deg, rgba(209, 0, 119, .2), rgba(209, 0, 119, .07));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 120, 190, .5),
+    inset 0 1px 0 rgba(255, 255, 255, .12),
+    0 20px 48px rgba(2, 4, 16, .42),
+    0 0 40px rgba(209, 0, 119, .22);
+}
+.pl-flag {
+  position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+  padding: 5px 12px; border-radius: var(--r-pill);
+  background: var(--pick); color: var(--pick-ink);
+  font-family: var(--ui); font-size: 8.5px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; white-space: nowrap;
+  box-shadow: var(--sh-1);
+}
+
+.pl-head { display: grid; gap: 3px; }
+.pl-name {
+  font-family: var(--disp); font-weight: 800; font-size: clamp(15px, 1.5vw, 19px);
+  letter-spacing: -.015em; color: #fff; line-height: 1.1;
+}
+.pl-tag {
+  font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #9fb0d8;
+}
+/* the price, where the eye lands */
+.pl-price {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-top: clamp(4px, .8vh, 10px);
+}
+.pl-cur {
+  font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  color: #9fb0d8;
+}
+.pl-price b {
+  font-family: var(--fig); font-size: clamp(30px, 3.6vw, 46px); font-weight: 800;
+  letter-spacing: -.03em; color: #fff; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.pl-rate {
+  font-family: var(--body); font-size: 12px; font-weight: 400; color: #8fa0c8;
+  padding-bottom: clamp(8px, 1.4vh, 14px);
+  border-bottom: 1px solid rgba(199, 226, 255, .14);
+}
+.pl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.pl-list li {
+  display: flex; align-items: baseline; gap: 9px;
+  font-family: var(--body); font-size: clamp(12.5px, 1.15vw, 14px); font-weight: 400;
+  line-height: 1.4; color: #dceaff;
+}
+/* a tick, drawn rather than typed so it never falls back to a font that has none */
+.pl-list i {
+  flex: none; width: 12px; height: 12px; margin-top: 2px; position: relative;
+}
+.pl-list i::before, .pl-list i::after {
+  content: ''; position: absolute; background: var(--gold); border-radius: 1px;
+}
+.pl-list i::before { width: 2px; height: 6px; left: 3px; top: 4px; transform: rotate(-45deg); }
+.pl-list i::after { width: 2px; height: 11px; left: 7px; top: 0; transform: rotate(38deg); }
+
+.pl-cta { margin-top: clamp(8px, 1.4vh, 16px); justify-content: center; }
+
+@media (max-width: 700px) {
+  .pl-row { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .pl { padding: 18px 18px 20px; }
+  .pl-price b { font-size: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { .pl { transition: none; } }
+
 /* ═══════════════ A ZONE, IN FULL ═══════════════
    Redesigned as a stage and a spine.
 
@@ -3818,6 +3914,12 @@ html[data-hero="real"] .zc .zc-plate {
 }
 .zp-cards .dw-card::after { display: none; }     /* no glow on a small card */
 .zp-cards .dw-card p { font-size: clamp(12.5px, 1.15vw, 14.5px); max-width: none; }
+/* the ones in this zone are the ones the block is about; the rest are along the
+   rail behind them, each naming the zone it is actually in */
+.zp-blocks .eat-card:not(.is-here) { opacity: .82; }
+.zp-blocks .eat-card:not(.is-here):hover { opacity: 1; }
+.zp-blocks .eat-card.is-here .eat-meta { color: color-mix(in srgb, var(--tone) 80%, #fff); }
+
 .zp-fast {
   display: block; margin-top: 3px;
   font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .08em;

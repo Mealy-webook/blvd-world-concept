@@ -23,27 +23,33 @@
     return `SAR ${each % 1 ? each.toFixed(2) : each} a ride`;
   };
 
+  /* ── a plan, not a ticket stub ──
+     These were shaped like a torn ticket: a perforated stub with the ride count on
+     it, then the copy, then the price at the end. That is a nice object and the wrong
+     one for choosing between five things — a stub puts the count where the eye lands
+     first, and the count is not what anybody is comparing. A price plan puts the
+     price there, and everything else in the same place on every card, so five cards
+     can be read down a column instead of one at a time.
+
+     One card is marked as the pick. It is the one already flagged `featured` in the
+     data, so nothing here decides it. */
   const ticket = (b) => `
-    <article class="tk${b.featured ? " is-featured" : ""} reveal">
-      <div class="tk-stub">
-        <b class="tk-count">${b.count}</b>
-        <span class="tk-unit">${parseInt(b.count, 10) ? "rides" : "all night"}</span>
+    <article class="pl${b.featured ? " is-pick" : ""} reveal">
+      ${b.featured ? `<p class="pl-flag">${b.flag || "Most rides for the money"}</p>` : ""}
+      <div class="pl-head">
+        <h3 class="pl-name">${b.name}</h3>
+        <p class="pl-tag">${b.tag}</p>
       </div>
-      <i class="tk-perf" aria-hidden="true"></i>
-      <div class="tk-body">
-        <p class="tk-tag">${b.tag}${b.flag ? ` <em>${b.flag}</em>` : ""}</p>
-        <h3>${b.name}</h3>
-        <p class="tk-blurb">${b.blurb}</p>
-        <ul class="tk-list">
-          ${b.includes.map((line) => `<li>${line}</li>`).join("")}
-        </ul>
-      </div>
-      <div class="tk-end">
-        <p class="tk-price"><span>SAR</span><b>${b.price}</b></p>
-        <p class="tk-rate">${perRide(b)} &#183; per person</p>
-        <a class="pill ${b.featured ? "solid" : "ghost"} tk-cta" href="${b.href}"
-           target="_blank" rel="noopener">${b.cta}</a>
-      </div>
+      <p class="pl-price">
+        <span class="pl-cur">SAR</span><b>${b.price}</b>
+      </p>
+      <p class="pl-rate">${perRide(b)} &#183; per person</p>
+      <ul class="pl-list">
+        ${b.includes.filter(Boolean).map((line) => `
+          <li><i aria-hidden="true"></i>${line}</li>`).join("")}
+      </ul>
+      <a class="pill ${b.featured ? "solid" : "ghost"} pl-cta" href="${b.href}"
+         target="_blank" rel="noopener">${b.cta}</a>
     </article>`;
 
   host.innerHTML = TIERS.map((t) => {
@@ -54,7 +60,7 @@
         <p class="tk-tier-h reveal">
           <span>${t.label}</span><i aria-hidden="true"></i><small>${t.note}</small>
         </p>
-        <div class="tk-stack">${items.map(ticket).join("")}</div>
+        <div class="pl-row">${items.map(ticket).join("")}</div>
       </section>`;
   }).join("");
 

@@ -269,21 +269,34 @@
       </div>`;
   }
 
+  /* ── the kitchens ──
+     The rail carries every restaurant in the park, not only this zone's: there are
+     four of them in the data, so on most zone pages the block was three name cards
+     and nothing to look at.
+
+     What keeps that honest is the meta line. A card's first line is the zone the
+     restaurant is actually in — "EGYPT" on Tante, "JAPAN" on Sakura — so a card on
+     the Korea page is plainly a restaurant elsewhere in the park rather than a claim
+     about Korea. This zone's own come first, and they are the ones the block is
+     about. */
   function kitchens(name, zone) {
-    const own = (WBK.restaurants || []).filter((r) => canon(r.zone) === name);
+    const all = WBK.restaurants || [];
+    const own = all.filter((r) => canon(r.zone) === name);
+    const away = all.filter((r) => canon(r.zone) !== name);
+    const list = [...own, ...away];
     const named = (zone.food || []).filter((f) => !own.some((r) => r.name === f));
-    if (!own.length && !named.length) return "";
+    if (!list.length && !named.length) return "";
     return `
-      ${own.length ? `
+      ${list.length ? `
         <div class="rail-wrap">
           <button class="rail-btn prev" type="button" data-rail="zp-eat-rail"
                   aria-label="Previous restaurants">&#8249;</button>
           <div class="rail eat-rail" id="zp-eat-rail">
-            ${own.map((r) => `
-              <article class="eat-card">
+            ${list.map((r) => `
+              <article class="eat-card${canon(r.zone) === name ? " is-here" : ""}">
                 <div class="eat-shot">${plate(r)}</div>
                 <div class="eat-text">
-                  <p class="eat-meta">${esc(r.cuisine || "")}</p>
+                  <p class="eat-meta">${esc(r.zone || r.cuisine || "")}</p>
                   <h3>${esc(r.name)}</h3>
                   ${r.from ? `<p class="eat-from">From <b>SAR ${esc(r.from)}</b></p>` : ""}
                 </div>
