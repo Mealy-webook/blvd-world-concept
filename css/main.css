@@ -5592,143 +5592,150 @@ html[data-hero="real"] {
   --map-bg: #14161d;
 }
 /* the accents that were tuned against navy and need a nudge on black */
-/* ── the tiles, white on the footage ──
-   Everywhere else these are glass: a tint that darkens down the pane so a white label
-   survives a firework going off behind it. Over real night footage the ask is the
-   opposite — a solid card, ink type, and enough physical detail that it reads as a
-   plate resting on the film rather than a rectangle punched out of it.
+/* ── the ways in, as one sheet ──
+   A new shape for this version. It was four separate cards, centred, each with its own
+   plate and its own shadow — four objects competing under one heading, and four sets of
+   edges to read before you got to a price.
 
-   The metrics below are applied to every tile in the row, primary included, because a
-   row of four is only even if they share one set. Only the colour differs. */
+   Here they are one object: a single sheet ruled into four columns. That buys three
+   things the cards could not. The prices sit on a shared baseline, so the row can be
+   read across as a price list rather than compared card by card. There is one edge and
+   one shadow instead of four, which is quieter over moving footage. And the entry
+   ticket can take a whole column of magenta and still belong to the same object as its
+   neighbours, which is what it is — a way in with a price, like the other three.
+
+   The markup is untouched: .book-tiles becomes the sheet, .bt becomes a column. */
+html[data-hero="real"] .book-tiles {
+  gap: 0;
+  width: min(940px, 100%);
+  border-radius: 22px;
+  overflow: hidden;                    /* this is what shapes the end columns */
+  background: linear-gradient(180deg, #fff 0%, #f1f4fc 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(11, 16, 32, .08),
+    0 2px 5px rgba(0, 0, 0, .3),
+    0 26px 60px rgba(0, 0, 0, .48);
+}
+
+/* ── a column ──
+   Ruled off from its neighbour rather than boxed. Three rows: the label at the top, the
+   mark under it, and the name and price pushed to the bottom by a 1fr track — which is
+   what puts every price on the same line across the sheet. */
 html[data-hero="real"] .bt {
-  gap: 14px;
-  padding: 22px 16px 16px;
-  border-radius: 24px;
+  display: grid; grid-template-rows: auto auto 1fr;
+  justify-items: start; text-align: left;
+  gap: 12px;
+  padding: 20px clamp(14px, 1.6vw, 22px) 20px;
+  border: 0; border-radius: 0;
+  background: transparent;
+  box-shadow: inset 1px 0 0 rgba(11, 16, 32, .09);   /* the rule, on the left */
+  transition: background-color .35s var(--ease);
 }
-/* the plate itself: a warm white, a lit top edge, and a shadow with two falloffs —
-   a tight contact shadow to sit it down, and a wide ambient one to lift it off the
-   footage. One flat drop shadow reads as a sticker. */
-html[data-hero="real"] .bt:not(.is-primary) {
-  background: linear-gradient(180deg, #ffffff 0%, #eef2fb 100%);
-  backdrop-filter: none; -webkit-backdrop-filter: none;
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 0 0 1px rgba(11, 16, 32, .07),
-    0 2px 4px rgba(0, 0, 0, .28),
-    0 22px 50px rgba(0, 0, 0, .45);
-}
-html[data-hero="real"] .bt:not(.is-primary):hover {
-  background: linear-gradient(180deg, #fff 0%, #f6f8ff 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 0 0 1px rgba(11, 16, 32, .1),
-    0 3px 6px rgba(0, 0, 0, .3),
-    0 30px 64px rgba(0, 0, 0, .5);
-}
-/* the icon core, nested: its radius is the card's less the padding, so the two curves
-   are concentric rather than approximately similar */
-html[data-hero="real"] .bt .bt-ic {
-  width: 54px; height: 54px;
-  border-radius: calc(24px - 8px);
-}
-html[data-hero="real"] .bt:not(.is-primary) .bt-ic {
-  background: linear-gradient(180deg, #0f1730, #1b264a);
-  border: 0;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 4px 10px rgba(11, 16, 32, .22);
-}
-html[data-hero="real"] .bt:not(.is-primary) .bt-ic svg { fill: #fff; filter: none; }
-html[data-hero="real"] .bt:not(.is-primary):hover .bt-ic {
-  background: linear-gradient(180deg, var(--btn), #a3005e);
-}
+html[data-hero="real"] .bt:first-child { box-shadow: none; }
+html[data-hero="real"] .bt:hover { transform: none; background-color: rgba(11, 16, 32, .045); }
+html[data-hero="real"] .bt-sheen { display: none; }
 
-/* ── the type, as ink ── */
-html[data-hero="real"] .bt:not(.is-primary) .bt-name { color: #0b1020; }
-html[data-hero="real"] .bt .bt-name { font-size: 17px; letter-spacing: -.025em; }
-/* the price is the second thing you read, so the figure is a figure and not a
-   footnote: the label drops to a caption and the number takes the weight */
-html[data-hero="real"] .bt .bt-price { gap: 5px; font-size: 9.5px; letter-spacing: .16em; }
-html[data-hero="real"] .bt .bt-price b { font-size: 21px; letter-spacing: -.01em; }
-html[data-hero="real"] .bt:not(.is-primary) .bt-price { color: #7c8aa8; }
-html[data-hero="real"] .bt:not(.is-primary) .bt-price b { color: #0b1020; }
-
-/* ── the tag, as a footer line ──
-   It was a pill sitting under the price, competing with it at the same scale. Here it
-   is the card's last line, over a hairline that runs the full width — so the card
-   reads name, price, then what is included, in that order. */
+/* the label leads, which is the change in reading order: what kind of thing this is,
+   then what it is called, then what it costs */
 html[data-hero="real"] .bt .bt-tag {
-  margin-top: 12px; width: 100%;
-  padding: 11px 0 0; border-radius: 0;
-  background: none; box-shadow: none;
-  font-size: 8px; letter-spacing: .15em;
-  border-top: 1px solid rgba(11, 16, 32, .1);
+  order: 1; margin: 0; padding: 0; width: auto;
+  background: none; box-shadow: none; border: 0; border-radius: 0;
+  font-family: var(--fig); font-size: 8px; font-weight: 700;
+  letter-spacing: .17em; text-transform: uppercase;
+  color: #8b98b4; white-space: normal;
 }
-html[data-hero="real"] .bt:not(.is-primary) .bt-tag { color: #7c8aa8; }
-html[data-hero="real"] .bt.is-primary .bt-tag {
-  color: rgba(255, 255, 255, .82);
-  border-top-color: rgba(255, 255, 255, .28);
+/* the mark, bare. No plate: a plate inside a column inside a sheet is a third frame
+   for one glyph to sit in. */
+html[data-hero="real"] .bt .bt-ic {
+  order: 2; width: auto; height: auto; background: none; border: 0;
+  box-shadow: none; border-radius: 0;
 }
-/* the tag is the full width of the card, so the text block must be too, or the
-   hairline stops short of the padding */
-html[data-hero="real"] .bt { grid-template-columns: minmax(0, 1fr); }
-html[data-hero="real"] .bt-text { width: 100%; }
+html[data-hero="real"] .bt .bt-ic svg { width: 26px; height: 26px; fill: #0f1730; filter: none; }
 
-/* ── the trailing arrow, nested ──
-   Hidden on every other version — .bt-go went with the tile's fill. Here it comes
-   back as a control inside a control: its own circle, in the top-right of the card,
-   arriving and travelling diagonally under the pointer. It is the one moving part,
-   which is what makes the card feel pressable rather than printed. */
+html[data-hero="real"] .bt .bt-text {
+  order: 3; align-self: end; width: 100%;
+  justify-items: start; text-align: left;
+  /* the name gets a fixed two-line box so a wrap in one column cannot drop that
+     column's price off the shared baseline */
+  display: grid; grid-template-rows: minmax(2.3em, auto) auto; gap: 6px;
+}
+html[data-hero="real"] .bt .bt-name {
+  font-size: 17px; letter-spacing: -.025em; line-height: 1.15; color: #0b1020;
+  white-space: normal; overflow: visible; text-overflow: clip;
+  align-self: start;
+}
+html[data-hero="real"] .bt .bt-price {
+  justify-content: flex-start; gap: 6px;
+  font-size: 9px; letter-spacing: .16em; color: #7c8aa8;
+}
+html[data-hero="real"] .bt .bt-price b {
+  font-size: 22px; letter-spacing: -.015em; color: #0b1020;
+}
+
+/* ── the entry ticket's column ──
+   A full column of magenta, edge to edge of the sheet. It is the same object as its
+   neighbours and the same three rows; it is simply the loud one. */
+html[data-hero="real"] .bt.is-primary {
+  background: linear-gradient(180deg, var(--btn) 0%, #b3006a 100%);
+  box-shadow: none;
+}
+html[data-hero="real"] .bt.is-primary:hover { background: linear-gradient(180deg, var(--btn-hi) 0%, #c00073 100%); }
+html[data-hero="real"] .bt.is-primary + .bt { box-shadow: none; }   /* no rule against the fill */
+html[data-hero="real"] .bt.is-primary .bt-tag { color: rgba(255, 255, 255, .78); }
+html[data-hero="real"] .bt.is-primary .bt-ic svg { fill: #fff; }
+html[data-hero="real"] .bt.is-primary .bt-name { color: #fff; }
+html[data-hero="real"] .bt.is-primary .bt-price { color: rgba(255, 255, 255, .78); }
+html[data-hero="real"] .bt.is-primary .bt-price b { color: #fff; }
+
+/* ── the arrow ──
+   Bottom-right of the column, on the price's line, sliding in under the pointer. It is
+   the only asymmetric mark on an otherwise ruled grid, which is what stops the sheet
+   reading as a printed table. */
 html[data-hero="real"] .bt-go {
-  display: grid; place-items: center;
-  /* 17px in, not 14: the card's corner radius is 24px, and a disc any closer than
-     that sits in the bite the curve takes out of the corner and reads as hanging off
-     the edge rather than resting inside it */
-  position: absolute; top: 17px; right: 17px;
-  width: 24px; height: 24px; border-radius: 50%;
-  background: rgba(11, 16, 32, .06);
-  opacity: 0; transform: translate(-3px, 3px) scale(.9);
-  transition: opacity .32s var(--ease), transform .32s var(--ease), background .32s var(--ease);
+  display: block; position: absolute;
+  right: clamp(14px, 1.6vw, 22px); bottom: 24px;
+  width: 9px; height: 9px;
+  border-top: 1.9px solid #0b1020; border-right: 1.9px solid #0b1020;
+  border-radius: 1px;
+  transform: rotate(45deg) translate(-4px, 4px);
+  opacity: 0; transition: opacity .3s var(--ease), transform .3s var(--ease);
 }
-/* the arrow itself: a corner and a diagonal, drawn */
-html[data-hero="real"] .bt-go::before {
-  content: ""; width: 8px; height: 8px;
-  border-top: 1.8px solid #0b1020; border-right: 1.8px solid #0b1020;
-  transform: rotate(45deg) translate(-1px, 1px);
-}
+html[data-hero="real"] .bt.is-primary .bt-go { border-color: #fff; }
 html[data-hero="real"] .bt:hover .bt-go,
 html[data-hero="real"] .bt:focus-visible .bt-go {
-  opacity: 1; transform: translate(0, 0) scale(1);
-}
-html[data-hero="real"] .bt:hover .bt-go { background: var(--gold); }
-html[data-hero="real"] .bt.is-primary .bt-go { background: rgba(255, 255, 255, .2); }
-html[data-hero="real"] .bt.is-primary .bt-go::before { border-color: #fff; }
-html[data-hero="real"] .bt.is-primary:hover .bt-go { background: rgba(255, 255, 255, .32); }
-
-/* the sheen is a white gleam; on a white card it is invisible and only adds paint */
-html[data-hero="real"] .bt:not(.is-primary) .bt-sheen { display: none; }
-
-/* the primary keeps the magenta — it is the brand accent and the one tile in the row
-   meant to be louder — but takes the same shadow discipline as its neighbours */
-html[data-hero="real"] .bt.is-primary {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .22),
-    inset 0 -2px 0 rgba(104, 0, 60, .5),
-    0 2px 4px rgba(0, 0, 0, .28),
-    0 22px 50px rgba(160, 0, 90, .34);
-}
-html[data-hero="real"] .bt.is-primary:hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .26),
-    inset 0 -2px 0 rgba(104, 0, 60, .5),
-    0 3px 6px rgba(0, 0, 0, .3),
-    0 30px 64px rgba(160, 0, 90, .44);
+  opacity: 1; transform: rotate(45deg) translate(0, 0);
 }
 
+/* ── on a phone ──
+   The sheet turns on its side: one column of rows, ruled horizontally. Four columns at
+   390px gives each name 80px and no room for a 22px figure, and the two-by-two grid
+   that works for cards makes a sheet with a cross in the middle of it. */
 @media (max-width: 700px) {
-  html[data-hero="real"] .bt { padding: 18px 12px 13px; border-radius: 20px; }
-  html[data-hero="real"] .bt .bt-ic { width: 46px; height: 46px; border-radius: 13px; }
+  html[data-hero="real"] .book-tiles {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: min(420px, 100%) !important;
+    border-radius: 18px;
+  }
+  html[data-hero="real"] .bt {
+    grid-template-rows: auto;
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    align-items: center; gap: 14px;
+    padding: 14px 16px;
+    box-shadow: inset 0 1px 0 rgba(11, 16, 32, .09);   /* the rule, now on top */
+  }
+  html[data-hero="real"] .bt .bt-ic { order: 1; }
+  html[data-hero="real"] .bt .bt-text {
+    order: 2; grid-template-rows: auto; grid-template-columns: minmax(0, 1fr);
+    align-self: center; gap: 2px;
+  }
   html[data-hero="real"] .bt .bt-name { font-size: 15px; }
-  html[data-hero="real"] .bt .bt-price b { font-size: 18px; }
-  html[data-hero="real"] .bt-go { display: none; }   /* no hover to reveal it */
+  /* the label moves to the end of the row, where it reads as the row's note rather
+     than as a heading over one item in a list */
+  html[data-hero="real"] .bt .bt-tag { order: 3; text-align: right; font-size: 7.5px; }
+  html[data-hero="real"] .bt .bt-price { font-size: 8.5px; }
+  html[data-hero="real"] .bt .bt-price b { font-size: 17px; }
+  html[data-hero="real"] .bt-go { display: none; }
 }
 
 html[data-hero="real"] .faq-item.open { border-color: rgba(255, 255, 255, .34); background: rgba(255, 255, 255, .07); }
