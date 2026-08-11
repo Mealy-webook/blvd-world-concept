@@ -392,3 +392,29 @@ which serves them from `images.cmscloud.ai`. These are webook's own pictures of 
 and PUBG have no live picture on webook: their RS25 listings are delisted now the season
 has ended (the pages return the default cover), and the 25/26 booking page is behind a
 login. These five need art from the client.
+
+
+## The rides section on the home page
+
+Modelled on the rides-and-attractions carousel of a working theme-park site: cream
+ticket stock, notched corners, a label over the photograph, a spec list, and a divided
+row of actions along the foot.
+
+**Three fields on the reference card are not on ours, and will not be until the data
+exists.**
+
+| reference field | ours | why |
+| --- | --- | --- |
+| Height 130–195cm | absent | no ride in `WBK.rides` carries a height. A height limit is a safety figure; inventing one is the worst placeholder a theme-park page can print. |
+| Age restriction | absent | not held for any ride. |
+| Maintenance: OPEN / UPCOMING | absent | not held for any ride. An invented status is a ride somebody queues for that is shut. |
+| a paragraph of description | absent | no ride carries a blurb, and writing one per ride would be inventing detail about a real attraction. |
+
+**The label over the photograph is the ride's class, not its zone.** The zone is the
+closer match to the reference and cannot be filled: `WBK.rides` holds fourteen priced
+rides and the zones' own `rides:` arrays hold forty names, and **no name appears in
+both** — they are disjoint sets. Until one list is keyed to the other, a zone on these
+cards would be a guess.
+
+The rows that are there — class, a turn, the fast lane — and the tab counts are all read
+from `WBK.rides`, so they follow the data rather than a hand-typed list.

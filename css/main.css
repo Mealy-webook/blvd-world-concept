@@ -4476,28 +4476,217 @@ html[data-hero="real"] .zc .zc-plate {
   .wr-go { flex-direction: column; align-items: stretch; }
 }
 
-/* ═══════════════ THE RIDES RAIL ═══════════════ */
+/* ═══════════════ RIDES, AS TICKETS ═══════════════
+   Cream ticket stock on the navy, with a notch bitten out of each corner. The notch is
+   a mask rather than a border trick: four radial gradients that punch transparent
+   circles at the corners, which is the only way to take a bite out of a card and let
+   the page's own sky show through the hole. A pseudo-element with the page colour in it
+   would be a lie the moment anything moved behind it. */
 .hrides {
   position: relative; z-index: 11;
-  padding: var(--sec-y) var(--sec-x);
-  display: grid; gap: var(--sp-4); justify-items: center;
-  grid-template-columns: minmax(0, 1fr);
+  padding: var(--sec-y) 0;
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(14px, 2.2vh, 26px);
 }
-.hr-head {
-  display: grid; justify-items: center; gap: 10px; text-align: center;
-  max-width: min(760px, 100%);
+/* ── the head: title on the left, View all on the right ── */
+.hr-top {
+  width: min(1240px, 100%); padding-inline: var(--sec-x);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
 }
-/* the class of ride, on the photograph */
-.hr-kind {
-  position: absolute; left: 10px; top: 10px; z-index: 2;
-  font-family: var(--fig); font-size: 8.5px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase; color: #eaf2ff;
-  background: rgba(6, 10, 30, .72); backdrop-filter: blur(8px);
-  padding: 5px 9px; border-radius: var(--r-pill);
+.hr-head { display: grid; gap: 8px; justify-items: start; text-align: left; }
+.hr-head .sec-title { text-align: left; }
+.hr-all {
+  flex: none; display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 20px; border-radius: var(--r-pill);
+  background: var(--gold); color: #1c1403;
+  font-family: var(--ui); font-size: 13px; font-weight: 700; letter-spacing: -.005em;
+  text-decoration: none;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
 }
-.hr-fast {
-  font-family: var(--fig); font-size: 9.5px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: #7d8db4; margin-top: 1px;
+.hr-all i {
+  width: 13px; height: 8px; position: relative;
+}
+.hr-all i::before {
+  content: ""; position: absolute; inset: 0;
+  border-top: 1.8px solid #1c1403; border-right: 1.8px solid #1c1403;
+  width: 7px; height: 7px; right: 0; top: 0;
+  transform: rotate(45deg);
+}
+.hr-all:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255, 194, 77, .3); }
+
+/* ── the tabs ── */
+.hr-tabs {
+  width: min(1240px, 100%); padding-inline: var(--sec-x);
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start;
+}
+.hr-tab {
+  display: inline-flex; align-items: baseline; gap: 7px; flex: 0 0 auto;
+  padding: 9px 15px; border: 0; border-radius: var(--r-pill);
+  background: rgba(199, 226, 255, .07); cursor: pointer;
+  font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: -.005em;
+  color: #b8c8ea; white-space: nowrap;
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+.hr-tab em {
+  font-family: var(--fig); font-style: normal; font-size: 9.5px; font-weight: 700;
+  color: #7b8bb0; font-variant-numeric: tabular-nums;
+}
+.hr-tab:hover { color: #fff; background: rgba(199, 226, 255, .13); }
+.hr-tab.is-on { color: #1c1403; background: var(--gold); }
+.hr-tab.is-on em { color: rgba(28, 20, 3, .6); }
+
+/* ── the rail ── */
+.hr-wrap { width: 100%; }
+.hr-rail {
+  display: flex; gap: clamp(14px, 1.6vw, 24px);
+  overflow-x: auto; scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  padding: 4px var(--sec-x) 10px;
+  /* scroll-snap aligns to the snapport, which excludes padding — so without this the
+     rail opened already scrolled by its own 77px of padding, with the first ticket hard
+     against the edge of the screen and the back arrow live at rest. scroll-padding puts
+     the snapport back inside the padding. */
+  scroll-padding-inline: var(--sec-x);
+  min-height: max-content;                 /* scroll container, zero min-size */
+}
+.hr-rail::-webkit-scrollbar { display: none; }
+
+/* ── the ticket ── */
+.rt {
+  --notch: 15px;
+  position: relative; flex: 0 0 auto; scroll-snap-align: start;
+  width: clamp(268px, 30vw, 372px);
+  display: grid; grid-template-rows: auto 1fr auto;
+  background: linear-gradient(180deg, #fbf6e9 0%, #f4ecd9 100%);
+  border-radius: 6px;
+  /* The four bites. Four mask layers, one per corner: each is a quadrant-sized tile
+     that is opaque everywhere except a circle at its own outer corner.
+
+     They are composited with add, not intersect. Each layer is transparent outside its
+     own quadrant, so intersecting them leaves nothing at all — which is what the first
+     pass did, along with putting the positions inside the mask-image list, where they
+     are not valid and quietly void the whole declaration. Union of four quadrants is
+     the whole card, each corner missing its circle. */
+  --bite:
+    radial-gradient(circle var(--notch) at 0 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 100% 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 0 100%, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 100% 100%, transparent 98%, #000 100%);
+  -webkit-mask-image: var(--bite); mask-image: var(--bite);
+  -webkit-mask-position: top left, top right, bottom left, bottom right;
+          mask-position: top left, top right, bottom left, bottom right;
+  -webkit-mask-size: 50.5% 50.5%; mask-size: 50.5% 50.5%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-composite: source-over; mask-composite: add;
+  filter: drop-shadow(0 18px 34px rgba(2, 4, 16, .42));
+  opacity: 0; translate: 0 20px;
+  transition: translate .5s var(--ease);
+}
+.rt.in { animation: rtIn .55s var(--ease) calc(var(--i, 0) * 70ms) forwards; }
+@keyframes rtIn { to { opacity: 1; translate: 0 0; } }
+.rt:hover { translate: 0 -5px; }
+
+.rt-shot {
+  position: relative; margin: 12px 12px 0; overflow: hidden;
+  border-radius: 4px; aspect-ratio: 4 / 2.7; background: #d8cfba;
+}
+.rt-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* the label over the photograph */
+.rt-pill {
+  position: absolute; left: 10px; bottom: 10px;
+  padding: 5px 11px; border-radius: var(--r-pill);
+  background: #cbe9dd; color: #14432f;
+  font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .02em;
+}
+
+.rt-body { padding: 14px 18px 6px; display: grid; gap: 12px; align-content: start; }
+/* the name is the one place on the site a face other than the body face earns its
+   keep: a ticket is printed matter, and printed matter has a slab on it */
+.rt-name {
+  margin: 0; font-family: var(--disp); font-weight: 800;
+  font-size: clamp(21px, 2.2vw, 27px); line-height: 1.08; letter-spacing: -.03em;
+  color: #23324f;
+}
+.rt-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rt-row {
+  display: grid; grid-template-columns: 19px auto minmax(0, 1fr);
+  align-items: center; gap: 9px;
+}
+.rt-ic { display: grid; place-items: center; color: #c0503c; }
+.rt-ic svg { width: 18px; height: 18px; display: block; }
+.rt-lab {
+  font-family: var(--body); font-size: 13px; font-weight: 400; color: #5a6a86;
+}
+.rt-val {
+  font-family: var(--ui); font-size: 13px; font-weight: 700; color: #23324f;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── the actions, along the foot ──
+   Divided by hairlines, the way the reference divides them, and set in the blue the
+   cream is standing on so they read as links and not as more spec. */
+.rt-acts {
+  display: flex; align-items: center;
+  margin: 8px 18px 16px; padding-top: 12px;
+  border-top: 1px solid rgba(35, 50, 79, .14);
+}
+.rt-acts a {
+  flex: 1; text-align: center;
+  font-family: var(--ui); font-size: 12.5px; font-weight: 700; letter-spacing: -.005em;
+  color: #2b4fa8; text-decoration: none;
+  transition: color .25s var(--ease);
+}
+.rt-acts a + a { border-left: 1px solid rgba(35, 50, 79, .14); }
+.rt-acts a:hover { color: #14306e; text-decoration: underline; text-underline-offset: 3px; }
+.rt-acts a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+/* ── the arrows and the bar ── */
+.hr-foot {
+  width: min(1240px, 100%); padding-inline: var(--sec-x);
+  display: flex; align-items: center; gap: clamp(16px, 3vw, 40px);
+}
+.hr-nav { display: flex; gap: 9px; flex: none; }
+.hr-arrow {
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center;
+  background: transparent; border: 1px solid rgba(255, 194, 77, .45);
+  transition: background .28s var(--ease), border-color .28s var(--ease), opacity .28s;
+}
+.hr-arrow i {
+  width: 8px; height: 8px;
+  border-top: 1.8px solid var(--gold); border-right: 1.8px solid var(--gold);
+  transform: rotate(-135deg); margin-left: -2px;
+}
+#hr-next i { transform: rotate(45deg); margin-left: 2px; }
+.hr-arrow:hover { background: rgba(255, 194, 77, .14); border-color: var(--gold); }
+.hr-arrow:disabled { opacity: .3; cursor: default; }
+.hr-arrow:disabled:hover { background: transparent; border-color: rgba(255, 194, 77, .45); }
+/* the bar shows how much of the rail is on screen and where in it you are */
+.hr-bar {
+  position: relative; flex: 1; height: 2px; border-radius: 2px;
+  background: rgba(199, 226, 255, .16);
+}
+.hr-bar i {
+  position: absolute; top: 0; height: 100%; border-radius: inherit;
+  background: #eef3ff;
+  transition: left .3s var(--ease), width .3s var(--ease);
+}
+
+@media (max-width: 760px) {
+  .hr-top { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .hr-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+             min-height: max-content; align-items: center; }
+  .hr-tabs::-webkit-scrollbar { display: none; }
+  .rt { width: min(300px, 78vw); --notch: 12px; }
+  .rt-name { font-size: 20px; }
+  .rt-acts { margin-inline: 14px; }
+  .rt-acts a { font-size: 11.5px; }
+  .hr-arrow { width: 38px; height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rt { opacity: 1; translate: none; }
+  .rt.in { animation: none; }
+  .hr-rail { scroll-snap-type: none; }
 }
 
 /* ═══════════════ THE FOOTER ═══════════════ */

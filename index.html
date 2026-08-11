@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=743" />
+<link rel="stylesheet" href="css/main.css?v=746" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=743" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=746" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -249,28 +249,50 @@
       </div>
     </section>
 
-    <!-- ══════════ THE RIDES ══════════
-         Their rides carousel, with the fields we actually hold: the ride, its class,
-         what a turn costs and what the fast lane costs. Theirs also carries a height
-         limit in centimetres, an age restriction and a maintenance status — we have
-         none of those three for any ride, and a card that says "110cm" when nobody has
-         measured is worse than a card that does not mention height. js/homerides.js
-         fills it from WBK.rides; the card is .eat-card, the same one the restaurants
-         and the zone pages use. -->
+    <!-- ══════════ RIDES, AS TICKETS ══════════
+         The card is a ticket: cream stock, a notch bitten out of each corner, the
+         photograph at the top with a label over it, the name in display type, the
+         details as a small spec list, and the row of actions along the foot.
+
+         WHAT IS MISSING, AND WHY. The reference card carries a height limit in
+         centimetres, an age restriction, a maintenance status and a paragraph of
+         description. We hold none of those for any ride. A height limit is a safety
+         figure and inventing one is the single worst placeholder on a theme-park page;
+         a maintenance status invented is a ride you might queue for that is shut. The
+         rows here are the ones the data can answer — the class of ride, what a turn
+         costs, what the fast lane costs.
+
+         The label over the photograph is the ride's class, not its zone. The zone would
+         be the closer match to the reference, and it cannot be filled: WBK.rides and
+         the zones' own ride lists are two disjoint sets — forty names in the zones,
+         fourteen priced rides, no name in both. See CREDITS.md.
+
+         The tabs are real: every one is a class that appears in the data. -->
     <section class="hrides" id="hrides">
-      <div class="hr-head reveal">
-        <p class="eyebrow">Rides &amp; attractions</p>
-        <h2 class="sec-title">FOURTEEN WAYS TO GET OFF THE GROUND</h2>
+      <div class="hr-top reveal">
+        <div class="hr-head">
+          <p class="eyebrow">Rides &amp; attractions</p>
+          <h2 class="sec-title">EVERY WAY OFF THE GROUND</h2>
+        </div>
+        <a class="hr-all" href="#/rides">View all<i aria-hidden="true"></i></a>
       </div>
-      <div class="rail-wrap">
-        <button class="rail-btn prev" type="button" data-rail="hr-rail"
-                aria-label="Previous rides">&#8249;</button>
-        <div class="rail" id="hr-rail"></div>
-        <button class="rail-btn next" type="button" data-rail="hr-rail"
-                aria-label="More rides">&#8250;</button>
+
+      <div class="hr-tabs reveal" id="hr-tabs" role="tablist" aria-label="Kinds of ride"></div>
+
+      <div class="hr-wrap">
+        <div class="hr-rail" id="hr-rail"></div>
       </div>
-      <div class="ride-cta reveal">
-        <a href="#/rides" class="pill light big-pill">All rides and prices</a>
+
+      <div class="hr-foot reveal">
+        <div class="hr-nav">
+          <button class="hr-arrow" id="hr-prev" type="button" aria-label="Previous rides">
+            <i aria-hidden="true"></i>
+          </button>
+          <button class="hr-arrow" id="hr-next" type="button" aria-label="More rides">
+            <i aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="hr-bar" aria-hidden="true"><i id="hr-bar-i"></i></div>
       </div>
     </section>
 
@@ -1167,35 +1189,35 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=743"></script>
-  <script src="js/borders.js?v=743"></script>
-  <script src="js/scene.js?v=743"></script>
-  <script src="js/film.js?v=743" defer></script>
-  <script src="js/app.js?v=743"></script>
-  <script src="js/experiences.js?v=743"></script>
-  <script src="js/carousels.js?v=743"></script>
-  <script src="js/coverflow.js?v=743"></script>
-  <script src="js/zones.js?v=743"></script>
-  <script src="js/zonepage.js?v=743"></script>
-  <script src="js/fan.js?v=743"></script>
-  <script src="js/zonevid.js?v=743"></script>
+  <script src="js/data.js?v=746"></script>
+  <script src="js/borders.js?v=746"></script>
+  <script src="js/scene.js?v=746"></script>
+  <script src="js/film.js?v=746" defer></script>
+  <script src="js/app.js?v=746"></script>
+  <script src="js/experiences.js?v=746"></script>
+  <script src="js/carousels.js?v=746"></script>
+  <script src="js/coverflow.js?v=746"></script>
+  <script src="js/zones.js?v=746"></script>
+  <script src="js/zonepage.js?v=746"></script>
+  <script src="js/fan.js?v=746"></script>
+  <script src="js/zonevid.js?v=746"></script>
   <!-- what is left of the home-page blocks: the rides rail -->
-  <script src="js/home.js?v=743"></script>
-  <script src="js/records.js?v=743"></script>
-  <script src="js/sphere.js?v=743" defer></script>
-  <script src="js/gallery.js?v=743"></script>
-  <script src="js/parkmap.js?v=743"></script>
-  <script src="js/minimap.js?v=743"></script>
-  <script src="js/sponsors.js?v=743"></script>
-  <script src="js/about.js?v=743"></script>
-  <script src="js/cashless.js?v=743"></script>
-  <script src="js/headings.js?v=743"></script>
-  <script src="js/bundles.js?v=743"></script>
-  <script src="js/ridex.js?v=743"></script>
-  <script src="js/cursor.js?v=743"></script>
-  <script src="js/glass.js?v=743" defer></script>
+  <script src="js/home.js?v=746"></script>
+  <script src="js/records.js?v=746"></script>
+  <script src="js/sphere.js?v=746" defer></script>
+  <script src="js/gallery.js?v=746"></script>
+  <script src="js/parkmap.js?v=746"></script>
+  <script src="js/minimap.js?v=746"></script>
+  <script src="js/sponsors.js?v=746"></script>
+  <script src="js/about.js?v=746"></script>
+  <script src="js/cashless.js?v=746"></script>
+  <script src="js/headings.js?v=746"></script>
+  <script src="js/bundles.js?v=746"></script>
+  <script src="js/ridex.js?v=746"></script>
+  <script src="js/cursor.js?v=746"></script>
+  <script src="js/glass.js?v=746" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=743" defer></script>
+  <script src="js/heroes.js?v=746" defer></script>
 </body>
 </html>
