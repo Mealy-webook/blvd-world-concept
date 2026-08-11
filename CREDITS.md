@@ -418,3 +418,35 @@ cards would be a guess.
 
 The rows that are there — class, a turn, the fast lane — and the tab counts are all read
 from `WBK.rides`, so they follow the data rather than a hand-typed list.
+
+
+## The globe hero's tiles, from Figma
+
+Built to node `53:8929` of the BLVD World — Landing Page file
+(`Dsuv9NdftLBG0mWrB8Mp7b`). Scoped to `html[data-hero="globe"]`; the other three hero
+versions are untouched.
+
+Four assets and one glyph came out of the file rather than being substituted from our own
+photography — they are cut-outs placed to the design, and nothing we hold is a dolphin on
+a transparent background. Figma's asset URLs expire in about seven days, so the bytes are
+committed here.
+
+| file | in the design |
+| --- | --- |
+| `img/hero/tile-arch.png` | the lit BLVD World gate, entry-ticket tile |
+| `img/hero/tile-rides.png` | the swing carousel, rides tile |
+| `img/hero/tile-dolphin.png` | the dolphin cut-out, experiences tile |
+| `img/hero/tile-biryani.png` | the biryani bowl, restaurants tile |
+| `img/hero/riyal.svg` | the Saudi Riyal mark, used in place of the letters "SAR" |
+
+They arrived at 1600–4096px and 11.3MB for the four. Resampled to twice their rendered
+size — 836KB for the set.
+
+**The prices are ours, not the file's.** The design reads 40 / 199 / 50 / 150; we carry
+50 / 89 / 150 / 100, and those are the figures the packages page and every booking row
+print. Four hero tiles disagreeing with the page they link to is worse than a hero that
+disagrees with the mock — **for the client to settle.**
+
+The tile labels are short in this version only ("Entry ticket", "Rides", "Experiences",
+"Restaurants"). Both forms live on the element as `data-full` / `data-short`, and
+`js/heroes.js` chooses; the copy stays in the markup.

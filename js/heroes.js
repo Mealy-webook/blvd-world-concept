@@ -86,6 +86,18 @@
       });
     }
 
+    /* ── the tile labels ──
+       The globe version's design (Figma 53:8929) names the tiles "Entry ticket",
+       "Rides", "Experiences", "Restaurants" — no verb. Every other version keeps "Book
+       …", which is what makes the row read as the call to action.
+
+       Both forms are on the element as data attributes rather than in here, so the copy
+       stays in the markup where it can be read and edited, and this only chooses. */
+    for (const n of document.querySelectorAll(".bt-name[data-full]")) {
+      const want = v === "globe" ? n.dataset.short : n.dataset.full;
+      if (want && n.textContent !== want) n.textContent = want;
+    }
+
     for (const b of document.querySelectorAll(".hv-opt")) {
       const on = b.dataset.hero === v;
       b.classList.toggle("on", on);

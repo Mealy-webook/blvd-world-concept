@@ -6054,6 +6054,149 @@ html[data-hero="globe"] .bt:hover {
                               rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .06) 100%);
 }
 html[data-hero="globe"] .bt > .bt-sheen::after { opacity: .18; }
+
+/* ── the tiles, to the Figma (node 53:8929) ──
+   The glass pane above is already the design's own background — the same three-stop
+   white gradient — because the design was drawn on top of this version. What follows is
+   the rest of it: the card's metrics, the type, the photograph bleeding out of the
+   bottom, and the pill on a scrim.
+
+   No new elements. The design has no icon, so .bt-ic becomes the photograph; .bt-go is
+   dead in every version, so it becomes the scrim the pill sits on. Four assets came out
+   of the file itself (img/hero/tile-*.png) rather than being substituted from our own
+   photography — they are cut-outs sized and placed to the design, and nothing we hold
+   is a dolphin on a transparent background.
+
+   PRICES ARE OURS, NOT THE FILE'S. The design reads 40 / 199 / 50 / 150; we carry
+   50 / 89 / 150 / 100, and those are the figures the packages page and the booking rows
+   print. Four hero tiles disagreeing with the page they link to is worse than a hero
+   that disagrees with the mock. Flagged for the client to settle. */
+/* The row's own width, against the viewport rather than its column. .hero-ui is a grid
+   with one auto column, so the column is only as wide as its widest child — and
+   .book-tiles asking for min(880px, 100%) resolved that 100% against the column, which
+   the other children had already sized to ~650px. The tiles came out 148px against the
+   design's 182px. 788px is the file's row exactly: four 182s and three 20s. */
+html[data-hero="globe"] .book-tiles {
+  --bt-gap: clamp(10px, 1.6vw, 20px);
+  width: min(788px, calc(100vw - 12vw));
+}
+html[data-hero="globe"] .bt {
+  /* every offset below is a share of this, not of the card's width: the file's card is
+     182 x 222 and ours is narrower, so scaling the photographs off the width shrank them
+     while the height stayed put */
+  --bt-h: clamp(186px, 17.5vw, 222px);
+  height: var(--bt-h);
+  padding: 16px; gap: 4px;
+  border-radius: 26px;
+  align-content: start;
+  box-shadow: 0 2px 6px rgba(2, 4, 16, .3);
+  backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px);
+}
+html[data-hero="globe"] .bt:hover { box-shadow: 0 10px 22px rgba(2, 4, 16, .42); }
+
+/* ── the type ── */
+html[data-hero="globe"] .bt-text { gap: 4px; }
+html[data-hero="globe"] .bt-name {
+  font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 1.6vw, 20px);
+  letter-spacing: -.01em; color: #fff; white-space: nowrap;
+}
+/* "From" in the secondary grey, the figure in the primary — the file's own two tokens */
+html[data-hero="globe"] .bt-price {
+  gap: 5px; font-family: var(--body); font-size: 12px; font-weight: 400;
+  letter-spacing: 0; text-transform: none; color: #a1a1aa;
+}
+html[data-hero="globe"] .bt-price b {
+  font-family: var(--body); font-size: 14px; font-weight: 400;
+  letter-spacing: 0; color: #e4e4e7;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+/* the riyal mark, from the file, in place of the letters. The glyph is 9.625 x 11 in the
+   source, so the box is set on the height and the width follows. */
+html[data-hero="globe"] .bt-cur {
+  display: inline-block; width: 10px; height: 11px;
+  background: currentColor;
+  -webkit-mask: url("../img/hero/riyal.svg") center / contain no-repeat;
+          mask: url("../img/hero/riyal.svg") center / contain no-repeat;
+  text-indent: -999em; overflow: hidden;   /* the letters stay for a screen reader */
+}
+
+/* ── the photograph ──
+   Oversized and bleeding out of the card on purpose; .bt's overflow: hidden is the clip.
+   Every offset is the file's, as a share of its 182px card so it scales with ours. */
+/* Scoped .bt .bt-ic, not .bt-ic, on purpose. .bt.is-primary .bt-ic exists further up and
+   sets the icon plate with the `background` SHORTHAND — which resets background-size,
+   -position and -repeat to auto / 0% 0% / repeat — and at three classes it outspecifies
+   a two-class selector. The entry tile alone drew its photograph at intrinsic size,
+   tiled, from the top-left corner. Three classes here wins it back; background-color is
+   named separately so the shorthand's colour goes too. */
+html[data-hero="globe"] .bt .bt-ic {
+  position: absolute; z-index: 1;
+  width: auto; height: auto; border: 0; border-radius: 0;
+  pointer-events: none;
+  background-color: transparent;
+  background-repeat: no-repeat; background-position: center; background-size: contain;
+}
+html[data-hero="globe"] .bt .bt-ic svg { display: none; }
+
+/* entry ticket: the arch, wide and low, with the file's deep shadow under it.
+   292 x 153 at -65, 80.94 on a 222-tall card. */
+html[data-hero="globe"] .bt:nth-child(1) .bt-ic {
+  left: calc(var(--bt-h) * -0.293); top: calc(var(--bt-h) * 0.365);
+  width: calc(var(--bt-h) * 1.315); aspect-ratio: 292 / 153;
+  background-image: url("../img/hero/tile-arch.png");
+  filter: drop-shadow(0 26px 60px rgba(2, 4, 14, .62));
+}
+/* rides: the swing, off the right edge. 324 x 163 at right -80, top 76.94. */
+html[data-hero="globe"] .bt:nth-child(2) .bt-ic {
+  right: calc(var(--bt-h) * -0.360); top: calc(var(--bt-h) * 0.347);
+  width: calc(var(--bt-h) * 1.459); aspect-ratio: 324 / 163;
+  background-image: url("../img/hero/tile-rides.png");
+}
+/* experiences: the dolphin, flipped and turned as the file turns it. Its box is 247
+   square at -14.96, 66.26, with the image at 88.5% inside — which is what contain
+   gives us. */
+html[data-hero="globe"] .bt:nth-child(3) .bt-ic {
+  left: calc(var(--bt-h) * -0.067); top: calc(var(--bt-h) * 0.298);
+  width: calc(var(--bt-h) * 1.113); aspect-ratio: 1;
+  background-image: url("../img/hero/tile-dolphin.png");
+  transform: scaleY(-1) rotate(-171.97deg);
+}
+/* restaurants: the bowl, 182 square at 0, 60.94 */
+html[data-hero="globe"] .bt:nth-child(4) .bt-ic {
+  left: 0; top: calc(var(--bt-h) * 0.274);
+  width: calc(var(--bt-h) * 0.820); aspect-ratio: 1;
+  background-image: url("../img/hero/tile-biryani.png");
+}
+
+/* ── the pill, and the scrim it sits on ── */
+html[data-hero="globe"] .bt-tag {
+  position: absolute; z-index: 3; bottom: 16px; left: 50%; translate: -50% 0;
+  margin: 0; padding: 4px 10px; border-radius: 999px;
+  background: #fff; box-shadow: none;
+  filter: drop-shadow(0 0 7px rgba(0, 0, 0, .25));
+  font-family: var(--disp); font-size: 12px; font-weight: 500;
+  letter-spacing: 0; text-transform: none; color: #000; white-space: nowrap;
+}
+/* the entry tile has no pill in the design: it is the one way in that does not add a
+   zone, so there is nothing for it to say */
+html[data-hero="globe"] .bt.is-primary .bt-tag { display: none; }
+/* .bt-go is dead everywhere else; here it is the blurred scrim under the pill */
+html[data-hero="globe"] .bt-go {
+  display: block; position: absolute; z-index: 2;
+  left: 0; right: 0; bottom: 0; height: 52px;
+  background: rgba(0, 0, 0, .1);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+html[data-hero="globe"] .bt.is-primary .bt-go { display: none; }
+
+@media (max-width: 560px) {
+  /* two up, and the photographs come down with the card */
+  html[data-hero="globe"] .bt { height: clamp(150px, 44vw, 190px); padding: 13px; border-radius: 20px; }
+  html[data-hero="globe"] .bt-name { font-size: 14.5px; white-space: normal; }
+  html[data-hero="globe"] .bt-tag { bottom: 11px; font-size: 10.5px; padding: 3px 8px; }
+  html[data-hero="globe"] .bt-go { height: 40px; }
+}
 .globe-fail {
   position: absolute; inset: 0; display: grid; place-content: center; padding: 0 8vw;
   text-align: center; font-family: var(--ui); font-size: 13px; color: var(--dim);
