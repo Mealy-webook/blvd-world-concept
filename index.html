@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=727" />
+<link rel="stylesheet" href="css/main.css?v=729" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=727" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=729" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -221,30 +221,35 @@
     </section>
 
     <!-- ══════════ THE FILM ══════════
-         BLVD World's own banner film, the same video/hero-real.mp4 the "real video"
-         hero version plays — one file, used in two places, rather than a second copy
-         of it. See CREDITS.md.
+         BLVD World's own banner film — the same video/hero-real.mp4 the "real video"
+         hero version plays, one file used twice rather than a second copy. CREDITS.md.
 
-         It does not autoplay. A 5.7MB film starting on its own after the About copy is
-         a section that talks over the one above it, and muted autoplay of the park's
-         own film throws away its sound. The poster is a frame of the film, so the
-         section is a picture until it is a film. -->
+         No frame around it. The tray it used to sit in was card chrome around a
+         photograph, which is the thing this site took off everything else: the film is
+         the object, so it runs the width of the page and the type sits on it.
+
+         It does not autoplay. A 5.7MB film starting on its own would talk over the
+         About copy above it, and muted autoplay throws away the park's own sound. -->
     <section class="film" id="film">
-      <div class="fm-head reveal">
-        <p class="eyebrow">The park, filmed</p>
-        <h2 class="sec-title">SEE IT MOVING</h2>
-      </div>
-      <div class="fm-frame reveal">
-        <!-- no controls attribute: the browser's own control bar paints through the
-             play plate, so the section showed two play buttons and a scrubber before
-             anything had started. js/film.js turns them on the moment it plays. -->
+      <div class="fm-stage" id="fm-stage">
+        <!-- the poster is a frame of the film itself, grabbed out of hero-real.mp4:
+             its opening aerial over World Gate. It used to be the key art, which
+             carries its own "EXPLORE NEW WORLDS" lockup — so the section showed two
+             headlines, one of them upside-down to the other. -->
         <video id="fm-vid" class="fm-vid" playsinline preload="metadata"
-               poster="img/exp/wbk-hero.jpg">
-          <source src="video/hero-real.mp4" type="video/mp4" />
-        </video>
-        <button class="fm-play" id="fm-play" type="button" aria-label="Play the film">
-          <i aria-hidden="true"></i><span>Play the film</span>
-        </button>
+               poster="img/film-poster.jpg"></video>
+        <!-- one source, set by js/film.js only once the section is near, so a 5.7MB
+             file is not fetched by everyone who lands on the page -->
+
+        <!-- the type is on the film, and leaves with it when it plays -->
+        <div class="fm-over">
+          <p class="eyebrow">The park, filmed</p>
+          <h2 class="sec-title fm-h">SEE IT MOVING</h2>
+          <button class="fm-play" id="fm-play" type="button" aria-label="Play the film">
+            <span class="fm-disc" aria-hidden="true"><i></i></span>
+            <span class="fm-lab">Play &#183; 0:32 &#183; with sound</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1178,33 +1183,33 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=727"></script>
-  <script src="js/borders.js?v=727"></script>
-  <script src="js/scene.js?v=727"></script>
-  <script src="js/film.js?v=727" defer></script>
-  <script src="js/app.js?v=727"></script>
-  <script src="js/experiences.js?v=727"></script>
-  <script src="js/carousels.js?v=727"></script>
-  <script src="js/coverflow.js?v=727"></script>
-  <script src="js/zones.js?v=727"></script>
-  <script src="js/zonepage.js?v=727"></script>
-  <script src="js/fan.js?v=727"></script>
-  <script src="js/zonevid.js?v=727"></script>
-  <script src="js/records.js?v=727"></script>
-  <script src="js/sphere.js?v=727" defer></script>
-  <script src="js/gallery.js?v=727"></script>
-  <script src="js/parkmap.js?v=727"></script>
-  <script src="js/minimap.js?v=727"></script>
-  <script src="js/sponsors.js?v=727"></script>
-  <script src="js/about.js?v=727"></script>
-  <script src="js/cashless.js?v=727"></script>
-  <script src="js/headings.js?v=727"></script>
-  <script src="js/bundles.js?v=727"></script>
-  <script src="js/ridex.js?v=727"></script>
-  <script src="js/cursor.js?v=727"></script>
-  <script src="js/glass.js?v=727" defer></script>
+  <script src="js/data.js?v=729"></script>
+  <script src="js/borders.js?v=729"></script>
+  <script src="js/scene.js?v=729"></script>
+  <script src="js/film.js?v=729" defer></script>
+  <script src="js/app.js?v=729"></script>
+  <script src="js/experiences.js?v=729"></script>
+  <script src="js/carousels.js?v=729"></script>
+  <script src="js/coverflow.js?v=729"></script>
+  <script src="js/zones.js?v=729"></script>
+  <script src="js/zonepage.js?v=729"></script>
+  <script src="js/fan.js?v=729"></script>
+  <script src="js/zonevid.js?v=729"></script>
+  <script src="js/records.js?v=729"></script>
+  <script src="js/sphere.js?v=729" defer></script>
+  <script src="js/gallery.js?v=729"></script>
+  <script src="js/parkmap.js?v=729"></script>
+  <script src="js/minimap.js?v=729"></script>
+  <script src="js/sponsors.js?v=729"></script>
+  <script src="js/about.js?v=729"></script>
+  <script src="js/cashless.js?v=729"></script>
+  <script src="js/headings.js?v=729"></script>
+  <script src="js/bundles.js?v=729"></script>
+  <script src="js/ridex.js?v=729"></script>
+  <script src="js/cursor.js?v=729"></script>
+  <script src="js/glass.js?v=729" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=727" defer></script>
+  <script src="js/heroes.js?v=729" defer></script>
 </body>
 </html>

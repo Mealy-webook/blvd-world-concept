@@ -4324,61 +4324,124 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .sc-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ═══════════════ THE FILM ═══════════════
-   The park's own banner film, framed the way the cards are framed: a tray with a
-   hairline and a concentric inner radius, so the video sits in something rather than
-   floating as a bare rectangle. */
+   No frame. The film runs the full width of the page — the gallery's own trick, a
+   section with no horizontal padding — and the type sits on it rather than above it.
+
+   The delight is one move, driven by scroll: the film arrives as a letterbox slot and
+   opens to full height as you come down onto it, with the type rising off it and the
+   corners squaring up as it lands. js/film.js writes --fm-p, 0 to 1, across the
+   approach. Everything it drives is transform, opacity, scale and one radius — the
+   heavy properties (width, height, clip-path) are left alone. */
 .film {
   position: relative; z-index: 11;
-  padding: var(--sec-y) var(--sec-x);
-  display: grid; gap: var(--sp-4); justify-items: center;
-  grid-template-columns: minmax(0, 1fr);
+  padding: var(--sec-y) 0;              /* full bleed, like .gallery */
+  display: grid; justify-items: center; grid-template-columns: minmax(0, 1fr);
+  --fm-p: 0;
 }
-.fm-head { display: grid; justify-items: center; gap: 10px; text-align: center; }
-.fm-frame {
-  position: relative; width: 100%; max-width: min(1040px, 100%);
-  padding: clamp(6px, .8vw, 10px);
-  border-radius: clamp(18px, 2vw, 28px);
-  background: rgba(199, 226, 255, .06);
-  border: 1px solid rgba(199, 226, 255, .16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 26px 60px rgba(2, 4, 16, .46);
+.fm-stage {
+  position: relative; width: 100%;
+  /* the slot opens: 46vh of letterbox at --fm-p 0, 82vh of film at 1 */
+  height: calc(46vh + var(--fm-p) * 36vh);
+  overflow: hidden;
+  border-radius: calc((1 - var(--fm-p)) * 26px);
+  /* and it grows the last few per cent of the width as it lands */
+  scale: calc(.92 + var(--fm-p) * .08);
+  transition: none;                     /* scroll drives it; no lag between the two */
 }
 .fm-vid {
-  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
-  object-fit: cover;
-  /* concentric with the tray: the outer radius less the padding */
-  border-radius: calc(clamp(18px, 2vw, 28px) - clamp(6px, .8vw, 10px));
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
   background: #06070d;
+  /* the film itself drifts up a little slower than the page, which is what makes the
+     slot feel like a window onto it rather than a box holding it */
+  translate: 0 calc((1 - var(--fm-p)) * -4vh);
+  scale: calc(1.06 - var(--fm-p) * .06);
 }
-/* the plate that starts it, and takes itself away once it has */
+/* The scrim. It has to carry white display type over the poster, which is a daylight
+   aerial — a pale sky and a pale plaza — so this is heavier than a decorative
+   vignette: a deep floor under the type, a wash over the whole frame to seat it in the
+   page's night, and a top edge so the section does not start with a bright band. */
+.fm-stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 20, .72) 0%, rgba(4, 7, 20, .12) 26%,
+                            rgba(4, 7, 20, .34) 54%, rgba(4, 7, 20, .93) 100%),
+    radial-gradient(130% 78% at 50% 112%, rgba(4, 7, 20, .78), transparent 66%);
+}
+
+/* ── the type, on the film ── */
+.fm-over {
+  position: absolute; inset: auto 0 0; z-index: 2;
+  display: grid; justify-items: center; gap: clamp(10px, 1.4vh, 18px);
+  padding: 0 var(--sec-x) clamp(26px, 5vh, 60px);
+  text-align: center;
+  /* it rises as the slot opens */
+  translate: 0 calc((1 - var(--fm-p)) * 22px);
+  opacity: calc(.35 + var(--fm-p) * .65);
+}
+.fm-h { text-shadow: 0 3px 26px rgba(2, 4, 16, .75); }
+.fm-over .eyebrow { color: #e6efff; text-shadow: 0 2px 14px rgba(2, 4, 16, .8); }
+.fm-lab { text-shadow: 0 2px 12px rgba(2, 4, 16, .8); }
+
+/* ── the control ── */
 .fm-play {
-  position: absolute; inset: clamp(6px, .8vw, 10px);
-  /* align-content, not just place-items: two auto rows in a stretched grid each centre
-     their own item, which put the disc in the top half and the label in the bottom */
-  display: grid; place-items: center; align-content: center;
-  gap: 14px; grid-auto-flow: row;
-  border: 0; border-radius: inherit; cursor: pointer;
-  background: linear-gradient(180deg, rgba(4, 7, 20, .28), rgba(4, 7, 20, .62));
-  transition: opacity .4s var(--ease), visibility .4s;
+  display: grid; justify-items: center; gap: 12px;
+  border: 0; background: none; cursor: pointer; padding: 4px;
 }
-.fm-play i {
-  width: clamp(58px, 6vw, 78px); aspect-ratio: 1; border-radius: 50%;
-  background: #eef3ff; box-shadow: 0 14px 34px rgba(2, 4, 16, .5);
-  display: grid; place-items: center;
-  transition: transform .3s var(--ease);
+.fm-disc {
+  position: relative; display: grid; place-items: center;
+  width: clamp(62px, 6.4vw, 84px); aspect-ratio: 1; border-radius: 50%;
+  background: rgba(238, 243, 255, .1);
+  border: 1px solid rgba(238, 243, 255, .5);
+  backdrop-filter: blur(8px);
+  transition: background .35s var(--ease), transform .35s var(--ease),
+              border-color .35s var(--ease);
 }
-/* the triangle, drawn rather than fetched */
-.fm-play i::after {
-  content: ""; width: 0; height: 0; margin-left: 5px;
-  border-left: clamp(17px, 1.8vw, 23px) solid #0b1020;
-  border-block: clamp(11px, 1.15vw, 15px) solid transparent;
+/* the triangle, drawn */
+.fm-disc i {
+  width: 0; height: 0; margin-left: 5px;
+  border-left: clamp(16px, 1.7vw, 22px) solid #eef3ff;
+  border-block: clamp(10px, 1.1vw, 14px) solid transparent;
+  transition: border-left-color .35s var(--ease);
 }
-.fm-play span {
-  font-family: var(--ui); font-size: 12px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: #dce7ff;
+/* a ring that leaves the disc on a slow beat — the one thing on the section that
+   moves without being scrolled, so the film reads as playable while it is still */
+.fm-disc::after {
+  content: ""; position: absolute; inset: -1px; border-radius: 50%;
+  border: 1px solid var(--gold);
+  animation: fmRing 2.8s var(--ease) infinite;
 }
-.fm-play:hover i { transform: scale(1.07); }
-.fm-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-.fm-frame.is-playing .fm-play { opacity: 0; visibility: hidden; }
+@keyframes fmRing {
+  0%        { transform: scale(1);    opacity: .55; }
+  70%, 100% { transform: scale(1.55); opacity: 0; }
+}
+.fm-play:hover .fm-disc {
+  background: var(--gold); border-color: var(--gold); transform: scale(1.06);
+}
+.fm-play:hover .fm-disc i { border-left-color: #1c1403; }
+.fm-play:focus-visible .fm-disc { outline: 2px solid var(--gold); outline-offset: 5px; }
+.fm-lab {
+  font-family: var(--fig); font-size: 10px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: #cfe0ff;
+}
+
+/* playing: the type and the control get out of the way, and the slot is already open */
+.film.is-playing .fm-over { opacity: 0; visibility: hidden; translate: 0 12px; }
+.film.is-playing .fm-stage::after { opacity: 0; }
+.film.is-playing .fm-over,
+.film.is-playing .fm-stage::after { transition: opacity .45s var(--ease), translate .45s var(--ease), visibility .45s; }
+.film.is-playing .fm-vid { translate: 0 0; scale: 1; }
+
+@media (max-width: 700px) {
+  .fm-stage { height: calc(38vh + var(--fm-p) * 26vh); }
+  .fm-lab { font-size: 9px; letter-spacing: .12em; }
+}
+/* nothing to drive if nothing may move: the slot opens once and stays open */
+@media (prefers-reduced-motion: reduce) {
+  .film { --fm-p: 1 !important; }
+  .fm-disc::after { animation: none; }
+  .fm-vid, .fm-stage { transition: none; }
+}
 
 /* ═══════════════ THE SECTION DOCK ═══════════════
    The scroll-spied section nav, floating at the bottom of the home page: a pill as
