@@ -5595,30 +5595,141 @@ html[data-hero="real"] {
 /* ── the tiles, white on the footage ──
    Everywhere else these are glass: a tint that darkens down the pane so a white label
    survives a firework going off behind it. Over real night footage the ask is the
-   opposite — a solid white card, with the type flipped to ink so it stays legible on
-   it. The magenta primary tile keeps its fill; it is the brand accent and the one
-   thing on the row that is meant to be louder than the others. */
+   opposite — a solid card, ink type, and enough physical detail that it reads as a
+   plate resting on the film rather than a rectangle punched out of it.
+
+   The metrics below are applied to every tile in the row, primary included, because a
+   row of four is only even if they share one set. Only the colour differs. */
+html[data-hero="real"] .bt {
+  gap: 14px;
+  padding: 22px 16px 16px;
+  border-radius: 24px;
+}
+/* the plate itself: a warm white, a lit top edge, and a shadow with two falloffs —
+   a tight contact shadow to sit it down, and a wide ambient one to lift it off the
+   footage. One flat drop shadow reads as a sticker. */
 html[data-hero="real"] .bt:not(.is-primary) {
-  background: #f4f7ff;
+  background: linear-gradient(180deg, #ffffff 0%, #eef2fb 100%);
   backdrop-filter: none; -webkit-backdrop-filter: none;
-  box-shadow: 0 18px 46px rgba(0, 0, 0, .5), inset 0 -1px 1px rgba(0, 0, 0, .08);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(11, 16, 32, .07),
+    0 2px 4px rgba(0, 0, 0, .28),
+    0 22px 50px rgba(0, 0, 0, .45);
 }
-html[data-hero="real"] .bt:not(.is-primary):hover { background: #fff; }
-html[data-hero="real"] .bt:not(.is-primary) .bt-name { color: #0b1020; }
-html[data-hero="real"] .bt:not(.is-primary) .bt-price { color: #4a5878; }
-html[data-hero="real"] .bt:not(.is-primary) .bt-price b { color: #0b1020; }
+html[data-hero="real"] .bt:not(.is-primary):hover {
+  background: linear-gradient(180deg, #fff 0%, #f6f8ff 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(11, 16, 32, .1),
+    0 3px 6px rgba(0, 0, 0, .3),
+    0 30px 64px rgba(0, 0, 0, .5);
+}
+/* the icon core, nested: its radius is the card's less the padding, so the two curves
+   are concentric rather than approximately similar */
+html[data-hero="real"] .bt .bt-ic {
+  width: 54px; height: 54px;
+  border-radius: calc(24px - 8px);
+}
 html[data-hero="real"] .bt:not(.is-primary) .bt-ic {
-  background: rgba(11, 16, 32, .07);
+  background: linear-gradient(180deg, #0f1730, #1b264a);
+  border: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 4px 10px rgba(11, 16, 32, .22);
 }
-html[data-hero="real"] .bt:not(.is-primary) .bt-ic svg {
-  fill: #1a2440; filter: none;
+html[data-hero="real"] .bt:not(.is-primary) .bt-ic svg { fill: #fff; filter: none; }
+html[data-hero="real"] .bt:not(.is-primary):hover .bt-ic {
+  background: linear-gradient(180deg, var(--btn), #a3005e);
 }
-html[data-hero="real"] .bt:not(.is-primary) .bt-tag {
-  color: #4a5878; border-color: rgba(11, 16, 32, .18);
-  background: rgba(11, 16, 32, .04);
+
+/* ── the type, as ink ── */
+html[data-hero="real"] .bt:not(.is-primary) .bt-name { color: #0b1020; }
+html[data-hero="real"] .bt .bt-name { font-size: 17px; letter-spacing: -.025em; }
+/* the price is the second thing you read, so the figure is a figure and not a
+   footnote: the label drops to a caption and the number takes the weight */
+html[data-hero="real"] .bt .bt-price { gap: 5px; font-size: 9.5px; letter-spacing: .16em; }
+html[data-hero="real"] .bt .bt-price b { font-size: 21px; letter-spacing: -.01em; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-price { color: #7c8aa8; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-price b { color: #0b1020; }
+
+/* ── the tag, as a footer line ──
+   It was a pill sitting under the price, competing with it at the same scale. Here it
+   is the card's last line, over a hairline that runs the full width — so the card
+   reads name, price, then what is included, in that order. */
+html[data-hero="real"] .bt .bt-tag {
+  margin-top: 12px; width: 100%;
+  padding: 11px 0 0; border-radius: 0;
+  background: none; box-shadow: none;
+  font-size: 8px; letter-spacing: .15em;
+  border-top: 1px solid rgba(11, 16, 32, .1);
 }
+html[data-hero="real"] .bt:not(.is-primary) .bt-tag { color: #7c8aa8; }
+html[data-hero="real"] .bt.is-primary .bt-tag {
+  color: rgba(255, 255, 255, .82);
+  border-top-color: rgba(255, 255, 255, .28);
+}
+/* the tag is the full width of the card, so the text block must be too, or the
+   hairline stops short of the padding */
+html[data-hero="real"] .bt { grid-template-columns: minmax(0, 1fr); }
+html[data-hero="real"] .bt-text { width: 100%; }
+
+/* ── the trailing arrow, nested ──
+   Hidden on every other version — .bt-go went with the tile's fill. Here it comes
+   back as a control inside a control: its own circle, in the top-right of the card,
+   arriving and travelling diagonally under the pointer. It is the one moving part,
+   which is what makes the card feel pressable rather than printed. */
+html[data-hero="real"] .bt-go {
+  display: grid; place-items: center;
+  /* 17px in, not 14: the card's corner radius is 24px, and a disc any closer than
+     that sits in the bite the curve takes out of the corner and reads as hanging off
+     the edge rather than resting inside it */
+  position: absolute; top: 17px; right: 17px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(11, 16, 32, .06);
+  opacity: 0; transform: translate(-3px, 3px) scale(.9);
+  transition: opacity .32s var(--ease), transform .32s var(--ease), background .32s var(--ease);
+}
+/* the arrow itself: a corner and a diagonal, drawn */
+html[data-hero="real"] .bt-go::before {
+  content: ""; width: 8px; height: 8px;
+  border-top: 1.8px solid #0b1020; border-right: 1.8px solid #0b1020;
+  transform: rotate(45deg) translate(-1px, 1px);
+}
+html[data-hero="real"] .bt:hover .bt-go,
+html[data-hero="real"] .bt:focus-visible .bt-go {
+  opacity: 1; transform: translate(0, 0) scale(1);
+}
+html[data-hero="real"] .bt:hover .bt-go { background: var(--gold); }
+html[data-hero="real"] .bt.is-primary .bt-go { background: rgba(255, 255, 255, .2); }
+html[data-hero="real"] .bt.is-primary .bt-go::before { border-color: #fff; }
+html[data-hero="real"] .bt.is-primary:hover .bt-go { background: rgba(255, 255, 255, .32); }
+
 /* the sheen is a white gleam; on a white card it is invisible and only adds paint */
 html[data-hero="real"] .bt:not(.is-primary) .bt-sheen { display: none; }
+
+/* the primary keeps the magenta — it is the brand accent and the one tile in the row
+   meant to be louder — but takes the same shadow discipline as its neighbours */
+html[data-hero="real"] .bt.is-primary {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -2px 0 rgba(104, 0, 60, .5),
+    0 2px 4px rgba(0, 0, 0, .28),
+    0 22px 50px rgba(160, 0, 90, .34);
+}
+html[data-hero="real"] .bt.is-primary:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .26),
+    inset 0 -2px 0 rgba(104, 0, 60, .5),
+    0 3px 6px rgba(0, 0, 0, .3),
+    0 30px 64px rgba(160, 0, 90, .44);
+}
+
+@media (max-width: 700px) {
+  html[data-hero="real"] .bt { padding: 18px 12px 13px; border-radius: 20px; }
+  html[data-hero="real"] .bt .bt-ic { width: 46px; height: 46px; border-radius: 13px; }
+  html[data-hero="real"] .bt .bt-name { font-size: 15px; }
+  html[data-hero="real"] .bt .bt-price b { font-size: 18px; }
+  html[data-hero="real"] .bt-go { display: none; }   /* no hover to reveal it */
+}
 
 html[data-hero="real"] .faq-item.open { border-color: rgba(255, 255, 255, .34); background: rgba(255, 255, 255, .07); }
 html[data-hero="real"] .faq-item:hover { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .2); }
