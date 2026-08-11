@@ -70,15 +70,13 @@
       }
     }
 
-    // The globe is a module and three.js is a real download, so it is only fetched
-    // if someone actually asks for that version — and while the globe section is
-    // held back in the CSS there is nothing on screen for it to draw into, so it
-    // is not fetched at all. Restore the section's display: block and drop the
-    // getComputedStyle guard together.
+    // The globe is a module and three.js is a real download, so it is only fetched if
+    // someone actually asks for this version. The getComputedStyle guard that used to
+    // sit here went with the section being held back: it checked whether the holder's
+    // parent was display: none, which is now the thing we want, so keeping it would
+    // have meant the module was never fetched at all.
     const holder = document.getElementById("globe-holder");
-    const holderShown =
-      holder && getComputedStyle(holder.parentElement).display !== "none";
-    if (v === "globe" && holderShown && !globeLoaded) {
+    if (v === "globe" && holder && !globeLoaded) {
       globeLoaded = true;
       import("./globe.js").catch(() => {
         if (holder) holder.innerHTML =

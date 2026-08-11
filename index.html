@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=749" />
+<link rel="stylesheet" href="css/main.css?v=750" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=749" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=750" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -322,6 +322,22 @@
       </div>
     </section>
 
+    <!-- ══════════ THE GLOBE ══════════
+         The planet, drag to explore. It belongs to the globe hero version and no other:
+         that version plays no footage, so the hero folds away into this and the planet
+         swells up out of the fold as you come down onto it (js/scene.js writes --globe-y,
+         --globe-s and --globe-o across the first screen).
+
+         js/globe.js is an ES module and is imported by js/heroes.js only when this
+         version is chosen — three.js is a real download and the other three versions
+         have no use for it. -->
+    <section class="globe-sec" id="globe-sec">
+      <div id="globe-holder"></div>
+      <div class="gallery-head reveal">
+        <p class="eyebrow">DRAG TO EXPLORE</p>
+      </div>
+    </section>
+
     <!-- ══════════ LAST SEASON ══════════
          One figure, and no box around it. The card this replaced was a 1050-by-390
          frame with four short lines floating in the middle of it — the container was
@@ -439,13 +455,6 @@
       <div class="sp-tiers" id="sp-tiers"></div>
     </section>
 
-
-    <section class="globe-sec" id="globe-sec">
-      <div id="globe-holder"></div>
-      <div class="gallery-head reveal">
-        <p class="eyebrow">DRAG TO EXPLORE</p>
-      </div>
-    </section>
 
     <section class="draws" id="draws" hidden>
       <ul class="dw-grid reveal">
@@ -1148,6 +1157,7 @@
        sections' own buttons, so every tab here is scroll-spied and none of them
        navigates away. -->
   <nav class="sc-tabs" id="sc-tabs" aria-label="Sections">
+    <a href="#globe-sec" data-sec="globe-sec">Globe</a>
     <a href="#pex" data-sec="pex">Zones</a>
     <a href="#hrides" data-sec="hrides">Rides</a>
     <a href="#film" data-sec="film">Film</a>
@@ -1189,35 +1199,35 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=749"></script>
-  <script src="js/borders.js?v=749"></script>
-  <script src="js/scene.js?v=749"></script>
-  <script src="js/film.js?v=749" defer></script>
-  <script src="js/app.js?v=749"></script>
-  <script src="js/experiences.js?v=749"></script>
-  <script src="js/carousels.js?v=749"></script>
-  <script src="js/coverflow.js?v=749"></script>
-  <script src="js/zones.js?v=749"></script>
-  <script src="js/zonepage.js?v=749"></script>
-  <script src="js/fan.js?v=749"></script>
-  <script src="js/zonevid.js?v=749"></script>
+  <script src="js/data.js?v=750"></script>
+  <script src="js/borders.js?v=750"></script>
+  <script src="js/scene.js?v=750"></script>
+  <script src="js/film.js?v=750" defer></script>
+  <script src="js/app.js?v=750"></script>
+  <script src="js/experiences.js?v=750"></script>
+  <script src="js/carousels.js?v=750"></script>
+  <script src="js/coverflow.js?v=750"></script>
+  <script src="js/zones.js?v=750"></script>
+  <script src="js/zonepage.js?v=750"></script>
+  <script src="js/fan.js?v=750"></script>
+  <script src="js/zonevid.js?v=750"></script>
   <!-- what is left of the home-page blocks: the rides rail -->
-  <script src="js/home.js?v=749"></script>
-  <script src="js/records.js?v=749"></script>
-  <script src="js/sphere.js?v=749" defer></script>
-  <script src="js/gallery.js?v=749"></script>
-  <script src="js/parkmap.js?v=749"></script>
-  <script src="js/minimap.js?v=749"></script>
-  <script src="js/sponsors.js?v=749"></script>
-  <script src="js/about.js?v=749"></script>
-  <script src="js/cashless.js?v=749"></script>
-  <script src="js/headings.js?v=749"></script>
-  <script src="js/bundles.js?v=749"></script>
-  <script src="js/ridex.js?v=749"></script>
-  <script src="js/cursor.js?v=749"></script>
-  <script src="js/glass.js?v=749" defer></script>
+  <script src="js/home.js?v=750"></script>
+  <script src="js/records.js?v=750"></script>
+  <script src="js/sphere.js?v=750" defer></script>
+  <script src="js/gallery.js?v=750"></script>
+  <script src="js/parkmap.js?v=750"></script>
+  <script src="js/minimap.js?v=750"></script>
+  <script src="js/sponsors.js?v=750"></script>
+  <script src="js/about.js?v=750"></script>
+  <script src="js/cashless.js?v=750"></script>
+  <script src="js/headings.js?v=750"></script>
+  <script src="js/bundles.js?v=750"></script>
+  <script src="js/ridex.js?v=750"></script>
+  <script src="js/cursor.js?v=750"></script>
+  <script src="js/glass.js?v=750" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=749" defer></script>
+  <script src="js/heroes.js?v=750" defer></script>
 </body>
 </html>

@@ -4898,7 +4898,11 @@ body:not(.route-home) .sc-tabs { display: none; }
 .sc-tabs .sc-pill { font-size: 12px; padding: 9px 17px; }
 /* the menu opens upward now that its button sits at the foot of the screen */
 .sc-book .bm-list { top: auto; bottom: calc(100% + 12px); }
-#sc-tabs a[data-sec="globe-sec"] { display: none; }   /* its section is hidden */
+/* The globe tab only exists where the globe does. The dock is shared by all four hero
+   versions, so a tab pointing at a section that is display: none in three of them would
+   be a link to nowhere three times out of four. */
+#sc-tabs a[data-sec="globe-sec"] { display: none; }
+html[data-hero="globe"] #sc-tabs a[data-sec="globe-sec"] { display: inline-flex; }
 .sc-tabs a {
   position: relative; flex: 0 0 auto;
   font-family: var(--ui); font-weight: 600; font-size: 11px; letter-spacing: .12em;
@@ -6031,12 +6035,9 @@ html[data-hero="real"] .street::after {
 
 /* the globe version has no footage at all: the planet rises out of the fold */
 html[data-hero="globe"] .hero-vid { display: none; }
-/* Held back for now. The globe version's hero still shows the planet swelling out
-   of the fold; what is hidden is the standalone globe *section* below it — the
-   full-screen planet with "drag to explore". Turn it back on by restoring
-   display: block here; nothing else was removed, and js/globe.js is simply not
-   fetched while this is off (see js/heroes.js). */
-html[data-hero="globe"] .globe-sec { display: none; }
+/* On. .globe-sec is display: none by default — it belongs to this version alone — so
+   this is the rule that shows it. */
+html[data-hero="globe"] .globe-sec { display: block; }
 /* With nothing playing behind it the hero sits on the page's own night sky, so
    the type needs none of the shadows the footage versions do — and the tiles need
    none of the dark tint either. That tint exists to keep a label readable when a
