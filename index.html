@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=741" />
+<link rel="stylesheet" href="css/main.css?v=743" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=741" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=743" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -300,21 +300,42 @@
       </div>
     </section>
 
+    <!-- ══════════ LAST SEASON ══════════
+         One figure, and no box around it. The card this replaced was a 1050-by-390
+         frame with four short lines floating in the middle of it — the container was
+         the loudest thing in the section, and the number it was holding was smaller
+         than the heading above it.
+
+         The figure is the section now. It is also given as the range it was given to
+         us as — "14 million to 20 million" — and the rail under it draws that range
+         rather than leaving a dash to carry it: two marks, the span between them, and
+         the ends labelled. Rendering it as 14 growing to 20 would assert a
+         year-on-year climb the figure as stated does not claim.
+
+         js/home.js counts the two ends up when the section arrives, and writes the
+         final values into the page first, so a tab opened in the background and read
+         later shows the numbers rather than two zeroes. -->
     <section class="visits" id="visits">
       <div class="vi-head reveal">
         <p class="eyebrow">Last season</p>
         <h2 class="sec-title">A CITY CAME THROUGH</h2>
       </div>
-      <ul class="dw-grid is-one reveal">
-        <li class="dw-card">
-          <span class="dw-ic" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M8.4 11.4a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm0-5.2a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM16.8 11.4a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-4.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM8.4 12.8c-3 0-5.8 1.5-5.8 3.5v2.9h11.6v-2.9c0-2-2.8-3.5-5.8-3.5zm4 4.6H4.4v-1.1c0-.7 1.7-1.7 4-1.7s4 1 4 1.7zM16.8 12.6c-.8 0-1.6.1-2.3.4 1.2.8 2 1.9 2 3.3v2.9h5.1v-2.6c0-1.9-2.3-4-4.8-4z"/></svg>
-          </span>
-          <b class="dw-n"><span class="vi-a">14</span>&#8211;<span class="vi-b">20</span> million</b>
-          <h3 class="dw-t">Total visits</h3>
-          <p class="dw-s">Across the season at BLVD World</p>
-        </li>
-      </ul>
+
+      <p class="vi-fig reveal">
+        <span class="vi-n" id="vi-a" data-to="14">14</span>
+        <span class="vi-dash" aria-hidden="true"></span>
+        <span class="vi-n" id="vi-b" data-to="20">20</span>
+        <span class="vi-unit">million</span>
+      </p>
+
+      <!-- the range, drawn. aria-hidden because the figure above already reads as
+           "14 to 20 million" to a screen reader; this is the same fact in ink. -->
+      <div class="vi-rail reveal" aria-hidden="true">
+        <span class="vi-track"><i class="vi-span"></i></span>
+        <span class="vi-ends"><em>14m</em><em>20m</em></span>
+      </div>
+
+      <p class="vi-cap reveal">Total visits across the season at BLVD World</p>
     </section>
 
     <section class="gallery" id="gallery">
@@ -1146,35 +1167,35 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=741"></script>
-  <script src="js/borders.js?v=741"></script>
-  <script src="js/scene.js?v=741"></script>
-  <script src="js/film.js?v=741" defer></script>
-  <script src="js/app.js?v=741"></script>
-  <script src="js/experiences.js?v=741"></script>
-  <script src="js/carousels.js?v=741"></script>
-  <script src="js/coverflow.js?v=741"></script>
-  <script src="js/zones.js?v=741"></script>
-  <script src="js/zonepage.js?v=741"></script>
-  <script src="js/fan.js?v=741"></script>
-  <script src="js/zonevid.js?v=741"></script>
+  <script src="js/data.js?v=743"></script>
+  <script src="js/borders.js?v=743"></script>
+  <script src="js/scene.js?v=743"></script>
+  <script src="js/film.js?v=743" defer></script>
+  <script src="js/app.js?v=743"></script>
+  <script src="js/experiences.js?v=743"></script>
+  <script src="js/carousels.js?v=743"></script>
+  <script src="js/coverflow.js?v=743"></script>
+  <script src="js/zones.js?v=743"></script>
+  <script src="js/zonepage.js?v=743"></script>
+  <script src="js/fan.js?v=743"></script>
+  <script src="js/zonevid.js?v=743"></script>
   <!-- what is left of the home-page blocks: the rides rail -->
-  <script src="js/home.js?v=741"></script>
-  <script src="js/records.js?v=741"></script>
-  <script src="js/sphere.js?v=741" defer></script>
-  <script src="js/gallery.js?v=741"></script>
-  <script src="js/parkmap.js?v=741"></script>
-  <script src="js/minimap.js?v=741"></script>
-  <script src="js/sponsors.js?v=741"></script>
-  <script src="js/about.js?v=741"></script>
-  <script src="js/cashless.js?v=741"></script>
-  <script src="js/headings.js?v=741"></script>
-  <script src="js/bundles.js?v=741"></script>
-  <script src="js/ridex.js?v=741"></script>
-  <script src="js/cursor.js?v=741"></script>
-  <script src="js/glass.js?v=741" defer></script>
+  <script src="js/home.js?v=743"></script>
+  <script src="js/records.js?v=743"></script>
+  <script src="js/sphere.js?v=743" defer></script>
+  <script src="js/gallery.js?v=743"></script>
+  <script src="js/parkmap.js?v=743"></script>
+  <script src="js/minimap.js?v=743"></script>
+  <script src="js/sponsors.js?v=743"></script>
+  <script src="js/about.js?v=743"></script>
+  <script src="js/cashless.js?v=743"></script>
+  <script src="js/headings.js?v=743"></script>
+  <script src="js/bundles.js?v=743"></script>
+  <script src="js/ridex.js?v=743"></script>
+  <script src="js/cursor.js?v=743"></script>
+  <script src="js/glass.js?v=743" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=741" defer></script>
+  <script src="js/heroes.js?v=743" defer></script>
 </body>
 </html>
