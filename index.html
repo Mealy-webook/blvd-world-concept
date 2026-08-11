@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=736" />
+<link rel="stylesheet" href="css/main.css?v=737" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=736" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=737" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -220,17 +220,30 @@
 
     </section>
 
+    <!-- ── the season's zones, as a ring of campaign posters ── -->
     <section class="zonesec" id="pex">
       <div class="zs-head reveal">
-        <p class="eyebrow">All worlds in one</p>
         <h2 class="sec-title">DISCOVER BLVD ZONES</h2>
-        <!-- No count in this line, deliberately. The client's own spec says the park
-             carries 24-27 zones; we hold data for twenty, so any number printed here
-             would be contradicted by the list directly under it. -->
-        <p class="sec-sub">One park, a different country in every corner. Open any of
-          them to see what is inside.</p>
       </div>
-      <div class="wr-list" id="wr-list"></div>
+
+      <!-- two layouts for the same zones: the ring, and the fan the globe version
+           uses instead. CSS shows one and hides the other; see data-hero. -->
+      <div class="zone-flow" id="zone-flow"></div>
+      <div class="zone-fan" id="zone-fan">
+        <div class="fan-stage">
+          <div class="fan-deck" id="zone-deck"></div>
+        </div>
+        <div class="fan-nav">
+          <button class="cf-nav prev" type="button" id="zone-prev" aria-label="Previous zone">&#8249;</button>
+          <div class="fan-dots" id="zone-dots" role="tablist" aria-label="Zones"></div>
+          <button class="cf-nav next" type="button" id="zone-next" aria-label="Next zone">&#8250;</button>
+        </div>
+      </div>
+
+      <!-- the map link went with it: the section right below is the map, and it
+           carries its own way in -->
+
+      <!-- the way to the map lives here now that the map module is off the page -->
       <div class="ride-cta reveal">
         <a href="#/map" class="pill light big-pill">Explore the map</a>
       </div>
@@ -263,24 +276,27 @@
 
     <section class="film" id="film">
       <div class="fm-stage" id="fm-stage">
-        <!-- the poster is a frame of the film itself, grabbed out of hero-real.mp4:
-             its opening aerial over World Gate. It used to be the key art, which
-             carries its own "EXPLORE NEW WORLDS" lockup — so the section showed two
-             headlines, one of them upside-down to the other. -->
-        <video id="fm-vid" class="fm-vid" playsinline preload="metadata"
-               poster="img/film-poster.jpg"></video>
-        <!-- one source, set by js/film.js only once the section is near, so a 5.7MB
-             file is not fetched by everyone who lands on the page -->
+        <!-- Autoplaying, so muted — a browser will not start a film with sound
+             without a gesture, and nor should it. The sound is one press away and the
+             control says so, which is the part that usually gets dropped.
 
-        <!-- the type is on the film, and leaves with it when it plays -->
+             The poster is a frame of the film itself, out of hero-real.mp4: its opening
+             aerial over World Gate. It used to be the key art, which carries its own
+             EXPLORE NEW WORLDS lockup, so the section showed two headlines. -->
+        <video id="fm-vid" class="fm-vid" muted loop playsinline preload="metadata"
+               poster="img/film-poster.jpg" aria-label="BLVD World, filmed"></video>
+
+        <!-- the type stays on the film now that it plays by itself: it is the section's
+             heading, and a heading that disappears is a section with no name -->
         <div class="fm-over">
           <p class="eyebrow">The park, filmed</p>
           <h2 class="sec-title fm-h">SEE IT MOVING</h2>
-          <button class="fm-play" id="fm-play" type="button" aria-label="Play the film">
-            <span class="fm-disc" aria-hidden="true"><i></i></span>
-            <span class="fm-lab">Play &#183; 0:32 &#183; with sound</span>
-          </button>
         </div>
+
+        <button class="fm-sound" id="fm-sound" type="button" aria-pressed="false">
+          <span class="fm-spk" aria-hidden="true"><i></i></span>
+          <span class="fm-slab">Sound off</span>
+        </button>
       </div>
     </section>
 
@@ -380,61 +396,6 @@
       <div class="sp-tiers" id="sp-tiers"></div>
     </section>
 
-    <!-- ══════════ FOOTER ══════════
-         Their footer carries a social column, related brands and an awards badge. Ours
-         carries what we can stand behind: the hours, the season, the location, the
-         pages this site actually has, and the legal line. There are no social handles
-         anywhere in this project and I will not guess at URLs that would go out under
-         the park's name — that column is missing on purpose, not by oversight. -->
-    <footer class="ft" id="ft">
-      <div class="ft-in">
-        <div class="ft-brand">
-          <!-- the wordmark, not blvd-world-logo.svg: that file is a 1000x1000 square with
-               a lot of transparent padding, which is why every other use of it carries a
-               huge height and negative margins to crop back in -->
-          <img class="ft-mark" src="img/blvd-world-mark.svg" alt="BLVD World" />
-          <p class="ft-line">The world, rebuilt in Riyadh &#8212; part of Riyadh Season.</p>
-        </div>
-        <div class="ft-col">
-          <p class="ft-lab">Opening</p>
-          <ul>
-            <li>4:00 PM &#8211; 1:00 AM</li>
-            <li>Every day of the season</li>
-            <li>11 October &#8211; 2 May</li>
-          </ul>
-        </div>
-        <div class="ft-col">
-          <p class="ft-lab">Where</p>
-          <ul>
-            <li>Boulevard City, Riyadh</li>
-            <li><a href="#/map">Open the park map</a></li>
-          </ul>
-        </div>
-        <div class="ft-col">
-          <p class="ft-lab">Book</p>
-          <ul>
-            <li><a href="#/packages">Ride packages</a></li>
-            <li><a href="#/experiences">Experiences</a></li>
-            <li><a href="#/eats">Restaurants</a></li>
-            <li><a href="#/shows">Live shows</a></li>
-          </ul>
-        </div>
-        <div class="ft-col">
-          <p class="ft-lab">The park</p>
-          <ul>
-            <li><a href="#/rides">All rides</a></li>
-            <li><a href="#rules">Venue rules</a></li>
-            <li><a href="#faqs">Good to know</a></li>
-            <li><a href="#sponsors">Our partners</a></li>
-          </ul>
-        </div>
-      </div>
-      <p class="ft-legal">
-        A concept presentation for BLVD World, Riyadh Season. Booking runs on
-        <a href="https://webook.com" target="_blank" rel="noopener">webook.com</a>.
-        Not an official BLVD World or Riyadh Season site.
-      </p>
-    </footer>
 
     <section class="globe-sec" id="globe-sec">
       <div id="globe-holder"></div>
@@ -1152,71 +1113,70 @@
     <a href="#gallery" data-sec="gallery">Gallery</a>
     <a href="#rules" data-sec="rules">Rules</a>
     <a href="#faqs" data-sec="faqs">FAQ</a>
+
+    <!-- The Book control, moved down here from the top bar that used to carry it.
+         That bar is gone: with the tabs at the foot of the screen it was a second
+         floating strip holding one button, at the opposite end of the page from the
+         one the reader was already looking at.
+
+         Same four ways in as the hero tiles, same markup, so the two cannot drift. -->
+    <div class="bookmenu sc-book" id="bookmenu">
+      <button class="pill solid sc-pill bm-btn" id="bm-btn" type="button"
+              aria-expanded="false" aria-haspopup="true" aria-controls="bm-list">
+        Book
+        <i class="bm-caret" aria-hidden="true"></i>
+      </button>
+      <div class="bm-list" id="bm-list" role="menu" aria-labelledby="bm-btn" hidden>
+        <a role="menuitem" href="https://webook.com" target="_blank" rel="noopener">
+          <b>Entry ticket</b><span>from SAR 50</span>
+        </a>
+        <a role="menuitem" href="#/packages">
+          <b>Rides</b><span>from SAR 89</span>
+        </a>
+        <a role="menuitem" href="#/experiences">
+          <b>Experiences</b><span>from SAR 150</span>
+        </a>
+        <a role="menuitem" href="#/eats">
+          <b>Restaurants</b><span>from SAR 100</span>
+        </a>
+        <p class="bm-note">All of them include entry</p>
+      </div>
+    </div>
   </nav>
 
   <!-- ══════════ CHROME (header etc.) ══════════ -->
-  <!-- sticky booking bar: slides in once the hero is behind you -->
-  <div id="sticky-cta" aria-hidden="true">
-    <a href="#/" class="sc-logo"><img class="brand-img small" src="img/blvd-world-logo.svg" alt="BLVD World" /></a>
-    <div class="sc-actions">
-      <a href="#/map" class="sc-icon" aria-label="Open the map" title="Map"><span class="ppi-map"></span></a>
-
-      <!-- one Book control holding the same four ways in as the hero tiles, so
-           the two never drift apart -->
-      <div class="bookmenu" id="bookmenu">
-        <button class="pill solid sc-pill bm-btn" id="bm-btn" type="button"
-                aria-expanded="false" aria-haspopup="true" aria-controls="bm-list">
-          Book
-          <i class="bm-caret" aria-hidden="true"></i>
-        </button>
-        <div class="bm-list" id="bm-list" role="menu" aria-labelledby="bm-btn" hidden>
-          <a role="menuitem" href="https://webook.com" target="_blank" rel="noopener">
-            <b>Entry ticket</b><span>from SAR 50</span>
-          </a>
-          <a role="menuitem" href="#/packages">
-            <b>Rides</b><span>from SAR 89</span>
-          </a>
-          <a role="menuitem" href="#/experiences">
-            <b>Experiences</b><span>from SAR 150</span>
-          </a>
-          <a role="menuitem" href="#/eats">
-            <b>Restaurants</b><span>from SAR 100</span>
-          </a>
-          <p class="bm-note">All of them include entry</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=736"></script>
-  <script src="js/borders.js?v=736"></script>
-  <script src="js/scene.js?v=736"></script>
-  <script src="js/film.js?v=736" defer></script>
-  <script src="js/app.js?v=736"></script>
-  <script src="js/experiences.js?v=736"></script>
-  <script src="js/carousels.js?v=736"></script>
-  <!-- coverflow.js, zones.js, fan.js and zonevid.js all drove the zone carousel that
-       the world tiles replaced. worlds.js builds the tiles from the same WBK.zones. -->
-  <script src="js/worlds.js?v=736"></script>
-  <script src="js/home.js?v=736"></script>
-  <script src="js/zonepage.js?v=736"></script>
-  <script src="js/records.js?v=736"></script>
-  <script src="js/sphere.js?v=736" defer></script>
-  <script src="js/gallery.js?v=736"></script>
-  <script src="js/parkmap.js?v=736"></script>
-  <script src="js/minimap.js?v=736"></script>
-  <script src="js/sponsors.js?v=736"></script>
-  <script src="js/about.js?v=736"></script>
-  <script src="js/cashless.js?v=736"></script>
-  <script src="js/headings.js?v=736"></script>
-  <script src="js/bundles.js?v=736"></script>
-  <script src="js/ridex.js?v=736"></script>
-  <script src="js/cursor.js?v=736"></script>
-  <script src="js/glass.js?v=736" defer></script>
+  <script src="js/data.js?v=737"></script>
+  <script src="js/borders.js?v=737"></script>
+  <script src="js/scene.js?v=737"></script>
+  <script src="js/film.js?v=737" defer></script>
+  <script src="js/app.js?v=737"></script>
+  <script src="js/experiences.js?v=737"></script>
+  <script src="js/carousels.js?v=737"></script>
+  <script src="js/coverflow.js?v=737"></script>
+  <script src="js/zones.js?v=737"></script>
+  <script src="js/zonepage.js?v=737"></script>
+  <script src="js/fan.js?v=737"></script>
+  <script src="js/zonevid.js?v=737"></script>
+  <!-- what is left of the home-page blocks: the rides rail -->
+  <script src="js/home.js?v=737"></script>
+  <script src="js/records.js?v=737"></script>
+  <script src="js/sphere.js?v=737" defer></script>
+  <script src="js/gallery.js?v=737"></script>
+  <script src="js/parkmap.js?v=737"></script>
+  <script src="js/minimap.js?v=737"></script>
+  <script src="js/sponsors.js?v=737"></script>
+  <script src="js/about.js?v=737"></script>
+  <script src="js/cashless.js?v=737"></script>
+  <script src="js/headings.js?v=737"></script>
+  <script src="js/bundles.js?v=737"></script>
+  <script src="js/ridex.js?v=737"></script>
+  <script src="js/cursor.js?v=737"></script>
+  <script src="js/glass.js?v=737" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=736" defer></script>
+  <script src="js/heroes.js?v=737" defer></script>
 </body>
 </html>

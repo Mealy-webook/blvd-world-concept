@@ -197,9 +197,11 @@
   if (homeView) {
     const rail = document.querySelector("#scroll-rail i");
     const cue = document.querySelector(".scroll-cue");
-    const stickyBar = document.getElementById("sticky-cta");
-    /* the dock moved out of #sticky-cta — it is a top-level nav now, because a child
-       of that bar is translated off-screen with it */
+    /* The dock is what gets shown once the hero is behind you. It used to be the
+       sticky bar at the top of the screen; that bar is gone and the dock carries its
+       Book control, so it inherits its timing too — nothing floats over the hero, and
+       the hero's own four tiles are the only way in until you have scrolled past them. */
+    const dock = document.getElementById("sc-tabs");
     const tabs = [...document.querySelectorAll("#sc-tabs [data-sec]")];
 
     // tabs scroll the inner container (a plain anchor jump would not work,
@@ -257,7 +259,7 @@
       }
 
       // booking bar arrives once the hero is mostly behind you
-      if (stickyBar) stickyBar.classList.toggle("show", p > 0.72);
+      if (dock) dock.classList.toggle("show", p > 0.72);
 
       // scroll progress rail
       if (rail) {

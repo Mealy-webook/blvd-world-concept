@@ -4307,25 +4307,13 @@ html[data-hero="real"] .zc .zc-plate {
 .faq-item.open .faq-a { grid-template-rows: 1fr; }
 .faq-a > div { overflow: hidden; }
 .faq-a p { padding: 0 54px 20px 20px; font-size: 14.5px; font-weight: 400; line-height: 1.68; color: var(--dim); max-width: 66ch; }
-/* ═══════════════ STICKY BOOKING BAR ═══════════════ */
-#sticky-cta {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 121;
-  /* the section tabs left this bar for the dock at the bottom, so what is left is the
-     mark on one side and the actions on the other */
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
-  padding: 12px clamp(16px, 3vw, 34px);
-  background: linear-gradient(180deg, rgba(7, 11, 34, .92), rgba(7, 11, 34, .72));
-  border-bottom: 1px solid rgba(124, 196, 255, .18);
-  backdrop-filter: blur(14px);
-  transform: translateY(-101%); opacity: 0; pointer-events: none;
-  transition: transform .5s cubic-bezier(.2,.8,.25,1), opacity .35s;
-}
-#sticky-cta.show { transform: none; opacity: 1; pointer-events: auto; }
-/* the bar belongs to the home scroll only — the booking page stands alone */
-body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-.sc-logo { flex: none; display: block; }
-.sc-logo .brand-img.small { height: 72px; margin: -18px 0 -18px -6px; }
-.sc-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+/* ═══════════════ (the sticky booking bar was here) ═══════════════
+   It carried the mark, a map icon and the Book menu across the top of the screen once
+   the hero was behind you. With the section tabs docked at the foot of the screen it
+   was a second floating strip holding one button, at the far end of the page from the
+   one the reader was already using — so it went, and the Book menu went into the dock.
+   .sc-logo, .sc-actions and the bar's own rules went with it; .sc-pill and the .bm-*
+   menu rules below are still in use, in the dock. */
 
 /* ═══════════════ THE WORLDS ═══════════════
    The zones as tiles you can open. One is open at a time; js/worlds.js animates the
@@ -4534,65 +4522,68 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 }
 .fm-h { text-shadow: 0 3px 26px rgba(2, 4, 16, .75); }
 .fm-over .eyebrow { color: #e6efff; text-shadow: 0 2px 14px rgba(2, 4, 16, .8); }
-.fm-lab { text-shadow: 0 2px 12px rgba(2, 4, 16, .8); }
+.fm-slab { text-shadow: 0 2px 12px rgba(2, 4, 16, .8); }
 
-/* ── the control ── */
-.fm-play {
-  display: grid; justify-items: center; gap: 12px;
-  border: 0; background: none; cursor: pointer; padding: 4px;
+/* ── the sound toggle ──
+   Small, bottom-right, out of the type's way. It is the whole reason autoplay is
+   defensible: the film has sound, muted autoplay throws it away, and a muted video
+   with no way to unmute is a heavy animated background. */
+.fm-sound {
+  position: absolute; z-index: 3;
+  right: clamp(14px, 2vw, 26px); bottom: clamp(14px, 2.4vh, 26px);
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 15px 8px 11px; border-radius: var(--r-pill);
+  border: 1px solid rgba(238, 243, 255, .34);
+  background: rgba(6, 10, 30, .58);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition: background .3s var(--ease), border-color .3s var(--ease);
 }
-.fm-disc {
-  position: relative; display: grid; place-items: center;
-  width: clamp(62px, 6.4vw, 84px); aspect-ratio: 1; border-radius: 50%;
-  background: rgba(238, 243, 255, .1);
-  border: 1px solid rgba(238, 243, 255, .5);
-  backdrop-filter: blur(8px);
-  transition: background .35s var(--ease), transform .35s var(--ease),
-              border-color .35s var(--ease);
+.fm-sound:hover { background: rgba(6, 10, 30, .78); border-color: rgba(238, 243, 255, .6); }
+.fm-sound:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.fm-sound.is-on { border-color: var(--gold); }
+.fm-slab {
+  font-family: var(--fig); font-size: 9.5px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: #e6efff;
 }
-/* the triangle, drawn */
-.fm-disc i {
-  width: 0; height: 0; margin-left: 5px;
-  border-left: clamp(16px, 1.7vw, 22px) solid #eef3ff;
-  border-block: clamp(10px, 1.1vw, 14px) solid transparent;
-  transition: border-left-color .35s var(--ease);
+/* the speaker, drawn: a cone, and a cross that becomes a wave when the sound is on */
+.fm-spk { position: relative; width: 15px; height: 14px; flex: none; }
+.fm-spk i, .fm-spk i::before, .fm-spk i::after {
+  content: ""; position: absolute; background: #e6efff;
 }
-/* a ring that leaves the disc on a slow beat — the one thing on the section that
-   moves without being scrolled, so the film reads as playable while it is still */
-.fm-disc::after {
-  content: ""; position: absolute; inset: -1px; border-radius: 50%;
-  border: 1px solid var(--gold);
-  animation: fmRing 2.8s var(--ease) infinite;
+.fm-spk i { left: 0; top: 4px; width: 4px; height: 6px; }
+.fm-spk i::before {
+  left: 3px; top: -4px; width: 0; height: 0; background: none;
+  border-right: 5px solid #e6efff; border-block: 7px solid transparent;
 }
-@keyframes fmRing {
-  0%        { transform: scale(1);    opacity: .55; }
-  70%, 100% { transform: scale(1.55); opacity: 0; }
+/* muted: a bar across it. on: two arcs leaving it. */
+.fm-spk i::after {
+  left: 10px; top: -1px; width: 8px; height: 1.6px; border-radius: 2px;
+  transform: rotate(-45deg); transform-origin: left center;
 }
-.fm-play:hover .fm-disc {
-  background: var(--gold); border-color: var(--gold); transform: scale(1.06);
+.fm-sound.is-on .fm-spk i::after {
+  left: 9px; top: -3px; width: 6px; height: 6px;
+  background: none; border: 1.6px solid var(--gold); border-radius: 50%;
+  border-left-color: transparent; border-bottom-color: transparent;
+  transform: rotate(0deg);
 }
-.fm-play:hover .fm-disc i { border-left-color: #1c1403; }
-.fm-play:focus-visible .fm-disc { outline: 2px solid var(--gold); outline-offset: 5px; }
-.fm-lab {
-  font-family: var(--fig); font-size: 10px; font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase; color: #cfe0ff;
-}
+.fm-sound.is-on .fm-slab { color: var(--gold); }
 
-/* playing: the type and the control get out of the way, and the slot is already open */
-.film.is-playing .fm-over { opacity: 0; visibility: hidden; translate: 0 12px; }
-.film.is-playing .fm-stage::after { opacity: 0; }
-.film.is-playing .fm-over,
-.film.is-playing .fm-stage::after { transition: opacity .45s var(--ease), translate .45s var(--ease), visibility .45s; }
+/* Playing: the scrim eases back so the footage is not sitting under a heavy wash the
+   whole time, and the type stays — it is the section's heading, and a heading that
+   vanishes leaves the section unnamed. It keeps its own shadow, which is what makes it
+   readable once the scrim lightens. */
+.film.is-playing .fm-stage::after { opacity: .55; }
+.fm-stage::after { transition: opacity .6s var(--ease); }
 .film.is-playing .fm-vid { translate: 0 0; scale: 1; }
 
 @media (max-width: 700px) {
   .fm-stage { height: calc(38vh + var(--fm-p) * 26vh); }
-  .fm-lab { font-size: 9px; letter-spacing: .12em; }
+  .fm-slab { font-size: 9px; letter-spacing: .12em; }
 }
 /* nothing to drive if nothing may move: the slot opens once and stays open */
 @media (prefers-reduced-motion: reduce) {
   .film { --fm-p: 1 !important; }
-  .fm-disc::after { animation: none; }
   .fm-vid, .fm-stage { transition: none; }
 }
 
@@ -4622,10 +4613,27 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
   overflow-x: auto; scrollbar-width: none;
   /* a scroll container's automatic minimum size is zero — see .xp-filters */
   min-height: max-content;
+  /* Held back until the hero is behind you: js/scene.js adds .show past 72% of the
+     first screen, which is the timing the old top bar used. The hero has its own four
+     tiles and its own heading; a floating strip over them is a third thing competing
+     for the same glance. */
+  translate: -50% 130%; opacity: 0; pointer-events: none;
+  transition: translate .5s var(--ease), opacity .35s var(--ease);
 }
+.sc-tabs.show { translate: -50% 0; opacity: 1; pointer-events: auto; }
 .sc-tabs::-webkit-scrollbar { display: none; }
 /* it belongs to the home scroll; every other route has its own back link */
 body:not(.route-home) .sc-tabs { display: none; }
+/* the Book control, in the tray. A divider keeps it off the last tab: it is a
+   different kind of thing from the six beside it. */
+.sc-book { flex: 0 0 auto; margin-left: 6px; padding-left: 8px; position: relative; }
+.sc-book::before {
+  content: ""; position: absolute; left: 0; top: 50%; translate: 0 -50%;
+  width: 1px; height: 20px; background: rgba(199, 226, 255, .2);
+}
+.sc-tabs .sc-pill { font-size: 12px; padding: 9px 17px; }
+/* the menu opens upward now that its button sits at the foot of the screen */
+.sc-book .bm-list { top: auto; bottom: calc(100% + 12px); }
 #sc-tabs a[data-sec="globe-sec"] { display: none; }   /* its section is hidden */
 .sc-tabs a {
   position: relative; flex: 0 0 auto;
@@ -4703,9 +4711,8 @@ body:not(.route-home) .sc-tabs { display: none; }
 }
 
 @media (max-width: 760px) {
-  .sc-logo .brand-img.small { height: 56px; margin: -14px 0 -14px -4px; }
+  /* .sc-logo and .sc-actions lived in the top bar and went with it */
   .sc-pill { font-size: 11px; padding: 10px 14px; letter-spacing: .04em; }
-  .sc-actions { gap: 8px; }
 }
 
 /* ═══════════════ SOUND TOGGLE ═══════════════ */
@@ -5585,6 +5592,34 @@ html[data-hero="real"] {
   --map-bg: #14161d;
 }
 /* the accents that were tuned against navy and need a nudge on black */
+/* ── the tiles, white on the footage ──
+   Everywhere else these are glass: a tint that darkens down the pane so a white label
+   survives a firework going off behind it. Over real night footage the ask is the
+   opposite — a solid white card, with the type flipped to ink so it stays legible on
+   it. The magenta primary tile keeps its fill; it is the brand accent and the one
+   thing on the row that is meant to be louder than the others. */
+html[data-hero="real"] .bt:not(.is-primary) {
+  background: #f4f7ff;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .5), inset 0 -1px 1px rgba(0, 0, 0, .08);
+}
+html[data-hero="real"] .bt:not(.is-primary):hover { background: #fff; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-name { color: #0b1020; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-price { color: #4a5878; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-price b { color: #0b1020; }
+html[data-hero="real"] .bt:not(.is-primary) .bt-ic {
+  background: rgba(11, 16, 32, .07);
+}
+html[data-hero="real"] .bt:not(.is-primary) .bt-ic svg {
+  fill: #1a2440; filter: none;
+}
+html[data-hero="real"] .bt:not(.is-primary) .bt-tag {
+  color: #4a5878; border-color: rgba(11, 16, 32, .18);
+  background: rgba(11, 16, 32, .04);
+}
+/* the sheen is a white gleam; on a white card it is invisible and only adds paint */
+html[data-hero="real"] .bt:not(.is-primary) .bt-sheen { display: none; }
+
 html[data-hero="real"] .faq-item.open { border-color: rgba(255, 255, 255, .34); background: rgba(255, 255, 255, .07); }
 html[data-hero="real"] .faq-item:hover { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .2); }
 html[data-hero="real"] .faq-ic { color: #e8ecf5; }
