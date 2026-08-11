@@ -10,7 +10,7 @@
      It is variable on optical size, width and weight (400..800), so each role takes a
      different cut of the same face. Instrument Sans is the fallback only. -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/main.css?v=737" />
+<link rel="stylesheet" href="css/main.css?v=738" />
 </head>
 <body class="typo-body">
 
@@ -62,7 +62,7 @@
              aria-hidden="true" tabindex="-1"></video>
       <div class="hero-ui">
         <!-- the mark, in white, above the arch — every version carries it -->
-        <img class="hero-logo" src="img/blvd-world-mark.svg?v=737" alt="BLVD World" />
+        <img class="hero-logo" src="img/blvd-world-mark.svg?v=738" alt="BLVD World" />
         <!-- the title is set on two arcs, doming the way a gate arches over an
              entrance -->
         <h1 class="hero-title arch" id="hero-title">
@@ -1095,12 +1095,10 @@
   </div>
 
   <!-- ══════════ SECTION DOCK ══════════
-       The section nav, floating at the bottom of the home page rather than riding
-       inside the sticky bar at the top.
-
-       It has to live outside #sticky-cta, not just be styled differently: that bar
-       is translated fully off the top of the screen until you scroll past the hero,
-       and a child of a transformed element goes with it however it is positioned.
+       The section nav and the Book menu, in one pill floating at the foot of the home
+       page. Both used to be in a sticky bar across the top; that bar is gone, and the
+       dock kept its timing — js/scene.js shows it past 72% of the first screen, so
+       nothing floats over the hero.
 
        Sections on this page only, in page order. The routed pages — rides, packages,
        the schedule, the map's dining filter — are reached from the Book menu and the
@@ -1148,35 +1146,35 @@
 
 
   <!-- menu overlay -->
-  <script src="js/data.js?v=737"></script>
-  <script src="js/borders.js?v=737"></script>
-  <script src="js/scene.js?v=737"></script>
-  <script src="js/film.js?v=737" defer></script>
-  <script src="js/app.js?v=737"></script>
-  <script src="js/experiences.js?v=737"></script>
-  <script src="js/carousels.js?v=737"></script>
-  <script src="js/coverflow.js?v=737"></script>
-  <script src="js/zones.js?v=737"></script>
-  <script src="js/zonepage.js?v=737"></script>
-  <script src="js/fan.js?v=737"></script>
-  <script src="js/zonevid.js?v=737"></script>
+  <script src="js/data.js?v=738"></script>
+  <script src="js/borders.js?v=738"></script>
+  <script src="js/scene.js?v=738"></script>
+  <script src="js/film.js?v=738" defer></script>
+  <script src="js/app.js?v=738"></script>
+  <script src="js/experiences.js?v=738"></script>
+  <script src="js/carousels.js?v=738"></script>
+  <script src="js/coverflow.js?v=738"></script>
+  <script src="js/zones.js?v=738"></script>
+  <script src="js/zonepage.js?v=738"></script>
+  <script src="js/fan.js?v=738"></script>
+  <script src="js/zonevid.js?v=738"></script>
   <!-- what is left of the home-page blocks: the rides rail -->
-  <script src="js/home.js?v=737"></script>
-  <script src="js/records.js?v=737"></script>
-  <script src="js/sphere.js?v=737" defer></script>
-  <script src="js/gallery.js?v=737"></script>
-  <script src="js/parkmap.js?v=737"></script>
-  <script src="js/minimap.js?v=737"></script>
-  <script src="js/sponsors.js?v=737"></script>
-  <script src="js/about.js?v=737"></script>
-  <script src="js/cashless.js?v=737"></script>
-  <script src="js/headings.js?v=737"></script>
-  <script src="js/bundles.js?v=737"></script>
-  <script src="js/ridex.js?v=737"></script>
-  <script src="js/cursor.js?v=737"></script>
-  <script src="js/glass.js?v=737" defer></script>
+  <script src="js/home.js?v=738"></script>
+  <script src="js/records.js?v=738"></script>
+  <script src="js/sphere.js?v=738" defer></script>
+  <script src="js/gallery.js?v=738"></script>
+  <script src="js/parkmap.js?v=738"></script>
+  <script src="js/minimap.js?v=738"></script>
+  <script src="js/sponsors.js?v=738"></script>
+  <script src="js/about.js?v=738"></script>
+  <script src="js/cashless.js?v=738"></script>
+  <script src="js/headings.js?v=738"></script>
+  <script src="js/bundles.js?v=738"></script>
+  <script src="js/ridex.js?v=738"></script>
+  <script src="js/cursor.js?v=738"></script>
+  <script src="js/glass.js?v=738" defer></script>
   <!-- js/globe.js is not loaded here: heroes.js imports it the first time someone
        actually picks the globe version, so three.js is never fetched otherwise -->
-  <script src="js/heroes.js?v=737" defer></script>
+  <script src="js/heroes.js?v=738" defer></script>
 </body>
 </html>
