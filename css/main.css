@@ -3598,8 +3598,9 @@ html[data-hero="real"] .zc .zc-plate {
   overflow: hidden;
 }
 .vs-item {
-  display: grid; align-content: start; gap: 6px;
+  display: grid; align-content: start; justify-items: center; gap: 6px;
   padding: clamp(20px, 2.6vw, 34px) clamp(16px, 2vw, 28px);
+  text-align: center;
 }
 /* a hairline between them rather than three separate plates */
 .vs-item + .vs-item { box-shadow: inset 1px 0 0 rgba(199, 226, 255, .14); }
@@ -3627,6 +3628,9 @@ html[data-hero="real"] .zc .zc-plate {
 .vs-note {
   font-family: var(--body); font-size: clamp(12px, 1.1vw, 13.5px); font-weight: 400;
   line-height: 1.45; color: #9fb0d8; max-width: 30ch;
+  /* the max-width made this the one item narrower than its cell, so centring the cell
+     was not enough — the line needed centring inside its own box too */
+  text-align: center; margin-inline: auto;
 }
 @media (max-width: 760px) {
   /* it sits under the about figures now */
@@ -4322,6 +4326,155 @@ body:not(.route-home) #sticky-cta { transform: translateY(-100%); opacity: 0; po
 .sc-logo { flex: none; display: block; }
 .sc-logo .brand-img.small { height: 72px; margin: -18px 0 -18px -6px; }
 .sc-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ═══════════════ THE WORLDS ═══════════════
+   The zones as tiles you can open. One is open at a time; js/worlds.js animates the
+   height, so the panel needs a definite height to travel between and overflow hidden
+   to be clipped by while it does. */
+.wr-list {
+  width: 100%; max-width: min(1080px, 100%);
+  display: grid; gap: clamp(8px, 1vw, 12px);
+}
+.wr {
+  border-radius: clamp(14px, 1.6vw, 20px);
+  background: linear-gradient(170deg, rgba(199, 226, 255, .07), rgba(199, 226, 255, .025));
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .16);
+  overflow: hidden;
+  transition: box-shadow .4s var(--ease), background .4s var(--ease);
+}
+.wr.is-open {
+  background: linear-gradient(170deg, rgba(199, 226, 255, .11), rgba(199, 226, 255, .04));
+  box-shadow: inset 0 0 0 1px rgba(199, 226, 255, .3), 0 18px 44px rgba(2, 4, 16, .34);
+}
+.wr-bar {
+  width: 100%; border: 0; background: none; cursor: pointer; text-align: left;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: clamp(12px, 1.6vw, 20px);
+  padding: clamp(10px, 1.1vw, 14px) clamp(12px, 1.4vw, 18px);
+}
+.wr-shot {
+  width: clamp(56px, 6vw, 78px); aspect-ratio: 1; border-radius: var(--r-sm);
+  overflow: hidden; display: block; background: #0c1226; flex: none;
+}
+.wr-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wr-text { display: grid; gap: 3px; min-width: 0; }
+.wr-name {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--disp); font-weight: 700; letter-spacing: -.02em;
+  font-size: clamp(16px, 1.7vw, 21px); color: #eaf2ff;
+}
+.wr-new {
+  font-family: var(--fig); font-style: normal; font-size: 8.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: #1c1403; background: var(--gold);
+  padding: 3px 7px; border-radius: var(--r-pill);
+}
+.wr-blurb {
+  font-family: var(--body); font-size: 13px; font-weight: 400; color: #9fb0d8;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* the chevron, drawn: two strokes that cross into a plus and uncross into a minus */
+.wr-more {
+  width: 30px; height: 30px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: rgba(199, 226, 255, .08);
+  transition: background .3s var(--ease);
+}
+.wr-more i, .wr-more i::after {
+  content: ""; display: block; width: 11px; height: 2px; border-radius: 2px;
+  background: #cfe0ff; transition: transform .35s var(--ease);
+}
+.wr-more i { position: relative; }
+.wr-more i::after { position: absolute; inset: 0; transform: rotate(90deg); }
+.wr.is-open .wr-more { background: var(--gold); }
+.wr.is-open .wr-more i, .wr.is-open .wr-more i::after { background: #1c1403; }
+.wr.is-open .wr-more i::after { transform: rotate(0deg); }   /* the plus becomes a minus */
+.wr-bar:hover .wr-more { background: rgba(199, 226, 255, .18); }
+.wr-bar:focus-visible { outline: 2px solid var(--gold); outline-offset: -3px; border-radius: inherit; }
+
+.wr-panel { overflow: hidden; transition: height .42s var(--ease); }
+.wr-panel-in {
+  display: grid; gap: clamp(14px, 2vw, 24px);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding: 2px clamp(12px, 1.4vw, 18px) clamp(16px, 1.8vw, 22px)
+           calc(clamp(56px, 6vw, 78px) + clamp(24px, 3vw, 38px));
+}
+.wr-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.wr-col li { font-family: var(--body); font-size: 13px; color: #cfe0ff; }
+.wr-lab {
+  margin: 0 0 7px; font-family: var(--fig); font-size: 9px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: #7d8db4;
+}
+.wr-go { display: flex; flex-wrap: wrap; gap: 8px; align-items: start; grid-column: 1 / -1; }
+
+@media (max-width: 700px) {
+  .wr-blurb { display: none; }          /* the name and the photograph are the tile */
+  .wr-panel-in { padding-left: clamp(12px, 1.4vw, 18px); grid-template-columns: 1fr 1fr; }
+  .wr-go { flex-direction: column; align-items: stretch; }
+}
+
+/* ═══════════════ THE RIDES RAIL ═══════════════ */
+.hrides {
+  position: relative; z-index: 11;
+  padding: var(--sec-y) var(--sec-x);
+  display: grid; gap: var(--sp-4); justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+.hr-head {
+  display: grid; justify-items: center; gap: 10px; text-align: center;
+  max-width: min(760px, 100%);
+}
+/* the class of ride, on the photograph */
+.hr-kind {
+  position: absolute; left: 10px; top: 10px; z-index: 2;
+  font-family: var(--fig); font-size: 8.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: #eaf2ff;
+  background: rgba(6, 10, 30, .72); backdrop-filter: blur(8px);
+  padding: 5px 9px; border-radius: var(--r-pill);
+}
+.hr-fast {
+  font-family: var(--fig); font-size: 9.5px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: #7d8db4; margin-top: 1px;
+}
+
+/* ═══════════════ THE FOOTER ═══════════════ */
+.ft {
+  position: relative; z-index: 11;
+  padding: clamp(34px, 6vh, 70px) var(--sec-x) clamp(96px, 14vh, 130px);
+  border-top: 1px solid rgba(199, 226, 255, .14);
+  background: linear-gradient(180deg, transparent, rgba(4, 7, 20, .5));
+  display: grid; gap: clamp(22px, 3vh, 38px); justify-items: center;
+}
+.ft-in {
+  width: 100%; max-width: min(1180px, 100%);
+  display: grid; gap: clamp(20px, 3vw, 44px);
+  grid-template-columns: minmax(190px, 1.4fr) repeat(4, minmax(0, 1fr));
+  align-items: start;
+}
+.ft-brand { display: grid; gap: 12px; justify-items: start; }
+.ft-mark { width: clamp(132px, 13vw, 168px); height: auto; display: block; }
+.ft-line {
+  margin: 0; font-family: var(--body); font-size: 13px; color: #8fa0c8; max-width: 30ch;
+}
+.ft-lab {
+  margin: 0 0 10px; font-family: var(--fig); font-size: 9px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: #7d8db4;
+}
+.ft-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.ft-col li { font-family: var(--body); font-size: 13px; color: #cfe0ff; }
+.ft-col a { color: #cfe0ff; text-decoration: none; transition: color .25s var(--ease); }
+.ft-col a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.ft-legal {
+  width: 100%; max-width: min(1180px, 100%); margin: 0;
+  padding-top: clamp(14px, 2vh, 22px);
+  border-top: 1px solid rgba(199, 226, 255, .1);
+  font-family: var(--body); font-size: 11.5px; line-height: 1.6; color: #6f7fa6;
+}
+.ft-legal a { color: #8fa0c8; }
+@media (max-width: 900px) {
+  .ft-in { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ft-brand { grid-column: 1 / -1; }
+}
 
 /* ═══════════════ THE FILM ═══════════════
    No frame. The film runs the full width of the page — the gallery's own trick, a

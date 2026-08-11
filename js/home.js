@@ -1,0 +1,63 @@
+// ── the home page's rides rail ──────────────────────────────────────────────
+// One block. Four others were built here alongside it when the page took on the
+// running order of a working theme-park site — a standalone offer, tonight's events, a
+// ticket rail and a repeat action grid — and all four were cut on review. The rail is
+// what stayed.
+//
+// Every figure is read from WBK. None of it is typed twice: the prices here and the
+// prices on the booking page are the same numbers from the same place, which is the
+// only way they stay the same after an edit.
+(function () {
+  if (!window.WBK) return;
+
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = (t) =>
+    String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* Borrowed components ship switched off. .eat-card starts at opacity 0 and waits for
+     .pop; .sch-row waits for .in. Their own pages add those from an observer, so
+     anything reusing them here has to do the same — with a timer behind it, because a
+     rail that never becomes visible is worse than one that does not animate.
+
+     The observer is what makes the entrance happen on arrival rather than on load,
+     five screens above. */
+  function wake(nodes, cls) {
+    if (!nodes.length) return;
+    const on = () => nodes.forEach((n) => n.classList.add(cls));
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((es) => {
+        for (const e of es) if (e.isIntersecting) { on(); io.disconnect(); }
+      }, { threshold: 0.12 });
+      io.observe(nodes[0].parentElement || nodes[0]);
+      setTimeout(on, 4000);                     // fail open
+    } else {
+      on();
+    }
+  }
+
+  // ── the rides rail ────────────────────────────────────────────────────────
+  // Their card carries a height limit, an age restriction and a maintenance status.
+  // We hold none of the three for any ride, so this card carries what we do hold: the
+  // class of ride, a turn, and the fast lane. Printing "110cm" would be inventing a
+  // safety figure, which is the one kind of placeholder that can actually hurt someone.
+  (function rides() {
+    const rail = document.getElementById("hr-rail");
+    const list = WBK.rides || [];
+    if (!rail || !list.length) return;
+    rail.innerHTML = list.map((r, i) => `
+      <article class="eat-card" style="--pop-d:${(i % 6) * 70}ms">
+        <div class="eat-shot">
+          <img src="img/rides/${esc(r.img)}" alt="${esc(r.name)}" loading="lazy" draggable="false" />
+          <span class="hr-kind">${esc(r.kind)}</span>
+        </div>
+        <div class="eat-text">
+          <h3>${esc(r.name)}</h3>
+          <p class="eat-from">SAR <b>${esc(r.reg)}</b> a turn</p>
+          <p class="hr-fast">Fast lane SAR ${esc(r.fast)}</p>
+        </div>
+      </article>`).join("");
+    wake([...rail.children], "pop");
+  })();
+
+})();
