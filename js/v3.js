@@ -26,11 +26,103 @@
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const riyal = '<i class="riyal" aria-hidden="true"></i>';
 
-  /* let the arch and the pricing card in once the fonts have settled, so the arched
-     type is never measured against a fallback face */
+  /* ── the opening: loader, then intro, then the page ───────────────────────
+     The loader waits on the things the hero cannot be seen without — the fonts, and the
+     six landmark cut-outs — and counts them honestly rather than running a fake bar. A
+     hard stop behind it, because a slow image must never leave someone looking at a
+     loading screen.
+
+     The intro then sets two lines a character at a time. It is shown once a session: a
+     title card is a welcome the first time and an obstacle the third.
+
+     The hero's own entrance (body.up) is held until whichever of the two finishes last,
+     so the arch is never animating behind a cover. */
+  const boot = $("#boot"), bootBar = $("#boot-bar-i");
+  const intro = $("#intro"), skip = $("#intro-skip");
+  const SEEN = "blvd-v3-intro";
   const go = () => document.body.classList.add("up");
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(go);
-  setTimeout(go, 2200);
+
+  let seenIntro = false;
+  try { seenIntro = sessionStorage.getItem(SEEN) === "1"; } catch (e) { /* private mode */ }
+
+  (function opening() {
+    document.body.classList.add("booting");
+
+    /* what we are waiting for: the font set, and every landmark */
+    const shots = [...document.querySelectorAll(".lm")];
+    const total = shots.length + 1;
+    let done = 0;
+    const tick = () => {
+      done++;
+      if (bootBar) bootBar.style.width = Math.min(done / total, 1) * 100 + "%";
+      if (done >= total) finishBoot();
+    };
+    for (const im of shots) {
+      if (im.complete) tick();
+      else { im.addEventListener("load", tick, { once: true }); im.addEventListener("error", tick, { once: true }); }
+    }
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(tick);
+
+    let bootDone = false;
+    function finishBoot() {
+      if (bootDone) return; bootDone = true;
+      if (bootBar) bootBar.style.width = "100%";
+      setTimeout(() => {
+        if (boot) boot.classList.add("gone");
+        if (seenIntro || STILL) { endOpening(); } else { runIntro(); }
+      }, 260);
+    }
+    setTimeout(finishBoot, 4200);            // the hard stop
+
+    function endOpening() {
+      document.body.classList.remove("booting");
+      if (intro) { intro.classList.add("gone"); setTimeout(() => { intro.hidden = true; }, 800); }
+      go();
+      try { sessionStorage.setItem(SEEN, "1"); } catch (e) { /* nothing to do */ }
+    }
+
+    function runIntro() {
+      if (!intro) return endOpening();
+      intro.hidden = false;
+      const lines = [...intro.querySelectorAll(".intro-line")];
+      let li = 0, ci = 0, timer = null, ended = false;
+
+      function stop() {
+        if (ended) return; ended = true;
+        clearTimeout(timer);
+        /* whatever was half-typed is completed rather than left mid-word */
+        for (const l of lines) { l.textContent = l.dataset.line; l.classList.remove("typing"); }
+        endOpening();
+      }
+      if (skip) skip.addEventListener("click", stop);
+      /* a key or a click anywhere skips it too — nobody should have to find the button */
+      intro.addEventListener("click", (e) => { if (e.target !== skip) stop(); });
+      addEventListener("keydown", function once(e) {
+        if (ended) return removeEventListener("keydown", once);
+        if (e.key === "Escape" || e.key === " " || e.key === "Enter") { stop(); removeEventListener("keydown", once); }
+      });
+
+      function step() {
+        if (ended) return;
+        const line = lines[li];
+        if (!line) { setTimeout(stop, 900); return; }
+        line.classList.add("typing");
+        const full = line.dataset.line || "";
+        if (ci <= full.length) {
+          line.textContent = full.slice(0, ci++);
+          /* a shade slower after a space, which is what makes typing read as speech
+             rather than as a machine */
+          const ch = full[ci - 2];
+          timer = setTimeout(step, ch === " " ? 46 : 26);
+        } else {
+          line.classList.remove("typing");
+          li++; ci = 0;
+          timer = setTimeout(step, 420);
+        }
+      }
+      step();
+    }
+  })();
 
   /* ── the sky ──────────────────────────────────────────────────────────────
      A living starfield: the field itself is seeded and fixed, so it never reshuffles,

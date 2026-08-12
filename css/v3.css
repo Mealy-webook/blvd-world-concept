@@ -593,3 +593,65 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
   .tear.bottom { translate: none; }
   .rail { cursor: default; }
 }
+
+/* ═══════════════ THE LOADER ═══════════════ */
+.boot {
+  position: fixed; inset: 0; z-index: 300;
+  display: grid; place-items: center;
+  background: linear-gradient(180deg, var(--sky-1), #010026);
+  transition: opacity .6s var(--ease), visibility .6s;
+}
+.boot-in { display: grid; justify-items: center; gap: 26px; }
+.boot-mark { width: clamp(72px, 7vw, 104px); height: auto; animation: bootPulse 2.4s ease-in-out infinite; }
+@keyframes bootPulse { 50% { transform: scale(1.05); } }
+.boot-bar {
+  width: min(190px, 44vw); height: 2px; border-radius: 2px;
+  background: rgba(255, 255, 255, .16); overflow: hidden;
+}
+.boot-bar i {
+  display: block; height: 100%; width: 0; border-radius: inherit;
+  background: linear-gradient(90deg, var(--pink), #ffb43d);
+  transition: width .3s linear;
+}
+.boot.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* ═══════════════ THE INTRO ═══════════════ */
+.intro {
+  position: fixed; inset: 0; z-index: 290;
+  display: grid; place-items: center; padding: var(--pad);
+  background: linear-gradient(180deg, #010026, var(--sky-1));
+  transition: opacity .7s var(--ease), visibility .7s;
+}
+.intro.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+.intro-copy { display: grid; gap: clamp(8px, 1.4vh, 18px); max-width: min(1000px, 92vw); }
+.intro-line {
+  margin: 0; min-height: 1.2em;
+  font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 40, "wdth" 100;
+  font-size: clamp(19px, 2.3vw, 44px); line-height: 1.18; letter-spacing: -.02em;
+  color: #fff; text-align: center;
+}
+/* the caret, on whichever line is being set */
+.intro-line.typing::after {
+  content: ""; display: inline-block; width: .06em; height: .92em;
+  margin-left: .06em; background: var(--pink); vertical-align: -.08em;
+  animation: caret .9s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+.intro-skip {
+  position: absolute; bottom: clamp(22px, 5vh, 54px); left: 50%; translate: -50% 0;
+  padding: 11px 22px; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 1px solid rgba(255, 255, 255, .3);
+  font-family: var(--ui); font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: #fff;
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+.intro-skip:hover { background: rgba(255, 255, 255, .12); border-color: #fff; }
+
+/* the page holds still until the intro is done, so nothing animates behind it */
+body.v3.booting { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-mark { animation: none; }
+  .intro-line.typing::after { animation: none; }
+}

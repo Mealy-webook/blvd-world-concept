@@ -11,9 +11,32 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/v3.css?v=6" />
+<link rel="stylesheet" href="css/v3.css?v=7" />
 </head>
 <body class="v3">
+
+<!-- ══════════ LOADER ══════════
+     The mark, and a bar that counts what it is actually waiting for: the fonts, and the
+     six landmark cut-outs the hero cannot be seen without. It has a hard stop, so a slow
+     image can never leave someone looking at a loading screen. -->
+<div class="boot" id="boot">
+  <div class="boot-in">
+    <img class="boot-mark" src="img/blvd-world-mark.svg" alt="BLVD World" />
+    <div class="boot-bar"><i id="boot-bar-i"></i></div>
+  </div>
+</div>
+
+<!-- ══════════ INTRO ══════════
+     The main site's opening, in this version's type: two lines that set themselves a
+     character at a time, then the page. Skippable, and shown once a session — a title
+     card is a welcome the first time and an obstacle the third. -->
+<div class="intro" id="intro" hidden>
+  <div class="intro-copy">
+    <p class="intro-line" data-line="BLVD WORLD THIS SEASON TAKES YOU ON A MAGICAL EXPERIENCE"></p>
+    <p class="intro-line" data-line="FROM THE HEART OF RIYADH."></p>
+  </div>
+  <button class="intro-skip" id="intro-skip" type="button">Skip intro</button>
+</div>
 
 <!-- ══════════ 1. HERO ══════════
      Deep navy sky, six landmark cut-outs standing on the horizon, and the four ways in
@@ -168,6 +191,6 @@
 </section>
 
 <script src="js/data.js?v=1"></script>
-<script src="js/v3.js?v=6"></script>
+<script src="js/v3.js?v=7"></script>
 </body>
 </html>
