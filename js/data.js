@@ -222,6 +222,23 @@ window.WBK = {
     ] },
   ],
 
+  /* ── the venue rules ──
+     Lifted verbatim out of the nine .vr-stub blocks in index.html so v2.html can read
+     them rather than carry a second copy of the copy. index.html still prints its own
+     markup, because each stub there carries a bespoke icon the data has no field for —
+     so the two are in step today and want unifying: whoever edits one must edit both. */
+  rules: [
+    { t: "No outside food", d: "Food trucks and kitchens are inside the venue." },
+    { t: "No pets",         d: "Animals are not allowed on the premises." },
+    { t: "No pro cameras",  d: "No professional cameras or video recorders." },
+    { t: "Smoke free",      d: "Including e\u2011cigarettes. Designated areas only." },
+    { t: "No re\u2011entry",  d: "Leaving the venue ends your visit." },
+    { t: "Non refundable",  d: "Tickets cannot be refunded once bought." },
+    { t: "Parking",         d: "Parking is available at the gates." },
+    { t: "Open air",        d: "The venue is outdoors from end to end." },
+    { t: "Live music",      d: "Performances run nightly in every zone." },
+  ],
+
   faqs: [
     { q: "Where is BLVD World?",
       a: "BLVD World sits in Riyadh's Boulevard City district, part of Riyadh Season. Parking and ride-hailing drop-offs are signposted from the main gates." },

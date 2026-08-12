@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLVD World — A Night at the Park</title>
+<meta name="description" content="Twenty countries, one night. BLVD World at Riyadh Season." />
+
+<!-- A different pair of faces from the main site on purpose: this version is warm and
+     fairground rather than cool and civic. Fraunces is a variable serif with real
+     personality in its soft axis; Manrope carries the labels and figures. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/v2.css?v=1" />
+</head>
+<body class="v2">
+
+<!-- ══════════ THE GATE ══════════
+     Two halves of a gate that draw back once the fonts and the first images are in.
+     It is the page's first promise: something opens. -->
+<div class="gate" id="gate" aria-hidden="true">
+  <div class="gate-half l"><span class="gate-mark">BLVD</span></div>
+  <div class="gate-half r"><span class="gate-mark">WORLD</span></div>
+  <div class="gate-bar"><i id="gate-bar-i"></i></div>
+</div>
+
+<!-- the scroll rail, down the right edge -->
+<div class="rail" aria-hidden="true"><i id="rail-i"></i></div>
+
+<!-- a soft warm light that follows the pointer; purely atmosphere -->
+<div class="torch" id="torch" aria-hidden="true"></div>
+
+<main id="page">
+
+  <!-- ══════════ 1. HERO ══════════ -->
+  <header class="hero" id="hero">
+    <!-- five layers of night, each drifting at its own rate -->
+    <div class="sky" aria-hidden="true">
+      <span class="sky-glow"></span>
+      <canvas id="stars"></canvas>
+      <span class="moon"></span>
+      <div class="lanterns" id="lanterns"></div>
+      <div class="ridge far"></div>
+      <div class="ridge mid"></div>
+      <div class="ridge near"></div>
+    </div>
+
+    <div class="hero-in">
+      <p class="kicker">Riyadh Season &middot; Boulevard City</p>
+      <h1 class="giant" id="giant">
+        <span class="ln"><em>Explore</em></span>
+        <span class="ln"><em>new worlds.</em></span>
+      </h1>
+      <p class="lede">Twenty countries, rebuilt street by street. One night to walk all of
+        them.</p>
+
+      <!-- the four ways in. js/v2.js fills them from the same WBK the main site reads -->
+      <div class="ways" id="ways"></div>
+
+      <a class="cue" href="#about" aria-label="Start">
+        <span></span><i></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ══════════ 2. TICKER ══════════
+       Every zone name, running past. Two copies of the list, so the loop has no seam. -->
+  <div class="ticker" aria-hidden="true"><div class="ticker-run" id="ticker"></div></div>
+
+  <!-- ══════════ 3. ABOUT ══════════ -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <p class="eyebrow reveal">What BLVD World is</p>
+      <h2 class="head reveal">The world, <em>rebuilt</em> in Riyadh</h2>
+      <!-- the client's paragraph, verbatim -->
+      <p class="body reveal">Boulevard World brings the world together for you in one
+        destination. In 2026/2027, explore exciting new zones from Indonesia, Korea, and
+        Kuwait, along with refreshed favorites that offer a deeper journey into global
+        cultures.</p>
+
+      <div class="facts" id="facts"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ 4. THE ZONES ══════════
+       The showpiece: a filmstrip of twenty countries that moves sideways while the page
+       scrolls down. The section is tall, the frame inside it sticks, and js/v2.js maps
+       the scroll through the tall section onto an X translation of the strip. -->
+  <section class="strip-sec" id="zones">
+    <div class="strip-stick">
+      <div class="strip-head">
+        <p class="eyebrow">Twenty countries</p>
+        <h2 class="head">Discover <em>BLVD zones</em></h2>
+        <p class="strip-hint" aria-hidden="true">keep scrolling</p>
+      </div>
+      <div class="strip" id="strip"></div>
+      <div class="strip-bar" aria-hidden="true"><i id="strip-bar-i"></i></div>
+    </div>
+  </section>
+
+  <!-- ══════════ 5. RIDES ══════════ -->
+  <section class="rides" id="rides">
+    <div class="wrap">
+      <p class="eyebrow reveal">Rides &amp; attractions</p>
+      <h2 class="head reveal">Every way <em>off the ground</em></h2>
+      <div class="chips reveal" id="chips" role="tablist" aria-label="Kinds of ride"></div>
+    </div>
+    <div class="deck" id="deck"></div>
+  </section>
+
+  <!-- ══════════ 6. THE FILM ══════════ -->
+  <section class="film" id="film">
+    <div class="film-stage" id="film-stage">
+      <video id="film-vid" muted loop playsinline preload="metadata"
+             poster="img/film-poster.jpg" aria-label="BLVD World, filmed"></video>
+      <div class="film-over">
+        <p class="eyebrow">The park, filmed</p>
+        <h2 class="head">See it <em>moving</em></h2>
+      </div>
+      <button class="snd" id="snd" type="button" aria-pressed="false">
+        <i aria-hidden="true"></i><span>Sound off</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ══════════ 7. LAST SEASON ══════════
+       An odometer: every digit is a strip of 0-9 that rolls to its place. -->
+  <section class="odo-sec" id="season">
+    <div class="wrap">
+      <p class="eyebrow reveal">Last season</p>
+      <h2 class="head reveal">A city <em>came through</em></h2>
+      <div class="odo reveal" id="odo" aria-hidden="true"></div>
+      <p class="odo-real sr-only">14 to 20 million total visits across the season.</p>
+      <p class="odo-cap reveal">million total visits, across the season at BLVD World</p>
+    </div>
+  </section>
+
+  <!-- ══════════ 8. GALLERY ══════════ -->
+  <section class="gal" id="gallery">
+    <div class="wrap">
+      <p class="eyebrow reveal">The night</p>
+      <h2 class="head reveal">In <em>pictures</em></h2>
+    </div>
+    <div class="belt" id="belt-a" aria-hidden="true"></div>
+    <div class="belt back" id="belt-b" aria-hidden="true"></div>
+  </section>
+
+  <!-- ══════════ 9. RULES ══════════ -->
+  <section class="rules" id="rules">
+    <div class="wrap">
+      <p class="eyebrow reveal">Before you come</p>
+      <h2 class="head reveal">House <em>rules</em></h2>
+      <div class="rule-grid" id="rule-grid"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ 10. FAQ ══════════ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <p class="eyebrow reveal">Good to know</p>
+      <h2 class="head reveal">The <em>small print</em></h2>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ 11. PARTNERS ══════════ -->
+  <section class="partners" id="partners">
+    <div class="wrap">
+      <p class="eyebrow reveal">Our partners</p>
+    </div>
+    <div class="logo-belt" id="logo-belt" aria-hidden="true"></div>
+  </section>
+
+  <!-- ══════════ 12. THE LAST WORD ══════════ -->
+  <footer class="last" id="last">
+    <div class="wrap">
+      <h2 class="giant out">
+        <span class="ln"><em>Come for</em></span>
+        <span class="ln"><em>the night.</em></span>
+      </h2>
+      <a class="big-cta" href="https://webook.com" target="_blank" rel="noopener">
+        Book on webook<i aria-hidden="true"></i>
+      </a>
+      <p class="last-note" id="last-note"></p>
+      <p class="last-legal">A concept presentation for BLVD World, Riyadh Season.
+        Not an official BLVD World or Riyadh Season site.
+        <a href="index.html">See the other version</a></p>
+    </div>
+  </footer>
+
+</main>
+
+<script src="js/data.js?v=1"></script>
+<script src="js/v2.js?v=1"></script>
+</body>
+</html>
