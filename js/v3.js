@@ -244,18 +244,17 @@
   })();
 
   /* ── the zone stats ──
-     The client's own spec table (WBK.mapSpec), which is what the file prints: 24 zones,
-     14 rides, 4 restaurants, 151 showtimes. Read rather than typed. */
+     The file's four figures, verbatim: 24 zones, 14 rides, 4 restaurants, 151 showtimes
+     a night. Our WBK.mapSpec holds the client's ranges instead — "24-27" zones, 15
+     rides, "7-10" restaurants — which is a different set. Following the file. */
   (function stats() {
     const box = $("#stats");
     if (!box) return;
-    const spec = W.mapSpec || [];
-    const want = ["zones", "rides", "restaurants"];
-    const rows = spec.filter((s) => want.includes(String(s.l).toLowerCase()));
-    const shows = (W.showsByZone || []).reduce((n, z) => n + (z.items || []).length, 0);
-    const all = rows.concat(shows ? [{ n: shows, l: "showtimes a night" }] : []);
-    if (!all.length) return;
-    box.innerHTML = all.map((s) => `<span class="stat"><b>${esc(s.n)}</b><span>${esc(s.l)}</span></span>`).join("");
+    const ROWS = [
+      ["24", "zones"], ["14", "rides"], ["4", "restaurants"], ["151", "showtimes a night"],
+    ];
+    box.innerHTML = ROWS.map(([n, l]) =>
+      `<span class="stat"><b>${n}</b><span>${l}</span></span>`).join("");
   })();
 
   /* ── a rail: cards in, arrows and a bar ──

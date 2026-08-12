@@ -33,7 +33,8 @@
   --ease2: cubic-bezier(.16, 1, .3, 1);
 
   --pad: clamp(18px, 3.4vw, 66px);
-  --sec: clamp(64px, 9vh, 116px);
+  /* the file runs tighter than a 9vh rhythm gave: 72px of section padding at 1920 */
+  --sec: clamp(52px, 3.75vw, 72px);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -54,7 +55,7 @@ a { color: inherit; }
 /* ── the two section skins ── */
 .lightsec { background: var(--paper); color: var(--navy); padding: var(--sec) 0; }
 .darksec {
-  position: relative; padding: calc(var(--sec) + 40px) 0 calc(var(--sec) + 40px);
+  position: relative; padding: calc(var(--sec) + 26px) 0 calc(var(--sec) + 26px);
   color: #fff;
   background: linear-gradient(180deg, #03003c 0%, #0b1550 46%, #16204f 100%);
 }
@@ -261,7 +262,8 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
 
 /* ═══════════════ 2. ZONES ═══════════════ */
 .zones { display: grid; justify-items: center; gap: clamp(22px, 4vh, 44px); }
-.mapwrap { width: min(1180px, 100%); padding-inline: var(--pad); }
+/* the map in the file spans 1021 of its 1920, about 54 per cent */
+.mapwrap { width: min(1021px, 54vw, 100%); padding-inline: var(--pad); }
 /* the map lifts a little as it comes up the screen */
 #parkmap {
   width: 100%; height: auto;
@@ -325,7 +327,9 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
    transparent outside its own quadrant, so intersecting four of them leaves nothing. */
 .rt3 {
   --notch: 18px;
-  width: clamp(240px, 18.2vw, 350px);
+  /* three across, filling the rail, as the file has them */
+  width: calc((100% - 2 * clamp(12px, 1.6vw, 24px)) / 3);
+  min-width: 240px;
   background: var(--paper); color: var(--navy);
   border-radius: 8px;
   --bite:
@@ -393,7 +397,8 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
    rides card links to. */
 
 /* ═══════════════ 4. POSTER CARDS (experiences) ═══════════════ */
-.rail.posters .xp3 { width: clamp(190px, 13.9vw, 268px); }
+/* four across, filling the rail */
+.rail.posters .xp3 { width: calc((100% - 3 * clamp(12px, 1.6vw, 24px)) / 4); min-width: 180px; }
 .xp3 { display: grid; gap: 12px; text-decoration: none; opacity: 0; translate: 0 26px; }
 .xp3.in { animation: dealIn .6s var(--ease2) calc(var(--i) * .07s) forwards; }
 .xp3-shot {
@@ -435,11 +440,13 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
 .darksec .xp3-n, .darksec .xp3-p { color: #fff; }
 
 /* the restaurants use the same card, landscape */
-.rail.wide .xp3 { width: clamp(225px, 17.2vw, 330px); }
-.rail.wide .xp3-shot { aspect-ratio: 4 / 3; }
+.rail.wide .xp3 { width: calc((100% - 3 * clamp(12px, 1.6vw, 24px)) / 4); min-width: 200px; }
+/* measured off the file: about 3:2, where 4:3 made that section 175px too tall */
+.rail.wide .xp3-shot { aspect-ratio: 3 / 2; }
 
+.foot-sec { background: #16204f; padding-block: clamp(26px, 4vh, 48px); }
 .foot {
-  width: min(1400px, 100%); margin: clamp(40px, 7vh, 80px) auto 0;
+  width: min(1400px, 100%); margin: 0 auto;
   padding-inline: var(--pad);
   font-size: 12.5px; line-height: 1.7; color: #9aa6ce;
 }
