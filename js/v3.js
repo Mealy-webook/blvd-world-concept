@@ -32,31 +32,92 @@
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(go);
   setTimeout(go, 2200);
 
-  /* ── the starfield ──
-     Drawn once, seeded, so it does not reshuffle on resize. The file has ~200 ellipses
-     on the canvas; this is the same effect without 200 nodes. */
-  (function stars() {
+  /* ── the sky ──────────────────────────────────────────────────────────────
+     A living starfield: the field itself is seeded and fixed, so it never reshuffles,
+     but each star breathes on its own phase and every so often one crosses the sky.
+
+     One rAF, and only while the hero is on screen — a shader loop running behind four
+     sections of scrolled-past page is heat for nothing. */
+  (function sky() {
     const c = $("#stars");
+    const hero = $("#hero");
     if (!c) return;
-    function draw() {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
-      const w = c.clientWidth, h = c.clientHeight;
+    const g = c.getContext("2d");
+    let stars = [], w = 0, h = 0, dpr = 1, live = false, raf = null, t0 = 0;
+    let shoot = null, nextShot = 2200;
+
+    function build() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      w = c.clientWidth; h = c.clientHeight;
       if (!w || !h) return;
       c.width = w * dpr; c.height = h * dpr;
-      const g = c.getContext("2d");
-      g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
       let seed = 8531909;
       const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
       const n = Math.round((w * h) / 6400);
+      stars = [];
       for (let i = 0; i < n; i++) {
-        const x = rnd() * w, y = rnd() * h * 0.78, r = rnd() * 1.5 + 0.3;
-        g.beginPath();
-        g.fillStyle = `rgba(255,255,255,${(0.2 + rnd() * 0.6) * (1 - y / h)})`;
-        g.arc(x, y, r, 0, 6.2832); g.fill();
+        stars.push({
+          x: rnd() * w, y: rnd() * h * 0.78, r: rnd() * 1.5 + 0.3,
+          a: 0.2 + rnd() * 0.6,
+          /* every star gets its own period and phase, so the sky shimmers rather
+             than pulsing in unison */
+          per: 2200 + rnd() * 4200, ph: rnd() * 6.2832,
+        });
       }
     }
-    draw();
-    addEventListener("resize", draw, { passive: true });
+
+    function draw(t) {
+      raf = null;
+      if (!t0) t0 = t;
+      const el = t - t0;
+      g.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        const tw = 0.62 + 0.38 * Math.sin(el / s.per * 6.2832 + s.ph);
+        g.beginPath();
+        g.fillStyle = `rgba(255,255,255,${(s.a * tw * (1 - s.y / h)).toFixed(3)})`;
+        g.arc(s.x, s.y, s.r, 0, 6.2832);
+        g.fill();
+      }
+      /* a star crosses now and then. It is drawn as a fading trail rather than a
+         moving dot, which is what makes it read as speed. */
+      if (!shoot && el > nextShot) {
+        shoot = { x: w * (0.12 + Math.random() * 0.6), y: h * (0.05 + Math.random() * 0.3),
+                  len: 90 + Math.random() * 120, p: 0, sp: 0.016 + Math.random() * 0.012 };
+      }
+      if (shoot) {
+        shoot.p += shoot.sp;
+        const e = shoot.p, fade = e < 0.5 ? e * 2 : (1 - e) * 2;
+        const dx = shoot.len * 1.6, dy = shoot.len * 0.62;
+        const x = shoot.x + dx * e, y = shoot.y + dy * e;
+        const grad = g.createLinearGradient(x, y, x - dx * 0.22, y - dy * 0.22);
+        grad.addColorStop(0, `rgba(255,255,255,${(0.9 * fade).toFixed(3)})`);
+        grad.addColorStop(1, "rgba(255,255,255,0)");
+        g.strokeStyle = grad; g.lineWidth = 1.6; g.lineCap = "round";
+        g.beginPath(); g.moveTo(x, y); g.lineTo(x - dx * 0.22, y - dy * 0.22); g.stroke();
+        if (shoot.p >= 1) { shoot = null; nextShot = el + 3400 + Math.random() * 5200; }
+      }
+      if (live) raf = requestAnimationFrame(draw);
+    }
+
+    function start() { if (live || STILL) return; live = true; raf = requestAnimationFrame(draw); }
+    function stop() { live = false; if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+    build();
+    /* one frame drawn now, so a background tab and a reduced-motion visitor both get
+       a real sky rather than an empty canvas */
+    g.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      g.beginPath();
+      g.fillStyle = `rgba(255,255,255,${(s.a * (1 - s.y / h)).toFixed(3)})`;
+      g.arc(s.x, s.y, s.r, 0, 6.2832); g.fill();
+    }
+    addEventListener("resize", () => { build(); }, { passive: true });
+    if (hero && "IntersectionObserver" in window) {
+      new IntersectionObserver((es) => {
+        for (const e of es) (e.isIntersecting ? start : stop)();
+      }, { threshold: 0.02 }).observe(hero);
+    } else { start(); }
   })();
 
   /* ── the pricing row ──
@@ -269,6 +330,200 @@
     }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
     items.forEach((n) => io.observe(n));
     setTimeout(() => items.forEach((n) => n.classList.add("in")), 5000);
+  })();
+
+  /* ═══════════════ THE MOTION LAYER ═══════════════
+     Everything below is interaction rather than content: it can all fail and the page
+     still reads. Each piece bails out under prefers-reduced-motion. */
+
+  /* ── pointer parallax on the hero ──
+     The landmarks already drift on scroll; this leans them with the pointer as well, so
+     the horizon has depth standing still. Written as two custom properties and read by
+     the CSS, which keeps it to one composited transform per layer. */
+  (function lean() {
+    const hero = $("#hero");
+    if (!hero || STILL) return;
+    let qx = 0, qy = 0, queued = false;
+    function write() {
+      queued = false;
+      hero.style.setProperty("--mx", qx.toFixed(4));
+      hero.style.setProperty("--my", qy.toFixed(4));
+    }
+    hero.addEventListener("pointermove", (e) => {
+      const b = hero.getBoundingClientRect();
+      qx = (e.clientX - b.left) / b.width - 0.5;      // -0.5 … 0.5
+      qy = (e.clientY - b.top) / b.height - 0.5;
+      if (!queued) { queued = true; requestAnimationFrame(write); }
+    }, { passive: true });
+    /* it settles back when the pointer leaves, rather than staying where it was left */
+    hero.addEventListener("pointerleave", () => { qx = 0; qy = 0; write(); });
+  })();
+
+  /* ── the stats, counting up ──
+     The final figures are written into the page first and the count runs over the top
+     of them, so a tab opened in the background and read later shows the numbers.
+     Anything that is not a plain integer — the spec's "24–27" ranges — is left alone. */
+  (function countUp() {
+    const box = $("#stats");
+    if (!box || STILL) return;
+    const nums = [...box.querySelectorAll("b")].filter((b) => /^\d+$/.test(b.textContent.trim()));
+    if (!nums.length) return;
+    let run = false;
+    const go2 = () => {
+      if (run) return; run = true;
+      for (const b of nums) {
+        const to = parseInt(b.textContent, 10);
+        const DUR = 1100; let t0 = null;
+        const step = (t) => {
+          if (t0 === null) t0 = t;
+          const k = Math.min((t - t0) / DUR, 1);
+          b.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) requestAnimationFrame(step); else b.textContent = to;
+        };
+        requestAnimationFrame(step);
+      }
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((es) => {
+        for (const e of es) if (e.isIntersecting) { go2(); io.disconnect(); }
+      }, { threshold: 0.5 });
+      io.observe(box);
+      setTimeout(go2, 6000);                 // fail open
+    } else { go2(); }
+  })();
+
+  /* ── tilt ──
+     A card leans towards the pointer. Two properties, --tx and --ty, and the CSS turns
+     them into one rotate3d — so the whole effect is a single composited transform and
+     the handler never reads layout after the first measure.
+
+     Delegated from the rail rather than bound per card, because the rails re-render. */
+  (function tilt() {
+    if (STILL) return;
+    const SEL = ".rt3, .xp3, .pl3";
+    let box = null, node = null, queued = false, px = 0, py = 0;
+    function write() {
+      queued = false;
+      if (!node || !box) return;
+      node.style.setProperty("--tx", (((px - box.left) / box.width - 0.5) * 2).toFixed(3));
+      node.style.setProperty("--ty", (((py - box.top) / box.height - 0.5) * 2).toFixed(3));
+    }
+    document.addEventListener("pointermove", (e) => {
+      const hit = e.target.closest(SEL);
+      if (hit !== node) {
+        if (node) { node.classList.remove("tilt"); node.style.removeProperty("--tx"); node.style.removeProperty("--ty"); }
+        node = hit;
+        if (node) { node.classList.add("tilt"); box = node.getBoundingClientRect(); }
+      }
+      if (!node) return;
+      px = e.clientX; py = e.clientY;
+      if (!queued) { queued = true; requestAnimationFrame(write); }
+    }, { passive: true });
+    /* a scroll moves the card out from under the pointer, so the measured box is stale
+       — drop the tilt rather than lean the wrong way */
+    addEventListener("scroll", () => {
+      if (!node) return;
+      node.classList.remove("tilt");
+      node.style.removeProperty("--tx"); node.style.removeProperty("--ty");
+      node = null;
+    }, { passive: true });
+  })();
+
+  /* ── the rails: drag, wheel and keys ──
+     A rail you can throw. Pointer drag with a little inertia, shift-wheel and plain
+     wheel mapped to horizontal, and arrow keys once it has focus. */
+  (function grab() {
+    for (const r of document.querySelectorAll(".rail")) {
+      let down = false, sx = 0, sl = 0, moved = 0, last = 0, vel = 0, glide = null;
+
+      r.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "touch") return;        // native touch scrolling is better
+        down = true; moved = 0; vel = 0;
+        sx = e.clientX; sl = r.scrollLeft; last = e.clientX;
+        r.classList.add("grabbing");
+        if (glide) { cancelAnimationFrame(glide); glide = null; }
+      });
+      r.addEventListener("pointermove", (e) => {
+        if (!down) return;
+        const dx = e.clientX - sx;
+        moved = Math.max(moved, Math.abs(dx));
+        vel = e.clientX - last; last = e.clientX;
+        r.scrollLeft = sl - dx;
+      });
+      function release() {
+        if (!down) return;
+        down = false; r.classList.remove("grabbing");
+        /* let it run on a little, decaying — a rail that stops dead feels like a table,
+           not a belt */
+        if (STILL || Math.abs(vel) < 2) return;
+        let v = vel * 12;
+        const step = () => {
+          v *= 0.92;
+          r.scrollLeft -= v * 0.06;
+          if (Math.abs(v) > 1) glide = requestAnimationFrame(step); else glide = null;
+        };
+        glide = requestAnimationFrame(step);
+      }
+      r.addEventListener("pointerup", release);
+      r.addEventListener("pointercancel", release);
+      r.addEventListener("pointerleave", release);
+      /* a drag that moved is not a click: swallow the click so a thrown rail does not
+         also open the card it started on */
+      r.addEventListener("click", (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+      /* the wheel drives it sideways while the pointer is over it, but only when the
+         gesture is mostly horizontal or shifted — otherwise the page must still scroll */
+      r.addEventListener("wheel", (e) => {
+        const horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+        if (!horiz && !e.shiftKey) return;
+        e.preventDefault();
+        r.scrollLeft += (horiz ? e.deltaX : e.deltaY);
+      }, { passive: false });
+
+      r.tabIndex = 0;
+      r.addEventListener("keydown", (e) => {
+        const first = r.firstElementChild;
+        if (!first) return;
+        const gap = parseFloat(getComputedStyle(r).columnGap) || 0;
+        const stepW = first.getBoundingClientRect().width + gap;
+        if (e.key === "ArrowRight") { e.preventDefault(); r.scrollBy({ left: stepW, behavior: "smooth" }); }
+        if (e.key === "ArrowLeft")  { e.preventDefault(); r.scrollBy({ left: -stepW, behavior: "smooth" }); }
+      });
+    }
+  })();
+
+  /* ── the heart ──
+     A burst of six sparks on the way in. They are spans added and removed, not a
+     library: six nodes for 600ms is cheaper than any of the alternatives.
+     The toggle itself is handled above and works with this switched off. */
+  document.addEventListener("click", (e) => {
+    const f = e.target.closest(".fav");
+    if (!f || STILL || !f.classList.contains("on")) return;
+    for (let i = 0; i < 6; i++) {
+      const s = document.createElement("span");
+      s.className = "spark";
+      s.style.setProperty("--a", (i * 60) + "deg");
+      s.style.setProperty("--d", (i % 2 ? 15 : 21) + "px");
+      f.appendChild(s);
+      setTimeout(() => s.remove(), 700);
+    }
+  });
+
+  /* ── the top progress line ── */
+  (function progress() {
+    const bar = document.createElement("i");
+    bar.className = "pageline";
+    document.body.appendChild(bar);
+    const doc = document.documentElement;
+    let queued = false;
+    const write = () => {
+      queued = false;
+      const max = doc.scrollHeight - innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? clamp(scrollY / max, 0, 1) : 0})`;
+    };
+    write();
+    addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(write); } }, { passive: true });
+    addEventListener("resize", write, { passive: true });
   })();
 
   /* ── the one scroll loop ──

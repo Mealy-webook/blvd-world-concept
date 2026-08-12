@@ -105,12 +105,17 @@ a { color: inherit; }
   position: absolute; bottom: 0; max-width: none; pointer-events: none;
   transform-origin: bottom center;
 }
-.lm.l1 { left: -14%;  width: 46%; translate: 0 calc(var(--sp, 0) * -26px); }
-.lm.l2 { left: -2%;   width: 50%; translate: 0 calc(var(--sp, 0) * -40px); }
-.lm.l3 { left: -26%;  width: 62%; translate: 0 calc(var(--sp, 0) * -14px); }
-.lm.r1 { right: -13%; width: 40%; translate: 0 calc(var(--sp, 0) * -30px); }
-.lm.r2 { right: 6%;   width: 25%; translate: 0 calc(var(--sp, 0) * -48px); }
-.lm.r3 { right: -20%; width: 56%; translate: 0 calc(var(--sp, 0) * -18px); }
+/* Two inputs, one transform. --sp is the scroll, --mx/--my the pointer; each layer
+   takes a different share of both, which is what separates the near skyline from the
+   far one whether you are scrolling or just moving the mouse. The transition is on
+   translate only, so the scroll stays instant while the pointer eases. */
+.lm { transition: translate .5s cubic-bezier(.22,.68,0,1); }
+.lm.l1 { left: -14%;  width: 46%; translate: calc(var(--mx, 0) * -16px) calc(var(--sp, 0) * -26px + var(--my, 0) * -8px); }
+.lm.l2 { left: -2%;   width: 50%; translate: calc(var(--mx, 0) * -26px) calc(var(--sp, 0) * -40px + var(--my, 0) * -13px); }
+.lm.l3 { left: -26%;  width: 62%; translate: calc(var(--mx, 0) * -9px)  calc(var(--sp, 0) * -14px + var(--my, 0) * -5px); }
+.lm.r1 { right: -13%; width: 40%; translate: calc(var(--mx, 0) * -19px) calc(var(--sp, 0) * -30px + var(--my, 0) * -9px); }
+.lm.r2 { right: 6%;   width: 25%; translate: calc(var(--mx, 0) * -32px) calc(var(--sp, 0) * -48px + var(--my, 0) * -16px); }
+.lm.r3 { right: -20%; width: 56%; translate: calc(var(--mx, 0) * -11px) calc(var(--sp, 0) * -18px + var(--my, 0) * -6px); }
 
 .hero-in {
   position: relative; z-index: 3;
@@ -445,4 +450,132 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
   }
   #parkmap { translate: none; scale: 1; }
   .rail { scroll-snap-type: none; }
+}
+
+/* ═══════════════ THE MOTION LAYER ═══════════════ */
+
+/* the reading line across the top */
+.pageline {
+  position: fixed; z-index: 120; left: 0; top: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--pink), #ffb43d);
+  transform: scaleX(0); transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ── tilt ──
+   --tx/--ty come from the pointer, -1 … 1. rotate3d on one element, so the whole lean
+   is a single composited transform. perspective lives on the card so the rail does not
+   have to become a 3D context. */
+.rt3, .xp3, .pl3 { transition: translate .45s var(--ease2), transform .35s var(--ease2), box-shadow .45s var(--ease2); }
+.rt3.tilt, .xp3.tilt, .pl3.tilt {
+  transform:
+    perspective(900px)
+    rotate3d(calc(var(--ty, 0) * -1), var(--tx, 0), 0, 5deg)
+    scale(1.015);
+}
+/* the ticket's photograph leans a shade further than the card, which is what sells it
+   as a window rather than a print */
+.rt3.tilt .rt3-shot img, .xp3.tilt .xp3-shot img { transform: scale(1.07) translate(calc(var(--tx,0) * -6px), calc(var(--ty,0) * -6px)); }
+
+/* ── the perforation ──
+   A ticket earns a tear line. It arrives on hover, between the picture and the type,
+   drawn as a dashed rule so it reads as something you could pull along. */
+.rt3-body { position: relative; }
+.rt3-body::before {
+  content: ""; position: absolute; left: 14px; right: 14px; top: 0;
+  border-top: 1.5px dashed rgba(2, 14, 76, .24);
+  opacity: 0; transform: scaleX(.7); transform-origin: 50% 50%;
+  transition: opacity .35s var(--ease), transform .45s var(--ease2);
+}
+.rt3:hover .rt3-body::before, .rt3.tilt .rt3-body::before { opacity: 1; transform: scaleX(1); }
+
+/* ── the rails, grabbable ── */
+.rail { cursor: grab; }
+.rail.grabbing { cursor: grabbing; scroll-snap-type: none; }
+.rail.grabbing * { pointer-events: none; }
+.rail:focus-visible { outline: 2px solid var(--pink); outline-offset: 6px; border-radius: 8px; }
+
+/* ── the pricing columns ── */
+.pc-ic { transition: transform .4s var(--ease2), border-color .3s var(--ease), background .3s var(--ease); }
+.pc:hover .pc-ic { transform: translateY(-3px) scale(1.06); border-color: rgba(2, 14, 76, .3); background: #f6f7fb; }
+/* the price lifts a touch with it, so the whole column answers the pointer */
+.pc-p { transition: transform .4s var(--ease2); }
+.pc:hover .pc-p { transform: translateX(3px); }
+
+/* ── the heart, and its sparks ── */
+.fav i, .fav { transition: background .26s var(--ease), transform .3s cubic-bezier(.34,1.56,.64,1); }
+.fav.on { transform: scale(1.12); }
+.fav .spark {
+  position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; border-radius: 50%;
+  background: #fff; pointer-events: none;
+  animation: spark .62s cubic-bezier(.22,.68,0,1) forwards;
+  transform: rotate(var(--a)) translateY(0) scale(1);
+}
+@keyframes spark {
+  to { transform: rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(0); opacity: 0; }
+}
+
+/* ── the pick, breathing ──
+   The highlighted package pulses once every few seconds — slow enough to be noticed
+   only in passing, which is the point. */
+.pl3.is-pick { animation: pick 4.6s ease-in-out infinite; }
+@keyframes pick {
+  0%, 88%, 100% { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .26); }
+  94% { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5), 0 0 0 6px rgba(255, 45, 111, .12); }
+}
+/* the ticks draw themselves in when the plan arrives */
+.pl3.in .pl3-l li { animation: tickIn .45s var(--ease2) both; }
+.pl3.in .pl3-l li:nth-child(1) { animation-delay: .22s; }
+.pl3.in .pl3-l li:nth-child(2) { animation-delay: .3s; }
+.pl3.in .pl3-l li:nth-child(3) { animation-delay: .38s; }
+@keyframes tickIn { from { opacity: 0; transform: translateX(-8px); } }
+
+/* ── the CTA, magnetic ── */
+.pl3-cta { position: relative; overflow: hidden; }
+.pl3-cta::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(2, 14, 76, .08), transparent);
+  transform: translateX(-100%);
+}
+.pl3-cta:hover::after { animation: sheen .7s var(--ease); }
+@keyframes sheen { to { transform: translateX(100%); } }
+
+/* ── the pink pill, with a ring on hover ── */
+.pill.pink { position: relative; }
+.pill.pink::after {
+  content: ""; position: absolute; inset: -4px; border-radius: 999px;
+  border: 1.5px solid var(--pink); opacity: 0; transform: scale(.9);
+  transition: opacity .4s var(--ease), transform .4s var(--ease2);
+}
+.pill.pink:hover::after { opacity: .5; transform: scale(1); }
+
+/* ── the scroll cue's line, falling ── */
+.cue i { position: relative; overflow: hidden; }
+.cue i::after {
+  content: ""; position: absolute; inset: 0; background: #fff;
+  animation: fallLine 2.2s var(--ease) infinite;
+}
+@keyframes fallLine { 0% { transform: translateY(-100%); } 62%, 100% { transform: translateY(100%); } }
+
+/* ── the map, drifting ──
+   A slow, tiny ken-burns on top of the scroll lift. Nothing you would notice looking
+   at it; something you notice if it stops. */
+#parkmap { animation: burns 26s ease-in-out infinite alternate; }
+@keyframes burns { to { scale: calc(.965 + var(--mp, 1) * .035 + .022); } }
+
+/* ── the torn edges, breathing ──
+   They shift a hair sideways with the scroll, so the seam between two sections is not
+   a fixed shape you can memorise.  */
+.tear { transition: none; }
+.tear.bottom { translate: calc(var(--sp, 0) * -14px) 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pageline { display: none; }
+  .rt3.tilt, .xp3.tilt, .pl3.tilt { transform: none; }
+  .rt3-body::before { opacity: 1; transform: none; }
+  .pl3.is-pick, #parkmap, .cue i::after, .pl3.in .pl3-l li { animation: none; }
+  .fav .spark { display: none; }
+  .lm { transition: none; }
+  .tear.bottom { translate: none; }
+  .rail { cursor: default; }
 }
