@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/v3.css?v=12" />
+<link rel="stylesheet" href="css/v3.css?v=14" />
 </head>
 <body class="v3">
 
@@ -45,16 +45,18 @@
 <header class="hero" id="hero">
   <div class="sky" aria-hidden="true">
     <canvas id="stars"></canvas>
-    <!-- The landmarks, from the design file. Three lean in from each side; they are
-         oversized and clipped by the section, which is what puts them on a horizon
-         rather than in a row. Each carries its own drift rate. -->
+    <!-- The landmarks, placed from the file's own node coordinates rather than by eye.
+         Each is a box at the node's x/y/w/h as a share of the file's 1920x1100 frame,
+         clipping an image that the file crops — three of the six are scaled inside their
+         box (107%, 144%, 162%) and one is mirrored, so each needs a box of its own
+         rather than being a bare img. Node ids are in css/v3.css beside each rule. -->
     <div class="lms">
-      <img class="lm l1" src="img/v3/lm-l1.png" alt="" />
-      <img class="lm l2" src="img/v3/lm-l2.png" alt="" />
-      <img class="lm l3" src="img/v3/lm-l3.png" alt="" />
-      <img class="lm r1" src="img/v3/lm-r1.png" alt="" />
-      <img class="lm r2" src="img/v3/lm-r2.png" alt="" />
-      <img class="lm r3" src="img/v3/lm-r3.png" alt="" />
+      <div class="lm l1"><img src="img/v3/lm-l1.png" alt="" /></div>
+      <div class="lm l2"><img src="img/v3/lm-l2.png" alt="" /></div>
+      <div class="lm l3"><img src="img/v3/lm-l3.png" alt="" /></div>
+      <div class="lm r1"><img src="img/v3/lm-r1.png" alt="" /></div>
+      <div class="lm r2"><img src="img/v3/lm-r2.png" alt="" /></div>
+      <div class="lm r3"><img src="img/v3/lm-r3.png" alt="" /></div>
     </div>
   </div>
 
@@ -217,6 +219,6 @@
 </section>
 
 <script src="js/data.js?v=1"></script>
-<script src="js/v3.js?v=12"></script>
+<script src="js/v3.js?v=14"></script>
 </body>
 </html>

@@ -112,25 +112,62 @@ a { color: inherit; }
 #stars { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 /* ── the landmarks ──
-   Positioned as shares of the section, not the file's pixels, so the horizon holds
-   its shape at every width. Each drifts up at its own rate against --sp, which is
-   what separates the near skyline from the far one. */
+   Placed from the file's own node coordinates (hero frame 1920 x 1100), each as a share
+   of the frame so the horizon holds its shape at every width. Three of the six are
+   cropped inside their box in the file and one is mirrored, which is why each is a
+   clipping box with an image in it rather than a bare img.
+
+   Two inputs, one transform: --sp is the scroll, --mx/--my the pointer, each layer on a
+   different share of both. The transition is on translate only, so the scroll stays
+   instant while the pointer eases. */
 .lms { position: absolute; inset: 0; overflow: hidden; }
 .lm {
-  position: absolute; bottom: 0; max-width: none; pointer-events: none;
-  transform-origin: bottom center;
+  position: absolute; overflow: hidden; pointer-events: none;
+  transition: translate .5s cubic-bezier(.22,.68,0,1);
 }
-/* Two inputs, one transform. --sp is the scroll, --mx/--my the pointer; each layer
-   takes a different share of both, which is what separates the near skyline from the
-   far one whether you are scrolling or just moving the mouse. The transition is on
-   translate only, so the scroll stays instant while the pointer eases. */
-.lm { transition: translate .5s cubic-bezier(.22,.68,0,1); }
-.lm.l1 { left: -10%;  width: 38%; translate: calc(var(--mx, 0) * -16px) calc(var(--sp, 0) * -26px + var(--my, 0) * -8px); }
-.lm.l2 { left: 1%;    width: 41%; translate: calc(var(--mx, 0) * -26px) calc(var(--sp, 0) * -40px + var(--my, 0) * -13px); }
-.lm.l3 { left: -17%;  width: 48%; translate: calc(var(--mx, 0) * -9px)  calc(var(--sp, 0) * -14px + var(--my, 0) * -5px); }
-.lm.r1 { right: -9%;  width: 34%; translate: calc(var(--mx, 0) * -19px) calc(var(--sp, 0) * -30px + var(--my, 0) * -9px); }
-.lm.r2 { right: 10%;  width: 20%; translate: calc(var(--mx, 0) * -32px) calc(var(--sp, 0) * -48px + var(--my, 0) * -16px); }
-.lm.r3 { right: -13%; width: 44%; translate: calc(var(--mx, 0) * -11px) calc(var(--sp, 0) * -18px + var(--my, 0) * -6px); }
+.lm img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  max-width: none; object-fit: cover; display: block;
+}
+
+/* 96:7760 — Chichen Itza */
+.lm.l1 {
+  left: -17.922%; top: 25.062%; width: 47.914%; height: 83.631%;
+  translate: calc(var(--mx, 0) * -16px) calc(var(--sp, 0) * -26px + var(--my, 0) * -8px);
+}
+/* 96:7761 — the Taj */
+.lm.l2 {
+  left: -1.737%; top: 14.489%; width: 52.831%; height: 85.709%;
+  translate: calc(var(--mx, 0) * -26px) calc(var(--sp, 0) * -40px + var(--my, 0) * -13px);
+}
+.lm.l2 img { width: 100%; height: 107.59%; }
+/* 96:7762 — the Eiffel Tower */
+.lm.l3 {
+  left: -32.917%; top: 24.000%; width: 62.760%; height: 76.091%;
+  translate: calc(var(--mx, 0) * -9px) calc(var(--sp, 0) * -14px + var(--my, 0) * -4px);
+}
+.lm.l3 img { width: 100%; height: 143.88%; left: .03%; }
+/* 96:7779 — Giza */
+.lm.r1 {
+  left: 75.462%; top: 30.318%; width: 40.755%; height: 71.136%;
+  translate: calc(var(--mx, 0) * -19px) calc(var(--sp, 0) * -30px + var(--my, 0) * -10px);
+}
+/* 96:7777 — the Kuwait Towers, mirrored in the file */
+.lm.r2 {
+  left: 59.581%; top: 14.455%; width: 25.257%; height: 82.491%;
+  translate: calc(var(--mx, 0) * -32px) calc(var(--sp, 0) * -48px + var(--my, 0) * -15px);
+  /* the file mirrors the box: -scale-y-100 with rotate-180 composes to scaleX(-1) on
+     the wrapper. Putting the flip on the image instead crops a different part of it,
+     which is how the towers lost their spheres. */
+  transform: scaleX(-1);
+}
+.lm.r2 img { width: 187.12%; height: 100%; left: -87.12%; }
+/* 96:7775 — the Plaza gate */
+.lm.r3 {
+  left: 68.958%; top: 38.000%; width: 57.552%; height: 62.091%;
+  translate: calc(var(--mx, 0) * -11px) calc(var(--sp, 0) * -18px + var(--my, 0) * -6px);
+}
+.lm.r3 img { width: 100%; height: 161.74%; }
 
 .hero-in {
   position: relative; z-index: 3;
@@ -153,8 +190,8 @@ a { color: inherit; }
    sizes flattens the whole thing into the file's proportion — the arcs are unchanged, so
    the curve still matches. */
 /* the file sets the first line noticeably smaller than the second, and in title case */
-.arch .a1 { font-size: 46px; }
-.arch .a2 { font-size: 70px; }
+.arch .a1 { font-size: 55px; }
+.arch .a2 { font-size: 83px; }
 /* the two lines rise into place, the lower one a beat behind */
 .arch text { opacity: 0; transform: translateY(26px); }
 body.up .arch .a1 { animation: archIn .95s .12s var(--ease2) forwards; }
@@ -429,8 +466,6 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .arch .a1 { font-size: 88px; }
   .arch .a2 { font-size: 122px; }
-  .lm.l2 { width: 66%; }
-  .lm.r2 { width: 34%; }
 }
 @media (max-width: 480px) {
   .plans { grid-template-columns: minmax(0, 1fr); }
