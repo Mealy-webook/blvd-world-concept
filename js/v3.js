@@ -4,21 +4,25 @@
 // Built from window.WBK, the same object index.html and v2.html read, so all three
 // versions quote the same zones, rides, prices and questions.
 //
-// WHERE THE DESIGN ASKS FOR SOMETHING THE DATA HAS NOT GOT
-//   · the ride cards in the file carry "Height: 130-195cm". No ride in WBK has a
-//     height, and a height limit is a safety figure — the row is left out rather than
-//     filled. Same for the age limit and the maintenance status.
-//   · the file's ride copy ("Meet the beast that's changing the thrill game. King Claw
-//     has arrived…") is another park's ride description, sitting in the mock as
-//     placeholder. It is not reproduced; our rides have no blurb, so that line is the
-//     class of ride and what it costs instead.
-//   · the four hero prices in the file are 35 / 70 / 99 / 100 and the live site's are
-//     50 / 89 / 150 / 100. The file's are used here, because this page is the file —
-//     but the two disagree and only the client can say which is right.
-//   · in this revision the file repeats one subhead under Experiences and Restaurants —
-//     "…rides including Sky-loop, Trubo 360, The wheel, Rollover…" — which is the rides
-//     line copied. It is placeholder, and it is wrong on a restaurants section, so those
-//     two keep a line derived from their own data instead.
+// THE FILE, AS IS
+// Asked to follow the file and change nothing, this page now prints the file's fields
+// and the file's static copy exactly, including the parts an earlier pass left out on
+// judgement:
+//
+//   · every ride card carries "Thrill: Max" and "Height: 130-195cm", the file's values,
+//     the same on each card as in the file.
+//   · every ride card carries the file's paragraph, King Claw and all.
+//   · all three rails carry the file's one subhead line, its punctuation and spelling
+//     unchanged ("with rides. including", "Trubo 360").
+//   · the hero prices are the file's 35 / 70 / 99 / 100.
+//
+// What is still ours is the per-item data: ride, experience and restaurant names, their
+// photographs and their prices. The file duplicates a single item across each rail —
+// "Wave Swinger" three times, "Tant restaurent" four — which is one component copied in
+// a mock, not fourteen rides called the same thing.
+//
+// FLAGGED ONCE AND THEN LEFT: the height is a safety figure and it now reads the same on
+// the carousel as on the drop tower. That is the file's value and the client's call.
 // ═══════════════════════════════════════════════════════════════════════════
 (function () {
   const W = window.WBK || {};
@@ -306,16 +310,24 @@
     const r = $("#ride-rail");
     const list = W.rides || [];
     if (!r || !list.length) return;
+    /* The file's card, as the file has it: a Thrill row, a Height row, and a paragraph.
+       All three values are the file's own and the same on every card, because that is
+       what the file specifies — asked to use it as is, these are no longer replaced with
+       something derived from the data. The names, photographs and prices stay ours: the
+       file duplicates one ride across all three cards, which is a component duplicated
+       in a mock rather than content. */
+    const THRILL = "Max";
+    const HEIGHT = "130-195cm";
+    const BLURB = "Meet the beast that\u2019s changing the thrill game. King Claw has "
+      + "arrived and it\u2019s every bit as monstrous as you imagined (in the best possible way).";
     r.innerHTML = list.map((x, i) => `
       <article class="rt3" style="--i:${i % 8}">
         <div class="rt3-shot"><img src="img/rides/${esc(x.img)}" alt="${esc(x.name)}" loading="lazy" /></div>
         <div class="rt3-body">
           <h3 class="rt3-n">${esc(x.name)}</h3>
-          <!-- the file's rows are Thrill and Height. There is no height for any ride
-               in the data, so this is the class of ride and the two prices instead. -->
-          <p class="rt3-row g"><i aria-hidden="true"></i>Thrill: <b>${esc(x.kind)}</b></p>
-          <p class="rt3-row t"><i aria-hidden="true"></i>A turn: <b>${riyal}${esc(x.reg)}</b></p>
-          <p class="rt3-note">Fast lane ${riyal}${esc(x.fast)} &middot; every ride is booked on webook.</p>
+          <p class="rt3-row g"><i aria-hidden="true"></i>Thrill: ${THRILL}</p>
+          <p class="rt3-row h"><i aria-hidden="true"></i>Height: ${HEIGHT}</p>
+          <p class="rt3-note">${BLURB}</p>
         </div>
       </article>`).join("");
     wake([...r.children], r);
@@ -452,13 +464,17 @@
     });
   })();
 
-  /* ── the rides subhead, new in this revision ── */
-  (function rideSub() {
-    const sub = $("#ride-sub");
-    const list = W.rides || [];
-    if (!sub || !list.length) return;
-    sub.textContent = "Get ready for an exciting adventure with rides including "
-      + list.slice(0, 4).map((r) => r.name).join(", ") + ", and more.";
+  /* ── the subheads ──
+     One line, the file's, under all three rails. The file repeats it verbatim on Explore
+     rides, Experiences and Restaurants — punctuation and spelling included — and asked
+     to use the file as is, that is what goes in rather than a line derived per section. */
+  (function subs() {
+    const LINE = "Get ready for an exciting adventure with rides. including Sky-loop, "
+      + "Trubo 360, The wheel, Rollover, and more.";
+    for (const id of ["#ride-sub", "#xp-sub", "#eat-sub"]) {
+      const el = $(id);
+      if (el) el.textContent = LINE;
+    }
   })();
 
   /* ── the experience posters ──
@@ -490,8 +506,7 @@
     }).join("");
     wake([...r.children], r);
     rail("#xp-rail", "#xp-nav");
-    const sub = $("#xp-sub");
-    if (sub) sub.textContent = `${list.length} things worth booking before you arrive — each one in its own zone, each with entry to that zone included.`;
+
   })();
 
   /* ── the restaurants ── */
@@ -511,8 +526,7 @@
       </a>`).join("");
     wake([...r.children], r);
     rail("#eat-rail", "#eat-nav");
-    const sub = $("#eat-sub");
-    if (sub) sub.textContent = `${list.length} kitchens across the park, from ${Math.min(...list.map((x) => +x.from))} riyal a head.`;
+
   })();
 
   /* ── the save controls ──

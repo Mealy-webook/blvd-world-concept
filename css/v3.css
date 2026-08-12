@@ -327,14 +327,28 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
   content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 1.4px;
   background: #7b86a4; transform-origin: left center; transform: rotate(-42deg);
 }
-/* the ticket mark, for a price row */
-.rt3-row.t i { border-radius: 3px; }
-.rt3-row.t i::after {
-  content: ""; position: absolute; left: 50%; top: 3px; bottom: 3px; width: 1.4px;
+/* the height mark: the file's up-and-down arrow, drawn — no ring around it */
+.rt3-row.h i { border: 0; border-radius: 0; }
+.rt3-row.h i::before {
+  content: ""; position: absolute; left: 50%; top: 1px; bottom: 1px; width: 1.5px;
   background: #7b86a4; translate: -50% 0;
 }
+.rt3-row.h i::after {
+  content: ""; position: absolute; left: 50%; top: 1px; translate: -50% 0;
+  width: 7px; height: 7px;
+  border-left: 1.5px solid #7b86a4; border-top: 1.5px solid #7b86a4;
+  transform: rotate(45deg) translate(0, 0); transform-origin: center;
+}
+/* the second arrowhead, at the foot */
+.rt3-row.h i { position: relative; }
+.rt3-row.h::after {
+  content: ""; position: absolute; left: 0; margin-left: 5px; width: 7px; height: 7px;
+  border-right: 1.5px solid #7b86a4; border-bottom: 1.5px solid #7b86a4;
+  transform: rotate(45deg); margin-top: 5px;
+}
+.rt3-row.h { position: relative; }
 .rt3-row b { color: var(--navy); font-weight: 700; }
-.rt3-note { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: #6b7590; }
+.rt3-note { margin: 6px 0 0; font-size: clamp(12px, .73vw, 14px); line-height: 1.5; color: #3c4867; }
 
 /* The Ride packages block was removed from the file in this revision, and its .pl3
    rules went with it. The five packages still live on index.html#/packages, which every
