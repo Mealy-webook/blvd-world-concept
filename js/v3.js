@@ -262,7 +262,7 @@
      One helper for the three rails the design uses. The step is measured off the first
      card rather than assumed, so it stays right through every clamp() the card is
      sized with. */
-  function rail(railSel, navSel) {
+  function rail3(railSel, navSel) {
     const r = $(railSel), nav = $(navSel);
     if (!r || !nav) return;
     const prev = nav.querySelector('[data-dir="-1"]');
@@ -307,21 +307,21 @@
 
   /* ── the ride tickets ── */
   (function rides() {
-    const r = $("#ride-rail");
-    const list = W.rides || [];
-    if (!r || !list.length) return;
-    /* The file's card, as the file has it: a Thrill row, a Height row, and a paragraph.
-       All three values are the file's own and the same on every card, because that is
-       what the file specifies — asked to use it as is, these are no longer replaced with
-       something derived from the data. The names, photographs and prices stay ours: the
-       file duplicates one ride across all three cards, which is a component duplicated
-       in a mock rather than content. */
+    const rail = $("#ride-rail");
+    if (!rail) return;
+    /* The file's three cards: one name, one thrill, one height, one paragraph, three
+       photographs. Following the file as is, so the repetition is the file's. */
     const THRILL = "Max";
     const HEIGHT = "130-195cm";
     const BLURB = "Meet the beast that\u2019s changing the thrill game. King Claw has "
       + "arrived and it\u2019s every bit as monstrous as you imagined (in the best possible way).";
-    r.innerHTML = list.map((x, i) => `
-      <article class="rt3" style="--i:${i % 8}">
+    const CARDS = [
+      { name: "Wave Swinger", img: "wave-swinger.jpg" },
+      { name: "Wave Swinger", img: "sky-loop.jpg" },
+      { name: "Wave Swinger", img: "amazonia-awakens.jpg" },
+    ];
+    rail.innerHTML = CARDS.map((x, i) => `
+      <article class="rt3" style="--i:${i}">
         <div class="rt3-shot"><img src="img/rides/${esc(x.img)}" alt="${esc(x.name)}" loading="lazy" /></div>
         <div class="rt3-body">
           <h3 class="rt3-n">${esc(x.name)}</h3>
@@ -330,35 +330,34 @@
           <p class="rt3-note">${BLURB}</p>
         </div>
       </article>`).join("");
-    wake([...r.children], r);
-    rail("#ride-rail", "#ride-nav");
+    wake([...rail.children], rail);
+    rail3("#ride-rail", "#ride-nav");
   })();
 
   /* The ride packages block was removed from the file in this revision, so its builder
      went with it. The five packages are still on index.html#/packages, which every ride
      card links to — nothing was lost, it just is not on this page any more. */
 
-  /* ── the zone ring (new in this revision) ─────────────────────────────────
-     A round poster per zone. Only the eight zones we hold poster art for get a circle:
-     a ring around a cropped landscape photograph is not the same object, and eight real
-     ones read better than twenty where twelve are wrong. */
+  /* ── the zone ring ────────────────────────────────────────────────────────
+     The file's six circles, in its order, with its own labels — "Saudia Arabia",
+     "Turkey", "Paris" — rather than the data's names. Following the file as is. */
   (function zring() {
     const r = $("#zring");
     if (!r) return;
-    const POSTERS = {
-      "Saudi Arabia": "saudi-arabia.webp", "Egypt": "egypt.webp", "Türkiye": "turkiye.webp",
-      "Japan": "japan.webp", "France": "france.webp", "Kuwait": "kuwait.webp",
-      "South Korea": "korea.webp", "Indonesia": "indonesia.webp",
-    };
-    const zones = (W.zones || []).filter((z) => POSTERS[z.name]);
-    if (!zones.length) return;
-    r.innerHTML = zones.map((z) => `
-      <a class="zn3" href="index.html#/zone?z=${encodeURIComponent(z.name)}">
-        <span class="zn3-ring"><img src="img/zones/posters/${POSTERS[z.name]}" alt="" loading="lazy" /></span>
-        <p class="zn3-n">${esc(z.name)}</p>
+    const CIRCLES = [
+      { label: "Saudia Arabia", img: "saudi-arabia.webp", zone: "Saudi Arabia" },
+      { label: "Egypt",         img: "egypt.webp",        zone: "Egypt" },
+      { label: "Turkey",        img: "turkiye.webp",      zone: "T\u00fcrkiye" },
+      { label: "Japan",         img: "japan.webp",        zone: "Japan" },
+      { label: "Paris",         img: "france.webp",       zone: "France" },
+      { label: "Kuwait",        img: "kuwait.webp",       zone: "Kuwait" },
+    ];
+    r.innerHTML = CIRCLES.map((c) => `
+      <a class="zn3" href="index.html#/zone?z=${encodeURIComponent(c.zone)}">
+        <span class="zn3-ring"><img src="img/zones/posters/${c.img}" alt="" loading="lazy" /></span>
+        <p class="zn3-n">${esc(c.label)}</p>
       </a>`).join("");
 
-    /* the arrows either side step one circle at a time */
     const wrap = r.closest(".zring-wrap");
     if (!wrap) return;
     const step = () => {
@@ -483,50 +482,48 @@
      experience whose zone has no poster falls back to its own photograph. */
   (function xps() {
     const r = $("#xp-rail");
-    const list = W.experiences || [];
-    if (!r || !list.length) return;
-    const POSTERS = {
-      "Egypt": "egypt.webp", "France": "france.webp", "Indonesia": "indonesia.webp",
-      "Japan": "japan.webp", "South Korea": "korea.webp", "Kuwait": "kuwait.webp",
-      "Saudi Arabia": "saudi-arabia.webp", "Türkiye": "turkiye.webp",
-    };
-    r.innerHTML = list.map((x, i) => {
-      const poster = POSTERS[x.zone];
-      const src = poster ? `img/zones/posters/${poster}` : `img/${x.img}`;
-      return `
-        <a class="xp3" style="--i:${i % 8}" href="index.html#/experiences">
-          <span class="xp3-shot">
-            <img src="${src}" alt="${esc(x.title)}" loading="lazy" />
-            <button class="fav" type="button" aria-pressed="false"
-                    aria-label="Save ${esc(x.title)}"><i aria-hidden="true"></i></button>
-          </span>
-          <h3 class="xp3-n">${esc(x.title)}</h3>
-          <p class="xp3-p">${riyal}${esc(x.price)}</p>
-        </a>`;
-    }).join("");
+    if (!r) return;
+    /* The file's four cards, its poster art, its names and its one price. */
+    const CARDS = [
+      { n: "The lost muesem",   img: "xp1.png" },
+      { n: "Escape room",       img: "xp2.png" },
+      { n: "The tomb of pharoh", img: "xp3.png" },
+      { n: "Pyramid\u2019s mystery", img: "xp4.png" },
+    ];
+    const PRICE = "210.75";
+    r.innerHTML = CARDS.map((x, i) => `
+      <a class="xp3" style="--i:${i}" href="index.html#/experiences">
+        <span class="xp3-shot">
+          <img src="img/v3/${esc(x.img)}" alt="${esc(x.n)}" loading="lazy" />
+          <button class="fav" type="button" aria-pressed="false"
+                  aria-label="Save ${esc(x.n)}"><i aria-hidden="true"></i></button>
+        </span>
+        <h3 class="xp3-n">${esc(x.n)}</h3>
+        <p class="xp3-p">${riyal}${PRICE}</p>
+      </a>`).join("");
     wake([...r.children], r);
-    rail("#xp-rail", "#xp-nav");
-
+    rail3("#xp-rail", "#xp-nav");
   })();
 
   /* ── the restaurants ── */
   (function eats() {
     const r = $("#eat-rail");
-    const list = W.restaurants || [];
-    if (!r || !list.length) return;
-    r.innerHTML = list.map((x, i) => `
-      <a class="xp3" style="--i:${i % 8}" href="index.html#/eats">
+    if (!r) return;
+    /* Four cards, one name, one photograph, one price — the file's. */
+    const NAME = "Tant restaurent";
+    const PRICE = "210.75";
+    r.innerHTML = [0, 1, 2, 3].map((i) => `
+      <a class="xp3" style="--i:${i}" href="index.html#/eats">
         <span class="xp3-shot">
-          <img src="img/zones/${esc(x.img)}" alt="${esc(x.name)}" loading="lazy" />
+          <img src="img/zones/egypt.jpg" alt="${NAME}" loading="lazy" />
           <button class="fav" type="button" aria-pressed="false"
-                  aria-label="Save ${esc(x.name)}"><i aria-hidden="true"></i></button>
+                  aria-label="Save ${NAME}"><i aria-hidden="true"></i></button>
         </span>
-        <h3 class="xp3-n">${esc(x.name)}</h3>
-        <p class="xp3-p">${riyal}${esc(x.from)}</p>
+        <h3 class="xp3-n">${NAME}</h3>
+        <p class="xp3-p">${riyal}${PRICE}</p>
       </a>`).join("");
     wake([...r.children], r);
-    rail("#eat-rail", "#eat-nav");
-
+    rail3("#eat-rail", "#eat-nav");
   })();
 
   /* ── the save controls ──
