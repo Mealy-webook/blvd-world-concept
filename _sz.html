@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><iframe id="f" src="v3.html" style="border:0"></iframe><pre id="out">…</pre>
+<script>
+const P=new URLSearchParams(location.search),W=+(P.get("w")||1440);
+const f=document.getElementById("f");f.style.width=W+"px";f.style.height="900px";
+f.onload=()=>{const w=f.contentWindow,d=w.document;
+ setTimeout(()=>{
+  const cs=(sel,prop)=>{const e=d.querySelector(sel);return e?parseFloat(w.getComputedStyle(e)[prop]).toFixed(1):"-";};
+  const bw=(sel)=>{const e=d.querySelector(sel);return e?Math.round(e.getBoundingClientRect().width):"-";};
+  document.getElementById("out").textContent=JSON.stringify({
+   vw:W,
+   h1:cs(".h1","fontSize"),
+   pcName:cs(".pc-n","fontSize"),
+   pcDesc:cs(".pc-d","fontSize"),
+   pcPriceB:cs(".pc-p b","fontSize"),
+   sub:cs(".sub","fontSize"),
+   rt3Name:cs(".rt3-n","fontSize"),
+   pricingW:bw(".pricing"),
+   ticketW:bw(".rt3"),
+   posterW:bw(".xp3"),
+   pad:cs(".wrap","paddingLeft"),
+   archW:bw(".arch"),
+  },null,1);},2500);};
+</script>

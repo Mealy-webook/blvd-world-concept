@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#03003c}iframe{border:0;display:block}</style>
+<iframe id="f" src="v3.html"></iframe>
+<script>
+const P=new URLSearchParams(location.search),W=+(P.get("w")||1920),H=+(P.get("h")||1100),SEC=P.get("sec")||"",OFF=+(P.get("off")||0);
+const f=document.getElementById("f");f.style.width=W+"px";f.style.height=H+"px";
+f.onload=()=>{const w=f.contentWindow,d=w.document;
+ setTimeout(()=>{d.documentElement.style.scrollBehavior="auto";
+  for(const e of d.querySelectorAll(".reveal,.rt3,.pl3,.xp3"))e.classList.add("in");
+  if(SEC){const e=d.getElementById(SEC);if(e)w.scrollTo(0,Math.round(e.getBoundingClientRect().top+w.scrollY+OFF));}
+  setTimeout(()=>{for(const a of d.getAnimations())try{a.finish()}catch(e){}},400);
+ },3000);};
+</script>

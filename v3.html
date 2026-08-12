@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/v3.css?v=2" />
+<link rel="stylesheet" href="css/v3.css?v=6" />
 </head>
 <body class="v3">
 
@@ -45,10 +45,20 @@
          instead of opening up at the crown. -->
     <h1 class="arch" id="arch">
       <span class="sr-only">Explore new worlds</span>
-      <svg viewBox="144 111 712 264" aria-hidden="true" focusable="false">
+      <!-- The file's arch is flatter and tighter than the main site's. Measured off the
+           file at its own 1920: line one is a 59px cap on a 333px span, line two a 79px
+           cap on 717px, and the baselines are 115px apart — about 73 in these viewBox
+           units, where the main site's are 176.
+
+           BOTH ARCS SHARE ONE CENTRE, (500, 1399.3). That is the whole trick: two arcs
+           of different curvature converge, so a first attempt that just moved the lower
+           baseline up had the two lines crossing at the crown while looking fine at the
+           ends. Concentric, the separation is 73 everywhere — r1 1200 and r2 1127, and
+           each endpoint solved on its own circle. -->
+      <svg viewBox="118 158 764 194" aria-hidden="true" focusable="false">
         <defs>
           <path id="v3-a" d="M 300 216.1 A 1200 1200 0 0 1 700 216.1" fill="none" />
-          <path id="v3-b" d="M 58 392 A 1100 1100 0 0 1 942 392" fill="none" />
+          <path id="v3-b" d="M 128 335.5 A 1127 1127 0 0 1 872 335.5" fill="none" />
         </defs>
         <text class="a1" text-anchor="middle"><textPath href="#v3-a" startOffset="50%">EXPLORE</textPath></text>
         <text class="a2" text-anchor="middle"><textPath href="#v3-b" startOffset="50%">NEW WORLDS</textPath></text>
@@ -158,6 +168,6 @@
 </section>
 
 <script src="js/data.js?v=1"></script>
-<script src="js/v3.js?v=2"></script>
+<script src="js/v3.js?v=6"></script>
 </body>
 </html>
