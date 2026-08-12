@@ -15,6 +15,10 @@
 //   · the four hero prices in the file are 35 / 70 / 99 / 100 and the live site's are
 //     50 / 89 / 150 / 100. The file's are used here, because this page is the file —
 //     but the two disagree and only the client can say which is right.
+//   · in this revision the file repeats one subhead under Experiences and Restaurants —
+//     "…rides including Sky-loop, Trubo 360, The wheel, Rollover…" — which is the rides
+//     line copied. It is placeholder, and it is wrong on a restaurants section, so those
+//     two keep a line derived from their own data instead.
 // ═══════════════════════════════════════════════════════════════════════════
 (function () {
   const W = window.WBK || {};
@@ -318,31 +322,143 @@
     rail("#ride-rail", "#ride-nav");
   })();
 
-  /* ── the ride packages ── */
-  (function plans() {
-    const box = $("#plans");
-    const list = W.bundles || [];
-    if (!box || !list.length) return;
-    const PICK = "FAMILY PACKAGE";
-    const nice = (s) => String(s).toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
-    box.innerHTML = list.map((b, i) => `
-      <article class="pl3${b.name === PICK ? " is-pick" : ""}" style="--i:${i}">
-        <h3 class="pl3-n">${esc(nice(b.name))}</h3>
-        <p class="pl3-p">${riyal}${esc(b.price)}</p>
-        <div class="pl3-hr"></div>
-        <ul class="pl3-l">
-          ${(b.includes || []).filter(Boolean).map((l) => `<li><i aria-hidden="true"></i>${esc(l)}</li>`).join("")}
-        </ul>
-        <a class="pl3-cta" href="${esc(b.href || "https://webook.com")}" target="_blank"
-           rel="noopener" aria-label="${esc(b.cta || "Book")}">Book</a>
-      </article>`).join("");
-    wake([...box.children], box);
-    const sub = $("#pk-sub");
-    if (sub) {
-      const names = (W.rides || []).slice(0, 4).map((r) => r.name);
-      sub.textContent = `Get ready for an exciting adventure with rides including `
-        + names.join(", ") + ", and more.";
+  /* The ride packages block was removed from the file in this revision, so its builder
+     went with it. The five packages are still on index.html#/packages, which every ride
+     card links to — nothing was lost, it just is not on this page any more. */
+
+  /* ── the zone ring (new in this revision) ─────────────────────────────────
+     A round poster per zone. Only the eight zones we hold poster art for get a circle:
+     a ring around a cropped landscape photograph is not the same object, and eight real
+     ones read better than twenty where twelve are wrong. */
+  (function zring() {
+    const r = $("#zring");
+    if (!r) return;
+    const POSTERS = {
+      "Saudi Arabia": "saudi-arabia.webp", "Egypt": "egypt.webp", "Türkiye": "turkiye.webp",
+      "Japan": "japan.webp", "France": "france.webp", "Kuwait": "kuwait.webp",
+      "South Korea": "korea.webp", "Indonesia": "indonesia.webp",
+    };
+    const zones = (W.zones || []).filter((z) => POSTERS[z.name]);
+    if (!zones.length) return;
+    r.innerHTML = zones.map((z) => `
+      <a class="zn3" href="index.html#/zone?z=${encodeURIComponent(z.name)}">
+        <span class="zn3-ring"><img src="img/zones/posters/${POSTERS[z.name]}" alt="" loading="lazy" /></span>
+        <p class="zn3-n">${esc(z.name)}</p>
+      </a>`).join("");
+
+    /* the arrows either side step one circle at a time */
+    const wrap = r.closest(".zring-wrap");
+    if (!wrap) return;
+    const step = () => {
+      const first = r.firstElementChild;
+      if (!first) return r.clientWidth;
+      const gap = parseFloat(getComputedStyle(r).columnGap) || 0;
+      return first.getBoundingClientRect().width + gap;
+    };
+    for (const b2 of wrap.querySelectorAll(".zring-nav")) {
+      b2.addEventListener("click", () => {
+        r.scrollBy({ left: step() * (+b2.dataset.dir || 1), behavior: "smooth" });
+      });
     }
+    const sync = () => {
+      const max = r.scrollWidth - r.clientWidth;
+      const prev = wrap.querySelector('[data-dir="-1"]');
+      const next = wrap.querySelector('[data-dir="1"]');
+      if (prev) prev.disabled = r.scrollLeft < 4;
+      if (next) next.disabled = r.scrollLeft > max - 4;
+    };
+    r.addEventListener("scroll", sync, { passive: true });
+    addEventListener("resize", sync, { passive: true });
+    requestAnimationFrame(sync);
+  })();
+
+  /* ── the venue rules (new in this revision) ───────────────────────────────
+     Nine cards from WBK.rules. Each icon is drawn here rather than fetched: nine
+     one-off marks are cheaper as paths than as nine requests, and they inherit the
+     card's colour. */
+  (function rules() {
+    const box = $("#rulegrid");
+    const list = W.rules || [];
+    if (!box || !list.length) return;
+    const P = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+    /* in the order WBK.rules holds them: food, pets, cameras, smoking, re-entry,
+       refunds, parking, open air, music */
+    const ICONS = [
+      P('<path d="M5 13h14a7 7 0 0 1-7 6 7 7 0 0 1-7-6z"/><path d="M4 21h16"/><path d="M3 3l18 18"/>'),
+      P('<circle cx="7" cy="9" r="1.8"/><circle cx="12" cy="6.5" r="1.8"/><circle cx="17" cy="9" r="1.8"/><path d="M8 15.5c0-2 1.8-3.5 4-3.5s4 1.5 4 3.5-1.8 3.5-4 3.5-4-1.5-4-3.5z"/><path d="M3 3l18 18"/>'),
+      P('<path d="M3 8.5h4l1.5-2h7L17 8.5h4v10H3z"/><circle cx="12" cy="13" r="3"/><path d="M3 3l18 18"/>'),
+      P('<path d="M3 15h14v3H3z"/><path d="M14 8c0-2 2-2 2-4"/><path d="M18 9c0-2 2-2 2-4"/><path d="M3 3l18 18"/>'),
+      P('<path d="M14 4h5v16h-5"/><path d="M12 12H4"/><path d="M8 8l-4 4 4 4"/><path d="M3 3l18 18"/>'),
+      P('<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M2.5 10h19"/><path d="M3 3l18 18"/>'),
+      P('<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
+      P('<path d="M12 3l4 6H8z"/><path d="M12 8l5 7H7z"/><path d="M12 15v6"/><path d="M8 21h8"/>'),
+      P('<circle cx="8" cy="17" r="2.5"/><path d="M10.5 17V6l8-2v10"/><circle cx="16.5" cy="14" r="2.5"/>'),
+    ];
+    box.innerHTML = list.map((r, i) => `
+      <div class="rl3" style="--i:${i}">
+        <span class="rl3-ic" aria-hidden="true">${ICONS[i % ICONS.length]}</span>
+        <p class="rl3-n">${esc(r.t)}</p>
+        <p class="rl3-d">${esc(r.d)}</p>
+      </div>`).join("");
+    wake([...box.children], box);
+  })();
+
+  /* ── the FAQ (new in this revision) ───────────────────────────────────────
+     One row open at a time. The height animates off a measured scrollHeight and is
+     released to auto afterwards, or a panel whose text reflows later — a font arriving,
+     a rotation — stays clipped at whatever it was measured at. */
+  (function faq() {
+    const box = $("#qalist");
+    const list = W.faqs || [];
+    if (!box || !list.length) return;
+    box.innerHTML = list.map((f, i) => `
+      <div class="qa3" style="--i:${i}">
+        <button class="qa3-q" type="button" aria-expanded="false" aria-controls="qa3-${i}">
+          <span>${esc(f.q)}</span><i aria-hidden="true"></i>
+        </button>
+        <div class="qa3-a" id="qa3-${i}" role="region"><p>${esc(f.a)}</p></div>
+      </div>`).join("");
+    wake([...box.children], box);
+
+    box.addEventListener("click", (e) => {
+      const btn = e.target.closest(".qa3-q");
+      if (!btn) return;
+      const row = btn.closest(".qa3");
+      const panel = row.querySelector(".qa3-a");
+      const isOpen = row.classList.contains("open");
+      for (const other of box.querySelectorAll(".qa3.open")) {
+        if (other === row) continue;
+        const p2 = other.querySelector(".qa3-a");
+        p2.style.height = p2.scrollHeight + "px";
+        requestAnimationFrame(() => { p2.style.height = "0px"; });
+        other.classList.remove("open");
+        other.querySelector(".qa3-q").setAttribute("aria-expanded", "false");
+      }
+      if (isOpen) {
+        panel.style.height = panel.scrollHeight + "px";
+        requestAnimationFrame(() => { panel.style.height = "0px"; });
+        row.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        row.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        panel.style.height = panel.scrollHeight + "px";
+      }
+    });
+    box.addEventListener("transitionend", (e) => {
+      if (e.propertyName !== "height") return;
+      const p2 = e.target;
+      if (p2.closest(".qa3").classList.contains("open")) p2.style.height = "auto";
+    });
+  })();
+
+  /* ── the rides subhead, new in this revision ── */
+  (function rideSub() {
+    const sub = $("#ride-sub");
+    const list = W.rides || [];
+    if (!sub || !list.length) return;
+    sub.textContent = "Get ready for an exciting adventure with rides including "
+      + list.slice(0, 4).map((r) => r.name).join(", ") + ", and more.";
   })();
 
   /* ── the experience posters ──
@@ -525,7 +641,7 @@
      A rail you can throw. Pointer drag with a little inertia, shift-wheel and plain
      wheel mapped to horizontal, and arrow keys once it has focus. */
   (function grab() {
-    for (const r of document.querySelectorAll(".rail")) {
+    for (const r of document.querySelectorAll(".rail, .zring")) {
       let down = false, sx = 0, sl = 0, moved = 0, last = 0, vel = 0, glide = null;
 
       r.addEventListener("pointerdown", (e) => {

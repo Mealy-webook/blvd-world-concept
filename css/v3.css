@@ -71,6 +71,11 @@ a { color: inherit; }
 }
 .tear.bottom { bottom: -1px; }
 .tear.top { top: -1px; transform: scaleY(-1); }
+/* A tear is always the colour of the section ABOVE it, because that is the sheet being
+   torn away. Inside a dark section the strip is paper; inside a light one it has to be
+   the navy, or a white tear on white is invisible and the seam is a hard straight line —
+   which is what the light Venue rules section had against the dark Restaurants above it. */
+.lightsec > .tear { background: #16204f; }
 
 /* ── type ── */
 .h1 {
@@ -331,50 +336,9 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
 .rt3-row b { color: var(--navy); font-weight: 700; }
 .rt3-note { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: #6b7590; }
 
-/* ═══════════════ 3b. RIDE PACKAGES ═══════════════ */
-.pk-head { margin-top: clamp(46px, 8vh, 96px); }
-.plans {
-  margin-top: clamp(20px, 3vh, 36px);
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(10px, 1.2vw, 18px); align-items: stretch;
-}
-.pl3 {
-  display: grid; grid-template-rows: auto auto auto 1fr auto;
-  gap: 12px; padding: clamp(16px, 1.6vw, 24px);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, .04);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
-  opacity: 0; translate: 0 22px;
-}
-.pl3.in { animation: dealIn .55s var(--ease2) calc(var(--i) * .07s) forwards; }
-/* the file highlights one card: a lighter pane, not a different shape */
-.pl3.is-pick { background: rgba(255, 255, 255, .11); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .26); }
-.pl3-n {
-  margin: 0; font-family: var(--disp); font-weight: 700;
-  font-variation-settings: "opsz" 14, "wdth" 100;
-  font-size: clamp(14.5px, .99vw, 19px); letter-spacing: -.02em; color: #fff;
-}
-.pl3-p { margin: 0; display: flex; align-items: baseline; gap: 5px; font-size: 17px; font-weight: 600; color: #fff; }
-.pl3-hr { height: 1px; background: rgba(255, 255, 255, .16); }
-.pl3-l { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; align-content: start; }
-.pl3-l li { display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 9px; font-size: 13.5px; color: #d5dcf5; }
-/* the tick, drawn */
-.pl3-l i {
-  width: 15px; height: 15px; margin-top: 2px; border-radius: 50%;
-  background: rgba(255, 255, 255, .9); position: relative;
-}
-.pl3-l i::after {
-  content: ""; position: absolute; left: 4px; top: 4.5px; width: 6px; height: 3px;
-  border-left: 1.6px solid var(--navy); border-bottom: 1.6px solid var(--navy);
-  transform: rotate(-45deg);
-}
-.pl3-cta {
-  display: grid; place-items: center; padding: 13px; border-radius: 999px;
-  background: #fff; color: var(--navy); text-decoration: none;
-  font-size: 14px; font-weight: 700;
-  transition: transform .3s var(--ease2), box-shadow .3s var(--ease2);
-}
-.pl3-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 0, 0, .34); }
+/* The Ride packages block was removed from the file in this revision, and its .pl3
+   rules went with it. The five packages still live on index.html#/packages, which every
+   rides card links to. */
 
 /* ═══════════════ 4. POSTER CARDS (experiences) ═══════════════ */
 .rail.posters .xp3 { width: clamp(190px, 13.9vw, 268px); }
@@ -382,7 +346,8 @@ body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
 .xp3.in { animation: dealIn .6s var(--ease2) calc(var(--i) * .07s) forwards; }
 .xp3-shot {
   position: relative; border-radius: 14px; overflow: hidden;
-  aspect-ratio: 3 / 4; background: #e8eaf2;
+  /* the file squared these off in this revision; they were 3:4 portrait */
+  aspect-ratio: 1; background: #e8eaf2;
   box-shadow: 0 14px 30px rgba(0, 4, 30, .18);
   transition: transform .45s var(--ease2), box-shadow .45s var(--ease2);
 }
@@ -654,4 +619,128 @@ body.v3.booting { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .boot-mark { animation: none; }
   .intro-line.typing::after { animation: none; }
+}
+
+/* ═══════════════ THE ZONE RING (new in this revision) ═══════════════
+   A round poster per zone under a heavy pink ring, with an arrow either side. The ring
+   is a border rather than a wrapper, so the crop and the ring share one radius and can
+   never disagree. */
+.zring-wrap {
+  width: min(1400px, 100%); margin-inline: auto;
+  padding-inline: var(--pad);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; gap: clamp(8px, 1.4vw, 20px);
+  margin-bottom: clamp(24px, 4vh, 48px);
+}
+.zring {
+  display: flex; gap: clamp(14px, 1.7vw, 30px);
+  overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory;
+  padding: 6px 2px 4px; min-height: max-content; cursor: grab;
+}
+.zring::-webkit-scrollbar { display: none; }
+.zring.grabbing { cursor: grabbing; scroll-snap-type: none; }
+.zring:focus-visible { outline: 2px solid var(--pink); outline-offset: 6px; border-radius: 8px; }
+.zn3 {
+  flex: 0 0 auto; scroll-snap-align: start; text-decoration: none;
+  display: grid; justify-items: center; gap: 12px;
+  width: clamp(96px, 6.9vw, 132px);
+}
+.zn3-ring {
+  width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+  border: clamp(3px, .26vw, 5px) solid var(--pink);
+  background: #f1f2f7;
+  transition: transform .4s var(--ease2), box-shadow .4s var(--ease2);
+}
+.zn3-ring img { width: 100%; height: 100%; object-fit: cover; }
+.zn3:hover .zn3-ring { transform: translateY(-4px) scale(1.05); box-shadow: 0 14px 30px rgba(255, 45, 111, .3); }
+.zn3-n {
+  margin: 0; font-family: var(--ui); font-weight: 600;
+  font-size: clamp(12.5px, .84vw, 16px); color: var(--navy); text-align: center;
+}
+.zring-nav { flex: none; }
+/* the arrows sit outside the rail on a wide screen and drop away on a narrow one, where
+   the rail is swiped rather than stepped */
+@media (max-width: 700px) {
+  .zring-wrap { grid-template-columns: minmax(0, 1fr); }
+  .zring-nav { display: none; }
+}
+
+/* two CTAs now, side by side */
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.pill.ghost {
+  background: transparent; color: var(--navy);
+  box-shadow: inset 0 0 0 1px rgba(2, 14, 76, .22);
+}
+.pill.ghost:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px var(--navy); }
+
+/* ═══════════════ VENUE RULES (new in this revision) ═══════════════
+   Nine bordered cards, five then four, each centred on its own line icon. The second row
+   is centred under the first rather than left-aligned, which is what the file does. */
+.rulegrid {
+  margin-top: clamp(20px, 3vh, 38px);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(10px, 1.2vw, 20px);
+}
+.rl3 {
+  flex: 0 0 auto; width: clamp(150px, 12.2vw, 216px);
+  padding: clamp(16px, 1.5vw, 24px) clamp(12px, 1.1vw, 18px);
+  border-radius: 14px; border: 1px solid var(--line);
+  display: grid; justify-items: center; gap: 8px; text-align: center;
+  background: var(--paper);
+  opacity: 0; translate: 0 20px;
+  transition: border-color .3s var(--ease), box-shadow .35s var(--ease2), translate .35s var(--ease2);
+}
+.rl3.in { animation: dealIn .55s var(--ease2) calc(var(--i) * .05s) forwards; }
+.rl3:hover { border-color: rgba(2, 14, 76, .34); box-shadow: 0 10px 24px rgba(2, 14, 76, .08); translate: 0 -3px; }
+.rl3-ic { width: 26px; height: 26px; color: var(--navy); }
+.rl3-ic svg { width: 100%; height: 100%; display: block; }
+.rl3-n {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 14, "wdth" 100;
+  font-size: clamp(14px, .94vw, 18px); letter-spacing: -.02em; color: var(--navy);
+}
+.rl3-d { margin: 0; font-size: clamp(11.5px, .68vw, 13px); line-height: 1.45; color: var(--grey); }
+
+/* ═══════════════ FAQ (new in this revision) ═══════════════
+   Five rows on the navy, each a slightly lighter pane with a cyan plus that becomes a
+   minus. The height is animated off a measured scrollHeight and released to auto, or a
+   panel whose text reflows later stays clipped at the height it was measured at. */
+.qalist {
+  margin-top: clamp(18px, 3vh, 34px);
+  width: min(1120px, 100%); margin-inline: auto;
+  display: grid; gap: clamp(8px, .9vw, 14px);
+}
+.qa3 {
+  border-radius: 10px; overflow: hidden;
+  background: rgba(255, 255, 255, .05);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .09);
+  opacity: 0; translate: 0 16px;
+  transition: background .3s var(--ease);
+}
+.qa3.in { animation: dealIn .5s var(--ease2) calc(var(--i) * .05s) forwards; }
+.qa3:hover { background: rgba(255, 255, 255, .09); }
+.qa3-q {
+  width: 100%; border: 0; background: none; cursor: pointer; text-align: left;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: clamp(15px, 1.15vw, 22px) clamp(16px, 1.25vw, 24px);
+  font-family: var(--ui); font-weight: 700;
+  font-size: clamp(13px, .84vw, 16px); letter-spacing: -.01em; color: #fff;
+}
+/* the plus, drawn: two bars, one of which turns away when the row opens */
+.qa3-q i { position: relative; width: 16px; height: 16px; flex: none; }
+.qa3-q i::before, .qa3-q i::after {
+  content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1.8px;
+  border-radius: 2px; background: #4ea8ff; translate: 0 -50%;
+  transition: transform .4s var(--ease2);
+}
+.qa3-q i::after { transform: rotate(90deg); }
+.qa3.open .qa3-q i::after { transform: rotate(0deg); }
+.qa3-a { overflow: hidden; height: 0; transition: height .42s var(--ease2); }
+.qa3-a p {
+  margin: 0; padding: 0 clamp(16px, 1.25vw, 24px) clamp(16px, 1.3vw, 24px);
+  font-size: clamp(12.5px, .78vw, 14.5px); line-height: 1.65; color: #b9c4e8; max-width: 74ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rl3, .qa3 { opacity: 1 !important; translate: none !important; animation: none !important; }
 }

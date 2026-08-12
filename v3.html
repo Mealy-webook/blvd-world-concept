@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/v3.css?v=7" />
+<link rel="stylesheet" href="css/v3.css?v=9" />
 </head>
 <body class="v3">
 
@@ -101,10 +101,17 @@
 <section class="zones lightsec" id="zones">
   <div class="wrap mid">
     <h2 class="h1 reveal">Zones</h2>
-    <!-- the client's paragraph -->
-    <p class="sub reveal">Boulevard World brings the world together for you in one
-      destination. Explore exciting new zones along with refreshed favorites that offer a
-      deeper journey into global cultures.</p>
+    <!-- The file trimmed this to one sentence: the opening line, "Boulevard World brings
+         the world together for you in one destination", is gone. -->
+    <p class="sub reveal">Explore exciting new zones along with refreshed favorites that
+      offer a deeper journey into global cultures.</p>
+  </div>
+
+  <!-- the zone rail: a round poster per zone under a ring, with arrows either side -->
+  <div class="zring-wrap reveal">
+    <button class="rnav zring-nav" data-dir="-1" type="button" aria-label="Previous zones"><i></i></button>
+    <div class="zring" id="zring"></div>
+    <button class="rnav zring-nav" data-dir="1" type="button" aria-label="More zones"><i></i></button>
   </div>
 
   <!-- the park's own map artwork, drifting a little against the scroll -->
@@ -114,7 +121,10 @@
 
   <div class="wrap mid">
     <div class="stats reveal" id="stats"></div>
-    <a class="pill pink reveal" href="index.html#/map">Explore map</a>
+    <div class="cta-row reveal">
+      <a class="pill pink" href="index.html#/map">Explore zones on map</a>
+      <a class="pill ghost" href="index.html#/shows">Live show schedule</a>
+    </div>
   </div>
 </section>
 
@@ -124,6 +134,7 @@
 
   <div class="wrap mid">
     <h2 class="h1 reveal">Explore rides</h2>
+    <p class="sub reveal" id="ride-sub"></p>
   </div>
   <div class="rail-wrap">
     <div class="rail" id="ride-rail"></div>
@@ -136,22 +147,14 @@
     </div>
   </div>
 
-  <div class="wrap mid pk-head">
-    <h2 class="h1 reveal">Ride packages</h2>
-    <p class="sub reveal" id="pk-sub"></p>
-  </div>
-  <div class="wrap">
-    <div class="plans" id="plans"></div>
-  </div>
-
   <div class="tear bottom" aria-hidden="true"></div>
 </section>
 
 <!-- ══════════ 4. EXPERIENCES ══════════ light -->
 <section class="xps lightsec" id="experiences">
-  <div class="wrap">
-    <h2 class="h1 left reveal">Experiences</h2>
-    <p class="sub left reveal" id="xp-sub"></p>
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Experiences</h2>
+    <p class="sub reveal" id="xp-sub"></p>
   </div>
   <div class="rail-wrap">
     <div class="rail posters" id="xp-rail"></div>
@@ -168,9 +171,9 @@
 <!-- ══════════ 5. RESTAURANTS ══════════ dark -->
 <section class="eats darksec" id="restaurants">
   <div class="tear top" aria-hidden="true"></div>
-  <div class="wrap">
-    <h2 class="h1 left reveal">Restaurants</h2>
-    <p class="sub left reveal" id="eat-sub"></p>
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Restaurants</h2>
+    <p class="sub reveal" id="eat-sub"></p>
   </div>
   <div class="rail-wrap">
     <div class="rail wide" id="eat-rail"></div>
@@ -183,6 +186,29 @@
     </div>
   </div>
 
+</section>
+
+<!-- ══════════ 6. VENUE RULES ══════════ light, new in this revision -->
+<section class="rules lightsec" id="rules">
+  <div class="tear top" aria-hidden="true"></div>
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Venue rules</h2>
+  </div>
+  <div class="wrap">
+    <div class="rulegrid" id="rulegrid"></div>
+  </div>
+</section>
+
+<!-- ══════════ 7. FAQ ══════════ dark, new in this revision -->
+<section class="faq darksec" id="faq">
+  <div class="tear top" aria-hidden="true"></div>
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Frequently asked questions</h2>
+  </div>
+  <div class="wrap">
+    <div class="qalist" id="qalist"></div>
+  </div>
+
   <p class="foot">
     A concept presentation for BLVD World, Riyadh Season. Booking runs on
     <a href="https://webook.com" target="_blank" rel="noopener">webook.com</a>.
@@ -191,6 +217,6 @@
 </section>
 
 <script src="js/data.js?v=1"></script>
-<script src="js/v3.js?v=7"></script>
+<script src="js/v3.js?v=9"></script>
 </body>
 </html>
