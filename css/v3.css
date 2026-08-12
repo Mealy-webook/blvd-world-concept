@@ -125,12 +125,12 @@ a { color: inherit; }
    far one whether you are scrolling or just moving the mouse. The transition is on
    translate only, so the scroll stays instant while the pointer eases. */
 .lm { transition: translate .5s cubic-bezier(.22,.68,0,1); }
-.lm.l1 { left: -9%;   width: 28%; translate: calc(var(--mx, 0) * -16px) calc(var(--sp, 0) * -26px + var(--my, 0) * -8px); }
-.lm.l2 { left: 2%;    width: 30%; translate: calc(var(--mx, 0) * -26px) calc(var(--sp, 0) * -40px + var(--my, 0) * -13px); }
-.lm.l3 { left: -14%;  width: 36%; translate: calc(var(--mx, 0) * -9px)  calc(var(--sp, 0) * -14px + var(--my, 0) * -5px); }
-.lm.r1 { right: -8%;  width: 25%; translate: calc(var(--mx, 0) * -19px) calc(var(--sp, 0) * -30px + var(--my, 0) * -9px); }
-.lm.r2 { right: 9%;   width: 15%; translate: calc(var(--mx, 0) * -32px) calc(var(--sp, 0) * -48px + var(--my, 0) * -16px); }
-.lm.r3 { right: -11%; width: 33%; translate: calc(var(--mx, 0) * -11px) calc(var(--sp, 0) * -18px + var(--my, 0) * -6px); }
+.lm.l1 { left: -10%;  width: 38%; translate: calc(var(--mx, 0) * -16px) calc(var(--sp, 0) * -26px + var(--my, 0) * -8px); }
+.lm.l2 { left: 1%;    width: 41%; translate: calc(var(--mx, 0) * -26px) calc(var(--sp, 0) * -40px + var(--my, 0) * -13px); }
+.lm.l3 { left: -17%;  width: 48%; translate: calc(var(--mx, 0) * -9px)  calc(var(--sp, 0) * -14px + var(--my, 0) * -5px); }
+.lm.r1 { right: -9%;  width: 34%; translate: calc(var(--mx, 0) * -19px) calc(var(--sp, 0) * -30px + var(--my, 0) * -9px); }
+.lm.r2 { right: 10%;  width: 20%; translate: calc(var(--mx, 0) * -32px) calc(var(--sp, 0) * -48px + var(--my, 0) * -16px); }
+.lm.r3 { right: -13%; width: 44%; translate: calc(var(--mx, 0) * -11px) calc(var(--sp, 0) * -18px + var(--my, 0) * -6px); }
 
 .hero-in {
   position: relative; z-index: 3;
@@ -152,7 +152,8 @@ a { color: inherit; }
    1109 by 198, an aspect near 5.6:1, where the main site's dome is 2.7:1. Reducing the
    sizes flattens the whole thing into the file's proportion — the arcs are unchanged, so
    the curve still matches. */
-.arch .a1 { font-size: 52px; }
+/* the file sets the first line noticeably smaller than the second, and in title case */
+.arch .a1 { font-size: 46px; }
 .arch .a2 { font-size: 70px; }
 /* the two lines rise into place, the lower one a beat behind */
 .arch text { opacity: 0; transform: translateY(26px); }
