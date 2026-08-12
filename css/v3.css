@@ -1,0 +1,448 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BLVD World — the Figma version (file Dsuv9NdftLBG0mWrB8Mp7b, node 85:3909)
+   Built to the design rather than invented: the tokens, metrics and type below are
+   the file's own. Where the design asks for something the data cannot answer, the
+   row is left out and said so in a comment — never filled with a guess.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* the file's sky, top to bottom */
+  --sky-1: #03003c;
+  --sky-2: #001d5f;
+  --sky-3: #212859;
+  --navy:  #020e4c;          /* the ink on white, and the dark sections' base */
+  --line:  #e4e4e7;          /* borders/border-primary */
+  --grey:  #a1a1aa;          /* content/content-secondary */
+  --pink:  #ff2d6f;
+  --paper: #fff;
+
+  --disp: "Bricolage Grotesque", system-ui, sans-serif;
+  --ui:   "Figtree", system-ui, sans-serif;
+
+  --ease: cubic-bezier(.22, .68, 0, 1);
+  --ease2: cubic-bezier(.16, 1, .3, 1);
+
+  --pad: clamp(18px, 4.5vw, 100px);
+  --sec: clamp(64px, 9vh, 116px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body.v3 {
+  margin: 0; background: var(--paper); color: var(--navy);
+  font-family: var(--ui); font-size: 16px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img, canvas { display: block; max-width: 100%; }
+a { color: inherit; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.wrap { width: min(1400px, 100%); margin-inline: auto; padding-inline: var(--pad); }
+.wrap.mid { text-align: center; }
+
+/* ── the two section skins ── */
+.lightsec { background: var(--paper); color: var(--navy); padding: var(--sec) 0; }
+.darksec {
+  position: relative; padding: calc(var(--sec) + 40px) 0 calc(var(--sec) + 40px);
+  color: #fff;
+  background: linear-gradient(180deg, #03003c 0%, #0b1550 46%, #16204f 100%);
+}
+
+/* ── the torn edge ──
+   The file's own page-tear PNG, 2880x163, used as a mask on a strip of the light
+   colour. As a mask rather than an image so the tear is always the colour of the
+   section it is tearing into, which is what lets the same asset work at both ends. */
+.tear {
+  position: absolute; left: 0; right: 0; height: clamp(26px, 3.4vw, 62px);
+  z-index: 4; pointer-events: none; background: var(--paper);
+  -webkit-mask: url("../img/v3/tear.png") bottom center / 100% 100% no-repeat;
+          mask: url("../img/v3/tear.png") bottom center / 100% 100% no-repeat;
+}
+.tear.bottom { bottom: -1px; }
+.tear.top { top: -1px; transform: scaleY(-1); }
+
+/* ── type ── */
+.h1 {
+  margin: 0 0 14px; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 40, "wdth" 100;
+  font-size: clamp(30px, 4.4vw, 58px); line-height: 1.04; letter-spacing: -.03em;
+}
+.h1.left { text-align: left; }
+.sub {
+  margin: 0 auto; max-width: 62ch;
+  font-size: clamp(14px, 1.15vw, 16px); line-height: 1.6; color: var(--grey);
+}
+.darksec .sub { color: #b9c4e8; }
+.sub.left { margin-inline: 0; text-align: left; }
+
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 30px; border-radius: 999px; text-decoration: none;
+  font-family: var(--ui); font-size: 15px; font-weight: 600;
+  transition: transform .3s var(--ease2), box-shadow .3s var(--ease2);
+}
+.pill.pink { background: var(--pink); color: #fff; box-shadow: 0 10px 26px rgba(255, 45, 111, .32); }
+.pill.pink:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(255, 45, 111, .42); }
+
+/* ═══════════════ 1. HERO ═══════════════ */
+.hero {
+  position: relative; overflow: hidden;
+  min-height: clamp(660px, 100svh, 1100px);
+  padding: clamp(40px, 6vh, 80px) 0 clamp(70px, 9vh, 120px);
+  display: grid; align-content: center; justify-items: center;
+  background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 55%, var(--sky-3) 100%);
+}
+.sky { position: absolute; inset: 0; z-index: 0; }
+#stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ── the landmarks ──
+   Positioned as shares of the section, not the file's pixels, so the horizon holds
+   its shape at every width. Each drifts up at its own rate against --sp, which is
+   what separates the near skyline from the far one. */
+.lms { position: absolute; inset: 0; overflow: hidden; }
+.lm {
+  position: absolute; bottom: 0; max-width: none; pointer-events: none;
+  transform-origin: bottom center;
+}
+.lm.l1 { left: -14%;  width: 46%; translate: 0 calc(var(--sp, 0) * -26px); }
+.lm.l2 { left: -2%;   width: 50%; translate: 0 calc(var(--sp, 0) * -40px); }
+.lm.l3 { left: -26%;  width: 62%; translate: 0 calc(var(--sp, 0) * -14px); }
+.lm.r1 { right: -13%; width: 40%; translate: 0 calc(var(--sp, 0) * -30px); }
+.lm.r2 { right: 6%;   width: 25%; translate: 0 calc(var(--sp, 0) * -48px); }
+.lm.r3 { right: -20%; width: 56%; translate: 0 calc(var(--sp, 0) * -18px); }
+
+.hero-in {
+  position: relative; z-index: 3;
+  width: min(1240px, 100%); padding-inline: var(--pad);
+  display: grid; justify-items: center; gap: clamp(18px, 3vh, 40px);
+}
+.brand { display: block; }
+.brand img { width: clamp(76px, 8vw, 108px); height: auto; }
+
+/* ── the arched title ── */
+.arch { margin: 0; width: min(760px, 100%); }
+.arch svg { width: 100%; height: auto; overflow: visible; }
+.arch text {
+  fill: #fff; font-family: var(--disp); font-weight: 800;
+  font-variation-settings: "opsz" 96, "wdth" 100;
+  letter-spacing: -.01em;
+}
+.arch .a1 { font-size: 78px; }
+.arch .a2 { font-size: 112px; }
+/* the two lines rise into place, the lower one a beat behind */
+.arch text { opacity: 0; transform: translateY(26px); }
+body.up .arch .a1 { animation: archIn .95s .12s var(--ease2) forwards; }
+body.up .arch .a2 { animation: archIn .95s .24s var(--ease2) forwards; }
+@keyframes archIn { to { opacity: 1; transform: none; } }
+
+/* ── the pricing row ──
+   One white card ruled into four columns: radius 24, a soft drop shadow, and a
+   hairline between the columns rather than a gap. */
+.pricing {
+  width: min(1120px, 100%);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--paper); border-radius: 24px;
+  filter: drop-shadow(0 0 12px rgba(0, 0, 0, .45));
+  opacity: 0; transform: translateY(26px);
+}
+body.up .pricing { animation: archIn 1s .42s var(--ease2) forwards; }
+.pc {
+  display: grid; gap: clamp(14px, 1.6vw, 24px); align-content: start;
+  padding: clamp(16px, 1.8vw, 24px);
+  text-decoration: none; color: var(--navy);
+  transition: background .3s var(--ease);
+}
+.pc + .pc { border-left: 1px solid var(--line); }
+.pc:hover { background: #fafafb; }
+.pc:first-child { border-radius: 24px 0 0 24px; }
+.pc:last-child { border-radius: 0 24px 24px 0; }
+/* the icon in its own outlined box, the file's 52px at radius 15 */
+.pc-ic {
+  width: 52px; height: 52px; border-radius: 15px;
+  border: 1px solid var(--line);
+  display: grid; place-items: center; flex: none;
+}
+.pc-ic img { width: 24px; height: 24px; }
+.pc-h { display: flex; align-items: center; gap: 4px; }
+.pc-n {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 14, "wdth" 100;
+  font-size: clamp(16px, 1.6vw, 22px); letter-spacing: -.02em; color: var(--navy);
+  white-space: nowrap;
+}
+/* the file's chevron is a light mark at about the name's cap height; at 20px this
+   asset reads as a heavy arrow instead */
+.pc-h img { width: 14px; height: 14px; opacity: .9; transition: transform .3s var(--ease2); }
+.pc:hover .pc-h img { transform: translateX(3px); }
+.pc-d { margin: 0; font-size: clamp(12.5px, 1.05vw, 14px); line-height: 1.45; color: var(--grey); }
+.pc-p { margin: 0; display: flex; align-items: baseline; gap: 4px; font-size: 14px; color: var(--grey); }
+.pc-p .amt { display: inline-flex; align-items: center; gap: 4px; }
+/* the riyal mark, from the file, as a mask so it takes the colour of the text */
+.riyal {
+  display: inline-block; width: 12px; height: 13px; background: currentColor;
+  -webkit-mask: url("../img/v3/riyal.svg") center / contain no-repeat;
+          mask: url("../img/v3/riyal.svg") center / contain no-repeat;
+}
+.pc-p b { font-family: var(--ui); font-weight: 500; font-size: 18px; color: var(--navy); }
+
+.cue { display: grid; justify-items: center; gap: 10px; opacity: 0; }
+body.up .cue { animation: archIn 1s .9s var(--ease2) forwards; }
+.cue span {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(15px, 1.6vw, 22px);
+  letter-spacing: .04em; color: #fff;
+}
+.cue i {
+  width: 1.5px; height: 34px;
+  background: linear-gradient(180deg, rgba(207, 228, 255, .8), rgba(207, 228, 255, 0));
+}
+
+/* ═══════════════ 2. ZONES ═══════════════ */
+.zones { display: grid; justify-items: center; gap: clamp(22px, 4vh, 44px); }
+.mapwrap { width: min(1180px, 100%); padding-inline: var(--pad); }
+/* the map lifts a little as it comes up the screen */
+#parkmap {
+  width: 100%; height: auto;
+  translate: 0 calc((1 - var(--mp, 1)) * 40px);
+  scale: calc(.965 + var(--mp, 1) * .035);
+}
+.stats {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: clamp(12px, 2.4vw, 34px);
+  margin-bottom: clamp(18px, 3vh, 30px);
+}
+.stat { display: inline-flex; align-items: baseline; gap: 7px; }
+.stat b {
+  font-family: var(--disp); font-weight: 700; font-size: clamp(17px, 1.8vw, 22px);
+  letter-spacing: -.02em; font-variant-numeric: tabular-nums;
+}
+.stat span { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); }
+.stat + .stat { border-left: 1px solid var(--line); padding-left: clamp(12px, 2.4vw, 34px); }
+
+/* ═══════════════ RAILS (shared by rides, experiences, restaurants) ═══════════════ */
+.rail-wrap { width: 100%; margin-top: clamp(18px, 3vh, 34px); }
+.rail {
+  display: flex; gap: clamp(12px, 1.6vw, 24px);
+  padding: 6px max(var(--pad), calc((100% - 1400px) / 2 + var(--pad))) 14px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pad);
+  scrollbar-width: none; min-height: max-content;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+.railnav {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: clamp(10px, 1.6vh, 20px);
+}
+.rnav {
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer; flex: none;
+  display: grid; place-items: center;
+  background: transparent; border: 1px solid rgba(2, 14, 76, .22);
+  transition: background .26s var(--ease), border-color .26s var(--ease), opacity .26s;
+}
+.darksec .rnav { border-color: rgba(255, 255, 255, .32); }
+.rnav i {
+  width: 7px; height: 7px; border-top: 1.7px solid currentColor; border-right: 1.7px solid currentColor;
+  transform: rotate(45deg); margin-left: 2px;
+}
+.rnav[data-dir="-1"] i { transform: rotate(-135deg); margin-left: -2px; }
+.rnav:hover { background: rgba(2, 14, 76, .06); border-color: rgba(2, 14, 76, .5); }
+.darksec .rnav:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
+.rnav:disabled { opacity: .3; cursor: default; }
+.rbar { position: relative; flex: 1; height: 1.5px; background: rgba(2, 14, 76, .14); border-radius: 2px; }
+.darksec .rbar { background: rgba(255, 255, 255, .2); }
+.rbar i {
+  position: absolute; top: 0; left: 0; height: 100%; width: 0; border-radius: inherit;
+  background: currentColor; transition: left .28s var(--ease), width .28s var(--ease);
+}
+
+/* ═══════════════ 3a. RIDE TICKETS ═══════════════
+   White stock with a notch bitten out of each corner. The notch is a mask of four
+   radial gradients composited with add — union, not intersect: each layer is
+   transparent outside its own quadrant, so intersecting four of them leaves nothing. */
+.rt3 {
+  --notch: 18px;
+  width: clamp(258px, 27vw, 350px);
+  background: var(--paper); color: var(--navy);
+  border-radius: 8px;
+  --bite:
+    radial-gradient(circle var(--notch) at 0 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 100% 0, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 0 100%, transparent 98%, #000 100%),
+    radial-gradient(circle var(--notch) at 100% 100%, transparent 98%, #000 100%);
+  -webkit-mask-image: var(--bite); mask-image: var(--bite);
+  -webkit-mask-position: top left, top right, bottom left, bottom right;
+          mask-position: top left, top right, bottom left, bottom right;
+  -webkit-mask-size: 50.5% 50.5%; mask-size: 50.5% 50.5%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-composite: source-over; mask-composite: add;
+  filter: drop-shadow(0 18px 34px rgba(0, 4, 30, .34));
+  opacity: 0; translate: 0 26px;
+  transition: translate .45s var(--ease2);
+}
+.rt3.in { animation: dealIn .6s var(--ease2) calc(var(--i) * .08s) forwards; }
+@keyframes dealIn { to { opacity: 1; translate: 0 0; } }
+.rt3:hover { translate: 0 -6px; }
+.rt3-shot { margin: 14px 14px 0; border-radius: 4px; overflow: hidden; aspect-ratio: 4 / 2.6; background: #dfe3ee; }
+.rt3-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease2); }
+.rt3:hover .rt3-shot img { transform: scale(1.06); }
+.rt3-body { padding: 14px 18px 20px; display: grid; gap: 9px; }
+.rt3-n {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 14, "wdth" 100;
+  font-size: clamp(17px, 1.7vw, 21px); letter-spacing: -.02em;
+}
+.rt3-row { display: flex; align-items: center; gap: 9px; font-size: 14px; color: #3c4867; }
+.rt3-row i {
+  width: 17px; height: 17px; flex: none; border-radius: 50%;
+  border: 1.5px solid #7b86a4; position: relative;
+}
+/* the gauge: a needle in a ring */
+.rt3-row.g i::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 1.4px;
+  background: #7b86a4; transform-origin: left center; transform: rotate(-42deg);
+}
+/* the ticket mark, for a price row */
+.rt3-row.t i { border-radius: 3px; }
+.rt3-row.t i::after {
+  content: ""; position: absolute; left: 50%; top: 3px; bottom: 3px; width: 1.4px;
+  background: #7b86a4; translate: -50% 0;
+}
+.rt3-row b { color: var(--navy); font-weight: 700; }
+.rt3-note { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: #6b7590; }
+
+/* ═══════════════ 3b. RIDE PACKAGES ═══════════════ */
+.pk-head { margin-top: clamp(46px, 8vh, 96px); }
+.plans {
+  margin-top: clamp(20px, 3vh, 36px);
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 18px); align-items: stretch;
+}
+.pl3 {
+  display: grid; grid-template-rows: auto auto auto 1fr auto;
+  gap: 12px; padding: clamp(16px, 1.6vw, 24px);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+  opacity: 0; translate: 0 22px;
+}
+.pl3.in { animation: dealIn .55s var(--ease2) calc(var(--i) * .07s) forwards; }
+/* the file highlights one card: a lighter pane, not a different shape */
+.pl3.is-pick { background: rgba(255, 255, 255, .11); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .26); }
+.pl3-n {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 14, "wdth" 100;
+  font-size: clamp(15px, 1.4vw, 19px); letter-spacing: -.02em; color: #fff;
+}
+.pl3-p { margin: 0; display: flex; align-items: baseline; gap: 5px; font-size: 17px; font-weight: 600; color: #fff; }
+.pl3-hr { height: 1px; background: rgba(255, 255, 255, .16); }
+.pl3-l { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; align-content: start; }
+.pl3-l li { display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 9px; font-size: 13.5px; color: #d5dcf5; }
+/* the tick, drawn */
+.pl3-l i {
+  width: 15px; height: 15px; margin-top: 2px; border-radius: 50%;
+  background: rgba(255, 255, 255, .9); position: relative;
+}
+.pl3-l i::after {
+  content: ""; position: absolute; left: 4px; top: 4.5px; width: 6px; height: 3px;
+  border-left: 1.6px solid var(--navy); border-bottom: 1.6px solid var(--navy);
+  transform: rotate(-45deg);
+}
+.pl3-cta {
+  display: grid; place-items: center; padding: 13px; border-radius: 999px;
+  background: #fff; color: var(--navy); text-decoration: none;
+  font-size: 14px; font-weight: 700;
+  transition: transform .3s var(--ease2), box-shadow .3s var(--ease2);
+}
+.pl3-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 0, 0, .34); }
+
+/* ═══════════════ 4. POSTER CARDS (experiences) ═══════════════ */
+.rail.posters .xp3 { width: clamp(200px, 21vw, 268px); }
+.xp3 { display: grid; gap: 12px; text-decoration: none; opacity: 0; translate: 0 26px; }
+.xp3.in { animation: dealIn .6s var(--ease2) calc(var(--i) * .07s) forwards; }
+.xp3-shot {
+  position: relative; border-radius: 14px; overflow: hidden;
+  aspect-ratio: 3 / 4; background: #e8eaf2;
+  box-shadow: 0 14px 30px rgba(0, 4, 30, .18);
+  transition: transform .45s var(--ease2), box-shadow .45s var(--ease2);
+}
+.xp3:hover .xp3-shot { transform: translateY(-5px); box-shadow: 0 24px 46px rgba(0, 4, 30, .28); }
+.xp3-shot img { width: 100%; height: 100%; object-fit: cover; }
+/* the save control the design puts in the corner of every card */
+.fav {
+  position: absolute; right: 10px; top: 10px; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
+  display: grid; place-items: center;
+  background: rgba(10, 14, 40, .5); backdrop-filter: blur(6px);
+  transition: background .26s var(--ease), transform .26s var(--ease2);
+}
+.fav:hover { background: rgba(10, 14, 40, .78); transform: scale(1.08); }
+/* a heart, drawn: two round lobes and a point */
+.fav i {
+  width: 14px; height: 13px; position: relative; display: block;
+}
+.fav i::before, .fav i::after {
+  content: ""; position: absolute; top: 0; width: 8px; height: 11px;
+  border-radius: 8px 8px 0 0; border: 1.5px solid #fff; border-bottom: 0;
+}
+.fav i::before { left: 0; transform: rotate(-45deg); transform-origin: 100% 100%; }
+.fav i::after  { right: 0; transform: rotate(45deg); transform-origin: 0 100%; }
+.fav.on { background: var(--pink); }
+.fav.on i::before, .fav.on i::after { border-color: #fff; background: #fff; }
+.xp3-n {
+  margin: 0; font-family: var(--disp); font-weight: 700;
+  font-variation-settings: "opsz" 14, "wdth" 100;
+  font-size: clamp(15px, 1.5vw, 19px); letter-spacing: -.02em;
+}
+.xp3-p { margin: 0; display: flex; align-items: baseline; gap: 4px; font-size: 15px; font-weight: 600; }
+.darksec .xp3-n, .darksec .xp3-p { color: #fff; }
+
+/* the restaurants use the same card, landscape */
+.rail.wide .xp3 { width: clamp(240px, 25vw, 330px); }
+.rail.wide .xp3-shot { aspect-ratio: 4 / 3; }
+
+.foot {
+  width: min(1400px, 100%); margin: clamp(40px, 7vh, 80px) auto 0;
+  padding-inline: var(--pad);
+  font-size: 12.5px; line-height: 1.7; color: #9aa6ce;
+}
+.foot a { color: #cfe0ff; }
+
+/* ═══════════════ REVEALS ═══════════════ */
+.reveal { opacity: 0; transform: translateY(24px); }
+.reveal.in { animation: archIn .8s var(--ease2) forwards; }
+
+/* ═══════════════ NARROW ═══════════════ */
+@media (max-width: 1100px) {
+  .plans { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .pricing { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pc { border-left: 0 !important; border-top: 1px solid var(--line); }
+  .pc:nth-child(1), .pc:nth-child(2) { border-top: 0; }
+  .pc:nth-child(2) { border-left: 1px solid var(--line) !important; }
+  .pc:nth-child(4) { border-left: 1px solid var(--line) !important; }
+  .pc:first-child { border-radius: 24px 0 0 0; }
+  .pc:nth-child(2) { border-radius: 0 24px 0 0; }
+  .pc:nth-child(3) { border-radius: 0 0 0 24px; }
+  .pc:last-child { border-radius: 0 0 24px 0; }
+  .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arch .a1 { font-size: 88px; }
+  .arch .a2 { font-size: 122px; }
+  .lm.l2 { width: 66%; }
+  .lm.r2 { width: 34%; }
+}
+@media (max-width: 480px) {
+  .plans { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ═══════════════ REDUCED MOTION ═══════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .arch text, .pricing, .cue, .rt3, .pl3, .xp3 {
+    opacity: 1 !important; transform: none !important; translate: none !important;
+    animation: none !important;
+  }
+  #parkmap { translate: none; scale: 1; }
+  .rail { scroll-snap-type: none; }
+}

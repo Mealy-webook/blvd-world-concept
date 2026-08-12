@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLVD World — Explore New Worlds</title>
+<meta name="description" content="Twenty country zones in one park. BLVD World at Riyadh Season." />
+
+<!-- The design's own two faces: Bricolage Grotesque for the headings and the card
+     names, Figtree for the reading text, labels and figures. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/v3.css?v=1" />
+</head>
+<body class="v3">
+
+<!-- ══════════ 1. HERO ══════════
+     Deep navy sky, six landmark cut-outs standing on the horizon, and the four ways in
+     as one white card ruled into four columns. The section ends on a torn paper edge,
+     which is the device that joins every dark section to the light one after it. -->
+<header class="hero" id="hero">
+  <div class="sky" aria-hidden="true">
+    <canvas id="stars"></canvas>
+    <!-- The landmarks, from the design file. Three lean in from each side; they are
+         oversized and clipped by the section, which is what puts them on a horizon
+         rather than in a row. Each carries its own drift rate. -->
+    <div class="lms">
+      <img class="lm l1" src="img/v3/lm-l1.png" alt="" />
+      <img class="lm l2" src="img/v3/lm-l2.png" alt="" />
+      <img class="lm l3" src="img/v3/lm-l3.png" alt="" />
+      <img class="lm r1" src="img/v3/lm-r1.png" alt="" />
+      <img class="lm r2" src="img/v3/lm-r2.png" alt="" />
+      <img class="lm r3" src="img/v3/lm-r3.png" alt="" />
+    </div>
+  </div>
+
+  <div class="hero-in">
+    <a class="brand" href="index.html" aria-label="BLVD World">
+      <img src="img/blvd-world-mark.svg" alt="BLVD World" />
+    </a>
+
+    <!-- The title on two arcs, the same construction the main site uses: both arcs
+         share a centre, so the gap between the lines stays constant across the span
+         instead of opening up at the crown. -->
+    <h1 class="arch" id="arch">
+      <span class="sr-only">Explore new worlds</span>
+      <svg viewBox="144 111 712 264" aria-hidden="true" focusable="false">
+        <defs>
+          <path id="v3-a" d="M 300 216.1 A 1200 1200 0 0 1 700 216.1" fill="none" />
+          <path id="v3-b" d="M 58 392 A 1100 1100 0 0 1 942 392" fill="none" />
+        </defs>
+        <text class="a1" text-anchor="middle"><textPath href="#v3-a" startOffset="50%">EXPLORE</textPath></text>
+        <text class="a2" text-anchor="middle"><textPath href="#v3-b" startOffset="50%">NEW WORLDS</textPath></text>
+      </svg>
+    </h1>
+
+    <!-- one card, four columns, divided by hairlines. js/v3.js fills it. -->
+    <div class="pricing" id="pricing"></div>
+
+    <div class="cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
+  </div>
+
+  <div class="tear bottom" aria-hidden="true"></div>
+</header>
+
+<!-- ══════════ 2. ZONES ══════════ light -->
+<section class="zones lightsec" id="zones">
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Zones</h2>
+    <!-- the client's paragraph -->
+    <p class="sub reveal">Boulevard World brings the world together for you in one
+      destination. Explore exciting new zones along with refreshed favorites that offer a
+      deeper journey into global cultures.</p>
+  </div>
+
+  <!-- the park's own map artwork, drifting a little against the scroll -->
+  <div class="mapwrap reveal" id="mapwrap">
+    <img id="parkmap" src="img/map/park-map-cut.webp" alt="The BLVD World park map" />
+  </div>
+
+  <div class="wrap mid">
+    <div class="stats reveal" id="stats"></div>
+    <a class="pill pink reveal" href="index.html#/map">Explore map</a>
+  </div>
+</section>
+
+<!-- ══════════ 3. RIDES + PACKAGES ══════════ dark, torn at both ends -->
+<section class="rides darksec" id="rides">
+  <div class="tear top" aria-hidden="true"></div>
+
+  <div class="wrap mid">
+    <h2 class="h1 reveal">Explore rides</h2>
+  </div>
+  <div class="rail-wrap">
+    <div class="rail" id="ride-rail"></div>
+  </div>
+  <div class="wrap">
+    <div class="railnav" id="ride-nav">
+      <button class="rnav" data-dir="-1" type="button" aria-label="Previous rides"><i></i></button>
+      <button class="rnav" data-dir="1" type="button" aria-label="More rides"><i></i></button>
+      <div class="rbar"><i></i></div>
+    </div>
+  </div>
+
+  <div class="wrap mid pk-head">
+    <h2 class="h1 reveal">Ride packages</h2>
+    <p class="sub reveal" id="pk-sub"></p>
+  </div>
+  <div class="wrap">
+    <div class="plans" id="plans"></div>
+  </div>
+
+  <div class="tear bottom" aria-hidden="true"></div>
+</section>
+
+<!-- ══════════ 4. EXPERIENCES ══════════ light -->
+<section class="xps lightsec" id="experiences">
+  <div class="wrap">
+    <h2 class="h1 left reveal">Experiences</h2>
+    <p class="sub left reveal" id="xp-sub"></p>
+  </div>
+  <div class="rail-wrap">
+    <div class="rail posters" id="xp-rail"></div>
+  </div>
+  <div class="wrap">
+    <div class="railnav" id="xp-nav">
+      <button class="rnav" data-dir="-1" type="button" aria-label="Previous experiences"><i></i></button>
+      <button class="rnav" data-dir="1" type="button" aria-label="More experiences"><i></i></button>
+      <div class="rbar"><i></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 5. RESTAURANTS ══════════ dark -->
+<section class="eats darksec" id="restaurants">
+  <div class="tear top" aria-hidden="true"></div>
+  <div class="wrap">
+    <h2 class="h1 left reveal">Restaurants</h2>
+    <p class="sub left reveal" id="eat-sub"></p>
+  </div>
+  <div class="rail-wrap">
+    <div class="rail wide" id="eat-rail"></div>
+  </div>
+  <div class="wrap">
+    <div class="railnav" id="eat-nav">
+      <button class="rnav" data-dir="-1" type="button" aria-label="Previous restaurants"><i></i></button>
+      <button class="rnav" data-dir="1" type="button" aria-label="More restaurants"><i></i></button>
+      <div class="rbar"><i></i></div>
+    </div>
+  </div>
+
+  <p class="foot">
+    A concept presentation for BLVD World, Riyadh Season. Booking runs on
+    <a href="https://webook.com" target="_blank" rel="noopener">webook.com</a>.
+    <a href="index.html">Main version</a> &middot; <a href="v2.html">Night version</a>
+  </p>
+</section>
+
+<script src="js/data.js?v=1"></script>
+<script src="js/v3.js?v=1"></script>
+</body>
+</html>
